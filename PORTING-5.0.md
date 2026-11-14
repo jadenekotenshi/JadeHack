@@ -59,6 +59,13 @@ Not ported: rolling boulder placement (a gameplay change, not a crash), helm of
 opposite alignment `uarmh` (3.6 polymorph code), aklys `thrownobj` (unclear
 whether this tree's throw code has the stale pointer).
 
+## Batch 5: the two `mons[-1]` fixes from 3.6.5 (PORTED; build OK, game starts)
+
+| Fix | Where here |
+|---|---|
+| Gating in a demon when `ndemon()`/`dprince()`/`dlord()` returned NON_PM indexed `mons[-1]` | `src/minion.c` `msummon()`: four `cnt` computations check `dtype != NON_PM` |
+| "Tin cures stoning" | This tree has no monster tin-eating, so the tin case is N/A. The same bug class does exist for generic eggs (corpsenm NON_PM), fixed in `src/dog.c` (`dogfood()`), `src/mon.c` (`mstoning()`) and `src/muse.c` (egg stoning check), alongside the earlier `eat.c` fix. |
+
 ## N/A because SporkHack changed or removed the code
 
 | Fix | Reason |
@@ -94,3 +101,41 @@ but is a different port than 5.0's.
 2. Read code for each LIKELY item, move it to VERIFIED or N/A, port in batches.
 3. (Done: the three VERIFIED fixes below.)
 4. Only then triage the non-crash bug fixes in the same notes files.
+
+## Non-crash bug fix triage (in progress)
+
+Scope: the "General Fixes and Modified Features" sections of
+`fixes3-6-0.txt` .. `fixes3-6-7.txt` and `fixes5-0-0.txt` (2,235 entries).
+Sections for platform ports, new features, code cleanup, and "fixes to
+post-X problems exposed via git" are skipped: they concern code this tree
+does not have.
+
+Automatic filtering (heuristic, not code-verified):
+- 172 entries mention ports/tools this tree lacks (Qt, X11, win32, sysconf,
+  Lua, sortloot, perm_invent, etc.).
+- 393 mention terms that exist in 5.0 but nowhere in this source tree.
+- 1,521 entries are plain prose about behavior with no identifiers to check,
+  so each needs a human read. Only 39 name identifiers that do exist here.
+
+Prose read: all 1,521 unanchored entries. 516 flagged as plausible real bugs,
+one file per source, in `doc/port-candidates-*.txt`:
+
+| Source | Prose entries | Flagged |
+|---|---|---|
+| 3.6.0 | 557 | 185 |
+| 3.6.1 | 217 | 73 |
+| 3.6.2 | 105 | 56 |
+| 3.6.3 | 61 | 25 |
+| 3.6.4 - 3.6.5 | 9 | 4 |
+| 5.0.0 | 570 | 173 |
+
+The unflagged entries are design changes (two-weapon combat, Elbereth, magic
+cancellation, many 5.0 balance changes), grammar-only fixes, and features. The
+39 entries that name identifiers present in this tree and the 393 with
+5.0-only terms were not read individually; revisit if the flagged list runs dry.
+
+Flags come from reading descriptions only. Many 3.6/5.0 entries fix bugs that
+were introduced in 3.6 itself, so expect a good share to be N/A once the code
+is checked. Highest value first: the two `mons[-1]` accesses in
+`doc/port-candidates-3.6.5.txt` (gating a non-valid demon, tin cures stoning),
+then shop exploits, then the rest.

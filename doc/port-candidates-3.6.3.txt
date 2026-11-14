@@ -1,0 +1,30 @@
+NetHack 3.6.3 "General Fixes" worth considering for JadeHack
+
+First-pass triage from reading the prose only; not checked against this source tree.
+Index = position in the unanchored list for that file (see PORTING-5.0.md).
+
+[4] when co-located with a boulder you could sometimes swap places with pets of any size
+[14] #turn worked when unable to speak despite "you chant an arcane formula"
+[22] if an engulfer has any worn items, hero could pick them up from inside and they wouldn't be unworn properly, eventually triggering warnings or worse (Juiblex will wear an amulet if created with one; a shapechanger might wear one and then turn into an engulfer)
+[23] kicking an altar ignored god's wrath if hero injured himself during the kick
+[24] detect unseen/secret door detection/^E failed to find monsters hiding under objects and failed to find monsters hiding at trap locations
+[29] for multi-shot shooting by monsters, a typo checked hero's weapon for compatibility with ammo when monster was wielding an elven bow
+[30] when a boulder was teleported, if it landed in a pit or trap door or hole its former location wasn't updated to show that it wasn't there anymore (noticed in Sokoban but not limited to there)
+[33] when rubbing a ring on a touchstone, all types of rings were treated as if they were gems; an iron ring made a cyan streak instead of yielding "scritch, scritch" and a gold ring made a yellow streak rather than a golden scratch
+[34] zapping self with wand of opening or spell of knock to escape from a trap reported "you're released from <trap>" rather than "from the <trap>"
+[36] verb tense was inappropriate in some messages when a mon/pet had a name ending in 's'
+[38] fix exploding land mine moving ball or chain and causing a sanity error
+[39] fix firing attached iron ball when swallowed causing a sanity error
+[40] fix temple priests or shopkeepers moving over other monsters
+[41] fix hero still hiding under a statue shattered by a land mine
+[45] yellow dragons had green breath
+[46] partly eaten food in a bones level shop would show a non-zero sale price while on the floor but not be placed on shop bill if picked up; sale price should have been "no charge"
+[47] in a shop which doesn't care about tools:  You drop a <box> containing 1 item. <Shk> offers you <gold> for your items in your <box>.  Sell them? [plural 'items' and 'them' were including the box along with the one item in it even though shk was only offering to buy its contents]
+[48] grammar correction for "That walking shoes is really a small mimic" when applying a stethoscope
+[52] playing musical instruments gave feedback which ignored deafness
+[54] when a monster reads a scroll of fire to cure sliming, don't access that scroll's memory after it has been used up (bcsign)
+[55] monster vs monster attacks didn't handle shades or silver weapon feedback
+[56] successful alchemy would show new potion's description (color) even when blind
+[57] dipping some types of objects into oil would yield "<object> gleams with an oily sheen" even when blind
+[58] dipping into an undiscovered potion would offer chance to give a name to the potion even when its description wasn't known (picked up while blind)
+[59] dipping lichen corpse into acid when not blind and acid was undicovered would not offer a chance to give a name to the potion after lichen feedback

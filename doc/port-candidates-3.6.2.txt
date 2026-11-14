@@ -1,0 +1,61 @@
+NetHack 3.6.2 "General Fixes" worth considering for JadeHack
+
+First-pass triage from reading the prose only; not checked against this source tree.
+Index = position in the unanchored list for that file (see PORTING-5.0.md).
+
+[2] for starting inventory, don't give an orc hero lembas wafers or cram rations
+[3] targetting with a polearm could give away location of hidden monster
+[9] eating rings while polymorphed didn't handle bonus/penalty for increase damage, increase accuracy, or protection correctly
+[12] when eating a tin of spinach, don't "feel like Popeye" if sustain-abilities prevents any strength gain
+[14] #turn command which aggravated monsters did so without using a turn (not a pun)
+[15] fix hole/trapdoor passage inconsistency when polymorphed into a giant
+[16] if a random grave produced during level creation included some gold, that gold was left on the ground instead of being buried with other treasure
+[17] shop door repair which took place when hero was on another level only worked correctly if a trap at the same spot was removed
+[18] object scattering during shop wall repair was skipped if a trap at the same spot was also being removed
+[19] fix monsters not wielding digging implements
+[20] jumping into or over a Sokoban pit, or over a fire trap, triggers trap twice
+[23] a sleeping or paralyzed mon would be frightened by its reflection when applying a mirror
+[25] gremlins seemed impervious to Sunsword's light yet a flash from a camera caused them to cry out in pain
+[26] drum of earthquake was causing deafness but oddly enough only when used up
+[27] known bear trap was being forgotten about by a player polymorphed into a flying monster if the player unsuccessfully tried to #untrap it and moved onto the trap square as a result
+[28] no leash-related message is given when a leashed pet yellow light explodes
+[32] a wand of polymorph lost its magical ability for the turn just because the player using it to engrave happened to be blind, which didn't make much sense
+[34] during character creation, don't unset alternate weapon when a shield gets worn (was preventing knight from having lance set up as uswapwep)
+[37] prayer result which enhanced strength (fix weakness from hunger) didn't give a message if a change in encumbrance occurred; it came on next move
+[39] death from something other than loss of hit points could leave hero with non-zero HP at end of game (during "really die?" prompt, disclosure)
+[42] fix odd wording "The boulder triggers and fills a pit"
+[43] ^X status feedback: don't report "not wearing any armor" when wearing a shield
+[46] nurse corpse/tin chance to convey poison resistance when eaten was not honored
+[48] if a migrating monster was killed off because there was no room on the destination level, it would leave a corpse even if it was a type which should never leave one (demon, golem, blob, &c)
+[50] attempting to untrap an adjacent trap while on the edge of--not in--a pit failed due to not being able to reach the floor
+[51] magic trap's deafening roar effect wasn't waking nearby monsters
+[52] scattering of objects might leave source location with wrong thing displayed
+[53] stinking cloud placed near water could kill underwater creatures
+[54] applying--rather than wielding--a cursed polearm or weapon-tool didn't report that it had become welded to hero's hand(s)
+[55] the message when riding a steed into a pit was composed but not shown
+[56] glowing Sting quivers if hero becomes blind and quivering Sting glows if blindness ends; it worked for timed blindness but not for blindfold
+[58] if hero survives turning into slime (life-saving), survive as a green slime
+[59] setting second or later named fruit to value beginning with two or more spaces followed by non-space gave "singular of null?" warning
+[62] while inside a shop, dropping an unpaid item inside an engulfer would leave that item 'unpaid' and it would remain so on shop floor after the the engulfer was killed; treat dropping shop items inside an engulfer as stealing them and giving them to that engulfer--hero must pay for them and shop retains ownership of them
+[63] while levitating inside a shop, throwing an unpaid item and having recoil move hero out of shop (or to shopkeeper's spot in front of door) would leave the item unpaid on shop floor and also on the shop's bill but not visible via 'Iu' or 'Ix'; leaving the shop after that would anger the shopkeeper and summon kops
+[67] when fire converts an ice location into a water location, dunk any monster on that spot immediately instead of waiting until its next move
+[68] training riding skill had an off-by-one bug when counting turns riding
+[69] limit carrying heavy loads from water to land
+[71] life-saving while weak/starving/fainting boosted nutrition without restoring lost point of strength, making temporary loss be permanent
+[73] bag of holding explosion inside shop billed hero for unpaid contents if it happened when applied while carried but not when looted while on floor
+[76] when splitting a stack where internal ID is used to make adjustment to shop prices, pick an ID for new stack that yields same prices as old
+[78] setting SEDUCE=0 made all succubus and incubus attacks be described as smiling engagingly or seductively rather than hitting or missing
+[80] a couple of short wall segments in the "Gnome King's Wine Cellar" variant of Mines' End were diggable; one stone spot which should have been, wasn't
+[81] the simulation of dual weapon combat when polymorphed into a form with more than one weapon attack allowed off-hand artifact to be used; it also used seconary weapon even when wearing a shield, or if it was silver even when current shape couldn't handle silver, or if it was cursed; cursed is allowed but weapon will be dropped, just like in two-weapon
+[84] various non-weapon attacks while polymorphed didn't inflict blessed or silver weapon damage when worn items contacted vulnerable target monsters
+[85] hero poly'd into creature with hug attack could hug a long worm's tail which rendered the whole worm immobile
+[87] lock picking context could end up with stale container pointer if container being forced/unlocked/locked got destroyed or sent to another level
+[88] teleporting out of a vault after guard appears could result in the guard being stranded in a one-square long temporary corridor adjacent to vault wall and periodically saying "Move along!"
+[89] a monster with resistances supplied by worn armor would lose them if that monster went through a shape change even if the armor stayed worn
+[93] kicking an object stack moves the topmost 1, but range calculation used the weight of the whole stack to decide how far it would move, possibly yielding "thump" result with no movement despite being a light item
+[96] Valkyrie quest was supposed to have a 50:50 chance that northern drawbridge would be raised, but both were always lowered; chances now are: both lowered: 3/8, S down+N up: 3/8, N down+S up: 1/8, both raised: 1/8
+[98] if hero throws a pick-axe into a shop and shopkeeper catches it, shk would say "get out of my way, scum" even if there was no monster at pick-axe spot
+[99] a quantum mechanic hit that teleported the target could also kill it at the destination; make sure that the small amount of physical damage isn't fatal unless the teleport is negated by cancellation (magic or armor)
+[100] if a mimic concealed itself as a corpse, it could pick a monster type which never leaves a corpse
+[102] fix cloned monster trapped and hiding states
+[103] split monster could be placed on trap without triggering it

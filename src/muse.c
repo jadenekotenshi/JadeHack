@@ -2053,7 +2053,8 @@ struct obj *obj;
 					(acidic(&mons[obj->corpsenm]) &&
 					 obj->corpsenm != PM_GREEN_SLIME))));
 	    if (typ == EGG)
-		return (boolean)(touch_petrifies(&mons[obj->corpsenm]));
+		return (boolean)(obj->corpsenm >= LOW_PM &&
+				touch_petrifies(&mons[obj->corpsenm]));
 	    break;
 	default:
 	    break;

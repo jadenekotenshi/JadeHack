@@ -1,0 +1,7 @@
+NetHack 3.6.4 "General Fixes" worth considering for JadeHack
+
+First-pass triage from reading the prose only; not checked against this source tree.
+Index = position in the unanchored list for that file (see PORTING-5.0.md).
+
+[1] fix the article used in the message when your steed encounters a polymorph trap
+[4] flying hero can go down (via '>') holes or trap doors instead of escaping trap

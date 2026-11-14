@@ -695,7 +695,8 @@ register struct obj *obj;
 		case HUGE_CHUNK_OF_MEAT:
 		    return (carni ? DOGFOOD : MANFOOD);
 		case EGG:
-		    if (touch_petrifies(&mons[obj->corpsenm]) && !resists_ston(mon))
+		    if (obj->corpsenm >= LOW_PM &&
+			touch_petrifies(&mons[obj->corpsenm]) && !resists_ston(mon))
 			return POISON;
 		    return (carni ? CADAVER : MANFOOD);
 		case CORPSE:

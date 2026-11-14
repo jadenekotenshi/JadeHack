@@ -1,0 +1,191 @@
+NetHack 3.6.0 "General Fixes" worth considering for JadeHack
+
+First-pass triage from reading the prose only: these look like real bugs that
+plausibly exist in 3.4.3-era code. Not yet checked against this source tree.
+Index = position in the unanchored 3.6.0 list (see PORTING-5.0.md).
+
+[5] display "lotus juice", not "lotu juice" for the fruit juice name
+[31] silver arrows weren't causing silver damage on some silver-haters when wielded
+[34] plural of "Nazgul" is "Nazgul" not "Nazguls"
+[38] player polymorphed as a xorn could not pick up items in pits
+[43] dipping acid in a fountain could cause an explosion but not destroy the potion
+[48] keep score from wrapping around and becoming negative by capping it
+[52] cursed scroll of destroy armor damaging cursed armor didn't adjust attributes
+[54] polymorphed or shapechanged monster sometimes got erroneous hit points
+[55] when blind and levitating > shouldn't say "stairs" if player has not seen them
+[59] calculate weight of corpses on special levels correctly
+[63] fire trap was triggered twice in the same turn when melting ice was involved
+[65] reviving invisible troll could appear visible until it moves
+[68] guarantee that hostile djinn released from bottles really are hostile
+[71] really fix rolling boulder bug C340-18, the previous "fix" reversed the test
+[73] killing a pet by displacing it into a trap now yields experience
+[82] breaking container contents in a shop didn't always charge for them
+[83] some types of shop theft of a stack of items only charged for a single one
+[84] some thefts weren't charged at all even though shopkeeper noticed
+[90] charge for reviving a shop owned corpse or reanimating a shop owned statue
+[103] eating tainted Medusa corpse caused food poisoning instead of petrification
+[105] nymphs and monkeys can't steal rings worn under gloves
+[106] monkeys can't steal rings worn under cursed weapon
+[107] succubi will remove hero's gloves before taking worn ring; incubi will do so before forcing ring to be put on
+[111] green slime should not affect noncorporeal monsters
+[122] sometimes shop items which hero is forced to buy could be sold back twice
+[123] non-empty container dropped but not sold in a tended shop and then picked up after that shop became untended could be sold twice in another shop
+[126] limit how high accuracy, damage, or protection can become via eating rings
+[130] reanimating a statue containing gold produced double gold
+[132] fatal wish granted by monster left that monster in bones data
+[133] death due to dipping potion of acid into a pool left the potion in bones data
+[136] becoming green slime or mimicking gold violates "never changed form" conduct
+[145] regression, bug fixed in 3.4.1 reintroduced in 3.4.3:  Sunsword continued to emit light after monster who was wielding got killed
+[153] prevent lose-level+regain-level cycle from arbitrarily boosting HP and Pw
+[154] prevent polymorphing into "new man" at low level from magnifying HP and Pw
+[157] mind flayer brain eating is subject to certain fatal targets and to cannibalism
+[158] mind flayer can't eat brains of ghost or shade
+[171] cancelling non-shop objects in a shop's entrance would upset the shopkeeper
+[172] can't wish for a trapped box/chest/tin by specifying "poisoned"
+[187] putting on a never seen ring while blinded won't make the ring a discovery
+[188] zapping a never seen wand while blinded won't make the wand a discovery
+[189] zapping an unID'd wand of teleportation at self will discover it (usually)
+[190] zapping unlocking magic at self while punished will remove attached chain
+[193] don't see objects or read engraving when hero changes location (random teleport) or position (levitation timeout) while asleep or fainted
+[204] monsters could end up off the left side of the Ranger quest start level
+[217] check for hero location in digactualhole() before clearing u.utrap
+[221] shattering a monster's weapon didn't work as intended for stack of N>1
+[226] properly handle destruction of equipment carried by monsters hit by disintegration breath; life-saving retained conferred properties of formerly worn items (loss of steed's saddle caused much confusion)
+[227] don't exercise or abuse wisdom when rumors get used for random graffiti
+[228] don't exercise wisdom twice for each minor oracle consultation
+[232] don't "walk quietly" while levitating
+[239] limit recursive calls to spoteffects (poly'd hero fell into water, reverted to human because of it, fell into same water, then crawled out twice)
+[240] charge for thrown wand that shatters into a thousand pieces in a shop
+[248] don't place hero on top of monster when arriving on level which is so full that the monster can't be moved out of the way
+[253] hero is not subject to light-based blindness while fainted from hunger
+[255] engraving while underwater should use surface() which handles that case
+[258] affected monsters should always respect "Elbereth"
+[259] try harder to keep dragged chain between ball and hero
+[260] fireproof containers should not burn in lava
+[261] missile which kills engulfer will now be placed prior to hero's return to map
+[264] getting a particular rotten food result can't make attempting to eat a corpse of one of the Riders be survivable
+[268] hero can't carry an unlimited number of boulders when poly'd into a giant
+[269] stop wielding cockatrice corpse which triggered own death followed by life-save
+[271] shops now claim ownership of items created by using an unpaid horn of plenty
+[273] tweak levitation timeout if trap is being triggered on same turn it is to end
+[274] don't report death by petrification if cockatrice kills hero via HP loss
+[275] Rider corpses can't be engulfed by gelatinous cubes
+[277] wielding a cloak of magic resistance or gray dragon scales, or carrying one in alternate weapon or quiver inventory slot, conferred magic resistance to polymorphed hero
+[278] wielding a potion of blindness or carrying one in alternate weapon or quiver slot conferred resistance against light-based blindness to any hero
+[279] worn item transformed by polymorph remains worn if feasible
+[280] zapping closing or breaking magic up or down from beneath an open drawbridge's portcullis failed if bridge orientation was north-to-south (Valk quest)
+[281] can't dip or apply grease to a worn item that's covered by another worn item
+[282] after escaping lava by foot, if hero doesn't move he'll fall back in
+[283] suppress corpse from bones data if death is due to being dissolved in lava
+[284] suppress "you rise from the dead" if game ends due to be turned into slime
+[286] don't give erroneous "<mon> disappears" message for hero poly'd into quantum mechanic who hits engulfer while swallowed and blinded
+[289] can't engrave on floor while inside solid rock, wall, or closed door
+[296] statues that "come to life" when trap activates shouldn't start out sleeping
+[298] can't throw if poly'd into form which lacks hands
+[300] can't eat an artifact you're unable to touch
+[301] attempting to engrave with an empty wand should always use a turn
+[302] can't drop part of a stack of N weapons welded to hero's hand
+[307] vomiting countdown actually triggered the final vomit code twice
+[310] surviving choking while eating various foods (cockatrice egg, fortune cookie, wolfsbane, others) didn't carry through to those foods' side-effects
+[315] hero's sleep resistance shouldn't protect steed from sleeping gas trap
+[324] dying in a shop while wielding two weapons could cause "Setworn: mask" warning
+[325] make score file processing more bullet proof to avoid potential security issue
+[328] artifacts which subsequently evade your grasp/control after already being worn or wielded become unworn/unwielded
+[354] charging prompt used wrong criteria when deciding whether to list rings
+[357] touching a pile of objects while blind affects hero even when the pile is big enough to give "there are many objects here" and not list them
+[359] eliminate case-sensitivity when converting words from singular to plural and vice versa, so some failing wishes like "Gauntlets of Power" now work
+[365] using weapon to kill tame engulfer from inside triggered "placing defunct monster onto map?" warning
+[367] nymphs could steal carried boulders
+[368] amnesia of object discoveries would never forget the very last one
+[369] kick evasion shouldn't move monsters through walls
+[370] #untrap didn't check whether hero could reach the ground
+[372] engulfer under influence of conflict or confusion could swallow monster at water/lava/trap spot and not be affected by destination til next move
+[373] unicorn horn restoration no longer overrides sustain ability characteristic
+[375] applying an unpaid stack of potions of oil forced hero to buy all of them instead of just the one which got split off and lit
+[376] sometimes when hero is forced to buy an unpaid shop item its price changed
+[377] monster could attack with a polearm even after attempt to wield that failed
+[379] code controlling item drops by small monsters still used pre-3.1.0 weight
+[382] can't swap places with tame grid bug when moving diagonally
+[383] can't move diagonally through a long worm's body (can still fight that way)
+[384] could get "suddenly you cannot see the <mon>" while invisible mon remained displayed due to telepathy or extended detection
+[385] cutting a level 0 long worm in half produced a new worm with 0 hit points
+[386] using F to force an attack towards a boulder gave "you attack thin air"
+[387] melted ice on Valkyrie quest should be pool, not moat
+[391] blinded invisible hero can't see self as invisible via ';' or '/'
+[392] it was possible to generate an object of 0 gold pieces by dropping 2**32 gold
+[393] always update map display and use up turn if open or close command attempted while blind reveals change in door state or discloses non-door spot
+[395] potion thrown by monster which hit a long worm's tail gave feedback about hitting its head
+[401] potion explosion during failed alchemy should awaken nearby monsters
+[402] seen eels who were stuck in isolated pools would never re-hide
+[403] can no longer get both strength and resistance from eating one giant corpse
+[404] aborting key/lock pick usage via ESC at direction prompt no longer uses a move
+[406] archeologist shouldn't start with sling skill by carrying slingable touchstone
+[407] wearing or removing an amulet of restful sleep clobbered permanent sleepiness
+[408] if attempt to select a co-aligned artifact for first divine gift fails because none is available, choose one from among nonaligned artifacts
+[409] monsters already wearing suits can't put on shirts
+[410] if breaking a wand of polymorph causes hero to drop items, don't transform them
+[413] monsters who ate green slime corpses weren't turned into green slime
+[414] "hand slip" while naming an object would never pick 'z' as a substitute letter
+[415] hero would "gladly take off <armor>" for nymph or succubus even while asleep
+[417] if life-saved steed became untame, repeated "placing steed onto map?" warnings would be given as long as the hero remained mounted
+[418] when dipping something in holy/unholy water, only learn its new bless/curse state if hero sees it glow
+[420] prevent poly'd shopkeepers from taking on forms that can't handle objects
+[425] hero would remain stuck to an adjacent monster after rehumanizing if he had been attacked while hiding via #monster when poly'd into a small mimic
+[426] auto-wielding a polearm took no time if ESC was used to cancel target choice
+[427] prevent temple priests and minions from wearing helms of opposite alignment
+[428] 'D' drop command didn't handle 'u' choice correctly if the only unpaid items were inside containers
+[429] pearl rings shouldn't rust
+[430] shouldn't be able to read a worn T-shirt when it's covered by a worn suit
+[432] spell attack by low-Int hero could inflict negative damage
+[433] some wand/spell/breath zaps that hit a secret door failed to reveal it
+[435] message "You hit the  with all your might." could be issued if a boulder went away while it was being dug/broken with a pick-axe
+[438] wearing cloak of displacement auto-discovered it even when hero couldn't see
+[439] wearing elven cloak auto-discovered it even when already stealthy
+[440] putting on ring of stealth never auto-discovered it
+[443] fix writing feedback "the spellbook warps strangely, then turns parchment"
+[445] when reading an unknown scroll and learning it, discovery of teleportation was too late if hero happened to land on another scroll of teleportation
+[446] using an unlocking tool on a closed door which was actually a mimic reported that there was no door to unlock instead of exposing the mimic
+[447] purple worm could end up in wall or solid rock when swallowing ghost or xorn
+[448] unpaid shop items stolen from hero by a monster remained on hero's shop bill
+[449] #untrap toward known trap location containing concealed mimic would yield "{The mimic|It} {is in the way|isn't trapped}." but not reveal mimic
+[451] don't report "fried to a crisp" for disintegration from divine wrath
+[452] when polymorphed into an opposite sex monster, if you then become a new human while failing to polymorph into something else, you'd be told "you feel like a new man" for female or "a new woman" for male
+[456] the weight of a non-cursed bag of holding was sometimes off by 1 unit
+[457] if an angry shopkeeper chased the hero to a different level and then got paid off, he'd dismiss kops on that other level but not on his shop level
+[459] dying in lava and being life-saved or leaving bones would destroy ring of fire resistance if it happened to be made of wood, and also burn up scrolls of fire and spellbook of fireball
+[462] have shk claim ownership of worn saddle dropped by dying pet if hero is not within the same shop at the time of the drop
+[470] all statues in a cockatrice nest were for giant ant if 'record' was empty
+[471] when dying outside all shops on a level with multiple shopkeepers and one takes hero's stuff, choose one who is owed money over first one on fmon list
+[472] hero poly'd into a critter without hands could still open tins
+[473] if a vault guard was killed, his inventory would be dropped at <0,0>
+[474] throwing gold to/at a vault guard will no longer be treated as an attack
+[475] non-pit traps created in vault guard's temporary corridor would remain after the location reverted to solid rock
+[476] if hero dragged iron ball into temporary corridor and then killed vault guard, the portion of corridor currently in existence would become permanent
+[480] fix message typo, "you sold some items inside <container> for N gold piecess"
+[481] fix bug preventing stone-resistant monster w/o gloves from wielding cockatrice
+[482] items conferring life drain resistance were affected by drain life spell
+[483] 'a'pply command could be used to recognize undiscovered potions of oil
+[484] #sit while swallowed would give the wrong message
+[485] feedback for reverse-genocide was plural even when just one monster was created
+[491] restrictions on diagonal movement were ignored when crawling out of water
+[492] when using magic whistle, prevent steed from being affected (trap interaction)
+[493] declining to attack a peaceful monster via movement used up nutrition even though no action took place
+[496] when a monster zapped by polymorph drops inventory because of its new form, don't let that same zap hit the dropped item(s)
+[497] entering an untended shop while blind gave an inappropriate message
+[498] gold dropped on altar by hero wouldn't stack with gold dropped there by monster
+[501] fix used-up magic trap trying to hit steed.
+[508] sanitize petnames and fruit to prevent escape codes
+[509] data.base "bat" overrode later "combat" entry
+[510] data.base "gelatinous cube" and "jack boot" have their own entries
+[511] data.base "vampire bat" matched twice; use the bat entry
+[514] charge for a boulder that fills a pit in shop
+[516] message inconsistency: death message "swallowed <mon> whole" was preceded by "You bite into"
+[517] after object loss through polyshudder don't get left hiding under nothing if you're polymorphed into a hider
+[522] non-pet rust monsters would eat rust-proofed non-digestibles but ignore those non-digestibles otherwise
+[546] you shouldn't see Sting glow light blue if you're blind
+[548] flesh golems hit by electricity healed by wrong amount
+[550] casting spell of protection when previous casting(s) hadn't time out yet miscalculated the new AC increment
+[551] remaining monsters continued to move after hero conceptually left the level when a monster knocked him onto a level-changing trap (this bug made it be feasible--but not practical--to level teleport with the Amulet)
+[552] #turn for non-priest/non-knight attempts to cast "turn undead" spell, but was forcing the spell to target self rather than choose a direction
+[554] spellcasting attempt of any spell while stunned now always fails
+[555] spellcasting attempt of expired spell while confused will increase confusion duration rather than replace it

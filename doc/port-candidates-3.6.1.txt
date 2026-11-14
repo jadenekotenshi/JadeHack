@@ -1,0 +1,78 @@
+NetHack 3.6.1 "General Fixes" worth considering for JadeHack
+
+First-pass triage from reading the prose only; not checked against this source tree.
+Index = position in the unanchored list for that file (see PORTING-5.0.md).
+
+[0] cursed genocide of "none" sent in monsters, but "that's enough tries" didn't
+[8] negative intrinsic protection shouldn't confer MC=1, "you are warded" (not possible from divine protection but is possible from eating rings)
+[10] falling asleep when reading dull spellbook ignored sleep resistance
+[14] new high score with ", while helpless" attribute appended would erroneously result in ", while helpless" being appended to all following entries
+[16] avoid hearing yelps when you are deaf
+[17] make corpse visible if stethoscope told you about it being there
+[21] putting gold into hero-owned container on shop floor gave free credit
+[22] stack splitting for dipping large quantities of potions was done poorly
+[24] do not autopickup unpaid items in shops
+[25] death due an unseen gas spore's explosion resulted in "killed by a died"
+[28] level-drain resistance wasn't shown during enlightenment if it was conferred by worn/wielded equipment or by lycanthropy
+[37] fix "killing by kicking something weird" when kicking an object causes death
+[41] stepping onto lava destroyed non-fireproof water walking boots but left other vulnerable boot types intact
+[46] make vault guard accept names starting with number
+[47] fix weight of containers in special levels
+[60] fix pile mark after killing a monster carrying a potion which is destroyed
+[80] jumping while punished could leave ball and chain in the wrong place
+[93] some blindness cures ignored u.ucreamed
+[94] some instances of stun or confusion timers were being overridden rather than incremented when new stun or confusion damage was suffered
+[96] kicked weapon which successfully hits monster vanishes from play
+[97] unseen landmine explosion could result in "The <monst-type> statue crumbles."
+[101] the Bell of Opening now correctly reports when it opens a trapdoor/hole
+[102] game no longer gets confused when you break an unpaid shop item while inside a different shop
+[103] shopkeepers now correctly handle nested containers and gold in containers
+[105] exploding chest trap would destroy uchain while still worn if uball carried
+[107] remove extra space from "All of your  <stack-of-potions> boil and explode." (also applies to potions freezing and to scrolls burning)
+[108] effects of cursed potion of levitation were skipped if already levitating
+[114] reviving one of a stack of N corpses in a shop charged a usage fee for all N; remaining N-1 were owned by hero if carried but by shop if on floor
+[117] thrown potion that killed peaceful monster would cause "the <mon> gets angry" after the message about it being killed
+[118] when poly'd into a hider and engulfed, attempt to hide via #monster was blocked but feedback said "can't hide while held" rather than "while engulfed"
+[122] if blind and no gloves, using 'm<dir>' to move and then 'e' could be used to locate cockatrice corpse without fatal touching (by declining to eat)
+[123] it's cannibalism for a were<foo> to eat a <foo> corpse
+[125] avoid ring of poison resistance as starting equipment for orcish wizard
+[126] gelatinous cube shouldn't be able to eat a scroll of scare monster
+[127] make fireballs or cones of cold cast at skilled or higher not go through walls
+[130] for #tip inside shop, credit was incorrectly given for spilled gold if that gold's stale location coordinates didn't happen to be inside the shop
+[131] when confused scroll of light summoned lights, player would be asked what to call the scroll even if scroll of light was already identified
+[132] monsters can throw cockatrice eggs at hero, but there was no handling for eggs when the missile hit an intervening monster
+[134] when poly'd into an engulfer which does digestion damage, a kill resulting in a level gain gave "welcome to level N+1" before "you digest <victim>"
+[136] eating the corpse of a unique non-named monster (Wizard of Yendor, Oracle, Chromatic Dragon, others) gave "The the <monster corpse> tastes ..."
+[138] don't show monster vs. monster attack message, if the message refers to a monster that cannot be sensed by the hero
+[145] some death by the-poison-was-deadly situations left stale non-zero HP shown on the status line during final disclosure
+[146] when sitting at a trap spot: You sit down. You step on a level teleporter. (likewise for polymorph trap, and similar issue for web)
+[150] gaining or losing strength while wearing gauntlets of power could give misleading message about already being as strong or weak as possible
+[157] eating 1 tin from stack of N (for N >= 2) on shop's floor forced hero to buy 2
+[160] using a grappling hook and getting pulled toward the target into water would drown hero without any chance to crawl out
+[162] surviving a gas spore's explosion would leave that explosion as a stale reason for death which might show up strangely ("crushed to death by a gas spore's explosion" when killed by an opening drawbridge)
+[165] starting inventory for rogues specified +9 lock pick, where +/-N is meaningless
+[169] if was possible to leash an adjacent pet while engulfed
+[171] "you suddenly vomit" was given two turns before actually vomiting, so you could get that message, move a bit, then get "you can move again" after the 2 turn freeze applied along with the actual vomit
+[172] give an alternate message if you vomit when stomach is empty (ie, fainting)
+[173] corpses and other flammable items not subject to direct burning or fire-based erosion which were thrown or dropped into lava remained intact
+[180] recovery of strength lost due to weakness from hunger was vulnerable to abuse
+[181] monsters hit by scroll of earth boulder did not get angry
+[182] hero could "pronounce the words on the scroll" when blind (if its label is known) even while being strangled at the time
+[183] hero could cast spells while poly'd into a form which can't speak (or grunt,&c) or while being strangled
+[184] when poly'd into a giant and moving onto a boulder's spot, you could get "you try to move the boulder, but in vain", "however, you can easily pick it up", "you are carrying too much stuff to pick up another boulder"
+[186] prevent #adjust from allowing anything to be moved into the special '-' slot
+[188] doors in special levels were always generated in vertical orientation
+[189] assigning a type name to a potion on the floor which is actually a mimic could prompt "Call a stream of <potion-type> fluid:" (bogus 'fromsink')
+[194] poly'd hero holding monster now takes double damage (if monster is within explosion radious) instead of inflicting that upon the monster
+[196] when trying to swap places with a pet and failing due to pet being trapped or disallowed diagonal move, the arrive-on-new-spot code (autopickup, trap triggering) executed even though hero didn't ultimately move
+[197] being "dead inside" (self-genocide while polymorphed) conferred partial invulnerability--normal monster behavior stopped attacking hero
+[198] if a fiery monster, wand of fire, or fiery explosion burned up a paper golem, it could still leave blank scrolls
+[199] hero polymorphed into form which can't wear armor via 'W' (eliciting "don't even bother") could wear it via 'P'
+[201] can no longer play controlled notes on musical instrument if impaired
+[202] if a special level specified the appearance of a mimic and mimics had been genocided prior to creating the level, whatever random monster took the mimic's place got its intended appearance
+[203] redundant "hit by gush of water" message if poly'd into iron golem or gremlin
+[206] 'Iu' would reveal unknown container contents if carrying one unpaid item inside a hero-owned container whose contents weren't known
+[208] you should not hear a whistle if you are deaf
+[214] gas spore explosion killing a gas spore which triggers a recursive explosion would have killer reason for outer call clobbered by inner one; when they were both "gas spore's explosion" it wouldn't be noticeable (see corresponding post-3.6.0 entry for more...)
+[215] moving from a pit to an adjacent pit with uncleared debris shouldn't be a fall
+[216] if a warned-of mon moved onto a spot containing a 'remembered, unseen mon' then moved off, the unseen marker was redisplayed even though the hero should now know that the remembered monster isn't there anymore

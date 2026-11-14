@@ -692,7 +692,8 @@ movemon()
 #endif /* OVL1 */
 #ifdef OVLB
 
-#define mstoning(obj)	(ofood(obj) && \
+/* generic eggs and tins have corpsenm == NON_PM; don't index mons[-1] */
+#define mstoning(obj)	(ofood(obj) && ((obj)->corpsenm >= LOW_PM) && \
 					(touch_petrifies(&mons[(obj)->corpsenm]) || \
 					(obj)->corpsenm == PM_MEDUSA))
 

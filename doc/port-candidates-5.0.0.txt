@@ -1,0 +1,178 @@
+NetHack 5.0.0 "General Fixes" worth considering for JadeHack
+
+First-pass triage from reading the prose only; not checked against this source tree.
+Index = position in the unanchored list for that file (see PORTING-5.0.md).
+
+[2] fast hero could have random clairvoyance happen more than once on same turn
+[4] weight for giant spider was too low for creature of size 'large'; weight for giant beetle was much too low for 'large'
+[8] monster wielding Stormbringer or healer's Staff against another monster would heal the hero instead of the wielding monster when draining life
+[17] poly'd hero was able to zap wands, apply tools, and #rub objects without having any hands
+[18] spellcasting monster got an extra move after casting
+[19] digging through iron bars from an adjacent pit made a pit on top of the bars
+[20] give feedback if controlled level teleport attempt fails because hero is already on the bottom level and player tries to go even deeper
+[21] unseen pet that drowned didn't give "you have a sad feeling" message
+[23] if eel bite attack caused hero to move (killed + rehumanized + crawled out of water), its grab attack could succeed even if no longer adjacent
+[24] specifying a count when picking [part of] a stack of scrolls of scare monster ignored that count and the whole stack was affected
+[29] fix priest created inside temple wall
+[30] fix vault guard occasionally encasing monsters in stone
+[36] hero polymorphed into a hider and hiding was not unhidden when teleporting
+[37] prevent swallowing monster ending up in a solid wall if it killed vault guard
+[62] squadprob[] in mkroom.c was defined with 5 elements but initialized only 4 resulting in giant ants sometimes
+[64] if riding or levitating, hero could apply bullwhip downward to pull up things from underwater or lava; feedback implied the item was on the surface
+[65] some monster code was checking whether pets or engulfers were eating green slime by checking for green slime corpse instead of glob
+[68] when digging a pit results in it being filled by adjacent pool or lava, any objects at the spot weren't subjected to water or fire damage; also, riding hero's steed wasn't subjected to immersion either
+[69] falling while going down stairs and dropping items due to encumbrance or punishment wasn't subjecting fragile ones to breakage
+[70] objects scattered by an explosion which land on water or lava weren't affected by the water or lava
+[77] zapping a line of boulders with striking or force bolt was updating 'couldsee' but deferring 'cansee', resulting in seeing the first boulder fracture and only hearing that happen for the others despite coming into view
+[78] hero poly'd into a mind flayer who used #monster to emit a psychic blast was able to harm mindless monsters with it
+[79] some hero attacks that should have gotten a skill bonus or penalty didn't
+[86] turning into slime rendered hero as slime one turn too soon
+[92] for multiple drop ('D') with menustyle traditional or combination, if the only object class player picked was '$' then it operated on all classes
+[94] when reporting that hero can't repair a chest's broken lock with key/pick/card just describe the base item without BUC, user assigned name, &c since "You can't repair a chest's lock with an uncursed key." implicitly suggests that you might be able to do so with a blessed or cursed one
+[95] tossed upwards objects got two times half physical damage reduction
+[96] hero poly'd into rust monster could implicitly eat bars when adjacent by trying to move there, now when in rock mole form too; in xorn form can explicitly eat them via 'e' after moving onto their spot
+[97] monster hiding under an egg that hatched was kept hidden
+[100] attacking non-adjacent concealed mimic by applying a polearm would make the hero be stuck to that mimic
+[101] hero could break a wand ("raising the wand high over your head, you break it in two") even if hands were welded to a two-handed weapon or to a one-handed weapon and also to a shield
+[102] if a monster threw a cockatrice egg at the hero but hit and petrified another monster, the hero would get credit/blame for killing it
+[104] 'showscore' could be used to determine how much gold was inside a container whose contents were unknown
+[105] throwing or kicking a shop container (that's light enough to move) made the hero pay for any gold inside, then didn't refund that amount if the container landed inside the shop
+[106] brown pudding monster hitting another monster with decay attack corroded armor instead of rotting it
+[116] prevent wish request "death wand" from matching Death monster and producing a random wand instead of a wand of death
+[117] grammar bit: "you hear a [AEF] note squeak in the distance" (should be "an")
+[123] hero would be blinded and stunned by an Archon's radiance (gaze attack) even if the Archon was blind, but monsters would not
+[126] "#dip <item> into -" produced a scrambled message: You mime dip <item> intoing something.
+[127] similarly, "#rub the royal jelly on -" produced You mime rub the royal jellying on something.
+[129] attempting to throw a partial stack of gold at self was prevented but left the partial stack in an extra $ inventory slot
+[130] quivering a partial stack of gold succeeded and put the partial stack in an extra $ inventory slot
+[131] if player managed to get multiple $ items, all but the last could be moved to normal letter slots via #adjust and then subsequent #adjust with a count could split them into even more slots
+[134] poly'd hero who exploded when attacking a monster didn't wake up other monsters in the vicinity; when attacking thin air, hero's explosion woke other monsters within different radius than same monster's would
+[137] homemade tin of very low nutrition corpse gave more nutrition than the corpse
+[138] magic mapping performed while engulfed or underwater would display whole map but then not switch back to the engulfed or underwater restricted view
+[140] opening/unlocking magic zapped at monster holding the hero will release hold (zap at engulfer already expels hero); zapping at self has same effect
+[143] applying an empty brass lantern in an attempt to light it reported "your lamp has run out of power"; change to "your lantern is out of power"
+[146] "It looks very angry" would be given if a hero wielding Excalibur or Demonbane offended an unseen demon lord
+[148] any blessed key was behaving as if was the rogue's Master Key when unlocking a trapped chest or box
+[156] dying from being level-drained below level 1 killed hero without saying so and jumped straight to "do you want your possessions identified?"
+[173] avoid "it" in messages "Wait!  There's an it hiding under <an object>!" (hero moving) and "It was hidden under <an object>!" (unseen monster moving)
+[181] monster wearing an alchemy smock was only getting poison resistance from it, not acid resistance; give both properties, just like for hero
+[183] crawling out of water to avoid drowning didn't work as intended when trying to move diagonally through a tight squeeze
+[186] cancelled shape changer would become uncancelled if saved and restored (even just leaving its level and then returning)
+[193] special damage attacks by the Riders and by fatal-illness inflictors such as Demogorgon did no damage against other monsters, only against the hero
+[194] using obj->o_id to control 'random' behavior of a helm of opposite alignment could potentially be controlled by player when wishing for such
+[195] obj->o_id might be set to invalid value 0 when a partly used up stack had a dummy copy added to a shop's bill or when a bones file was loaded (in theory that could happen on any system but in practice it could only happen on a configuration that uses 16-bit ints)
+[199] melting ice timer could persist after the ice was gone from digging or from an exploding land mine
+[202] when creating random contents for a container, explicitly exclude artifacts (already implicitly excluded because randomly generated artifacts are all weapons and containers don't start with any weapons in them)
+[206] prevent normal monster activity from picking up the mines' luckstone or the Sokoban amulet/bag before hero has done so; relying on scare monster and/or engraved Elbereth wasn't sufficient to guard the Sokoban prize
+[208] stacks of 1 to 49 gold pieces weighed 0
+[211] if hero is wearing an amulet of magical breathing and polymorphs into a fish or sea monster, don't lose health for turns spent out of water
+[212] fix up some "the" handling for monsters whose type name is upper case to avoid "Uruk-hai is healthy for a statue", "You can't polymorph into Oracle"
+[213] controlled polymorph would turn hero into new man or woman if player asked to become a unique monster of the same race (so usually human) instead of being told that polymorphing into the specified form wasn't allowed
+[214] when filling a special room with monsters, if one that can come in groups got picked the group could spill to outside of the room
+[215] extend 3.6.1 fix to explicitly use name of unseen shopkeeper instead of "It" in various shop related messages (ones issued outside of shk.c)
+[216] fix some inconsistencies with applied bullwhip vs monster
+[217] polymorphing while wearing an amulet of strangulation from a form that wasn't vulnerable to one that was gave wrong message ("still constricts")
+[219] if a gremlin stole intrinsic 'see invisible' the map wasn't updated properly
+[223] if a giant carrying a boulder was on ice that melted, it could be killed twice, first by drowning, then by boulder filling the resulting pool when it dropped inventory before being removed from the map
+[229] when two or more shops share a wall and hero uses Passes_walls to carry an unpaid item through the shared wall into another shop, theft of that unpaid item from the first shop wasn't noticed
+[232] "WHAMMM!!!" feedback when kicking a door suggests noise so if hero is deaf an alternate message should be given
+[234] for hero with slippery fingers, enlightenment reports "slippery fingers" or "slippery gloves" but self-probing described it as "slippery hands"
+[236] when already at level 30 and gaining another level--which doesn't increase level further but does add more HP and Pw--throttle the increases
+[275] clear obj->bypass for buried objects [a giant on ice triggers a fire trap, inventory is subjected to burning and surviving objects have their bypass bit set, giant is killed by fire trap and drops a boulder and other inventory, ice is melted, boulder plugs resulting pool burying rest of giant's dropped inventory, subsequent sanity checks report that there are buried objects which are 'flagged bypass']
+[278] life-saving might increase max HP; if level drain triggers that, don't let max HP go up because it confuses healing for monster wielding Stormbringer
+[279] HP recovery and/or max HP boost from eating royal jelly didn't perform a status update to show the change
+[280] if poly'd hero is hiding under food and eats or #offers that food, stop hiding
+[283] kicking a trapped chest and getting the exploding chest result destroyed items at the hero's location rather than the chest's location; because of that it left the exploded chest intact
+[284] it was possible to destroy a Rider corpse with an exploding chest
+[285] when teleporting, don't consider pits/spiked pits/trap doors/holes as unsafe destination locations if hero is levitating or flying
+[287] exclude unique monsters from pacification when untrapped from web
+[290] if drinking from a fountain randomly gave the 'detect monsters' effect but there were no monsters on the level then there was no feedback
+[291] object detection always showed a mimic imitating a statue as a tengu even if it had information available about some other type of monster
+[292] don't try to catch up for lost time for shop damage repair in restdamage() called from getlev(); let normal shopkeeper movement take care of it
+[293] shop wall repair that was delayed because the hero or a monster was an obstacle in the gap at repair time might not be displayed as wall once the obstacle moved and the repair eventually took place
+[295] calling real or fake Amulet something could give away information about them
+[296] throwing gold while inside a purple worm would yield "The gold disappears in the the purple worm's entrails." (note doubled "the")
+[297] inventory #adjust for !fixinv, after picking 'from' slot the prompt for 'to' slot was supposed to include the next letter beyond those in use as a candidate for destination but an off by 1 error only showed a-x where x is last letter used (despite that, y could still be picked)
+[298] with two-weapon combat or Cleaver attacking multiple targets, hero kept going with next attack after being paralyzed by passive counter-attack
+[299] trap detection could falsely find trapped secret doors; those can't be trapped due to details of how they use overlaid fields in the rm structure
+[300] for force-fight against edge of level, report "you harmlessly attack unknown obstacle" rather than "you have moved as far <direction> as possible"
+[302] fix a pair of off-by-one bugs when doling out initial characteristics points, resulting in an unintentional bias toward Str and away from Cha; negligible effect on individual games but had a minor cumulative effect across a large set of games
+[303] using a marker to write "novel" or "paperback book" on a known blank spellbook was producing a randomly chosen Pratchett novel; make it fail instead
+[304] when a monster killed a pudding and it left a glob, that glob might not be displayed on the map (wasn't an issue for killed-by-hero case)
+[307] early post-3.4.3 tried to fix the "naming artifacts trick" which could be used to distinguish the type of some undiscovered items, but using a name that only matched an artifact after capitalization was exploitable
+[309] dropping things with 'D' wouldn't merge them with compatible items already at that floor spot because use of obj->bypass made them seem incompatible
+[310] a hero on the quest home level who runs or travels past the quest leader and gets tossed out of the quest for some reason would keep running on the far side of the quest portal
+[312] putting on water walking boots while underwater (maybe via magical breathing) and rising to surface wasn't causing the boots to become discovered
+[313] flying pets wouldn't target underwater food but if they happened to fly over such food they could and would eat it
+[319] out of array bounds access attempt occurred when deciding whether to bounce if wand or spell zap reached edge of map
+[320] if blind hero was challenged by a vault guard, it wasn't possible to see how to start following that guard out of the vault
+[334] when invisible without see invisible you could see your hands glowing red after reading a scroll of confuse monster and delivering melee hits
+[335] if an item-using monster zaps a wand of digging downward on a level that doesn't allow holes but does allow pits, create a pit and trigger it
+[344] blind hero was notified when brass lantern burned out even though it isn't warm enough to detect that by touch; manually switching the lantern on or off can be determined that way so still gives on/off message
+[346] attempting to move up or down when poly'd into a holder and holding a monster rejected the move; release the monster instead
+[347] throwing a non-weapon while engulfed by an ochre jelly reported that the item vanished into the jelly's "currents"
+[348] if a pet gelatinous cube eats a container, treat it the same as when a hostile one does:  the container is destroyed but its contents are engulfed
+[349] when breaking a wand of sleep hits the hero with the explosion, don't describe that as "the sleep ray hits you"
+[355] lit candles generated by wishing could have wrong light radius
+[357] cannot kick while squeezed on top of a boulder
+[358] room stocking would put multiple items on the same spot
+[359] more consistent feedback if a reviving corpse becomes an unseen monster
+[360] if a bones file contained a doppelganger imitating a unique monster, a game that loaded those bones would end up with that monster counted as having already been created so it wouldn't be created when the time for that arrived (the doppelganger would change its shape normally, not be stuck in the unique monster's form)
+[361] if Vlad was lured to a level which allowed bones, he could be present in a bones file for that level if he was in wolf/bat/cloud form at the time hero died; getting those bones in another game would flag him as extinct; if that occurred before entering his level he would not be created there, leaving no way for hero to acquire the Candelabrum
+[363] removing an engraving from frost (ie, written with fingers on ice) reported "you wipe out the message that was written in the _dust_"
+[367] explicitly throwing 1 for non-gold stack of more than 1 and then canceling at direction prompt left a pair of stacks of 1 and N-1 with same invlet
+[368] some attack damage which shouldn't affect shades operated as intended when hero could see it happen but erroneously affected them when not seen
+[369] some instances of using up or stealing shop-owned boulder didn't charge for it
+[371] don't allow monsters to disarm hero with bullwhip if hero is engulfed
+[372] teleporting an object out of a shop put it on the shop bill instead of dealing with robbery
+[375] if punished and iron ball was cursed and wielded--so welded to hand--falling when doors would drop it instead of keeping it welded
+[376] if player's run-time config file had OPTIONS=role:Val and the environment had NETHACKOPTIONS='role:!Val' the hero would be a Val instead of !Val
+[377] sleeping or unconscious hero attacked by Medusa would meet her gaze
+[378] prevent paralyzed hero from helping nymph or succubus remove worn armor
+[379] when identifying items via menu and more than one pass is needed (so when identifying 3 items and player only picks 1, for instance), issue --More-- because the next menu might cover up the ID message(s)
+[382] fix freeing a worn object when forced to drop it by falling down stairs
+[387] fix bug making random subrooms never touching the right or bottom wall of the parent room
+[388] if a grave is created with the corpse lying on top (bones), don't find a corpse or release a zombie or mummy when digging it up
+[395] fix a case where punished iron ball yanked hero on top of a monster
+[404] falling into lava, being life-saved, and teleporting out could yield redundant descriptions of what was present at hero's new location
+[405] if hero had passes-walls capability and was at the location of a closed door, attempting to use 'o' on own spot reported "you don't find anything here to loot"; change to open door for '.' (or '<'), only loot for '>'
+[406] items thrown by monster landing on an altar did not show BUC flash
+[407] if hero is engulfed and polymorphs into a monster form which is too big to be engulfed, make engulfer expel the poly'd hero
+[408] give feedback if monster holding onto the hero has to let go when hero polys into a form which can't be held
+[412] if hero owes shop for a boulder and shopkeeper breaks it, continue to bill hero for the boulder rather than switching to the resulting rocks
+[416] it was possible to produce a web at a water or lava location; it would not be visible but could trap the hero, resulting in drowning or incineration
+[417] engraving in an open doorway was allowed, engraving in closed one (presumably via Passes_walls) was not, but closing the door on an engraving was; change to allow engraving at closed door location
+[418] engraving in a breach in a shop's or vault's wall or vault guard's temporary corridor would leave the engraving intact after repair/cleanup
+[420] don't exclude map column 1 from consideration when rloc() picks a random spot for destination of a teleported monster
+[428] weight of statues of wraiths and of monsters which never leave a corpse was 0
+[435] casting stone-to-flesh at self turned wielded or quivered rocks into unwielded, unquivered meatballs, merging stacks if there were some in each slot
+[436] stop occupation when timed levitation or choking issues a message
+[455] fix sanity error when cloud was created over an engraving
+[465] if a monster fled from hero by intentionally jumping into a vault teleporter, it would teleport randomly instead of into the vault, and if the teleport trap's niche wasn't mapped yet, the trap would become mapped but the spot would remain a secret corridor and not become accessible
+[475] wishing for a "lit candle" provided one, but the feedback as it was added into invent was "partly used candle (lit)" because of how 'lit' timer works
+[479] if polymorphing a potion turned it into oil, dipping potions produced oil randomly, or a horn of plenty produced a magic potion and converted it into oil, the resulting potion of oil had its age (amount left) set of the original potion's age (turn it was created) and could burn for an arbitrarily long time if applied; conversely, polymorphing oil into non-oil kept its relative age (no noticeable effect though)
+[480] an engulfer capable of passing through iron bars could do so even when hero was engulfed
+[481] if a covetous monster tried to teleport next to the hero but the level was completely full, it would be booted off the level (set to migrate back if the hero left and returned) instead of just staying put
+[486] monsters weren't randomly generating if exactly one square was outside LOS, and it contained a monster
+[487] when a spellbook was polymorphed into a novel and then incrementing spestudied field turned it into a blank spellbook, the novel's title would stick: "{spellbook of blank paper|plain spellbook} named <Discworld title>"
+[489] if an adjacent statue was a in a pit, you could break it with a pick-axe even though you're conceptually at the wrong elevation to reach it
+[490] using '#adjust c c' to collect all invent items compatible with the one in slot c prefixed the inventory update message with "Merging:" rather than "Collecting:" if there was at least one compatible stack; when there weren't any compatible stacks and it was effectively a no-op, the prefix used was "Collecting", lacking its intended colon
+[491] using '#adjust c d' or '#adjust d c' after splitting slot c via '#adjust Nc d' for N less than c's stack size swapped c and d instead of re-merging them even though merging was the intended behavior (the 3.6 change that caused this was intended to avoid collecting other compatible stacks while still merging the two specified ones)
+[493] if hero shattered an unseen monster's weapon, the [also unseen] weapon was described in the feedback
+[504] hero or monster didn't fall into pit if water at the location was boiled away
+[505] using #loot -> 'i'n to put multiple items into a shop-owned container would ask whether to sell each item to the shop, and was prepared to accept 'a' to sell the current one plus all the rest beyond it, or to accept 'q' to not sell the current one or any beyond it, but the sell vs don't-sell state was being reset for each item so 'a' and 'q' didn't stick beyond the current one
+[506] if a nymph stole worn armor and got killed (perhaps by pet) before hero's next turn, feedback would be "You finish taking off your suit." regardless of the type of armor being taken off
+[509] when poly'd into a giant, kicking a closed door always succeeds in breaking it
+[510] a pet with the hides-under attribute could "move reluctantly over" a cursed object and then hide under it
+[512] if eating a tin's contents caused the hero to choke to death or turn to stone, resulting bones would contain the tin still intact
+[513] digging in ice was handled inconsistently, particularly if done at the span spot in front of closed drawbridge
+[519] failed #untrap could move hero diagonally into or out of an open doorway
+[521] angry shopkeeper was not charging for thrown items
+[524] if a tree and a boulder or statue were at the same location, applying an axe would break the boulder or statue rather than chop the tree
+[533] a vampire lord could choose to take on wolf form while flying over water or lava, then revert to vampire lord form and teleport unnecessarily
+[534] a gas spore that was killed when an engulfer swallowed it produced an explosion on the map rather than inside the engulfer
+[536] fix bug which delayed burden changes due to monster actions (e.g. reverting to natural form due to damage, changing carry capacity) for one turn
+[538] an item at an ordinary tree location, whether the level is arboreal or not, would be described as itself with no mention of the tree
+[541] 'whatis' actions // and /? didn't work when the lootabc option was on, they required /a and /c instead; add '/' and '?' as group accelerators so that they work; /y and /n for them now only work when lootabc is off
+[551] fix bug which caused engulf damage from air elementals and fog clouds to ignore damage reduction from armor class
+[566] monster priests and wizards did not cast spells
