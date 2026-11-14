@@ -9,6 +9,9 @@
 #include "lev_comp.h"
 #include "sp_lev.h"
 
+/* C99 forbids the implicit declaration used at the yyparse() call below */
+int NDECL(yyparse);
+
 /* Most of these don't exist in flex, yywrap is macro and
  * yyunput is properly declared in flex.skel.
  */
