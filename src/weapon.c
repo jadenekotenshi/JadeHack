@@ -20,7 +20,7 @@ STATIC_DCL int FDECL(enhance_skill, (boolean));
 #define PN_TWO_WEAPONS			(-2)
 #define PN_RIDING			(-3)
 #define PN_POLEARMS			(-4)
-#define PN_SABER			(-5)
+#define PN_CURVED_SWORD			(-5)
 #define PN_HAMMER			(-6)
 #define PN_WHIP				(-7)
 #define PN_ATTACK_SPELL			(-8)
@@ -44,7 +44,7 @@ STATIC_DCL NEARDATA const char *barehands_or_martial[];
 STATIC_VAR NEARDATA const short skill_names_indices[P_NUM_SKILLS] = {
 	0,                DAGGER,         KNIFE,        AXE,
 	PICK_AXE,         SHORT_SWORD,    BROADSWORD,   LONG_SWORD,
-	TWO_HANDED_SWORD, SCIMITAR,       PN_SABER,     CLUB,
+	TWO_HANDED_SWORD, PN_CURVED_SWORD,  CLUB,
 	MACE,             MORNING_STAR,   FLAIL,
 	PN_HAMMER,        QUARTERSTAFF,   PN_POLEARMS,  SPEAR,
 	JAVELIN,          TRIDENT,        LANCE,        BOW,
@@ -67,7 +67,7 @@ STATIC_VAR NEARDATA const char * const odd_skill_names[] = {
     "two weapon combat",
     "riding",
     "polearms",
-    "saber",
+    "curved sword",
     "hammer",
     "whip",
     "attack spells",
@@ -1090,7 +1090,7 @@ int skill;
 	 * monks and wizards really shouldn't be _using_ weapons, so don't give them _any_. */
 
 	if (Role_if(PM_MONK) || Role_if(PM_WIZARD)) { return; }
-	if ((Role_if(PM_CAVEMAN) || Role_if(PM_PRIEST)) && skill >= P_DAGGER && skill <= P_SABER) { return; }
+	if ((Role_if(PM_CAVEMAN) || Role_if(PM_PRIEST)) && skill >= P_DAGGER && skill <= P_CURVED_SWORD) { return; }
 
     if (skill < P_NUM_SKILLS && P_RESTRICTED(skill)) {
 		P_SKILL(skill) = P_UNSKILLED;

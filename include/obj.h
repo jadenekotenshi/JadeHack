@@ -136,7 +136,7 @@ struct obj {
  */
 #define is_blade(otmp)	(otmp->oclass == WEAPON_CLASS && \
 			 objects[otmp->otyp].oc_skill >= P_DAGGER && \
-			 objects[otmp->otyp].oc_skill <= P_SABER)
+			 objects[otmp->otyp].oc_skill <= P_CURVED_SWORD)
 #define is_axe(otmp)	((otmp->oclass == WEAPON_CLASS || \
 			 otmp->oclass == TOOL_CLASS) && \
 			 objects[otmp->otyp].oc_skill == P_AXE)
@@ -145,7 +145,7 @@ struct obj {
 			 objects[otmp->otyp].oc_skill == P_PICK_AXE)
 #define is_sword(otmp)	(otmp->oclass == WEAPON_CLASS && \
 			 objects[otmp->otyp].oc_skill >= P_SHORT_SWORD && \
-			 objects[otmp->otyp].oc_skill <= P_SABER)
+			 objects[otmp->otyp].oc_skill <= P_CURVED_SWORD)
 #define is_pole(otmp)	((otmp->oclass == WEAPON_CLASS || \
 			otmp->oclass == TOOL_CLASS) && \
 			 (objects[otmp->otyp].oc_skill == P_POLEARMS))
