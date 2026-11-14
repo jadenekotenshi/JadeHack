@@ -28,8 +28,8 @@ SYSTEM = Sysunix
 # This needs to change when save compat is broken and install-to-chroot
 # script needs to match.
 #
-DIR = /sporkhack-0.7.0
-#DIR = /usr/games/lib/sporkhackdir
+DIR = /jadehack-0.7.0
+#DIR = /usr/games/lib/jadehackdir
 VAR = $(DIR)/var
 
 #
@@ -246,7 +246,7 @@ WINOBJ = $(WINTTYOBJ) $(WINCURSESOBJ)
 # WINTTYLIB = -ltermcap
 # WINTTYLIB = -lcurses
 # WINTTYLIB = -lcurses16
-WINTTYLIB = -lncurses -ltinfo
+WINTTYLIB = -lncurses $(shell [ "`uname`" = Darwin ] || echo -ltinfo)
 # WINTTYLIB = -ltermlib
 #
 # libraries for X11
@@ -301,7 +301,7 @@ WINLIB = $(WINTTYLIB)
 LIBS =
 
 # make NetHack
-GAME     = sporkhack
+GAME     = jadehack
 # GAME     = nethack.prg
 
 # if you defined RANDOM in unixconf.h/tosconf.h since your system did not come

@@ -15,7 +15,7 @@
 #define NETHACK_CURSES      1
 #define SLASHEM_CURSES      2
 #define UNNETHACK_CURSES    3
-#define SPORKHACK_CURSES    4
+#define JADEHACK_CURSES    4
 #define GRUNTHACK_CURSES    5
 #define DNETHACK_CURSES     6
 
@@ -98,22 +98,18 @@ nhrgb orig_hiwhite;
 #define UNNETHACK_SPLASH_F \
 " \\____/ |_| |_||_| \\_| \\___| \\__||_|  |_| \\__,_| \\___||_|\\_\\"
 
-#define SPORKHACK_SPLASH_A \
-"  _____                      _     _    _               _    "
-#define SPORKHACK_SPLASH_B \
-" / ____|                    | |   | |  | |             | |   "
-#define SPORKHACK_SPLASH_C \
-"| (___   _ __    ___   _ __ | | __| |__| |  __ _   ___ | | __"
-#define SPORKHACK_SPLASH_D \
-" \\___ \\ | '_ \\  / _ \\ | '__|| |/ /|  __  | / _` | / __|| |/ /"
-#define SPORKHACK_SPLASH_E \
-" ____) || |_) || (_) || |   |   < | |  | || (_| || (__ |   < "
-#define SPORKHACK_SPLASH_F \
-"|_____/ | .__/  \\___/ |_|   |_|\\_\\|_|  |_| \\__,_| \\___||_|\\_\\"
-#define SPORKHACK_SPLASH_G \
-"        | |                                                  "
-#define SPORKHACK_SPLASH_H \
-"        |_|                                                 "
+#define JADEHACK_SPLASH_A \
+"      _             _        _    _               _    "
+#define JADEHACK_SPLASH_B \
+"     | |           | |      | |  | |             | |   "
+#define JADEHACK_SPLASH_C \
+"     | |  __ _   __| |  ___ | |__| |  __ _   ___ | | __"
+#define JADEHACK_SPLASH_D \
+" _   | | / _` | / _` | / _ \\|  __  | / _` | / __|| |/ /"
+#define JADEHACK_SPLASH_E \
+"| |__| || (_| || (_| ||  __/| |  | || (_| || (__ |   < "
+#define JADEHACK_SPLASH_F \
+" \\____/  \\__,_| \\__,_| \\___||_|  |_| \\__,_| \\___||_|\\_\\"
 
 #define GRUNTHACK_SPLASH_A \
 " ______                      _    _    _               _    "
@@ -552,8 +548,8 @@ curses_display_splash_window()
     }
 #endif
 
-    if (strncmp("SporkHack", COPYRIGHT_BANNER_A, 9) == 0) {
-        which_variant = SPORKHACK_CURSES;
+    if (strncmp("JadeHack", COPYRIGHT_BANNER_A, 8) == 0) {
+        which_variant = JADEHACK_CURSES;
     }
 
     if (strncmp("GruntHack", COPYRIGHT_BANNER_A, 9) == 0) {
@@ -595,16 +591,14 @@ curses_display_splash_window()
             mvaddstr(y_start + 5, x_start, UNNETHACK_SPLASH_F);
             y_start += 7;
             break;
-        case SPORKHACK_CURSES:
-            mvaddstr(y_start, x_start, SPORKHACK_SPLASH_A);
-            mvaddstr(y_start + 1, x_start, SPORKHACK_SPLASH_B);
-            mvaddstr(y_start + 2, x_start, SPORKHACK_SPLASH_C);
-            mvaddstr(y_start + 3, x_start, SPORKHACK_SPLASH_D);
-            mvaddstr(y_start + 4, x_start, SPORKHACK_SPLASH_E);
-            mvaddstr(y_start + 5, x_start, SPORKHACK_SPLASH_F);
-            mvaddstr(y_start + 6, x_start, SPORKHACK_SPLASH_G);
-            mvaddstr(y_start + 7, x_start, SPORKHACK_SPLASH_H);
-            y_start += 9;
+        case JADEHACK_CURSES:
+            mvaddstr(y_start, x_start, JADEHACK_SPLASH_A);
+            mvaddstr(y_start + 1, x_start, JADEHACK_SPLASH_B);
+            mvaddstr(y_start + 2, x_start, JADEHACK_SPLASH_C);
+            mvaddstr(y_start + 3, x_start, JADEHACK_SPLASH_D);
+            mvaddstr(y_start + 4, x_start, JADEHACK_SPLASH_E);
+            mvaddstr(y_start + 5, x_start, JADEHACK_SPLASH_F);
+            y_start += 7;
             break;
         case GRUNTHACK_CURSES:
             mvaddstr(y_start, x_start, GRUNTHACK_SPLASH_A);

@@ -536,11 +536,11 @@ const char *build_date;
 #endif
 
     if (getenv("VCS_DESCRIPTION"))
-        Sprintf(outbuf, "%s SporkHack%s Version %s (%s) - last build %s.",
+        Sprintf(outbuf, "%s JadeHack%s Version %s (%s) - last build %s.",
 	        PORT_ID, subbuf, version_string(versbuf),
                 getenv("VCS_DESCRIPTION"), build_date);
     else
-        Sprintf(outbuf, "%s SporkHack%s Version %s - last build %s.",
+        Sprintf(outbuf, "%s JadeHack%s Version %s - last build %s.",
                 PORT_ID, subbuf, version_string(versbuf), build_date);
 
     return outbuf;

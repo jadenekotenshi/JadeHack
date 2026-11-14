@@ -95,11 +95,10 @@ char *argv[];
 	 * See if we must change directory to the playground.
 	 * (Perhaps hack runs suid and playground is inaccessible
 	 *  for the player.)
-	 * The environment variable HACKDIR is overridden by a
+	 * The environment variable JADEHACKDIR is overridden by a
 	 *  -d command line option (must be the first option given)
 	 */
-	dir = nh_getenv("NETHACKDIR");
-	if (!dir) dir = nh_getenv("HACKDIR");
+	dir = nh_getenv("JADEHACKDIR");
 #endif
 	if(argc > 1) {
 #ifdef CHDIR

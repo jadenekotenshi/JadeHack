@@ -2315,6 +2315,10 @@ struct obj *obj;
     if (Stunned || (Confusion && !rn2(5))) confdir();
     rx = u.ux + u.dx;
     ry = u.uy + u.dy;
+    if (!isok(rx, ry)) {	/* at map edge (NetHack 3.6.0 fix) */
+	You("miss.");
+	return res;
+    }
     mtmp = m_at(rx, ry);
 
     /* fake some proficiency checks */
@@ -2678,6 +2682,7 @@ struct obj *obj;
 		verbalize("You used it, you bought it!");
 		bill_dummy_object(obj);
 	}
+	setnotworn(obj);	/* may be wielded/quivered (NetHack 3.6.0 fix) */
 	obj_extract_self(obj);
 	delobj(obj);
 	return(0);

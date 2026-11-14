@@ -1613,15 +1613,15 @@ const char *filename;
 
 const char* configfile =
 #ifdef UNIX
-			".sporkrc";
+			".jadehackrc";
 #else
 # if defined(MAC) || defined(__BEOS__)
-			"SporkHack Defaults";
+			"JadeHack Defaults";
 # else
 #  if defined(MSDOS) || defined(WIN32)
 			"defaults.sh";
 #  else
-			"SporkHack.cnf";
+			"JadeHack.cnf";
 #  endif
 # endif
 #endif

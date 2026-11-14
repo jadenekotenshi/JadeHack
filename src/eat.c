@@ -1808,7 +1808,8 @@ register struct obj *otmp;
 		if(!otmp->cursed) heal_legs();
 		break;
 	    case EGG:
-		if (touch_petrifies(&mons[otmp->corpsenm])) {
+		/* generic eggs have corpsenm == NON_PM; don't index mons[-1] */
+		if (otmp->corpsenm >= LOW_PM && touch_petrifies(&mons[otmp->corpsenm])) {
 		    if (!Stone_resistance &&
 			!(poly_when_stoned(youmonst.data) && polymon(PM_STONE_GOLEM))) {
 			if (!Stoned) Stoned = 5;

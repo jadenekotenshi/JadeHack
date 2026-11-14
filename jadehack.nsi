@@ -1,4 +1,4 @@
-; Sporkhack installer for Windows binaries
+; JadeHack installer for Windows binaries
 ;
 ; This script is based on example1.nsi, but it remember the directory, 
 ; has uninstall support and (optionally) installs start menu shortcuts.
@@ -8,17 +8,17 @@
 ;--------------------------------
 
 ; The name of the installer
-Name "SporkHack"
+Name "JadeHack"
 
 ; The file to write
-OutFile "sporkhack_setup.exe"
+OutFile "jadehack_setup.exe"
 
 ; The default installation directory
-InstallDir $PROGRAMFILES\SporkHack
+InstallDir $PROGRAMFILES\JadeHack
 
 ; Registry key to check for directory (so if you install again, it will 
 ; overwrite the old one automatically)
-InstallDirRegKey HKLM "Software\SporkHack" "Install_Dir"
+InstallDirRegKey HKLM "Software\JadeHack" "Install_Dir"
 
 ;--------------------------------
 
@@ -33,7 +33,7 @@ UninstPage instfiles
 ;--------------------------------
 
 ; The stuff to install
-Section "SporkHack game files (required)"
+Section "JadeHack game files (required)"
 
   SectionIn RO
   
@@ -47,13 +47,13 @@ Section "SporkHack game files (required)"
   CreateDirectory "$INSTDIR\dumps"
   
   ; Write the installation path into the registry
-  WriteRegStr HKLM SOFTWARE\SporkHack "Install_Dir" "$INSTDIR"
+  WriteRegStr HKLM SOFTWARE\JadeHack "Install_Dir" "$INSTDIR"
   
   ; Write the uninstall keys for Windows
-  WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\SporkHack" "DisplayName" "SporkHack"
-  WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\SporkHack" "UninstallString" '"$INSTDIR\uninstall.exe"'
-  WriteRegDWORD HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\SporkHack" "NoModify" 1
-  WriteRegDWORD HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\SporkHack" "NoRepair" 1
+  WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\JadeHack" "DisplayName" "JadeHack"
+  WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\JadeHack" "UninstallString" '"$INSTDIR\uninstall.exe"'
+  WriteRegDWORD HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\JadeHack" "NoModify" 1
+  WriteRegDWORD HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\JadeHack" "NoRepair" 1
   WriteUninstaller "uninstall.exe"
   
 SectionEnd
@@ -61,9 +61,9 @@ SectionEnd
 ; Optional section (can be disabled by the user)
 Section "Start Menu Shortcuts"
 
-  CreateDirectory "$SMPROGRAMS\SporkHack"
-  CreateShortCut "$SMPROGRAMS\SporkHack\Uninstall.lnk" "$INSTDIR\uninstall.exe" "" "$INSTDIR\uninstall.exe" 0
-  CreateShortCut "$SMPROGRAMS\SporkHack\SporkHack.lnk" "$INSTDIR\Nethack.exe" "" "$INSTDIR\Nethack.exe" 0
+  CreateDirectory "$SMPROGRAMS\JadeHack"
+  CreateShortCut "$SMPROGRAMS\JadeHack\Uninstall.lnk" "$INSTDIR\uninstall.exe" "" "$INSTDIR\uninstall.exe" 0
+  CreateShortCut "$SMPROGRAMS\JadeHack\JadeHack.lnk" "$INSTDIR\Nethack.exe" "" "$INSTDIR\Nethack.exe" 0
   
 SectionEnd
 
@@ -73,8 +73,8 @@ SectionEnd
 Section "Uninstall"
   
   ; Remove registry keys
-  DeleteRegKey HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\SporkHack"
-  DeleteRegKey HKLM SOFTWARE\SporkHack
+  DeleteRegKey HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\JadeHack"
+  DeleteRegKey HKLM SOFTWARE\JadeHack
 
   ; Remove files and uninstaller
   Delete $INSTDIR\*.*
@@ -82,10 +82,10 @@ Section "Uninstall"
   RMDir "$INSTDIR\dumps"
 
   ; Remove shortcuts, if any
-  Delete "$SMPROGRAMS\SporkHack\*.*"
+  Delete "$SMPROGRAMS\JadeHack\*.*"
 
   ; Remove directories used
-  RMDir "$SMPROGRAMS\SporkHack"
+  RMDir "$SMPROGRAMS\JadeHack"
   RMDir "$INSTDIR"
 
 SectionEnd

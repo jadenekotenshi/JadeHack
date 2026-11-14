@@ -845,7 +845,12 @@ pleased(g_align)
 	    /* if hero was in trouble, but got better, no special favor */
 	    if (p_trouble == 0) pat_on_head = 1;
 	} else {
-	    int action = rn1(Luck + (on_altar() ? 3 + on_shrine() : 2), 1);
+	    int action, prayer_luck;
+
+	    /* Luck can drop during the prayer occupation; keep Luck+2 > 0
+	       so rn1() below can't divide by zero (NetHack 3.6.0 fix) */
+	    prayer_luck = max(Luck, -1);
+	    action = rn1(prayer_luck + (on_altar() ? 3 + on_shrine() : 2), 1);
 
 	    if (!on_altar()) action = min(action, 3);
 	    if (u.ualign.record < STRIDENT)

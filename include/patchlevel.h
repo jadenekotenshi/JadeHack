@@ -2,7 +2,7 @@
 /* Copyright (c) Stichting Mathematisch Centrum, Amsterdam, 1985. */
 /* NetHack may be freely redistributed.  See license for details. */
 
-/* SporkHack 0.7.0 */
+/* JadeHack 0.7.0 (derived from SporkHack 0.7.0) */
 #define VERSION_MAJOR	0
 #define VERSION_MINOR	7
 /*
@@ -16,7 +16,7 @@
 #define EDITLEVEL	0
 
 #define COPYRIGHT_BANNER_A \
-"SporkHack, copyright 2007 Derek S. Ray; a variant of NetHack 3.4.3, "
+"JadeHack, a variant of SporkHack (copyright 2007 Derek S. Ray) and NetHack 3.4.3, "
 
 #define COPYRIGHT_BANNER_B \
 "  copyright 1985-2003 by Stichting Mathematisch Centrum and M. Stephenson."

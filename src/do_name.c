@@ -505,10 +505,10 @@ register struct obj *obj;
 	otemp.oxlth = 0;
 	if (objects[otemp.otyp].oc_class == POTION_CLASS && otemp.fromsink)
 	    /* kludge, meaning it's sink water */
-	    Sprintf(qbuf,"Call a stream of %s fluid:",
+	    Snprintf(qbuf, sizeof qbuf, "Call a stream of %s fluid:",
 		    OBJ_DESCR(objects[otemp.otyp]));
 	else
-	    Sprintf(qbuf, "Call %s:", an(xname(&otemp)));
+	    Snprintf(qbuf, sizeof qbuf, "Call %s:", an(xname(&otemp)));
 	getlin(qbuf, buf);
 	if(!*buf || *buf == '\033')
 		return;

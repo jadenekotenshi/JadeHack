@@ -1,6 +1,6 @@
 Makefile
 
-src/sporkhack
+src/jadehack
 src/paniclog
 src/Makefile
 util/recover

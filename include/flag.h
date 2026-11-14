@@ -302,7 +302,7 @@ struct instance_flags {
 	boolean  travelcmd;	/* allow travel command */
 	boolean  show_dgn_name; /* show dungeon names instead of Dlvl: on bottom line
 										 probably only good for people taking advantage of
-										 the wide terminals allowed in Spork */
+										 the wide terminals allowed in JadeHack */
     int boom_flight_path; /* boomerang flight path */
 
 	int	 runmode;	/* update screen display during run moves */

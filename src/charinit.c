@@ -95,7 +95,7 @@ player_selection_menu(win,toggle_color)
     /* Fixed parts of the window */
     clear_nhwindow(win);
 
-    Sprintf(obuf, "%s %s, welcome to SporkHack!", Hello((struct monst *)0), plname);
+    Sprintf(obuf, "%s %s, welcome to JadeHack!", Hello((struct monst *)0), plname);
     curs(win, 1, 0);
     putstr(win, 0, obuf);
 

@@ -1,9 +1,10 @@
 #!/bin/sh
 #	SCCS Id: @(#)nethack.sh	3.4	1990/02/26
 
-HACKDIR=/usr/games/lib/nethackdir
-export HACKDIR
-HACK=$HACKDIR/nethack
+JADEHACKDIR=/usr/games/lib/jadehackdir
+export JADEHACKDIR
+HACKDIR=$JADEHACKDIR
+HACK=$HACKDIR/jadehack
 MAXNROFPLAYERS=4
 
 # Since Nethack.ad is installed in HACKDIR, add it to XUSERFILESEARCHPATH

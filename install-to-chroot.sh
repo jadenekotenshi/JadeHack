@@ -10,14 +10,14 @@
 DATESTAMP=`date +%Y%m%d-%H%M%S`
 NAO_CHROOT="/opt/nethack/chroot"
 # already compiled versions of dgl and nethack
-SPORKHACK_GIT="/home/build/SporkHack"
+JADEHACK_GIT="/home/build/JadeHack"
 # the user & group from dgamelaunch config file.
 USRGRP="games:games"
 # fixed data to copy (leave blank to skip)
-SP_GIT="/home/build/SporkHack"
+SP_GIT="/home/build/JadeHack"
 # HACKDIR from include/config.h; aka nethack subdir inside chroot
 # Make a new one each time save compat is broken
-SPSUBDIR="sporkhack-0.7.0"
+SPSUBDIR="jadehack-0.7.0"
 #for combining xlogfile, etc on minor version bump
 # END OF CONFIG
 ##############################################################################
@@ -51,26 +51,26 @@ chown "$USRGRP" "$NAO_CHROOT/dgldir/extrainfo-sp"
 echo "Making $NAO_CHROOT/$SPSUBDIR"
 mkdir -p "$NAO_CHROOT/$SPSUBDIR"
 
-SPORKHACKBIN="$SPORKHACK_GIT/src/sporkhack"
-if [ -n "$SPORKHACKBIN" -a ! -e "$SPORKHACKBIN" ]; then
-  errorexit "Cannot find SporkHack binary $SPORKHACKBIN"
+JADEHACKBIN="$JADEHACK_GIT/src/jadehack"
+if [ -n "$JADEHACKBIN" -a ! -e "$JADEHACKBIN" ]; then
+  errorexit "Cannot find JadeHack binary $JADEHACKBIN"
 fi
 
-if [ -n "$SPORKHACKBIN" -a -e "$SPORKHACKBIN" ]; then
-  echo "Copying $SPORKHACKBIN"
+if [ -n "$JADEHACKBIN" -a -e "$JADEHACKBIN" ]; then
+  echo "Copying $JADEHACKBIN"
   cd "$NAO_CHROOT/$SPSUBDIR"
-  SPBINFILE="`basename $SPORKHACKBIN`-$DATESTAMP"
-  cp "$SPORKHACKBIN" "$SPBINFILE"
-  ln -fs "$SPBINFILE" sporkhack
-  LIBS="$LIBS `findlibs $SPORKHACKBIN`"
+  SPBINFILE="`basename $JADEHACKBIN`-$DATESTAMP"
+  cp "$JADEHACKBIN" "$SPBINFILE"
+  ln -fs "$SPBINFILE" jadehack
+  LIBS="$LIBS `findlibs $JADEHACKBIN`"
   cd "$NAO_CHROOT"
 fi
 
-echo "Creating SporkHack variable dir stuff."
+echo "Creating JadeHack variable dir stuff."
 mkdir -p "$NAO_CHROOT/$SPSUBDIR/var"
 
-echo "Copying SporkHack playground stuff"
-cp "$SPORKHACK_GIT/dat/nhdat" "$NAO_CHROOT/$SPSUBDIR/var"
+echo "Copying JadeHack playground stuff"
+cp "$JADEHACK_GIT/dat/nhdat" "$NAO_CHROOT/$SPSUBDIR/var"
 chmod 644 "$NAO_CHROOT/$SPSUBDIR/var/nhdat"
 
 chown -R "$USRGRP" "$NAO_CHROOT/$SPSUBDIR/var"
@@ -104,7 +104,7 @@ else
   ln -fs $SP_LOG_SYMLINK_TARGET/wishtracker $NAO_CHROOT/$SPSUBDIR/var
 fi
 
-RECOVER="$SPORKHACK_GIT/util/recover"
+RECOVER="$JADEHACK_GIT/util/recover"
 
 if [ -n "$RECOVER" -a -e "$RECOVER" ]; then
   echo "Copying $RECOVER"

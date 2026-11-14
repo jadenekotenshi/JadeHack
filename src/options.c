@@ -646,8 +646,7 @@ initoptions()
 	objects[SLIME_MOLD].oc_name_idx = SLIME_MOLD;
 	nmcpy(pl_fruit, OBJ_NAME(objects[SLIME_MOLD]), PL_FSIZ);
 #ifndef MAC
-	opts = getenv("NETHACKOPTIONS");
-	if (!opts) opts = getenv("HACKOPTIONS");
+	opts = getenv("JADEHACKOPTIONS");
 	if (opts) {
 		if (*opts == '/' || *opts == '\\' || *opts == '@') {
 			if (*opts == '@') opts++;	/* @filename */
@@ -712,28 +711,30 @@ char *tp;
     {
 	int	cval = 0, meta = 0;
 
-	if (*cp == '\\' && index("mM", cp[1])) {
+	if (*cp == '\\' && cp[1] && index("mM", cp[1])) {
 		meta = 1;
 		cp += 2;
 	}
-	if (*cp == '\\' && index("0123456789xXoO", cp[1]))
+	if (!*cp) break;	/* trailing "\\m" or "\\M": nothing to meta */
+	if (*cp == '\\' && cp[1] && index("0123456789xXoO", cp[1]))
 	{
 	    const char *dp, *hex = "00112233445566778899aAbBcCdDeEfF";
 	    int dcount = 0;
 
 	    cp++;
 	    if (*cp == 'x' || *cp == 'X')
-		for (++cp; (dp = index(hex, *cp)) && (dcount++ < 2); cp++)
+		for (++cp; *cp && (dp = index(hex, *cp)) && (dcount++ < 2); cp++)
 		    cval = (cval * 16) + (dp - hex) / 2;
 	    else if (*cp == 'o' || *cp == 'O')
-		for (++cp; (index("01234567",*cp)) && (dcount++ < 3); cp++)
+		for (++cp; *cp && (index("01234567",*cp)) && (dcount++ < 3); cp++)
 		    cval = (cval * 8) + (*cp - '0');
 	    else
-		for (; (index("0123456789",*cp)) && (dcount++ < 3); cp++)
+		for (; *cp && (index("0123456789",*cp)) && (dcount++ < 3); cp++)
 		    cval = (cval * 10) + (*cp - '0');
 	}
 	else if (*cp == '\\')		/* C-style character escapes */
 	{
+	    if (!cp[1]) break;	/* lone trailing backslash: don't read past NUL */
 	    switch (*++cp)
 	    {
 	    case '\\': cval = '\\'; break;
@@ -745,7 +746,7 @@ char *tp;
 	    }
 	    cp++;
 	}
-	else if (*cp == '^')		/* expand control-character syntax */
+	else if (*cp == '^' && cp[1])	/* expand control-character syntax */
 	{
 	    cval = (*++cp & 0x1f);
 	    cp++;
@@ -766,7 +767,7 @@ const char *optname;
 #ifdef MICRO
 	pline("\"%s\" settable only from %s.", optname, configfile);
 #else
-	pline("%s can be set only from NETHACKOPTIONS or %s.", optname,
+	pline("%s can be set only from JADEHACKOPTIONS or %s.", optname,
 			configfile);
 #endif
 }
@@ -789,7 +790,7 @@ const char *opts;
 	if(from_file)
 	    raw_printf("Bad syntax in OPTIONS in %s: %s.", configfile, opts);
 	else
-	    raw_printf("Bad syntax in NETHACKOPTIONS: %s.", opts);
+	    raw_printf("Bad syntax in JADEHACKOPTIONS: %s.", opts);
 
 	wait_synch();
 }
@@ -960,7 +961,7 @@ const char *optn;
 	if (!initial) {
 		Sprintf(buf, "%lu.%lu.%lu", FEATURE_NOTICE_VER_MAJ,
 			FEATURE_NOTICE_VER_MIN, FEATURE_NOTICE_VER_PATCH);
-		pline("Feature change alerts disabled for SporkHack %s features and prior.",
+		pline("Feature change alerts disabled for JadeHack %s features and prior.",
 			buf);
 	}
 	return 1;
@@ -2832,7 +2833,7 @@ map_menu_cmd(ch)
 #if defined(MICRO) || defined(MAC) || defined(WIN32)
 # define OPTIONS_HEADING "OPTIONS"
 #else
-# define OPTIONS_HEADING "NETHACKOPTIONS"
+# define OPTIONS_HEADING "JADEHACKOPTIONS"
 #endif
 
 static char fmtstr_doset_add_menu[] = "%s%-15s [%s]   "; 
@@ -3016,7 +3017,7 @@ doset()
 			getlin(buf, buf2);
 			if (buf2[0] == '\033')
 			    continue;
-			Sprintf(buf, "%s:%s", compopt[opt_indx].name, buf2);
+			Snprintf(buf, sizeof buf, "%s:%s", compopt[opt_indx].name, buf2);
 			/* pass the buck */
 			parseoptions(buf, setinitial, fromfile);
 		    }
@@ -3331,7 +3332,7 @@ boolean setinitial,setfromfile;
 	int totalapes = 0, numapes[2] = {0,0};
 	menu_item *pick_list = (menu_item *)0;
 	anything any;
-	char apebuf[BUFSZ] = "";
+	char apebuf[BUFSZ + 3] = "";	/* room for the added quotes (NetHack 3.6.3 fix) */
 	struct autopickup_exception *ape;
 	static const char *action_titles[] = {
 		"a", "add new autopickup exception",
@@ -3823,16 +3824,16 @@ free_autopickup_exceptions()
 /* data for option_help() */
 static const char *opt_intro[] = {
 	"",
-	"                 SporkHack Options Help:",
+	"                 JadeHack Options Help:",
 	"",
 #define CONFIG_SLOT 3	/* fill in next value at run-time */
 	(char *)0,
 #if !defined(MICRO) && !defined(MAC)
-	"or use `NETHACKOPTIONS=\"<options>\"' in your environment",
+	"or use `JADEHACKOPTIONS=\"<options>\"' in your environment",
 #endif
 	"(<options> is a list of options separated by commas)",
 #ifdef VMS
-	"-- for example, $ DEFINE NETHACKOPTIONS \"noautopickup,fruit:kumquat\"",
+	"-- for example, $ DEFINE JADEHACKOPTIONS \"noautopickup,fruit:kumquat\"",
 #endif
 	"or press \"O\" while playing and use the menu.",
 	"",
@@ -4363,7 +4364,8 @@ char *op;
 		&iflags.wc_backgrnd_text
 	};
 
-	Strcpy(buf, op);
+	(void) strncpy(buf, op, sizeof buf - 1);	/* option value may be long */
+	buf[sizeof buf - 1] = '\0';
 	newop = mungspaces(buf);
 	while (newop && *newop) {
 
