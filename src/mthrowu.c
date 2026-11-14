@@ -636,8 +636,12 @@ struct monst *mtmp;
 	}
 
 	m_shot.n = multishot;
-	for (m_shot.i = 1; m_shot.i <= m_shot.n; m_shot.i++)
+	for (m_shot.i = 1; m_shot.i <= m_shot.n; m_shot.i++) {
 	    m_throw(mtmp, mtmp->mx, mtmp->my, sgn(tbx), sgn(tby), maxrange, otmp);
+	    /* thrower may have been killed mid-volley; cancel pending shots
+	       (NetHack 3.6.0 fix) */
+	    if (DEADMONSTER(mtmp)) break;
+	}
 	m_shot.n = m_shot.i = 0;
 	m_shot.o = STRANGE_OBJECT;
 	m_shot.s = FALSE;

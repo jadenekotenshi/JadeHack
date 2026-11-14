@@ -47,9 +47,17 @@ Open: vault guard `fakecorr overflow`. The 5.0 and 3.4.3 path code differs in
 a few places (pool check, engraving cleanup) but I could not identify which
 change fixes the overflow, so nothing was ported.
 
-Still unread: burning-oil "object lost" panics, aklys `thrownobj`, helm of
-opposite alignment `uarmh`, multishot freed monster, shopkeeper revival,
-rolling boulder.
+## Batch 4: PORTED (macOS build OK, game starts; not exercised in play)
+
+| Fix | Where here |
+|---|---|
+| Burnt-out wielded/quivered candle or oil potion left a dangling `uwep`/`uquiver` (3.6.0) | `src/timeout.c` `burn_object()` calls `setnotworn()` before freeing |
+| Monster killed mid-volley kept throwing (3.6.0) | `src/mthrowu.c` `thrwmu()` stops the loop on `DEADMONSTER` |
+| Reviving a shopkeeper corpse read `ESHK()` of a dummy monster with no eshk data (3.6.1) | `src/shk.c` `replshk()` skips the old monster's data when it isn't a shopkeeper |
+
+Not ported: rolling boulder placement (a gameplay change, not a crash), helm of
+opposite alignment `uarmh` (3.6 polymorph code), aklys `thrownobj` (unclear
+whether this tree's throw code has the stale pointer).
 
 ## N/A because SporkHack changed or removed the code
 

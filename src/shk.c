@@ -230,7 +230,13 @@ replshk(mtmp,mtmp2)
 register struct monst *mtmp, *mtmp2;
 {
 	rooms[ESHK(mtmp2)->shoproom - ROOMOFFSET].resident = mtmp2;
-	if (inhishop(mtmp) && *u.ushops == ESHK(mtmp)->shoproom) {
+	if (!mtmp->isshk) {
+	    /* montraits() revived a shopkeeper corpse; its dummy monster
+	       has no eshk data, so don't look at ESHK(mtmp) (NetHack 3.6.1 fix) */
+	    if (ESHK(mtmp2)->bill_p != 0 &&
+		    ESHK(mtmp2)->bill_p != (struct bill_x *) -1000)
+		ESHK(mtmp2)->bill_p = &(ESHK(mtmp2)->bill[0]);
+	} else if (inhishop(mtmp) && *u.ushops == ESHK(mtmp)->shoproom) {
 		ESHK(mtmp2)->bill_p = &(ESHK(mtmp2)->bill[0]);
 	}
 }

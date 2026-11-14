@@ -804,6 +804,7 @@ long timeout;
 		    obj->spe = 0;	/* no more candles */
 		} else if (Is_candle(obj) || obj->otyp == POT_OIL) {
 		    /* get rid of candles and burning oil potions */
+		    if (obj->where == OBJ_INVENT) setnotworn(obj);	/* may be wielded/quivered (NetHack 3.6.0 fix) */
 		    obj_extract_self(obj);
 		    obfree(obj, (struct obj *)0);
 		    obj = (struct obj *) 0;
@@ -844,6 +845,7 @@ long timeout;
 			}
 		    }
 		    end_burn(obj, FALSE);	/* turn off light source */
+		    if (obj->where == OBJ_INVENT) setnotworn(obj);	/* may be wielded/quivered (NetHack 3.6.0 fix) */
 		    obj_extract_self(obj);
 		    obfree(obj, (struct obj *)0);
 		    obj = (struct obj *) 0;
@@ -1030,6 +1032,7 @@ long timeout;
 			if (menorah) {
 			    obj->spe = 0;
 			} else {
+			    if (obj->where == OBJ_INVENT) setnotworn(obj);	/* may be wielded/quivered (NetHack 3.6.0 fix) */
 			    obj_extract_self(obj);
 			    obfree(obj, (struct obj *)0);
 			    obj = (struct obj *) 0;
