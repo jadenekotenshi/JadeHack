@@ -981,6 +981,7 @@ int tmp;
 		case ART_QUICKSILVER:
 		case ART_SPINESEEKER:	return 4;
 		case ART_GUNGNIR:	return 10;
+		case ART_PERNICIMORDAX:	return d(3,6);
 		default: break;
 	    }
 	}
@@ -1287,6 +1288,11 @@ int dieroll; /* needed for Magicbane and vorpal blades */
 	 * handled.  Messages are done in this function, however.
 	 */
 	*dmgptr += spec_dbon(otmp, mdef, *dmgptr);
+
+	/* Pernicimordax is deadly to merozalghi, on top of its cold */
+	if (otmp->oartifact == ART_PERNICIMORDAX && !youdefend &&
+		mdef->data == &mons[PM_MEROZALGHU])
+	    *dmgptr *= 2;
 
 	if (youattack && youdefend) {
 	    impossible("attacking yourself with weapon?");
@@ -1803,6 +1809,12 @@ arti_invoke(obj)
 	  }
 	case ENLIGHTENING:
 	    enlightenment(0);
+	    break;
+	case TIMED_COLD_RES:
+	    if (!u.ucoldres) You_feel("a chill run through you.");
+	    else You_feel("the chill deepen.");
+	    u.ucoldres += 100 + d(3,100);
+	    ECold_resistance |= W_ARTI;
 	    break;
 	case FLING_POISON: {
 	    struct obj *otmp;

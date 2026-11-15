@@ -193,6 +193,10 @@ moveloop()
 		    monstermoves++;
 		    moves++;
 		    if (u.uinspire > 0) u.uinspire--;
+		    if (u.ucoldres > 0 && --u.ucoldres == 0) {
+			ECold_resistance &= ~W_ARTI;
+			You_feel("less resistant to cold.");
+		    }
 
 		    /********************************/
 		    /* once-per-turn things go here */

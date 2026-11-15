@@ -501,3 +501,7 @@ Bard row (accelerator `B`).
 ## Batch 27: more skill merges
 
 Broadsword merged into long sword, club into mace, shuriken into dart (each role keeps the best of its old caps; skills renumbered again, `is_multigen`/`is_poisonable` now start at `-P_DART`; the runesword now uses the long sword skill). Rangers: short sword cap Skilled, long sword Basic.
+
+## Batch 28: crysteel falchion and Pernicimordax
+
+Crysteel falchion ("crystal falchion"): a falchion of gemstone, +1 to hit and +1 damage, probability 1 (taken from darts). Pernicimordax: neutral artifact crysteel falchion, +d5 to hit, +3d6 cold damage to anything not cold resistant, doubled damage against merozalghi, and #invoke grants 100%% cold resistance for 100+3d100 more turns (`u.ucoldres`, ticked in `allmain.c`).

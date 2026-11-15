@@ -97,7 +97,7 @@ PROJECTILE("silver crossbow bolt", (char *)0,
 		1, 8, 1, 4, 4, 6, 0, SILVER, -P_CROSSBOW, HI_SILVER),
 
 WEAPON("dart", (char *)0,
-	1, 1, 0, 47,  1,  2,  3,  2, 0, P,   -P_DART, IRON, HI_METAL),
+	1, 1, 0, 46,  1,  2,  3,  2, 0, P,   -P_DART, IRON, HI_METAL),
 WEAPON("shuriken", "throwing star",
 	0, 1, 0, 30,  1,  5,  8,  6, 2, P,   -P_DART, IRON, HI_METAL),
 WEAPON("boomerang", (char *)0,
@@ -175,6 +175,8 @@ WEAPON("silver saber", (char *)0,
 /* new curved swords */
 WEAPON("falchion", (char *)0,
 	1, 0, 0, 15, 45, 20,  8,  8, 0, S,   P_CURVED_SWORD, IRON, HI_METAL),
+WEAPON("crysteel falchion", "crystal falchion",
+	0, 0, 0,  1, 45,150,  8,  8, 1, S,   P_CURVED_SWORD, GEMSTONE, CLR_BRIGHT_CYAN),
 WEAPON("kriegsmesser", (char *)0,
 	1, 0, 1, 22,120, 45,  6,  6, 0, S,   P_CURVED_SWORD, IRON, HI_METAL),
 						/* +d6 small and large: 2d6 */

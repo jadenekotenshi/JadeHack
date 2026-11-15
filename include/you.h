@@ -337,6 +337,7 @@ struct you {
 	int ugangr;			/* if the gods are angry at you */
 	int ugifts;			/* number of artifacts bestowed */
 	int uinspire;			/* turns of Inspire Courage left */
+	int ucoldres;			/* turns of invoked cold resistance left */
 	int ublessed, ublesscnt;	/* blessing/duration from #pray */
 #ifndef GOLDOBJ
 	long	ugold, ugold0;
