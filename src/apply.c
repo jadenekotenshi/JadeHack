@@ -2884,6 +2884,17 @@ do_break_wand(obj)
     case WAN_SECRET_DOOR_DETECTION:
 	pline(nothing_else_happens);
 	goto discard_broken_wand;
+    case WAN_WIND:
+	/* hallucinating, you "break wind": same stinking cloud as below */
+	if (Hallucination) {
+	    pline("Ha ha, you broke wind!");
+	    (void) create_gas_cloud(u.ux, u.uy, 3 + bcsign(obj),
+				    8 + 4 * bcsign(obj));
+	    makeknown(obj->otyp);
+	    goto discard_broken_wand;
+	}
+	affects_objects = TRUE;
+	break;
     case WAN_STINKING_FOG:
 	/* same as a scroll of stinking cloud of equal beatitude, centered on
 	   the hero */
@@ -2914,7 +2925,6 @@ do_break_wand(obj)
     case WAN_POLYMORPH:
     case WAN_TELEPORTATION:
     case WAN_UNDEAD_TURNING:
-	 case WAN_WIND:
 	affects_objects = TRUE;
 	break;
     default:

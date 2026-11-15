@@ -395,3 +395,7 @@ Supporting changes: weapon, wand and scroll class probabilities rebalanced to
 stay at 1000; `melt_ice()` now melts floor ice back to plain floor (not moat)
 and only settles boulders into real pools; this also fixes themed ice rooms.
 Rebuild makedefs and the data files after changing `objects.c`.
+
+Addendum: breaking a wand of wind while hallucinating prints "Ha ha, you broke
+wind!" and releases the same stinking cloud as a broken wand of stinking fog
+(`src/apply.c`); tested in game.
