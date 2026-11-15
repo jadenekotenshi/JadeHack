@@ -949,6 +949,7 @@ struct monst *mtmp;
 
 #define MUSE_WAN_DEATH 1
 #define MUSE_WAN_SLEEP 2
+#define MUSE_WAN_STINKING_FOG 40
 #define MUSE_WAN_FIRE 3
 #define MUSE_WAN_COLD 4
 #define MUSE_WAN_LIGHTNING 5
@@ -1010,6 +1011,13 @@ struct monst *mtmp;
 		    if(obj->otyp == WAN_SLEEP && obj->spe > 0 && multi >= 0 && !m_seenres(mtmp,M_SEEN_SLEEP)) {
 			m.offensive = obj;
 			m.has_offense = MUSE_WAN_SLEEP;
+		    }
+		    nomore(MUSE_WAN_STINKING_FOG);
+		    if(obj->otyp == WAN_STINKING_FOG && obj->spe > 0 &&
+			!monnear(mtmp, mtmp->mux, mtmp->muy) &&
+			!mtmp->mpeaceful && how_resistant(POISON_RES) < 100) {
+			m.offensive = obj;
+			m.has_offense = MUSE_WAN_STINKING_FOG;
 		    }
 		    nomore(MUSE_WAN_FIRE);
 		    if(obj->otyp == WAN_FIRE && obj->spe > 0 && !m_seenres(mtmp,M_SEEN_FIRE)) {
@@ -1314,6 +1322,21 @@ struct monst *mtmp;
 	}
 
 	switch(m.has_offense) {
+	case MUSE_WAN_STINKING_FOG: {
+		int fx = mtmp->mx, fy = mtmp->my, dx = sgn(mtmp->mux-mtmp->mx),
+		    dy = sgn(mtmp->muy-mtmp->my), steps;
+		mzapmsg(mtmp, otmp, FALSE);
+		otmp->spe--;
+		if (oseen) makeknown(otmp->otyp);
+		for (steps = 0; steps < 8; steps++) {
+		    fx += dx; fy += dy;
+		    if (!isok(fx, fy) || !ZAP_POS(levl[fx][fy].typ) ||
+			closed_door(fx, fy))
+			break;
+		    (void) create_gas_cloud(fx, fy, 1, 8);
+		}
+		return 2;
+	    }
 	case MUSE_WAN_DEATH:
 	case MUSE_WAN_SLEEP:
 	case MUSE_WAN_FIRE:

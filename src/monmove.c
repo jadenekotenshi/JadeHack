@@ -338,6 +338,23 @@ register struct monst *mtmp;
 
 	mdat = mtmp->data;
 
+	/* Mephistopheles meditates in the Sanctum until the Amulet is taken */
+	if (mdat == &mons[PM_MEPHISTOPHELES]) {
+	    if (u.uhave.amulet) {
+		if (mtmp->msleeping || (mtmp->mstrategy & STRAT_WAITMASK)) {
+		    mtmp->msleeping = 0;
+		    mtmp->mstrategy &= ~STRAT_WAITMASK;
+		    if (canspotmon(mtmp))
+			pline("%s awakens from %s meditation!", Monnam(mtmp),
+			      mhis(mtmp));
+		}
+	    } else if (mtmp->mhp == mtmp->mhpmax) {
+		mtmp->msleeping = 1;
+		mtmp->mstrategy |= STRAT_WAITFORU;
+		return 0;
+	    }
+	}
+
 	if (mtmp->mstrategy & STRAT_ARRIVE) {
 	    int res = m_arrival(mtmp);
 	    if (res >= 0) return res;
@@ -396,7 +413,11 @@ register struct monst *mtmp;
 	if (mtmp->mconf && !rn2(50)) mtmp->mconf = 0;
 
 	/* stunned monsters get un-stunned with larger probability */
-	if (mtmp->mstun && !rn2(10)) mtmp->mstun = 0;
+	if (mtmp->mstun) {
+	    if (mtmp->mstuntime > 0) {
+		if (--mtmp->mstuntime == 0) mtmp->mstun = 0;
+	    } else if (!rn2(10)) mtmp->mstun = 0;
+	}
 
 	/* some monsters teleport */
 	if (mtmp->mflee && !rn2(40) && can_teleport(mdat) && !mtmp->iswiz &&

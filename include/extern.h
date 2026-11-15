@@ -74,6 +74,9 @@ E int FDECL(touch_artifact, (struct obj *,struct monst *));
 E int FDECL(spec_abon, (struct obj *,struct monst *));
 E int FDECL(spec_dbon, (struct obj *,struct monst *,int));
 E void FDECL(discover_artifact, (XCHAR_P));
+E struct obj *FDECL(create_oprop, (struct obj *,BOOLEAN_P));
+E void FDECL(set_oprop_intrinsics, (struct obj *,BOOLEAN_P,long));
+E void FDECL(oprop_hit, (struct monst *,struct monst *,struct obj *,int *));
 E boolean FDECL(undiscovered_artifact, (XCHAR_P));
 E int FDECL(disp_artifact_discoveries, (winid));
 E boolean FDECL(artifact_hit, (struct monst *,struct monst *,

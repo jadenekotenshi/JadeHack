@@ -31,7 +31,7 @@ ENDMAP
 REGION:(00,00,59,17),lit,"ordinary"
 REGION:(23,03,36,08),lit,"ordinary"
 REGION:(15,03,21,08),lit,"tool shop"
-REGION:(38,03,44,08),lit,"liquor emporium"
+REGION:(38,03,44,08),lit,"potion shop"
 STAIR:(04,09),down
 BRANCH:(55,09,55,09),(0,0,0,0)
 NON_DIGGABLE:(14,02,45,15)

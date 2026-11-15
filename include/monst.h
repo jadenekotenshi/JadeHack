@@ -63,6 +63,7 @@ struct monst {
 	unsigned short mintrinsics;	/* low 8 correspond to mresists */
 	int mspec_used;		/* monster's special ability attack timeout */
 	int mfriendtime;	/* turns of song-induced friendship left */
+	int mstuntime;		/* turns of thundering stun left */
 
 /* These should stay in the same order as monattk.h so
  * the mask translations will work properly */

@@ -657,6 +657,8 @@ REGION:(15,07,21,10),lit,"temple" {
 }
 ALTAR:(18,08),noalign,sanctum
 REGION:(41,06,48,11),unlit,"morgue",filled,irregular
+# Mephistopheles meditates beside the temple until the Amulet is taken
+MONSTER:('&',"Mephistopheles"),(19,09),asleep
 # Non diggable walls
 NON_DIGGABLE:(00,00,75,19)
 # Invisible barrier separating the left & right halves of the level

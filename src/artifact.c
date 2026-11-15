@@ -178,6 +178,157 @@ make_artif: if (by_align) otmp = mksobj((int)a->otyp, TRUE, FALSE);
 	return otmp;
 }
 
+
+/*** Object properties (see ITEM_xxx in obj.h) ***/
+
+/* give a weapon or armor some magical property; allow_detrimental permits
+   the cursed fumbling/hunger properties on armor */
+struct obj *
+create_oprop(obj, allow_detrimental)
+struct obj *obj;
+boolean allow_detrimental;
+{
+    struct obj *otmp = obj;
+    int i, tries = 0;
+    long j;
+
+    if (!otmp) return otmp;
+    if (otmp->oartifact || objects[otmp->otyp].oc_unique) return otmp;
+    if (otmp->otyp == WORM_TOOTH || otmp->otyp == UNICORN_HORN ||
+	otmp->otyp == CRYSKNIFE)
+	return otmp;
+    /* items that are already magical get a property a tenth as often */
+    if (objects[otmp->otyp].oc_magic && rn2(10)) return otmp;
+    if (otmp->oclass != WEAPON_CLASS && !is_weptool(otmp) &&
+	otmp->oclass != ARMOR_CLASS)
+	return otmp;
+    /* dragon scales and scale mail are fine as they are */
+    if (otmp->otyp >= GRAY_DRAGON_SCALE_MAIL &&
+	otmp->otyp <= YELLOW_DRAGON_SCALES)
+	return otmp;
+
+    while (!otmp->oprops && tries++ < 200) {
+	i = rn2(MAX_ITEM_PROPS);
+	j = 1L << i;
+	if ((j & (ITEM_FUMBLING | ITEM_HUNGER)) && !allow_detrimental)
+	    continue;
+	if (otmp->oclass == WEAPON_CLASS || is_weptool(otmp)) {
+	    if (j & (ITEM_DRLI | ITEM_FUMBLING | ITEM_HUNGER | ITEM_OILSKIN))
+		continue;
+	    if (is_launcher(otmp) &&
+		(j & (ITEM_DMG_PROPS | ITEM_THUNDERING)))
+		continue;
+	    if ((is_ammo(otmp) || is_missile(otmp)) &&
+		(j & (ITEM_ESP | ITEM_EXCEL | ITEM_SEARCHING | ITEM_WARNING)))
+		continue;
+	} else {
+	    /* armor */
+	    if (j & ITEM_THUNDERING) continue;
+	    if ((j & ITEM_OILSKIN) && objects[otmp->otyp].oc_material != CLOTH)
+		continue;
+	    if (otmp->otyp == OILSKIN_CLOAK && (j & ITEM_OILSKIN)) continue;
+	    if (is_helmet(otmp) && (j & ITEM_ESP)) continue;
+	}
+	otmp->oprops |= j;
+    }
+
+    if (otmp->oprops & (ITEM_FUMBLING | ITEM_HUNGER)) {
+	if (!otmp->cursed) curse(otmp);
+	otmp->spe = -rne(3);
+    } else if (!rn2(8)) {
+	blessorcurse(otmp, 8);
+	otmp->spe = otmp->cursed ? -rne(3) : rne(3);
+    }
+    if (otmp->oprops & ITEM_OILSKIN) otmp->greased = 1;
+    return otmp;
+}
+
+/* turn an object's properties on or off as it is worn or wielded */
+void
+set_oprop_intrinsics(obj, on, wp_mask)
+struct obj *obj;
+boolean on;
+long wp_mask;
+{
+    long p = obj->oprops;
+    boolean armor = (obj->oclass == ARMOR_CLASS);
+
+    if (!p) return;
+#define OPROP_E(flag, field) \
+    if (p & (flag)) { if (on) field |= wp_mask; else field &= ~wp_mask; }
+    if (armor) {
+	OPROP_E(ITEM_FIRE, EFire_resistance);
+	OPROP_E(ITEM_FROST, ECold_resistance);
+	OPROP_E(ITEM_SHOCK, EShock_resistance);
+	OPROP_E(ITEM_VENOM, EPoison_resistance);
+	OPROP_E(ITEM_DRLI, EDrain_resistance);
+	OPROP_E(ITEM_FUMBLING, EFumbling);
+	OPROP_E(ITEM_HUNGER, EHunger);
+    }
+    OPROP_E(ITEM_ESP, ETelepat);
+    OPROP_E(ITEM_SEARCHING, ESearching);
+    OPROP_E(ITEM_WARNING, EWarning);
+    OPROP_E(ITEM_EXCEL, ELucky);
+#undef OPROP_E
+    if (on) obj->oprops_known |= (p & ~ITEM_THUNDERING) &
+		(armor ? ITEM_PROP_MASK : ~ITEM_DMG_PROPS);
+    if (p & ITEM_ESP) see_monsters();
+}
+
+/* weapons with properties add damage and side effects when they hit */
+void
+oprop_hit(magr, mdef, otmp, dmgptr)
+struct monst *magr, *mdef;
+struct obj *otmp;
+int *dmgptr;
+{
+    boolean youattack = (magr == &youmonst), youdefend = (mdef == &youmonst);
+    long p = otmp->oprops;
+    const char *verb = 0;
+    int extra = 0;
+
+    if (!(p & (ITEM_DMG_PROPS | ITEM_THUNDERING))) return;
+    if (otmp->oclass != WEAPON_CLASS && !is_weptool(otmp)) return;
+
+    if (p & ITEM_FIRE) {
+	if (!(youdefend ? how_resistant(FIRE_RES) > 99 : resists_fire(mdef))) {
+	    extra = rnd(5) + 3; verb = "burns";
+	}
+    } else if (p & ITEM_FROST) {
+	if (!(youdefend ? how_resistant(COLD_RES) > 99 : resists_cold(mdef))) {
+	    extra = rnd(5) + 3; verb = "freezes";
+	}
+    } else if (p & ITEM_SHOCK) {
+	if (!(youdefend ? how_resistant(SHOCK_RES) > 99 : resists_elec(mdef))) {
+	    extra = rnd(5) + 3; verb = "shocks";
+	}
+    } else if (p & ITEM_VENOM) {
+	if (!(youdefend ? how_resistant(POISON_RES) > 99 : resists_poison(mdef))) {
+	    extra = rnd(6); verb = "poisons";
+	}
+    }
+    if (verb) {
+	*dmgptr += extra;
+	if (youattack || youdefend || canseemon(mdef)) {
+	    pline("%s %s %s!", The(xname(otmp)), verb,
+		  youdefend ? "you" : mon_nam(mdef));
+	    if (youattack) otmp->oprops_known |= (p & ITEM_DMG_PROPS);
+	}
+    }
+    if ((p & ITEM_THUNDERING) && !rn2(2)) {
+	if (youdefend) {
+	    pline("The thunderous blow leaves you reeling!");
+	    make_stunned(HStun + (long)rnd(4), FALSE);
+	} else if (!mdef->mstun) {
+	    mdef->mstun = 1;
+	    mdef->mstuntime = rnd(4);
+	    if (youattack || canseemon(mdef))
+		pline("%s is stunned by the thunderous blow!", Monnam(mdef));
+	    if (youattack) otmp->oprops_known |= ITEM_THUNDERING;
+	}
+    }
+}
+
 /*
  * Returns the full name (with articles and correct capitalization) of an
  * artifact named "name" if one exists, or NULL, it not.

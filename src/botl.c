@@ -330,6 +330,7 @@ const char* short_dgn_names[] = {
 	"Dungeons of Doom",
 	"Gehennom",
 	"Gnomish Mines",
+	"The Mall",
 	"Quest Levels",	 /* Placeholder; this is overridden below */
 	"Sokoban",
 	"Fort Ludios",		 /* this too */

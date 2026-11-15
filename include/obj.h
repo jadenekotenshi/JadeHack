@@ -106,6 +106,8 @@ struct obj {
 #endif
 
 	unsigned oeaten;	/* nutrition left in food, if partly eaten */
+	long oprops;		/* object properties (ITEM_xxx) */
+	long oprops_known;	/* which of them the hero has noticed */
 	long age;		/* creation date */
 	long capacity;	  /* how much can this container hold? */
 #define MAX_CAPACITY 0xFFFFFF	  /* "lots" */
@@ -192,6 +194,25 @@ struct obj {
 #define wearing_shield()	(uarms && !is_bracers(uarms))
 #define is_parry_wep(o)	((o) && ((o)->otyp == PARRYING_DAGGER || \
 			 (o)->otyp == MAIN_GAUCHE))
+/* Object properties (after EvilHack): magical properties that can show up
+   on ordinary weapons and armor.  Weapons gain elemental damage; armor
+   grants the matching resistance while worn. */
+#define ITEM_FIRE	0x00000001L	/* fire damage or resistance */
+#define ITEM_FROST	0x00000002L	/* frost damage or resistance */
+#define ITEM_SHOCK	0x00000004L	/* shock damage or resistance */
+#define ITEM_VENOM	0x00000008L	/* poison damage or resistance */
+#define ITEM_DRLI	0x00000010L	/* drain resistance (armor only) */
+#define ITEM_OILSKIN	0x00000020L	/* permanently greased */
+#define ITEM_ESP	0x00000040L	/* extrinsic telepathy */
+#define ITEM_SEARCHING	0x00000080L	/* extrinsic searching */
+#define ITEM_WARNING	0x00000100L	/* extrinsic warning */
+#define ITEM_EXCEL	0x00000200L	/* confers luck */
+#define ITEM_FUMBLING	0x00000400L	/* extrinsic fumbling */
+#define ITEM_HUNGER	0x00000800L	/* extrinsic hunger */
+#define ITEM_THUNDERING	0x00001000L	/* weapon: 50% to stun for 1d4 turns */
+#define ITEM_PROP_MASK	0x00001FFFL
+#define ITEM_DMG_PROPS	(ITEM_FIRE|ITEM_FROST|ITEM_SHOCK|ITEM_VENOM|ITEM_DRLI)
+#define MAX_ITEM_PROPS	13
 #define is_shield(otmp) (otmp->oclass == ARMOR_CLASS && \
 			 objects[otmp->otyp].oc_armcat == ARM_SHIELD)
 #define is_helmet(otmp) (otmp->oclass == ARMOR_CLASS && \

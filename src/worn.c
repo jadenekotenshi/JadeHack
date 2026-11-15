@@ -102,6 +102,8 @@ long mask;
 			    u.uprops[p].blocked &= ~wp->w_mask;
 			if (oobj->oartifact)
 			    set_artifact_intrinsic(oobj, 0, mask);
+			if (oobj->oprops)
+			    set_oprop_intrinsics(oobj, FALSE, wp->w_mask);
 		    }
 		}
 		*(wp->w_obj) = obj;
@@ -123,6 +125,8 @@ long mask;
 			}
 			if (obj->oartifact)
 			    set_artifact_intrinsic(obj, 1, mask);
+			if (obj->oprops)
+			    set_oprop_intrinsics(obj, TRUE, wp->w_mask);
 		    }
 		}
 	    }
@@ -150,6 +154,8 @@ register struct obj *obj;
 		obj->owornmask &= ~wp->w_mask;
 		if (obj->oartifact)
 		    set_artifact_intrinsic(obj, 0, wp->w_mask);
+		if (obj->oprops)
+		    set_oprop_intrinsics(obj, FALSE, wp->w_mask);
 		if ((p = w_blocks(obj,wp->w_mask)) != 0)
 		    u.uprops[p].blocked &= ~wp->w_mask;
 	    }

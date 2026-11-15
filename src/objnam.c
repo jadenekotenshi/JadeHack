@@ -9,6 +9,7 @@
 #define SCHAR_LIM 127
 #define NUMOBUF 12
 
+STATIC_DCL void FDECL(oprop_suffix, (char *,struct obj *));
 STATIC_DCL char *FDECL(strprepend,(char *,const char *));
 #ifdef OVLB
 static boolean FDECL(wishymatch, (const char *,const char *,BOOLEAN_P));
@@ -231,6 +232,41 @@ boolean juice;	/* whether or not to append " juice" to the name */
 
 #endif /* OVLB */
 #ifdef OVL1
+
+
+/* append the known object properties, e.g. " of fire and thunder" */
+STATIC_OVL void
+oprop_suffix(buf, obj)
+char *buf;
+struct obj *obj;
+{
+	static const struct { long flag; const char *wpn, *arm; } pn[] = {
+	    { ITEM_FIRE, "fire", "fire resistance" },
+	    { ITEM_FROST, "frost", "cold resistance" },
+	    { ITEM_SHOCK, "lightning", "shock resistance" },
+	    { ITEM_VENOM, "venom", "poison resistance" },
+	    { ITEM_DRLI, "decay", "drain resistance" },
+	    { ITEM_THUNDERING, "thunder", "thunder" },
+	    { ITEM_ESP, "telepathy", "telepathy" },
+	    { ITEM_SEARCHING, "searching", "searching" },
+	    { ITEM_WARNING, "warning", "warning" },
+	    { ITEM_EXCEL, "excellence", "excellence" },
+	    { ITEM_OILSKIN, "oilskin", "oilskin" },
+	    { ITEM_FUMBLING, "fumbling", "fumbling" },
+	    { ITEM_HUNGER, "hunger", "hunger" }
+	};
+	int i;
+	boolean armor = (obj->oclass == ARMOR_CLASS);
+	boolean has_of = (strstri(buf, " of ") != 0);
+	long p = obj->oprops & obj->oprops_known;
+
+	for (i = 0; i < SIZE(pn); i++)
+	    if ((p & pn[i].flag) && strlen(buf) < BUFSZ - 40) {
+		Strcat(buf, has_of ? " and " : " of ");
+		Strcat(buf, armor ? pn[i].arm : pn[i].wpn);
+		has_of = TRUE;
+	    }
+}
 
 char *
 xname(obj)
@@ -493,6 +529,10 @@ boolean ignore_oquan;
 	default:
 		Sprintf(buf,"glorkum %d %d %d", obj->oclass, typ, obj->spe);
 	}
+	if (obj->dknown && (obj->oprops & obj->oprops_known) &&
+	    (obj->oclass == WEAPON_CLASS || obj->oclass == ARMOR_CLASS ||
+	     is_weptool(obj)))
+	    oprop_suffix(buf, obj);
 #ifdef SORTLOOT
 	if (!ignore_oquan)
 #endif
@@ -1851,6 +1891,7 @@ boolean from_user;
 	register struct obj *otmp;
 	int cnt, spe, spesgn, typ, very, rechrg;
 	int blessed, uncursed, iscursed, ispoisoned, isgreased;
+	long wishprops = 0L;
 	int eroded, eroded2, erodeproof;
 #ifdef INVISIBLE_OBJECTS
 	int isinvisible;
@@ -1962,6 +2003,16 @@ boolean from_user;
 			ispoisoned=1;
 		} else if(!strncmpi(bp, "greased ",l=8)) {
 			isgreased=1;
+		} else if (wizard && !strncmpi(bp, "thundering ", l=11)) {
+			wishprops |= ITEM_THUNDERING;
+		} else if (wizard && !strncmpi(bp, "flaming ", l=8)) {
+			wishprops |= ITEM_FIRE;
+		} else if (wizard && !strncmpi(bp, "freezing ", l=9)) {
+			wishprops |= ITEM_FROST;
+		} else if (wizard && !strncmpi(bp, "shocking ", l=9)) {
+			wishprops |= ITEM_SHOCK;
+		} else if (wizard && !strncmpi(bp, "venomous ", l=9)) {
+			wishprops |= ITEM_VENOM;
 		} else if (!strncmpi(bp, "very ", l=5)) {
 			/* very rusted very heavy iron ball */
 			very = 1;
@@ -2758,6 +2809,12 @@ typfnd:
 	}
 
 	if (isgreased) otmp->greased = 1;
+	if (wishprops &&
+	    (otmp->oclass == WEAPON_CLASS || otmp->oclass == ARMOR_CLASS ||
+	     is_weptool(otmp))) {
+	    otmp->oprops |= wishprops;
+	    otmp->oprops_known |= wishprops;
+	}
 
 	if (isdiluted && otmp->oclass == POTION_CLASS &&
 			otmp->otyp != POT_WATER)

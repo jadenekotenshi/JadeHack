@@ -448,7 +448,7 @@ register struct monst *mtmp;
 		(void)mongets(mtmp, LONG_SWORD);
 		break;
 	    case S_VAMPIRE:
-		if (mm == PM_KUEI_JIN && rn2(2)) (void)mongets(mtmp, KATANA);
+		if (mm == PM_KUEI_JIN && (In_V_tower(&u.uz) || rn2(2))) (void)mongets(mtmp, KATANA);
 		break;
 	    case S_ZRUTY:
 		if (mm == PM_MEROZALGHU && rn2(4))
@@ -498,6 +498,13 @@ register struct monst *mtmp;
 		break;
 	    case S_DEMON:
 		switch (mm) {
+		    case PM_MEPHISTOPHELES: {
+			struct obj *rans = mksobj(RANSEUR, FALSE, FALSE);
+			rans->spe = 7;
+			rans->blessed = rans->cursed = 0;
+			(void) mpickobj(mtmp, rans);
+			break;
+		    }
 		    case PM_BALROG:
 			(void)mongets(mtmp, BULLWHIP);
 			(void)mongets(mtmp, BROADSWORD);

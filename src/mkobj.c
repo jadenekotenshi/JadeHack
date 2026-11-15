@@ -470,6 +470,9 @@ boolean artif;
 
 		if (artif && !rn2(20))
 		    otmp = mk_artifact(otmp, (aligntyp)A_NONE);
+		else if (artif && !otmp->oartifact &&
+			 rn2(175) < (level_difficulty() / 2))
+		    otmp = create_oprop(otmp, TRUE);
 		break;
 	case FOOD_CLASS:
 	    otmp->oeaten = 0;
@@ -642,6 +645,8 @@ boolean artif;
 		if (!artif && is_damageable(otmp) && !rn2(10)) otmp->oeroded = rn2(2)+1;
 		if (artif && !rn2(40))                
 		    otmp = mk_artifact(otmp, (aligntyp)A_NONE);
+		else if (artif && !otmp->oartifact && !rn2(150))
+		    otmp = create_oprop(otmp, TRUE);
 		/* simulate lacquered armor for samurai */
 		if (Role_if(PM_SAMURAI) && otmp->otyp == SPLINT_MAIL &&
 		    (moves <= 1 || In_quest(&u.uz))) {

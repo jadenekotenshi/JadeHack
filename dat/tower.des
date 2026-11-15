@@ -26,7 +26,14 @@ OBJECT:('\',"throne"),(06,05)
 MONSTER:('V',"Vlad the Impaler"),(06,05) {
   OBJECT:(')',"two-handed sword"),1d3,NAME:"Lifestealer",cursed,erodeproof
   OBJECT:('(',"Candelabrum of Invocation")
+  OBJECT[30%]:('/',"sleep")
+  OBJECT[30%]:('/',"wind")
+  OBJECT[30%]:('/',"stinking fog")
 }
+# a weapon lying about in his room, for the wielding
+OBJECT:')',(05,05)
+MONSTER[50%]:('V',"Kuei-jin"),(05,09)
+MONSTER[50%]:('V',"Kuei-jin"),(09,01)
 MONSTER:'V',(03,09)
 MONSTER:'V',(07,09)
 MONSTER:'V',(11,09)

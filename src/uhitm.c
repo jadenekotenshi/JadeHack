@@ -783,6 +783,7 @@ int dieroll;
 			if (tmp == 0) return TRUE;
 			hittxt = TRUE;
 		    }
+		    if (obj->oprops) oprop_hit(&youmonst, mon, obj, &tmp);
 		    if (objects[obj->otyp].oc_material == SILVER
 				&& hates_silver(mdat)) {
 			silvermsg = TRUE; silverobj = TRUE;

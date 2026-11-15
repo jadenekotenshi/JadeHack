@@ -1,0 +1,121 @@
+#	mall.des
+#	The Mall: a shopping branch below the Dungeons of Doom, with the
+#	Rat Sewers underneath it.
+#
+LEVEL: "mall"
+FLAGS: noteleport
+INIT_MAP:solidfill,' '
+GEOMETRY:center,center
+MAP
+ ------------------------------------------------------------------------- 
+ |...........|...........|...........|...........|...........|...........| 
+ |...........|...........|...........|...........|...........|...........| 
+ |...........|...........|...........|...........|...........|...........| 
+ |...........|...........|...........|...........|...........|...........| 
+ |...........|...........|...........|...........|...........|...........| 
+ ------+-----------+-----------+-----------+-----------+-----------+------ 
+|.........................................................................|
+|...................................{.....................................|
+|.........................................................................|
+ ------+-----------+-----------+-----------+-----------+-----------+------ 
+ |...........|...........|...........|...........|...........|...........| 
+ |...........|...........|...........|...........|...........|...........| 
+ |...........|...........|...........|...........|...........|...........| 
+ |...........|...........|...........|...........|...........|...........| 
+ |...........|...........|...........|...........|...........|...........| 
+ ------------------------------------------------------------------------- 
+ENDMAP
+REGION:(00,00,74,16),lit,"ordinary"
+REGION:(02,01,12,05),lit,"shop"
+REGION:(02,11,12,15),lit,"food shop"
+REGION:(14,01,24,05),lit,"weapon shop"
+REGION:(14,11,24,15),lit,"potion shop"
+REGION:(26,01,36,05),lit,"armor shop"
+REGION:(26,11,36,15),lit,"wand shop"
+REGION:(38,01,48,05),lit,"ring shop"
+REGION:(38,11,48,15),lit,"book shop"
+REGION:(50,01,60,05),lit,"scroll shop"
+REGION:(50,11,60,15),lit,"shop"
+REGION:(62,01,72,05),lit,"tool shop"
+REGION:(62,11,72,15),lit,"candle shop"
+STAIR:(02,08),up
+STAIR:(72,08),down
+NON_DIGGABLE:(00,00,74,16)
+DOOR:closed,(07,06)
+DOOR:closed,(07,10)
+DOOR:closed,(19,06)
+DOOR:closed,(19,10)
+DOOR:closed,(31,06)
+DOOR:closed,(31,10)
+DOOR:closed,(43,06)
+DOOR:closed,(43,10)
+DOOR:closed,(55,06)
+DOOR:closed,(55,10)
+DOOR:closed,(67,06)
+DOOR:closed,(67,10)
+LOOP [4 + 1d4] {
+  MONSTER:random,(36,08)
+}
+LOOP [3 + 1d4] {
+  MONSTER:('@',"watchman"),random
+}
+WALLIFY
+
+#
+#	The Rat Sewers: a huge cavern teeming with rats.
+#
+LEVEL: "sewers"
+FLAGS:mazelevel,noflip
+INIT_MAP: mines, '.' , ' ', true, true, unlit, true
+NOMAP
+STAIR: random, up
+# guaranteed treasures, scattered about the cavern
+LOOP [3] {
+  OBJECT: '?', random
+}
+LOOP [2] {
+  OBJECT: '[', random
+}
+LOOP [2] {
+  OBJECT: ')', random
+}
+OBJECT: '/', random
+LOOP [6] {
+  OBJECT: random, random
+}
+LOOP [8] {
+  TRAP: random, random
+}
+LOOP [14 + 2d4] {
+  MONSTER: ('r', "lemming"), random, hostile
+}
+LOOP [14 + 2d4] {
+  MONSTER: ('r', "sewer rat"), random, hostile
+}
+LOOP [12 + 2d4] {
+  MONSTER: ('r', "giant rat"), random, hostile
+}
+LOOP [10 + 2d4] {
+  MONSTER: ('r', "rabid rat"), random, hostile
+}
+LOOP [4 + 2d4] {
+  MONSTER: ('r', "wererat"), random, hostile
+}
+LOOP [6 + 2d4] {
+  MONSTER: ('r', "rock mole"), random, hostile
+}
+LOOP [4 + 2d4] {
+  MONSTER: ('r', "woodchuck"), random, hostile
+}
+LOOP [5 + 2d4] {
+  MONSTER: ('r', "stinkbite"), random, hostile
+}
+LOOP [2 + 2d4] {
+  MONSTER: ('r', "devil bunny"), random, hostile
+}
+LOOP [30 + 2d10] {
+  MONSTER: 'r', random, hostile
+}
+LOOP [14 + 2d6] {
+  MONSTER: ('Z', "lemming zombie"), random, hostile
+}

@@ -1324,6 +1324,12 @@ struct monst *magr,	/* monster that is currently deciding where to move */
 	   like to eat shriekers, so attack the latter when feasible */
 	if (magr->data == &mons[PM_PURPLE_WORM] && mdef->data == &mons[PM_SHRIEKER])
 	    return ALLOW_M|ALLOW_TM;
+	/* the Wizard of Yendor and Mephistopheles are rivals */
+	if ((magr->data == &mons[PM_WIZARD_OF_YENDOR] &&
+		mdef->data == &mons[PM_MEPHISTOPHELES]) ||
+	    (magr->data == &mons[PM_MEPHISTOPHELES] &&
+		mdef->data == &mons[PM_WIZARD_OF_YENDOR]))
+	    return ALLOW_M|ALLOW_TM;
 	/* Various other combinations such as dog vs cat, cat vs rat, and
 	   elf vs orc have been suggested.  For the time being we don't
 	   support those. */

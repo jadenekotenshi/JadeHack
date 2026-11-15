@@ -485,3 +485,15 @@ Bard row (accelerator `B`).
 | Bard songs | six songs (lullaby, cacophony, drowsiness at level 1; despair, friendship, inspire courage at level 3) are always known, need an instrument in inventory, use Charisma, and belong to the new Musical spell skill (Bards reach Expert); Bards also get Basic healing/matter, Skilled divination, Expert enchantment; friendship is temporary taming, inspire courage boosts pets' damage |
 | Luck Blade | first sacrifice gift for Bards (takes the Bard's alignment) |
 | Bard quest | redone after the DNetHack quest: the Conservatorium, Pindar, rhymers, the Island of Anthemoessa, the Old Ruins, Aglaope and the Lyre of Orpheus |
+
+## Batch 26: object properties, Mephistopheles, the Mall, more monsters
+
+| Change | Notes |
+|---|---|
+| Shoggoth | SLASH'EM stats (P, level 18, claw 4d8, corrosive touch, 4d8 acid engulf, passive corrosion; acid, regenerates, eats metal) |
+| Nightgaunt / byakhee | z; nightgaunt (L12, bite 1d10, claw 1d8, tickle 1d4, wing 1d4) and byakhee (L22, bite 2d8, claw 2d6 x2, poison sting 1d10); both fly, frequency 1 |
+| Vlad's Tower | Vlad now carries each of sleep / wind / stinking fog 30% of the time and has a random weapon in his room; two 50% Kuei-jin in the tower, always with katanas there; monsters can now zap wands of stinking fog |
+| Object properties | after EvilHack: `oprops`/`oprops_known` on weapons and armor (fire, frost, shock, venom, drain, oilskin, ESP, searching, warning, excellence, fumbling, hunger) plus the new weapon-only Thundering (50% stun for 1d4 turns, monsters get `mstuntime`). Weapons add 4-8 elemental damage (venom d6), armor grants the resistance when worn; properties show in names once noticed or identified, stack only with matching properties, and wizard-mode wishes accept "thundering", "flaming", "freezing", "shocking", "venomous". Spawn: weapons at 1 in 175 scaled by depth/2, armor 1 in 150 |
+| Mephistopheles | unaligned devil lord (level 115, AC -15, speed 15), weapon, claw, claw, mage, cleric and fire spell attacks; fire, cold, shock, poison and disintegration resistant; flies, sees invisible; covetous; +7 ranseur; lives asleep in the Sanctum beside the temple until you hold the Amulet; rival of the Wizard of Yendor (they fight each other); gates in demons of any alignment (unaligned) |
+| Unicorn horn | no change needed: this tree's unicorn horn no longer cured attribute loss (that code was already disabled) |
+| The Mall | branch with two levels (the Mall and the Rat Sewers); entrance stairs down on a level from 7 to 14. The Mall is a lit concourse with twelve shops and a fountain; the Rat Sewers is a dark cavern full of every kind of r plus lemming zombies, with 3 scrolls, 2 armors, 2 weapons and a wand guaranteed. `botl.c` knows the branch name; `mall.des` is in the makefiles |

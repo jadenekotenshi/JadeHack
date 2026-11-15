@@ -1571,6 +1571,7 @@ struct obj *otmp;
     makeknown(otmp->otyp);
     if (otmp->oartifact) discover_artifact((xchar)otmp->oartifact);
     otmp->known = otmp->dknown = otmp->bknown = otmp->rknown = 1;
+    otmp->oprops_known = otmp->oprops;
     if (otmp->otyp == EGG && otmp->corpsenm != NON_PM)
 	learn_egg_type(otmp->corpsenm);
 }
@@ -2737,6 +2738,7 @@ mergable(otmp, obj)	/* returns TRUE if obj  & otmp can be merged */
 		obj->oinvis != otmp->oinvis ||
 #endif
 	    obj->greased != otmp->greased ||
+	    obj->oprops != otmp->oprops ||
 	    obj->oeroded != otmp->oeroded ||
 	    obj->oeroded2 != otmp->oeroded2 ||
 	    obj->bypass != otmp->bypass)

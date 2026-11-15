@@ -826,7 +826,7 @@ struct attack *mattk;
 		  (obj->greased || objects[obj->otyp].oc_name_known) ?
 			xname(obj) : cloak_simple_name(obj));
 
-	    if (obj->greased && !rn2(2)) {
+	    if (obj->greased && !rn2(2) && !(obj->oprops & ITEM_OILSKIN)) {
 		pline_The("grease wears off.");
 		obj->greased = 0;
 		update_inventory();
@@ -981,6 +981,7 @@ hitmu(mtmp, mattk)
 			if (!(otmp->oartifact &&
 				artifact_hit(mtmp, &youmonst, otmp, &dmg,dieroll)))
 			     hitmsg(mtmp, mattk);
+			if (otmp->oprops) oprop_hit(mtmp, &youmonst, otmp, &dmg);
 			if (!dmg) break;
 			if (u.mh > 1 && u.mh > ((u.uac>0) ? dmg : dmg+u.uac) &&
 				   objects[otmp->otyp].oc_material == IRON &&
@@ -2217,7 +2218,7 @@ register struct obj *obj;
 		    if (vis)
 			pline("Somehow, %s weapon is not affected.",
 						s_suffix(mon_nam(mon)));
-		    if (obj->greased && !rn2(2)) obj->greased = 0;
+		    if (obj->greased && !rn2(2) && !(obj->oprops & ITEM_OILSKIN)) obj->greased = 0;
 		} else {
 		    if (vis)
 			pline("%s %s%s!",
