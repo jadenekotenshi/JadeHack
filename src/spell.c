@@ -1378,7 +1378,7 @@ int spell;
 	    splcaster -= urole.spelarmr/2;
 	if (uarms && uarms->otyp != CRYSTAL_SHIELD) splcaster += urole.spelshld;
 
-	if (uarmh && is_metallic(uarmh) && uarmh->otyp != HELM_OF_BRILLIANCE && !paladin_bonus)
+	if (uarmh && is_metallic(uarmh) && !paladin_bonus)
 		splcaster += uarmhbon;
 	if (uarmg && is_metallic(uarmg) && !paladin_bonus) splcaster += uarmgbon;
 	if (uarmf && is_metallic(uarmf) && !paladin_bonus) splcaster += uarmfbon;

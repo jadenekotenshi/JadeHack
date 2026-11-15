@@ -348,11 +348,13 @@ HELM("dunce cap", "conical hat",
 		0, 1,  0,			3, 1,  4,   1,10, 0, CLOTH, CLR_BLUE),
 HELM("dented pot", (char *)0,
 		1, 0,  0,			2, 0, 10,   8, 9, 0, IRON, CLR_BLACK),
+/* the crystal helmet is glass, so it does not hamper spellcasting, and its
+ * appearance is fixed (NetHack 5.0) */
+HELM("helm of brilliance", "crystal helmet", 
+		0, 1, 0,				3, 1, 50,  50, 9, 0, GLASS, CLR_WHITE),
 /* With shuffled appearances... */
 HELM("helmet", "plumed helmet", 
 		0, 0, 0,				5, 1, 30,  10, 9, 0, IRON, HI_METAL),
-HELM("helm of brilliance", "etched helmet", 
-		0, 1, 0,				3, 1, 50,  50, 9, 0, IRON, CLR_GREEN),
 HELM("helm of opposite alignment", "crested helmet", 
 		0, 1, 0,				3, 1, 50, 50, 9, 0, IRON, HI_METAL),
 HELM("helm of telepathy", "visored helmet", 
