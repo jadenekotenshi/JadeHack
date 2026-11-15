@@ -1468,6 +1468,7 @@ E void NDECL(initoptions);
 E void FDECL(parseoptions, (char *,BOOLEAN_P,BOOLEAN_P));
 E int NDECL(doset);
 E int NDECL(dotogglepickup);
+E int NDECL(dotoggle);
 E void NDECL(option_help);
 E void FDECL(next_opt, (winid,const char *));
 E int FDECL(fruitadd, (char *));

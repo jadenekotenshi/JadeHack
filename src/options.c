@@ -2624,7 +2624,25 @@ goodfruit:
 	 * options list
 	 */
 	for (i = 0; boolopt[i].name; i++) {
-		if (match_optname(opts, boolopt[i].name, 3, FALSE)) {
+		if (match_optname(opts, boolopt[i].name, 3, TRUE)) {
+			/* "name:true|yes|on|1" or "name:false|no|off|0"
+			   (NetHack 5.0) */
+			char *bv = index(opts, ':');
+
+			if (!bv) bv = index(opts, '=');
+			if (bv) {
+			    do { bv++; } while (*bv == ' ');
+			    if (!strcmpi(bv, "true") || !strcmpi(bv, "yes") ||
+				    !strcmpi(bv, "on") || !strcmp(bv, "1"))
+				negated = FALSE;
+			    else if (!strcmpi(bv, "false") || !strcmpi(bv, "no") ||
+				    !strcmpi(bv, "off") || !strcmp(bv, "0"))
+				negated = TRUE;
+			    else {
+				badoption(opts);
+				return;
+			    }
+			}
 			/* options that don't exist */
 			if (!boolopt[i].addr) {
 			    if (!initial && !negated)
@@ -2639,6 +2657,12 @@ goodfruit:
 			}
 
 			*(boolopt[i].addr) = !negated;
+
+			/* say so when a boolean is changed in the game
+			   (NetHack 5.0) */
+			if (!initial)
+			    pline("The \"%s\" option is now %s.",
+				  boolopt[i].name, negated ? "off" : "on");
 
 			duplicate_opt_detection(boolopt[i].name, 0);
 
@@ -4427,3 +4451,43 @@ char *op;
 #endif	/* OPTION_LISTS_ONLY */
 
 /*options.c*/
+
+
+/* #toggle: flip a boolean option by name (NetHack 5.0) */
+int
+dotoggle()
+{
+	char buf[BUFSZ], opt[BUFSZ];
+	int i, found = -1, matches = 0, len;
+
+	getlin("Toggle which boolean option?", buf);
+	(void) mungspaces(buf);
+	if (buf[0] == '\033' || !buf[0]) return 0;
+	len = strlen(buf);
+	for (i = 0; boolopt[i].name; i++) {
+	    if (!strcmpi(buf, boolopt[i].name)) {	/* exact match wins */
+		found = i; matches = 1;
+		break;
+	    }
+	    if (!strncmpi(buf, boolopt[i].name, len)) {
+		found = i; matches++;
+	    }
+	}
+	if (matches > 1) {
+	    pline("\"%s\" matches more than one option; be more specific.", buf);
+	    return 0;
+	}
+	if (found < 0) {
+	    pline("There is no boolean option \"%s\".", buf);
+	    return 0;
+	}
+	if (!boolopt[found].addr || boolopt[found].optflags != SET_IN_GAME) {
+	    pline("The \"%s\" option can't be changed in the game.",
+		  boolopt[found].name);
+	    return 0;
+	}
+	Sprintf(opt, "%s%s", *boolopt[found].addr ? "!" : "",
+		boolopt[found].name);
+	parseoptions(opt, FALSE, FALSE);
+	return 0;
+}

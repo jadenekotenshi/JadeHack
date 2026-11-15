@@ -347,3 +347,14 @@ light, scales), and its "lightning shield" is 5.0's shield of shock resistance,
 so neither was added. Not done: remaining 5.0 options (name:value booleans,
 toggle feedback, #toggle, sortdiscoveries), gold-armor hallucination cure.
 Objects changed, so rebuild data (`make dlb`) with the binary.
+
+## Batch 18: remaining 5.0 options and gold armor (ported; build OK)
+
+| Feature | Where here | Tested |
+|---|---|---|
+| Boolean options accept `name:true/yes/on/1` and `name:false/no/off/0` ([45]) | `src/options.c` | in game (config file; `showexp:maybe` is rejected) |
+| Message when a boolean option is changed in the game ([71]) | `src/options.c` | in game |
+| `#toggle` command: flip a boolean option by (unique prefix of its) name ([177]) | `src/options.c` `dotoggle()`, `src/cmd.c` | in game |
+| Gold dragon scales / scale mail confer hallucination resistance ([89]) | `src/objects.c` | build only |
+
+Not ported: `sortdiscoveries` ([60]), rebinding keys and `#saveoptions`.

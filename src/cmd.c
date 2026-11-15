@@ -148,6 +148,7 @@ STATIC_PTR int NDECL(enter_explore_mode);
 STATIC_PTR int NDECL(doattributes);
 STATIC_PTR int NDECL(doconduct); /**/
 STATIC_PTR int NDECL(dovanquished);
+extern int NDECL(dotoggle);
 STATIC_PTR int NDECL(dogenocided);
 STATIC_PTR boolean NDECL(minimal_enlightenment);
 
@@ -2130,6 +2131,7 @@ struct ext_func_tab extcmdlist[] = {
 	{"name", "name an item or type of object", ddocall, TRUE},
 	{"offer", "offer a sacrifice to the gods", dosacrifice, FALSE},
 	{"overview", "show an overview of the dungeon", dooverview, TRUE},
+	{"toggle", "toggle a boolean option", dotoggle, TRUE},
 	{"vanquished", "list the creatures vanquished so far", dovanquished, TRUE},
 	{"pray", "pray to the gods for help", dopray, TRUE},
 	{"quit", "exit without saving current game", done2, TRUE},
