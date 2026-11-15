@@ -156,7 +156,11 @@
 #define NEWS "news"		/* the file containing the latest hack news */
 #define PANICLOG "paniclog"	/* log of panic and impossible events */
 #define DUMP_LOG				 /* turn on dumping */
+#ifdef __APPLE__
+#define DUMP_FN "dumplog/%n.%t.txt"	/* in the playground (create dumplog/) */
+#else
 #define DUMP_FN "/dgldir/userdata/%N/%n/jadehack/dumplog/%t.sp.txt"
+#endif
 /*#define DUMP_FN "/tmp/%t.sp.txt"*/
 #define DUMPMSGS 30
 
