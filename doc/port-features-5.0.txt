@@ -1,0 +1,67 @@
+NetHack 5.0 "General New Features" worth considering for JadeHack
+================================================================
+Read from doc/fixes5-0-0.txt (178 entries).  Numbers are positions in that
+section.  "Spork check" notes what this tree already has.
+
+A. Interface / quality of life -- small, self-contained, low conflict risk
+  [96-99]  paranoid_confirm:swim / trap / Autoall -- confirm before walking
+           into water, lava or a known trap.  (Spork has no paranoid_confirm
+           option beyond what do_wear.c/pager.c use internally.)
+  [120][123] #vanquished as a normal command, #genocided, sortvanquished.
+           (end.c already has list_vanquished(); needs a command + menu.)
+  [139]    '?' at the "genocide what?" prompt lists what's already genocided.
+  [100][101] farlook says whether a monster is asleep / can't move / meditating.
+  [147]    farlook on a grave reports the headstone engraving.
+  [133]    probing and stethoscope include the monster's size.
+  [124]    'I u' mentions unpaid items on the floor.      [shop-related]
+  [71]     feedback when a boolean option is toggled with 'O'.
+  [45]     boolean options accept name:true / name:off style values.
+  [177]    #toggle command for boolean options.
+  [60]     sortdiscoveries option.
+  [127][128] first-farlook tip and a 'tips' option.        [probably skip]
+
+B. Gameplay -- small rule changes, each local to one function
+  [52]     blessed scroll of teleportation gives one-shot teleport control.
+  [91][92] full healing / blessed extra healing cure wounded legs
+           (Spork has Wounded_legs handling already).
+  [90]     messages during the last turns of food poisoning / illness.
+  [80]     drinking a burning potion of oil cures sliming.
+  [82]     vomiting on an altar angers the god.
+  [55]     tourists can read conical hats.
+  [118]    very large humanoids can wear mummy wrappings.
+  [119]    Rangers: +1 multishot with any arrow while wielding Longbow of Diana.
+  [138]    high martial arts skill sometimes hits twice.
+  [140]    throwing the Bell/invocation items/Amulet at the quest leader
+           identifies them instead of counting as an attack.
+  [141]    applying gold flips a coin.
+  [144][145] #dip into a fountain/pool/sink cleans slippery fingers; dipping a
+           potion in a sink hints at what it is.
+  [172]    ring of stealth: hero leaves no tracks.
+  [171]    iron footwear protects against some floor traps.
+  [150]    hot ground in Gehennom/Plane of Fire can destroy dropped potions.
+  [157]    pyrolisk eggs explode when broken.
+  [116]    poly'd purple worm gains intrinsics from a digested monster.
+  [117]    spinach tins in the Monk quest.
+  [76][77] monsters see and remember hero resistances; gain them from corpses.
+           (Larger balance change; needs a decision.)
+
+C. Larger features -- real work, or overlap with Spork's own design
+  [38][81] themed rooms, new bigroom variants, boulder maze: written in Lua in
+           5.0; would have to be rebuilt as C or .des files.
+  [42][43][174][175] new objects/monsters (amulets of flying/guarding, gold
+           dragons, displacer beast, shields, wand of stasis).
+  [53]     zombie "apocalypse".
+  [151]    erinyes overhaul.
+  [129]    engravings drawn on the map.
+  [103]    item actions menu.
+  [112-115] key rebinding, simplified options menu, #saveoptions.
+  [162][163] tourist / healer experience from photos / healing pets.
+  [158]    pauper option.
+
+D. Skip: Lua scripting and runtime level loading [4][6][7], savefile format
+   [2][3], xlogfile fields [40][41][46][67][68], livelog/chronicle [95],
+   accessibility options [152][153], wizard-mode tools [33][66][107][108],
+   Qt/X11/curses-only items, build/doc items [5][167].
+
+Already done here: [111] "eliminate scimitar skill" (JadeHack merged scimitar
+and saber into "curved sword").
