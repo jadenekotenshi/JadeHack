@@ -1338,6 +1338,12 @@ domove()
 		/* can't swap places with pet pinned in a pit by a boulder */
                 didnt_move = TRUE;
 	    } else if (u.ux0 != x && u.uy0 != y &&
+		       mtmp->data == &mons[PM_GRID_BUG]) {
+		/* can't swap places diagonally with a grid bug
+		   (NetHack 3.6.0 fix) */
+		You("stop.  %s can't move diagonally.", upstart(y_monnam(mtmp)));
+                didnt_move = TRUE;
+	    } else if (u.ux0 != x && u.uy0 != y &&
 		       bad_rock(mtmp->data, x, u.uy0) &&
 		       bad_rock(mtmp->data, u.ux0, y) &&
 		       (bigmonst(mtmp->data) || (curr_mon_load(mtmp) > 600))) {

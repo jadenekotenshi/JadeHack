@@ -2157,7 +2157,12 @@ boolean ordinary;
 		case WAN_OPENING:
 		    if (Punished) makeknown(WAN_OPENING);
 		case SPE_KNOCK:
-		    if (Punished) Your("chain quivers for a moment.");
+		    /* opening magic frees the hero from the ball and chain
+		       (NetHack 3.6.0 fix) */
+		    if (Punished) {
+			Your("chain quivers for a moment and falls away.");
+			unpunish();
+		    }
 		    break;
 		case WAN_DIGGING:
 		case SPE_DIG:

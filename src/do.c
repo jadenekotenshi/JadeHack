@@ -857,8 +857,15 @@ dodown()
 		if (float_down(I_SPECIAL|TIMEOUT, W_ARTI))
 		    return (1);   /* came down, so moved */
 	    }
-	    floating_above(stairs_down ? "stairs" : ladder_down ?
-			   "ladder" : surface(u.ux, u.uy));
+	    /* a blind hero who hasn't seen the stairs/ladder doesn't know
+	       they're there (NetHack 3.6.0 fix) */
+	    if (Blind && (stairs_down || ladder_down) &&
+		    glyph_to_cmap(levl[u.ux][u.uy].glyph) != S_dnstair &&
+		    glyph_to_cmap(levl[u.ux][u.uy].glyph) != S_dnladder)
+		floating_above(surface(u.ux, u.uy));
+	    else
+		floating_above(stairs_down ? "stairs" : ladder_down ?
+			       "ladder" : surface(u.ux, u.uy));
 	    return (0);   /* didn't move */
 	}
 	if (!stairs_down && !ladder_down) {

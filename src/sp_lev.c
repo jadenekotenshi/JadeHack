@@ -1765,6 +1765,10 @@ struct mkroom	*croom;
 	/*	corpsenm is "empty" if -1, random if -2, otherwise specific */
 	if (o->corpsenm == NON_PM - 1) otmp->corpsenm = rndmonnum();
 	else if (o->corpsenm != NON_PM) otmp->corpsenm = o->corpsenm;
+	/* weight depends on the species (NetHack 3.6.0 fix) */
+	if (o->corpsenm != NON_PM &&
+		(otmp->otyp == CORPSE || otmp->otyp == STATUE))
+	    otmp->owt = weight(otmp);
 
 	/* assume we wouldn't be given an egg corpsenm unless it was
 	   hatchable */

@@ -257,3 +257,16 @@ together, so changing one without the other would be worse. Amnesia ([368])
 already looks correct here.
 
 Still not worked through: roughly 100 other entries in `doc/port-candidates-3.6.0.txt`.
+
+## Batch 13: more non-shop 3.6.0 candidates (ported; build OK)
+
+| Fix | Where here | Tested |
+|---|---|---|
+| Zapping opening magic at yourself while punished only made the chain quiver ([190]) | `src/zap.c` `zapyourself()` calls `unpunish()` | in game |
+| Hero could swap places diagonally with a tame grid bug ([382]) | `src/hack.c` `domove()` | build only |
+| Blind levitating hero was told "stairs" without having seen them ([55]) | `src/do.c` `dodown()` | build only |
+| Corpses/statues placed by special-level files kept the weight of the default species ([59]) | `src/sp_lev.c` `create_object()` | build only |
+
+Still not worked through: roughly 95 other entries in `doc/port-candidates-3.6.0.txt`.
+Many of the rest are rare edge cases (bones leaks, conduct bookkeeping, vault
+guard corridors, polymorph messaging) that need a hand-built scenario to check.
