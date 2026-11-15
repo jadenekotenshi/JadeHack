@@ -818,6 +818,9 @@ meatobj(mtmp)		/* for gelatinous cubes */
 		if (otmp->otyp == AMULET_OF_STRANGULATION ||
 				otmp->otyp == RIN_SLOW_DIGESTION)
 		    continue;
+		/* Rider corpses can't be engulfed (NetHack 3.6.0 fix) */
+		if (otmp->otyp == CORPSE && is_rider(&mons[otmp->corpsenm]))
+		    continue;
 		++count;
 		if (cansee(mtmp->mx,mtmp->my) && flags.verbose)
 		    pline("%s eats %s!", Monnam(mtmp),

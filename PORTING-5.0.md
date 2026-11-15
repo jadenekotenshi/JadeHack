@@ -204,3 +204,19 @@ wand engraving turn ([301], unclear), lock pick ESC turn ([404], already
 returns without using a move).
 
 Not yet worked through: about 150 other entries in `doc/port-candidates-3.6.0.txt`.
+
+## Batch 10: more non-shop 3.6.0 candidates (ported; build OK, game starts, not exercised in play)
+
+| Fix | Where here |
+|---|---|
+| Wielded/quivered cloak of MR or gray dragon scales gave magic resistance to a polymorphed hero; a wielded potion of blindness gave blindness resistance ([277][278]) | `src/mondata.c` `resists_magm()`, `resists_blnd()` only count worn armor/accessories (and a wielded weapon) |
+| Eating rings could raise to-hit, damage and protection without limit ([126]) | `src/eat.c` new `bounded_increase()` |
+| Gelatinous cubes could engulf Rider corpses ([275]) | `src/mon.c` `meatobj()` |
+| Tainted Medusa corpse gave food poisoning instead of petrification ([103]) | `src/eat.c` `eatcorpse()` treats Medusa as stoning flesh |
+| A monster digging a hole cleared the hero's in-floor trap even when the hole was elsewhere ([217]) | `src/dig.c` `digactualhole()` checks `at_u` |
+| A djinni from a bottle that "disturbed" you could be peaceful ([68]) | `src/potion.c` `djinni_from_bottle()` |
+
+Skipped: recursive `spoteffects()` guard ([239]) needs the function restructured
+with a shared exit label.
+
+Still not worked through: roughly 130 other entries in `doc/port-candidates-3.6.0.txt`.

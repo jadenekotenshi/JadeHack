@@ -81,6 +81,7 @@ struct monst *mon;
 {
 	struct permonst *ptr = mon->data;
 	struct obj *o;
+	long slotmask;
 
 	/* as of 3.2.0:  gray dragons, Angels, Oracle, Yeenoghu */
 	if (dmgtype(ptr, AD_MAGM) || ptr == &mons[PM_BABY_GRAY_DRAGON] ||
@@ -90,10 +91,18 @@ struct monst *mon;
 	o = (mon == &youmonst) ? uwep : MON_WEP(mon);
 	if (o && o->oartifact && defends(AD_MAGM, o))
 	    return TRUE;
-	/* check for magic resistance granted by worn or carried items */
+	/* check for magic resistance granted by worn or carried items;
+	   only worn armor/accessories (or a wielded real weapon) count, not
+	   a cloak or scales merely wielded or quivered (NetHack 3.6.0 fix) */
 	o = (mon == &youmonst) ? invent : mon->minvent;
+	slotmask = W_ARMOR | W_RING | W_AMUL | W_TOOL;
+	if (mon != &youmonst ||
+		(uwep && (uwep->oclass == WEAPON_CLASS || is_weptool(uwep))))
+	    slotmask |= W_WEP;
+	if (mon == &youmonst && u.twoweap) slotmask |= W_SWAPWEP;
 	for ( ; o; o = o->nobj)
-	    if ((o->owornmask && objects[o->otyp].oc_oprop == ANTIMAGIC) ||
+	    if (((o->owornmask & slotmask) != 0L &&
+			objects[o->otyp].oc_oprop == ANTIMAGIC) ||
 		    (o->oartifact && protects(AD_MAGM, o)))
 		return TRUE;
 	return FALSE;
@@ -121,9 +130,11 @@ struct monst *mon;
 	o = is_you ? uwep : MON_WEP(mon);
 	if (o && o->oartifact && defends(AD_BLND, o))
 	    return TRUE;
+	/* a wielded or quivered potion of blindness doesn't protect */
 	o = is_you ? invent : mon->minvent;
 	for ( ; o; o = o->nobj)
-	    if ((o->owornmask && objects[o->otyp].oc_oprop == BLINDED) ||
+	    if (((o->owornmask & (W_ARMOR | W_RING | W_AMUL | W_TOOL)) != 0L &&
+			objects[o->otyp].oc_oprop == BLINDED) ||
 		    (o->oartifact && protects(AD_BLND, o)))
 		return TRUE;
 	return FALSE;

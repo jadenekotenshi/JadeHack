@@ -1334,7 +1334,10 @@ eatcorpse(otmp)		/* called when a corpse is selected as food */
 	long rotted = 0L;
 	boolean uniq = !!(mons[mnum].geno & G_UNIQ);
 	int retcode = 0;
-	boolean stoneable = (touch_petrifies(&mons[mnum]) && !Stone_resistance &&
+	/* Medusa's flesh petrifies too, so a tainted Medusa corpse must not give
+	   food poisoning instead (NetHack 3.6.0 fix) */
+	boolean stoneable = ((touch_petrifies(&mons[mnum]) ||
+				mnum == PM_MEDUSA) && !Stone_resistance &&
 				!poly_when_stoned(youmonst.data));
 
 	/* KMH, conduct */
@@ -1557,6 +1560,43 @@ struct obj *otmp;
 	    otmp->oclass == RING_CLASS ? "ring" : "amulet");
 }
 
+/* Limit how far eating rings can push to-hit, damage, or protection bonuses
+ * (NetHack 3.6.0 fix): increments shrink as the total approaches 10, 20, 40.
+ * Amounts coming from currently worn rings are left out of the calculation. */
+STATIC_OVL int
+bounded_increase(old, inc, typ)
+int old, inc, typ;
+{
+	int absold, absinc, sgnold, sgninc;
+
+	if (uright && uright->otyp == typ && typ != RIN_PROTECTION)
+	    old -= uright->spe;
+	if (uleft && uleft->otyp == typ && typ != RIN_PROTECTION)
+	    old -= uleft->spe;
+	absold = abs(old), absinc = abs(inc);
+	sgnold = sgn(old), sgninc = sgn(inc);
+
+	if (absinc == 0 || sgnold != sgninc || absold + absinc < 10) {
+	    ;	/* use inc as-is */
+	} else if (absold + absinc < 20) {
+	    absinc = rnd(absinc);	/* 1..n */
+	    if (absold + absinc < 10) absinc = 10 - absold;
+	    inc = sgninc * absinc;
+	} else if (absold + absinc < 40) {
+	    absinc = rn2(absinc) ? 1 : 0;
+	    if (absold + absinc < 20) absinc = rnd(20 - absold);
+	    inc = sgninc * absinc;
+	} else {
+	    inc = 0;	/* no further increase allowed via this method */
+	}
+	if (uright && uright->otyp == typ && typ != RIN_PROTECTION)
+	    old += uright->spe;
+	if (uleft && uleft->otyp == typ && typ != RIN_PROTECTION)
+	    old += uleft->spe;
+	return old + inc;
+}
+
+
 STATIC_OVL void
 eataccessory(otmp)
 struct obj *otmp;
@@ -1633,16 +1673,19 @@ struct obj *otmp;
 		break;
 	    case RIN_INCREASE_ACCURACY:
 		accessory_has_effect(otmp);
-		u.uhitinc += otmp->spe;
+		u.uhitinc = (schar) bounded_increase((int) u.uhitinc, otmp->spe,
+						       RIN_INCREASE_ACCURACY);
 		break;
 	    case RIN_INCREASE_DAMAGE:
 		accessory_has_effect(otmp);
-		u.udaminc += otmp->spe;
+		u.udaminc = (schar) bounded_increase((int) u.udaminc, otmp->spe,
+						       RIN_INCREASE_DAMAGE);
 		break;
 	    case RIN_PROTECTION:
 		accessory_has_effect(otmp);
 		HProtection |= FROMOUTSIDE;
-		u.ublessed += otmp->spe;
+		u.ublessed = bounded_increase(u.ublessed, otmp->spe,
+						  RIN_PROTECTION);
 		flags.botl = 1;
 		break;
 	    case RIN_FREE_ACTION:

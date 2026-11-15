@@ -2113,6 +2113,9 @@ register struct obj *obj;
 		mongone(mtmp);
 		break;
 	default: verbalize("You disturbed me, fool!");
+		/* make sure it really is hostile (NetHack 3.6.0 fix) */
+		mtmp->mpeaceful = FALSE;
+		set_malign(mtmp);
 		break;
 	}
 }
