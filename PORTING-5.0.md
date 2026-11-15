@@ -519,3 +519,7 @@ Spell: superior healing (level 5 healing spell, heals 6d12; same casting bonus a
 ## Batch 31: crystal helmet
 
 Helm of brilliance now has a fixed appearance, "crystal helmet", and is made of glass (as in NetHack 5.0), so it no longer hampers spellcasting; the special case for it in `spell.c` is gone. It no longer takes part in the helmet appearance shuffle.
+
+## Batch 32
+
+Bards may now also be elves (neutral or chaotic), alongside humans, gnomes and orcs. Elven Bards start with an elven short sword in place of a plain one.
