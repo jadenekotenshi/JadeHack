@@ -66,6 +66,24 @@ whether this tree's throw code has the stale pointer).
 | Gating in a demon when `ndemon()`/`dprince()`/`dlord()` returned NON_PM indexed `mons[-1]` | `src/minion.c` `msummon()`: four `cnt` computations check `dtype != NON_PM` |
 | "Tin cures stoning" | This tree has no monster tin-eating, so the tin case is N/A. The same bug class does exist for generic eggs (corpsenm NON_PM), fixed in `src/dog.c` (`dogfood()`), `src/mon.c` (`mstoning()`) and `src/muse.c` (egg stoning check), alongside the earlier `eat.c` fix. |
 
+## Batch 6: shop fixes (partly ported)
+
+Ported: `stolen_value()` in `src/shk.c` now charges `quan * get_cost()` instead of
+the price of one item, so stolen/broken/thrown-out stacks are billed in full
+(3.6.0 "some types of shop theft of a stack only charged for a single one").
+
+Checked, not ported:
+- Horn of plenty (3.6.0/5.0): the shop claiming ownership of the created item is
+  a rules change, not an exploit fix; `apply.c` here has no equivalent code.
+- Monster pickup of unpaid floor items (5.0 `mpickobj()`): `steal()` already
+  takes stolen unpaid items off the bill; the floor-item case is rare.
+- Gold into a hero-owned container giving credit (3.6.1): 5.0's `in_container()`
+  and `sellobj()` differ structurally from this tree and I couldn't identify
+  the specific change that fixes it without rewriting the shop code.
+
+Not yet read in code: sold-twice cases (3.6.0 [122], [123]), container gold on
+`#tip`, tin stack, shop wall repair, the teleported-object robbery case.
+
 ## N/A because SporkHack changed or removed the code
 
 | Fix | Reason |

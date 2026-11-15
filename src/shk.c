@@ -2683,7 +2683,9 @@ register boolean peaceful, silent;
 	    value += stolen_container(obj, shkp, value, ininv);
 	    if(!ininv) gvalue += contained_gold(obj);
 	} else if (!obj->no_charge && saleable(shkp, obj)) {
-	    value += get_cost(obj, shkp);
+	    /* get_cost() is per item; charge for the whole stack
+	       (NetHack 3.6.0: stack thefts only charged for one) */
+	    value += obj->quan * get_cost(obj, shkp);
 	}
 
 	if(gvalue + value == 0L) return(0L);
