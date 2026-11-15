@@ -603,6 +603,9 @@ register struct monst *mtmp;
 	    else
 	    	pline_msg = "squawks.";
 	    break;
+	case MS_GLARE:
+	    pline_msg = mtmp->mpeaceful ? "clucks." : "glares menacingly at you.";
+	    break;
 	case MS_HISS:
 	    if (!mtmp->mpeaceful)
 		pline_msg = "hisses!";

@@ -438,3 +438,31 @@ merozalghi), odorous orb (stink messages in `mattacku`, BLAM! + gas-spore
 explosion + stinking cloud on death). Starting weapons are in `makemon.c`.
 "Rare" and "very rare" both map to generation frequency 1.
 Rebuild makedefs and the data files after these changes (struct you grew).
+
+## Batch 24: Bard, rapier, silver knives/bolts, skill merge, assorted
+
+| Change | Notes |
+|---|---|
+| Chicken (c) | very weak, common (freq 3), bite 1d2; new `MS_GLARE` sound ("glares menacingly at you" when chatted to); corpse nutrition 250 and "tastes okay" |
+| Sunsword | extra d6 damage against anything not fire resistant (`artifact_hit`) |
+| Grimtooth | replaced with the NetHack 5.0 version: warns of elves, +d2 to hit vs elves, +d6 damage vs everything, permanently poisoned in melee, poison resistance while wielded, invoke (`FLING_POISON`) throws blinding or acid venom |
+| Skunky | new spare potion appearance |
+| Rapier | long sword skill, d10 / d4 large, +1 to hit, prob 6 (long sword 40 -> 34) |
+| Silver knife, silver crossbow bolt | prob 4 / 8 (taken from knife and crossbow bolt); silver hurts silver-haters via material; monsters may throw them |
+| Spear skill | trident and javelin now use the spear skill; `P_JAVELIN`/`P_TRIDENT` removed and later skills renumbered; each role keeps the best of its three old caps |
+| Silver mace | already existed (base of Demonbane); no change |
+| Bard | new role (see below) |
+
+Bard (`src/role.c`, `u_init.c`, `monst.c`, `artilist.h`, `dat/Bard.des`, `dat/quest.txt`):
+human/gnome/orc, neutral or chaotic, SlashTHEM stats, ranks and gods
+(Minerva/Apollo/Linus); sleep resistance at XL5, stealth at XL10.  Starts with a
++1 silver dagger, short sword or messer (1/3 each), +1 leather cloak, apples,
+oranges, booze, a harp or flute (orcs: bugle or tooled horn) and a bell or
+whistle; knows all instruments, the five bardic spellbooks and 5-15 random
+magical items.  Skills: short sword and curved sword up to Skilled (as asked).
+Quest (original design): Amphion at the College of Parnassus, lyrist guardians,
+sirens, nemesis Aglaope on the Isle of Anthemoessa, artifact The Lyre of Orpheus
+(wooden harp: magic resistance carried, invoke = scroll of taming).
+Not implemented: techniques, the musicalize spell and songs, harp rumors, and
+the Shimmerstaff first gift.  The character menu in `charinit.c` gained a
+Bard row (accelerator `B`).

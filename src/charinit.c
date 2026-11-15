@@ -16,17 +16,18 @@ struct player_selection_menu_option {
 } player_selection_menu_options[] = {
     { 2, 4, 'a', "Archeologist", &flags.initrole, str2role, ok_role },
         { 2, 5, 'b', "Barbarian",    &flags.initrole, str2role, ok_role },
-        { 2, 6, 'c', "Caveman",      &flags.initrole, str2role, ok_role },
-        { 2, 7, 'h', "Healer",       &flags.initrole, str2role, ok_role },
-        { 2, 8, 'k', "Knight",       &flags.initrole, str2role, ok_role },
-        { 2, 9, 'm', "Monk",         &flags.initrole, str2role, ok_role },
-        { 2,10, 'p', "Priest",       &flags.initrole, str2role, ok_role },
-        { 2,11, 'R', "Ranger",       &flags.initrole, str2role, ok_role },
-        { 2,12, 'r', "Rogue",        &flags.initrole, str2role, ok_role },
-        { 2,13, 's', "Samurai",      &flags.initrole, str2role, ok_role },
-        { 2,14, 't', "Tourist",      &flags.initrole, str2role, ok_role },
-        { 2,15, 'v', "Valkyrie",     &flags.initrole, str2role, ok_role },
-        { 2,16, 'w', "Wizard",       &flags.initrole, str2role, ok_role },
+        { 2, 6, 'B', "Bard",         &flags.initrole, str2role, ok_role },
+        { 2, 7, 'c', "Caveman",      &flags.initrole, str2role, ok_role },
+        { 2, 8, 'h', "Healer",       &flags.initrole, str2role, ok_role },
+        { 2, 9, 'k', "Knight",       &flags.initrole, str2role, ok_role },
+        { 2,10, 'm', "Monk",         &flags.initrole, str2role, ok_role },
+        { 2,11, 'p', "Priest",       &flags.initrole, str2role, ok_role },
+        { 2,12, 'R', "Ranger",       &flags.initrole, str2role, ok_role },
+        { 2,13, 'r', "Rogue",        &flags.initrole, str2role, ok_role },
+        { 2,14, 's', "Samurai",      &flags.initrole, str2role, ok_role },
+        { 2,15, 't', "Tourist",      &flags.initrole, str2role, ok_role },
+        { 2,16, 'v', "Valkyrie",     &flags.initrole, str2role, ok_role },
+        { 2,17, 'w', "Wizard",       &flags.initrole, str2role, ok_role },
 
         {21, 4, 'H', "Human",        &flags.initrace, str2race, ok_race },
         {21, 5, 'D', "Dwarf",        &flags.initrace, str2race, ok_race },
@@ -41,9 +42,9 @@ struct player_selection_menu_option {
         {21,16, 'N', "Neutral",      &flags.initalign,str2align,ok_align},
         {21,17, 'C', "Chaotic",      &flags.initalign,str2align,ok_align},
 
-        { 2,19, 'q', "quit",         0,               0,        0},
-        {13,19, '*', "reroll",       0,               0,        0},
-        {26,19, '.', "play!",        0,               0,        0},
+        { 2,20, 'q', "quit",         0,               0,        0},
+        {13,20, '*', "reroll",       0,               0,        0},
+        {26,20, '.', "play!",        0,               0,        0},
         {0,0,0,0,0,0} /* fencepost */
 };
 
@@ -145,7 +146,7 @@ player_selection_menu(win,toggle_color)
             xallowed = TRUE;
         } else { xallowed = FALSE; }
 
-        curs(win, 26, 20); /* the . of . - play! */
+        curs(win, 26, 21); /* the . of . - play! */
 
         ch = readchar();
         if (ch == 'q' || ch == 'Q') return -1;

@@ -652,7 +652,8 @@ int dieroll;
 		    /* or throw a missile without the proper bow... */
 		    (is_ammo(obj) && !ammo_and_launcher(obj, uwep))) {
 		    /* then do only 1-2 points of damage */
-		    if (mdat == &mons[PM_SHADE] && obj->otyp != SILVER_ARROW)
+		    if (mdat == &mons[PM_SHADE] && obj->otyp != SILVER_ARROW &&
+			obj->otyp != SILVER_CROSSBOW_BOLT)
 			tmp = 0;
 		    else
 			tmp = rnd(2);
@@ -753,7 +754,8 @@ int dieroll;
 				     uwep->otyp == ELVEN_BOW)
 				tmp++;
 			}
-			if(obj->opoisoned && is_poisonable(obj))
+			if((obj->opoisoned && is_poisonable(obj)) ||
+			   obj->oartifact == ART_GRIMTOOTH)
 			    ispoisoned = TRUE;
 		    }
 		}
@@ -1022,7 +1024,8 @@ int dieroll;
 			venial_sin();
 		}
 	    }
-	    if (obj && !rn2(nopoison) && obj->oartifact != ART_DIRGE) {
+	    if (obj && !rn2(nopoison) && obj->oartifact != ART_DIRGE &&
+		obj->oartifact != ART_GRIMTOOTH) {
 		obj->opoisoned = FALSE;
 		Your("%s %s no longer poisoned.", xname(obj),
 		     otense(obj, "are"));

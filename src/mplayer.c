@@ -191,6 +191,10 @@ register boolean special;
 		    if (rn2(2)) armor = rnd_class(PLATE_MAIL, CHAIN_MAIL);
 		    if (helm == HELM_OF_BRILLIANCE) helm = STRANGE_OBJECT;
 		    break;
+		case PM_BARD:
+		    if (rn2(2)) weapon = rn2(2) ? SHORT_SWORD : SILVER_DAGGER;
+		    cloak = LEATHER_CLOAK;
+		    break;
 		case PM_CAVEMAN:
 		case PM_CAVEWOMAN:
 		    if (rn2(4)) weapon = MACE;

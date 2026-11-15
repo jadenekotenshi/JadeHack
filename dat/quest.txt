@@ -3067,6 +3067,290 @@ plane.  There you must offer the Amulet to %d.
 Amulet interferes with mine.  I hope for your success."
 %E
 #
+#	Bard
+#
+%Cc Brd 00001
+You are suddenly back in the familiar halls of %H.  Something is
+wrong.  The practice rooms echo with silence, and the great instruments
+hang unstrung on the walls.  A faint, sweet singing drifts in from the
+sea, and you %x students everywhere with wax in their ears and their
+eyes glassy and dull.
+%E
+
+%Cp Brd 00002
+You are back at %H, where the silence is almost painful.
+%E
+
+%Cp Brd 00003
+You return to %H.  The singing from the sea grows stronger
+with every passing day.
+%E
+
+%Cp Brd 00005
+"The music from the sea... it makes me want to walk into the waves."
+%E
+
+%Cp Brd 00006
+"Do not listen to the sirens, whatever else you do."
+%E
+
+%Cp Brd 00007
+"Master Amphion has not played a note since the lyre was taken."
+%E
+
+%Cp Brd 00008
+"Wax in the ears helps, but then one cannot hear the lessons."
+%E
+
+%Cp Brd 00009
+"They say the sea itself keeps time with her song."
+%E
+
+%Cp Brd 00010
+"I used to play for kings.  Now I play for sirens, and I do not like the audience."
+%E
+
+%Cp Brd 00011
+"My lute has gone sour since the singing began."
+%E
+
+%Cp Brd 00012
+"A true bard needs no magic to charm a crowd."
+%E
+
+%Cp Brd 00013
+"If you find a rhyme for Anthemoessa, please tell me."
+%E
+
+%Cp Brd 00014
+"Have you heard the one about the siren and the sailor?  Neither did he."
+%E
+
+%Cc Brd 00015
+"Is it really you, %p!  I had given up hope for your return.
+The sirens of Anthemoessa have silenced the best of our company, and
+%n herself sings every night from her island.
+
+"Let me hear whether you are ready to answer her."
+%E
+
+%Cp Brd 00016
+"Things are getting worse, %p.
+I hope that this time your song is true."
+%E
+
+%Cp Brd 00017
+"I hope that for the sake of %H you have practiced
+well since we last met."
+%E
+
+%Cc Brd 00018
+"It is too late, %p.  Your voice is no longer welcome here.
+Leave %H and do not return."
+%E
+
+%Cc Brd 00019
+"There is still too much that you have to learn before you can face
+%n.  Return to us as a proven %R, and perhaps then your
+music will be strong enough.
+
+"Go now, and may %d guide your fingers and your voice."
+%E
+
+%Cc Brd 00020
+"It would be an insult to %d to send one who is not true to the
+%a path against %n.
+
+"Do not return until you have mended your ways.  Only by following the
+%a path can your music hope to prevail."
+%E
+
+%Cc Brd 00021
+"You have indeed proven yourself a worthy %c, %p.
+
+"Long ago %n, the siren of Anthemoessa, stole %o
+from the court of the Muses.  With its power she drowns the music of
+the world in her own, and now no instrument in %H plays true.
+
+"You must sail to %i and recover %o from her.
+Beware her song, and the song of her sisters.  Do not let it enter your
+heart.  Let us pray that %d will guide you and keep you safe."
+%E
+
+%Cp Brd 00025
+"Do not be fooled by the sweetness of %ns voice."
+%E
+
+%Cp Brd 00026
+"To reach %i you must pass many dangers."
+%E
+
+%Cp Brd 00027
+"If you do not return with %o, our music is lost."
+%E
+
+%Cp Brd 00028
+"Do not be afraid to call upon %d if you truly need help."
+%E
+
+%Cp Brd 00029
+"If you do not stop %n, her song will follow you back here!"
+%E
+
+%Cp Brd 00030
+"Take %o from %n and the sirens may lose their power."
+%E
+
+%Cp Brd 00031
+"You must hurry, %p!"
+%E
+
+%Cp Brd 00032
+"You are like %Sa to me, %p.  Do not let me down."
+%E
+
+%Cp Brd 00033
+"If you are %a at all times you may succeed, %p."
+%E
+
+%Cp Brd 00034
+"Let all who meet you on your journey know that you are on a quest for
+%l and grant you safe passage."
+%E
+
+%Cc Brd 00035
+Only your faith in %d keeps you from covering your ears.  You %x
+the handiwork of %ns sisters everywhere.
+%E
+
+%Cp Brd 00036
+You know that this time you must find and silence %n.
+%E
+
+%Cc Brd 00040
+You sense the presence of %o, humming faintly somewhere nearby.
+%E
+
+%Cp Brd 00041
+You gain confidence, knowing that you may soon hold
+%o in your hands.
+%E
+
+%Cc Brd 00050
+"So, %p, %l thinks that you can take
+%o from me!
+
+"It only proves how desperate he has become that he sends %ra to
+try and silence me.  When this day is over, you will sing for me
+forever on %i."
+%E
+
+%Cp Brd 00051
+"I let you live the last time because your voice amused me.
+This time I will drown it, %p."
+%E
+
+%Cc Brd 00052
+"These meetings come to bore me.  You disturb my music with
+%o.
+
+"If you do not leave now, I will sing such sorrow into you that
+%l will weep to have ever sent his %S to me!"
+%E
+
+%Cc Brd 00053
+"You fool.  You do not know how to play %o.
+
+"Give it to me and I will teach you what music truly is, and together
+we will sing %H into the sea.  But do so now, as my patience
+wears thin."
+%E
+
+%Cp Brd 00060
+"I silenced %l and I will silence you, %p."
+%E
+
+%Cp Brd 00061
+"Where is %d now?  No god can hear you over my song!"
+%E
+
+%Cp Brd 00062
+"Beg for mercy in a pleasing key and I may be lenient."
+%E
+
+%Cp Brd 00063
+"If you were not so %a, you might have stood a chance."
+%E
+
+%Cp Brd 00064
+"Vengeance is mine at last, %p."
+%E
+
+%Cp Brd 00065
+"I only wish that %l had sent a more worthy %r against me."
+%E
+
+%Cp Brd 00066
+"With %o in my possession you cannot hope to win."
+%E
+
+%Cp Brd 00067
+"%nC has never been out-sung, NEVER!"
+%E
+
+%Cp Brd 00068
+"Are you truly the best %H has to send against me?  I pity %l."
+%E
+
+%Cp Brd 00069
+"How do you spell %p?  I want the marker on your grave to be correct."
+%E
+
+%Cc Brd 00070
+As you lift %o, its strings hum with a sound you have only
+heard in dreams, and the sirens' song falls silent.  Your only thought is
+to quickly return to %H and find %l.
+%E
+
+%Cc Brd 00080
+You turn in the direction of %n.  As her body dissolves into sea
+foam before your eyes, you hear her sing, faint and cold:
+
+    You shall never be rid of me, %p!
+    My song will find you wherever you go and take back what is mine.
+%E
+
+%Cc Brd 00081
+As %l detects the presence of %o,
+he almost smiles for the first time in many a full moon.
+
+As he looks up from %o he says:
+
+    You have recovered %o.  You are its
+    owner now, but not its master.  Let it work with you as you continue
+    your journey.  With its help, and %d to guide you on the
+    %a path, you may yet recover the Amulet of Yendor.
+%E
+
+%Cc Brd 00082
+"%oC is yours now.  The halls of %H
+await your return through the magic portal that brought you here."
+%E
+
+%Cp Brd 00090
+"I could not be more proud than if you were my own %S, %p!
+Sing to me of your adventures in quest of the Amulet of Yendor."
+%E
+
+%Cc Brd 00091
+"Stand back and let me look at you, %p.
+Now that you have recovered the Amulet of Yendor, I'm afraid living
+out your days in %H would seem pretty tame.
+
+"Come, let us play together one last time, and then go out and
+sing it into legend."
+%E
+
 #	Wizard
 #
 %Cc Wiz 00001

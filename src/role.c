@@ -75,6 +75,31 @@ const struct Role roles[] = {
 	{  1, 0,  0, 1,  0, 1 },10,	/* Energy */
 	10, 14, 0, 0,  8, A_INT, SPE_CAUSE_FEAR,      -8	/* this isn't accidental */
 },
+{	{"Bard", 0}, {
+	{"Bard",        0},
+	{"Lyrist",      0},
+	{"Sonneteer",   0},
+	{"Jongleur",    0},
+	{"Troubadour",  0},
+	{"Minstrel",    0},
+	{"Lorist",      0},
+	{"Well-known Bard", 0},
+	{"Master Bard", 0} },
+	"_Minerva", "Apollo", "Linus", /* Greek/Roman */
+	"Brd", "the College of Parnassus", "the Isle of Anthemoessa",
+	PM_BARD, NON_PM, NON_PM,
+	PM_AMPHION, PM_LYRIST, PM_AGLAOPE,
+	ART_LYRE_OF_ORPHEUS,
+	MH_HUMAN|MH_GNOME|MH_ORC | ROLE_MALE|ROLE_FEMALE |
+	  ROLE_NEUTRAL|ROLE_CHAOTIC,
+	/* Str Int Wis Dex Con Cha */
+	{   7,  7,  7, 10,  6, 10 },
+	{  10, 10, 15, 25, 10, 30 },
+	/* Init   Lower  Higher */
+	{ 10, 0,  0, 8,  1, 0 },	/* Hit points */
+	{  2, 0,  0, 2,  0, 2 },10,	/* Energy */
+	10, 5, 1, 2, 10, A_CHA, SPE_SLEEP,   -4
+},
 {	{"Caveman", "Cavewoman"}, {
 	{"Troglodyte",  0},
 	{"Aborigine",   0},

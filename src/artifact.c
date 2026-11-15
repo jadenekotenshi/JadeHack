@@ -812,6 +812,9 @@ int tmp;
 	if (!weap || (weap->attk.adtyp == AD_PHYS && /* check for `NO_ATTK' */
 			weap->attk.damn == 0 && weap->attk.damd == 0))
 	    spec_dbon_applies = FALSE;
+	else if (otmp->oartifact == ART_GRIMTOOTH)
+	    /* warns against elves, but the bonus applies to everything */
+	    spec_dbon_applies = TRUE;
 	else
 	    spec_dbon_applies = spec_applies(weap, mon);
 
@@ -1190,6 +1193,11 @@ int dieroll; /* needed for Magicbane and vorpal blades */
 	    /* Magicbane's special attacks (possibly modifies hittee[]) */
 	    return Mb_hit(magr, mdef, otmp, dmgptr, dieroll, vis, hittee);
 	}
+
+	/* Sunsword burns anything that is not fire resistant */
+	if (otmp->oartifact == ART_SUNSWORD &&
+		!(youdefend ? (how_resistant(FIRE_RES) > 99) : resists_fire(mdef)))
+	    *dmgptr += rnd(6);
 
 	/* Spineseeker does double damage to fleeing foes */
 	if (otmp->oartifact == ART_SPINESEEKER && !youdefend && mdef->mflee)
@@ -1640,6 +1648,19 @@ arti_invoke(obj)
 	case ENLIGHTENING:
 	    enlightenment(0);
 	    break;
+	case FLING_POISON: {
+	    struct obj *otmp;
+
+	    if (!getdir((char *)0)) {
+		pline("%s", Never_mind);
+		obj->age = monstermoves;
+		return 0;
+	    }
+	    otmp = mksobj(rn2(2) ? BLINDING_VENOM : ACID_VENOM, TRUE, FALSE);
+	    otmp->spe = 1;	/* the poison is yours */
+	    throwit(otmp, 0L, FALSE);
+	    break;
+	  }
 	case CREATE_AMMO: {
 	    struct obj *otmp = mksobj(ARROW, TRUE, FALSE);
 

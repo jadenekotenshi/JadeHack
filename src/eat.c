@@ -1430,7 +1430,8 @@ eatcorpse(otmp)		/* called when a corpse is selected as food */
 		  (vegan(&mons[mnum]) ?
 		   (!carnivorous(youmonst.data) && herbivorous(youmonst.data)) :
 		   (carnivorous(youmonst.data) && !herbivorous(youmonst.data)))
-		  ? "is delicious" : "tastes terrible");
+		  ? "is delicious" :
+		  (mnum == PM_CHICKEN) ? "tastes okay" : "tastes terrible");
 	}
 
 	return(retcode);

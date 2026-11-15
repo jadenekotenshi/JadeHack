@@ -77,9 +77,15 @@ A("Cleaver",			BATTLE_AXE,
 	SPFX_RESTR, 0, 0,
 	PHYS(3,6),	SPDF_NONE,	NO_CARY,	0, A_NEUTRAL, PM_BARBARIAN, NON_PM, 1500L ),
 
+/*
+ *	Grimtooth (as in NetHack 5.0): warns of elves, but its damage bonus
+ *	applies to everything (special case in spec_dbon()).  Permanently
+ *	poisoned, protects from poison when wielded, and can fling venom
+ *	when invoked.
+ */
 A("Grimtooth",			ORCISH_DAGGER,
-	SPFX_RESTR, 0, 0,
-	PHYS(5,6),	SPDF_NONE,	NO_CARY,	0, A_CHAOTIC, NON_PM, PM_ORC, 600L ),
+	(SPFX_RESTR|SPFX_WARN|SPFX_DFLAG2), 0, M2_ELF,
+	PHYS(2,6),	SPDF_POISON,	NO_CARY,	FLING_POISON, A_CHAOTIC, NON_PM, PM_ORC, 1200L ),
 /*
  *	Orcrist and Sting have same alignment as elves.
  *	The combination of SPFX_WARN and M2_something on an artifact
@@ -275,6 +281,11 @@ A("The Eye of the Aethiopica",	AMULET_OF_POWER,
 	(SPFX_NOGEN|SPFX_RESTR|SPFX_INTEL), (SPFX_ESP|SPFX_HSPDAM), 0,
 	NO_ATTK,	SPDF_NONE,	CARY(AD_MAGM),
 	CREATE_PORTAL,	A_NEUTRAL, PM_WIZARD, NON_PM, 4000L ),
+
+A("The Lyre of Orpheus",	WOODEN_HARP,
+	(SPFX_NOGEN|SPFX_RESTR|SPFX_INTEL), 0, 0,
+	NO_ATTK,	SPDF_NONE,	CARY(AD_MAGM),
+	TAMING,		A_NEUTRAL, PM_BARD, NON_PM, 5000L ),
 
 /*
  *  terminator; otyp must be zero

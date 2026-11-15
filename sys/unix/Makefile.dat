@@ -121,10 +121,11 @@ spec_levs: ../util/lev_comp \
 
 quest_levs: ../util/lev_comp \
 	Arch.des Barb.des Caveman.des Healer.des Knight.des Monk.des \
-	Priest.des Ranger.des Rogue.des Samurai.des Tourist.des Valkyrie.des \
+	Priest.des Ranger.des Rogue.des Samurai.des Tourist.des Valkyrie.des Bard.des \
 	Wizard.des
 	../util/lev_comp $(LEVCOMP_FLAGS) Arch.des
 	../util/lev_comp $(LEVCOMP_FLAGS) Barb.des
+	../util/lev_comp $(LEVCOMP_FLAGS) Bard.des
 	../util/lev_comp $(LEVCOMP_FLAGS) Caveman.des
 	../util/lev_comp $(LEVCOMP_FLAGS) Healer.des
 	../util/lev_comp $(LEVCOMP_FLAGS) Knight.des

@@ -36,38 +36,36 @@
 #define P_HAMMER            14	/* Heavy head on the end */
 #define P_QUARTERSTAFF      15	/* Long-shafted bludgeon */
 #define P_POLEARMS          16
-#define P_SPEAR             17
-#define P_JAVELIN           18
-#define P_TRIDENT           19
-#define P_LANCE             20
-#define P_BOW               21
-#define P_SLING             22
-#define P_CROSSBOW          23
-#define P_DART              24
-#define P_SHURIKEN          25
-#define P_BOOMERANG         26
-#define P_WHIP              27
-#define P_UNICORN_HORN      28	/* last weapon */
+#define P_SPEAR             17	/* spears, javelins and tridents */
+#define P_LANCE             18
+#define P_BOW               19
+#define P_SLING             20
+#define P_CROSSBOW          21
+#define P_DART              22
+#define P_SHURIKEN          23
+#define P_BOOMERANG         24
+#define P_WHIP              25
+#define P_UNICORN_HORN      26	/* last weapon */
 #define P_FIRST_WEAPON      P_DAGGER
 #define P_LAST_WEAPON       P_UNICORN_HORN
 
 /* Spell Skills added by Larry Stewart-Zerba */
-#define P_ATTACK_SPELL      29
-#define P_HEALING_SPELL     30
-#define P_DIVINATION_SPELL  31
-#define P_ENCHANTMENT_SPELL 32
-#define P_CLERIC_SPELL      33
-#define P_ESCAPE_SPELL      34
-#define P_MATTER_SPELL      35
+#define P_ATTACK_SPELL      27
+#define P_HEALING_SPELL     28
+#define P_DIVINATION_SPELL  29
+#define P_ENCHANTMENT_SPELL 30
+#define P_CLERIC_SPELL      31
+#define P_ESCAPE_SPELL      32
+#define P_MATTER_SPELL      33
 #define P_FIRST_SPELL		P_ATTACK_SPELL
 #define P_LAST_SPELL		P_MATTER_SPELL
 
 /* Other types of combat */
-#define P_BARE_HANDED_COMBAT	36
+#define P_BARE_HANDED_COMBAT	34
 #define P_MARTIAL_ARTS		P_BARE_HANDED_COMBAT	/* Role distinguishes */
-#define P_TWO_WEAPON_COMBAT	37	/* Finally implemented */
+#define P_TWO_WEAPON_COMBAT	35	/* Finally implemented */
 #ifdef STEED
-#define P_RIDING		38	/* How well you control your steed */
+#define P_RIDING		36	/* How well you control your steed */
 #define P_LAST_H_TO_H		P_RIDING
 #else
 #define P_LAST_H_TO_H		P_TWO_WEAPON_COMBAT

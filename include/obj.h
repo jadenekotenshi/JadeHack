@@ -150,8 +150,7 @@ struct obj {
 			otmp->oclass == TOOL_CLASS) && \
 			 (objects[otmp->otyp].oc_skill == P_POLEARMS))
 #define is_spear(otmp)	(otmp->oclass == WEAPON_CLASS && \
-			 objects[otmp->otyp].oc_skill >= P_SPEAR && \
-			 objects[otmp->otyp].oc_skill <= P_JAVELIN)
+			 objects[otmp->otyp].oc_skill == P_SPEAR)
 #define is_launcher(otmp)	(otmp->oclass == WEAPON_CLASS && \
 			 objects[otmp->otyp].oc_skill >= P_BOW && \
 			 objects[otmp->otyp].oc_skill <= P_CROSSBOW)
@@ -171,8 +170,7 @@ struct obj {
 			 objects[otmp->otyp].oc_skill <= P_BOOMERANG) || \
 			 objects[otmp->otyp].oc_skill == P_DAGGER || \
 			 objects[otmp->otyp].oc_skill == P_KNIFE || \
-			(objects[otmp->otyp].oc_skill >= P_SPEAR && \
-			 objects[otmp->otyp].oc_skill <= P_TRIDENT)))
+			objects[otmp->otyp].oc_skill == P_SPEAR))
 #define is_weptool(o)	((o)->oclass == TOOL_CLASS && \
 			 objects[(o)->otyp].oc_skill != P_NONE)
 #define bimanual(otmp)	((otmp->oclass == WEAPON_CLASS || \
