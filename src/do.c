@@ -620,6 +620,18 @@ register struct obj *obj;
 		    could_grow = (obj->corpsenm == PM_WRAITH);
 		    could_heal = (obj->corpsenm == PM_NURSE);
 		}
+		/* moving a shop item into the engulfer's inventory is theft;
+		   the hero must pay and the shop keeps ownership
+		   (NetHack 3.6.2 fix) */
+		if (obj->unpaid && *u.ushops) {
+		    struct monst *shkp = shop_keeper(*u.ushops);
+
+		    if (shkp) {
+			(void) stolen_value(obj, u.ux, u.uy,
+					    (boolean) shkp->mpeaceful, FALSE);
+			subfrombill(obj, shkp);
+		    }
+		}
 		(void) mpickobj(u.ustuck,obj);
 		if (is_animal(u.ustuck->data)) {
 		    if (could_poly || could_slime) {

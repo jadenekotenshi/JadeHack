@@ -775,7 +775,14 @@ register boolean broken;
 		    subfrombill(obj, shkp);
 		}
 	} else {
-		if (costly_spot(u.ux, u.uy) && costly_spot(x, y)) {
+		/* u.ushops0: in case we threw while levitating and recoiled
+		   out of the shop (most likely onto the shopkeeper's spot in
+		   front of the door); NetHack 3.6.2 fix, otherwise the item
+		   stayed unpaid on the floor and on the bill */
+		char *oshops = in_rooms(x, y, SHOPBASE);
+
+		if (costly_spot(x, y) &&
+			(*oshops == *u.ushops || *oshops == *u.ushops0)) {
 		    if(obj->unpaid) subfrombill(obj, shkp);
 		    else if(!(x == shkp->mx && y == shkp->my))
 			    sellobj(obj, x, y);

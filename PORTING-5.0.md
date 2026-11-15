@@ -86,9 +86,28 @@ Checked, not ported:
   structurally; no single fix identified.
 - Statue reanimation charge (3.6.0 [90]): not looked at in code.
 
-Not read in code: sold-twice [122]/[123], shop wall repair [17]/[18]/[292]/[293],
-unpaid item dropped into an engulfer [62]/[63], bag of holding explosion [73],
-nested container gold [103], stolen-by-monster floor item [5.0 mpickobj].
+## Batch 8: more shop fixes (ported; build OK, game starts, not exercised in a shop)
+
+| Fix | Where here |
+|---|---|
+| Dropping an unpaid item while engulfed left it unpaid and still on the bill after the engulfer died (3.6.2) | `src/do.c` `dropy()`: treated as theft via `stolen_value()` + `subfrombill()` before the engulfer takes it |
+| Throwing an unpaid item while levitating, recoiling out of the shop, left it unpaid on the floor and on the bill (3.6.2) | `src/dothrow.c` `check_shop_obj()` also accepts the previous shop (`u.ushops0`) |
+
+Only non-container items are handled for the engulfer case; containers with
+unpaid contents still need `stolen_container()`-style handling.
+
+Examined and not ported (no clear, separable fix, or behavior not an exploit):
+- Sold-twice cases [122]/[123]: 5.0's `sellobj()`/`dropped_container()` differ
+  structurally and the notes don't say which change fixes it.
+- Gold in a hero-owned floor container giving credit [21], stolen-by-monster
+  floor items (5.0 `mpickobj()`), breaking container contents [82], uncharged
+  thefts [84], nested container gold [103], bag of holding explosion billing
+  [73], statue reanimation [90b]: need a shop test harness to verify; the notes
+  are too vague to port safely from prose alone.
+- Autopickup of unpaid items [24]: quality-of-life, not an exploit.
+- Shop wall repair [17]/[18]/[292]/[293], Passes_walls shared wall [229],
+  shop-owned boulders [369]/[412], angry shk thrown items [521]: 3.6/3.7-era
+  code paths or too edge-case to verify here.
 
 ## N/A because SporkHack changed or removed the code
 
