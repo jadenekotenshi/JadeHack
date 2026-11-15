@@ -3637,8 +3637,11 @@ register int dx,dy;
 	    if(range && isok(lsx, lsy) && cansee(lsx,lsy))
 		pline("%s bounces!", The(fltxt));
 	    if(!dx || !dy ||
-	       ((In_mines(&u.uz) && IS_WALL(levl[sx][sy].typ) && !rn2(20)) ||
-		((levl[sx][sy].typ == STONE) && !rn2(10)) ||
+	       ((In_mines(&u.uz) && isok(sx,sy) &&
+		 IS_WALL(levl[sx][sy].typ) && !rn2(20)) ||
+		/* sx,sy can be off the map edge here (NetHack 3.6.0 fix:
+		   out-of-bounds read of levl[][]) */
+		((isok(sx,sy) && levl[sx][sy].typ == STONE) && !rn2(10)) ||
 		!rn2(100) )) {
 		dx = -dx;
 		dy = -dy;

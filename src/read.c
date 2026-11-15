@@ -1423,6 +1423,8 @@ register struct obj	*sobj;
 							damage_mon(mtmp,mdmg,AD_PHYS);
 	    	    	    	if (mtmp->mhp <= 0)
 	    	    	    	    xkilled(mtmp, 1);
+	    	    	    	else
+	    	    	    	    wakeup(mtmp);	/* hit monsters get angry (3.6.1 fix) */
 	    	    	    }
 	    	    	    /* Drop the rock/boulder to the floor */
 	    	    	    if (!flooreffects(otmp2, x, y, "fall")) {

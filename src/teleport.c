@@ -1020,7 +1020,7 @@ boolean suppress_impossible;
 
 	trycount = 0;
 	do {
-	    x = rn1(COLNO-3,2);
+	    x = rn1(COLNO-1,1);	/* map columns 1..COLNO-1 (3.6.0 fix) */
 	    y = rn2(ROWNO);
 	    if ((trycount < 500) ? rloc_pos_ok(x, y, mtmp)
 				 : goodpos(x, y, mtmp, 0))

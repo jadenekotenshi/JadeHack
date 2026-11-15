@@ -1140,7 +1140,7 @@ struct obj *obj;
 	if ((!Is_candle(obj) && obj->age == 0)
 			|| (obj->otyp == MAGIC_LAMP && obj->spe == 0)) {
 		if (obj->otyp == BRASS_LANTERN)
-			Your("lamp has run out of power.");
+			Your("lantern is out of power.");
 		else pline("This %s has no oil.", xname(obj));
 		return;
 	}

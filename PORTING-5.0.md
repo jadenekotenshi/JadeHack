@@ -270,3 +270,22 @@ Still not worked through: roughly 100 other entries in `doc/port-candidates-3.6.
 Still not worked through: roughly 95 other entries in `doc/port-candidates-3.6.0.txt`.
 Many of the rest are rare edge cases (bones leaks, conduct bookkeeping, vault
 guard corridors, polymorph messaging) that need a hand-built scenario to check.
+
+## Batch 14: fixes from later versions (3.6.1, 5.0) (ported; build OK, game starts, not exercised in play)
+
+The remaining 3.6.0 entries are mostly rare edge cases and are being left alone.
+
+| Fix | Where here |
+|---|---|
+| "The the Oracle corpse tastes terrible" for unique monsters ([3.6.1 136]) | `src/eat.c` |
+| Orcish heroes could start with a ring of poison resistance ([3.6.1 125]) | `src/u_init.c` |
+| Rogue's lock pick started as "+9" though enchantment is meaningless ([3.6.1 165]) | `src/u_init.c` |
+| Monsters hit by a scroll-of-earth boulder weren't woken/angered ([3.6.1 181]) | `src/read.c` |
+| Random monster teleports never chose map column 1 ([5.0 420]) | `src/teleport.c` `rloc()` |
+| Brass lantern said "lamp has run out of power" ([5.0 143]) | `src/apply.c` |
+| Out-of-bounds read of `levl[][]` when a ray bounced off the map edge ([5.0 319]) | `src/zap.c` `dobuzz()` |
+
+Checked, not needed: `squadprob[]` size ([5.0 62]; `NSTYPES` is 4 here), monster
+multishot launcher typo ([3.6.3 29]; already uses the monster's weapon), monsters
+not wielding digging tools ([3.6.2 19]; same logic as 5.0), musical note grammar
+([5.0 117]; no notes in this tree).

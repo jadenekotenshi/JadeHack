@@ -1419,9 +1419,14 @@ eatcorpse(otmp)		/* called when a corpse is selected as food */
 		    
 	    if (!retcode) consume_oeaten(otmp, 2);	/* oeaten >>= 2 */
 	} else {
+	    char fbuf[BUFSZ];
+
+	    /* food_xname() already supplies "the" for unique monsters, so
+	       don't add a second one (NetHack 3.6.1 fix: "The the ...") */
+	    Strcpy(fbuf, food_xname(otmp, FALSE));
 	    pline("%s%s %s!",
-		  !uniq ? "This " : !type_is_pname(&mons[mnum]) ? "The " : "",
-		  food_xname(otmp, FALSE),
+		  !uniq ? "This " : "",
+		  uniq ? upstart(fbuf) : fbuf,
 		  (vegan(&mons[mnum]) ?
 		   (!carnivorous(youmonst.data) && herbivorous(youmonst.data)) :
 		   (carnivorous(youmonst.data) && !herbivorous(youmonst.data)))
