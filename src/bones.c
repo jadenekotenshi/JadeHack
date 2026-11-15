@@ -13,6 +13,7 @@ extern long bytes_counted;
 STATIC_DCL boolean FDECL(no_bones_level, (d_level *));
 STATIC_DCL void FDECL(goodfruit, (int));
 STATIC_DCL void FDECL(resetobjs,(struct obj *,BOOLEAN_P));
+STATIC_DCL void FDECL(sanitize_name,(char *));
 STATIC_DCL void FDECL(drop_upon_death, (struct monst *, struct obj *));
 
 STATIC_OVL boolean
@@ -53,6 +54,29 @@ int id;
 	}
 }
 
+/* while loading bones, strip out text possibly supplied by an old player
+   that might accidentally or maliciously disrupt the new player's display
+   (NetHack 3.6.0 fix) */
+STATIC_OVL void
+sanitize_name(namebuf)
+char *namebuf;
+{
+	int c;
+	boolean strip_8th_bit = !iflags.wc_eight_bit_input;
+
+	while (*namebuf) {
+	    c = *namebuf & 0177;
+	    if (c < ' ' || c == '\177') {
+		/* non-printable or undesirable */
+		*namebuf = '.';
+	    } else if (c != *namebuf && strip_8th_bit) {
+		*namebuf = '_';
+	    }
+	    ++namebuf;
+	}
+}
+
+
 STATIC_OVL void
 resetobjs(ochain,restore)
 struct obj *ochain;
@@ -76,6 +100,7 @@ boolean restore;
 			*ONAME(otmp) = '\0';
 		} else if (otmp->oartifact && restore)
 			artifact_exists(otmp,ONAME(otmp),TRUE);
+		if (restore && otmp->onamelth) sanitize_name(ONAME(otmp));
 		if (!restore) {
 			/* do not zero out o_ids for ghost levels anymore */
 
@@ -493,7 +518,14 @@ getbones()
 			 * subject to genocide, their mhpmax will be
 			 * set to the magic DEFUNCT_MONSTER cookie value.
 			 */
+			{
+			    struct engr *ep;
+
+			    for (ep = head_engr; ep; ep = ep->nxt_engr)
+				if (ep->engr_txt) sanitize_name(ep->engr_txt);
+			}
 			for(mtmp = fmon; mtmp; mtmp = mtmp->nmon) {
+			    if (mtmp->mnamelth) sanitize_name(NAME(mtmp));
 			    if (mtmp->mhpmax == DEFUNCT_MONSTER) {
 #if defined(DEBUG) && defined(WIZARD)
 				if (wizard)

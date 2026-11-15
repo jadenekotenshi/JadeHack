@@ -594,6 +594,11 @@ docast()
 {
 	int spell_no;
 
+	/* NetHack 3.6.0: a stunned hero can't cast */
+	if (Stunned) {
+	    You("are too impaired to cast a spell.");
+	    return 0;
+	}
 	if (getspell(&spell_no))
 	    return spelleffects(spell_no, FALSE);
 	return 0;

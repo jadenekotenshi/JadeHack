@@ -1362,6 +1362,10 @@ const struct def_skill *class_skill;
 
 	/* Set skill for all weapons in inventory to be basic */
 	for (obj = invent; obj; obj = obj->nobj) {
+	    /* don't give skill just because of carried ammo; wait until the
+	       launcher shows up (an archeologist's touchstone is slingable
+	       and used to confer sling skill; NetHack 3.6.0 fix) */
+	    if (is_ammo(obj)) continue;
 	    skill = weapon_type(obj);
 	    if (skill != P_NONE)
 		P_SKILL(skill) = P_BASIC;

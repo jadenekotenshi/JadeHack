@@ -1924,8 +1924,11 @@ int how;
 	    kill_genocided_monsters();
 	    update_inventory();	/* in case identified eggs were affected */
 	} else {
-	    int cnt = 0;
+	    int cnt = 0, census = 0;
+	    struct monst *mon;
 
+	    for (mon = fmon; mon; mon = mon->nmon)
+		if (!DEADMONSTER(mon)) ++census;
 	    if (!(mons[mndx].geno & G_UNIQ) &&
 		    !(mvitals[mndx].mvflags & (G_GENOD | G_EXTINCT)))
 		for (i = rn1(3, 4); i > 0; i--) {
@@ -1935,8 +1938,19 @@ int how;
 		    if (mvitals[mndx].mvflags & G_EXTINCT)
 			break;	/* just made last one */
 		}
-	    if (cnt)
-		pline("Sent in some %s.", makeplural(buf));
+	    if (cnt) {
+		/* groups can make more than 'cnt'; count what actually
+		   arrived (NetHack 3.6.0: feedback was plural for one) */
+		int now = 0;
+
+		for (mon = fmon; mon; mon = mon->nmon)
+		    if (!DEADMONSTER(mon)) ++now;
+		cnt = now - census;
+		if (cnt > 1)
+		    pline("Sent in some %s.", makeplural(buf));
+		else
+		    pline("Sent in %s.", an(buf));
+	    }
 	    else
 		pline("%s", nothing_happens);
 	}

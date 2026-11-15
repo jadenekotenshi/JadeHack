@@ -480,6 +480,10 @@ boolean racialexception;
 #ifdef TOURIST
 		case W_ARMU:
 		    if (!is_shirt(obj)) continue;
+		    /* can't put a shirt on under a suit or cloak already
+		       worn (NetHack 3.6.0 fix) */
+		    if (which_armor(mon, W_ARM) || which_armor(mon, W_ARMC))
+			continue;
 		    break;
 #endif
 		case W_ARMC:
@@ -487,6 +491,11 @@ boolean racialexception;
 		    break;
 		case W_ARMH:
 		    if (!is_helmet(obj)) continue;
+		    /* temple priests and minions won't wear one of these
+		       (NetHack 3.6.0 fix) */
+		    if (obj->otyp == HELM_OF_OPPOSITE_ALIGNMENT &&
+			    (mon->ispriest || is_minion(mon->data)))
+			continue;
 		    /* (flimsy exception matches polyself handling) */
 		    if (has_horns(mon->data) && !is_flimsy(obj)) continue;
 		    break;

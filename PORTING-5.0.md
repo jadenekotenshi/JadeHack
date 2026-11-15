@@ -220,3 +220,20 @@ Skipped: recursive `spoteffects()` guard ([239]) needs the function restructured
 with a shared exit label.
 
 Still not worked through: roughly 130 other entries in `doc/port-candidates-3.6.0.txt`.
+
+## Batch 11: more non-shop 3.6.0 candidates (ported; build OK, game starts, not exercised in play)
+
+| Fix | Where here |
+|---|---|
+| Names from loaded bones (monsters, corpse/statue names, engravings) could carry control codes ([381][508]) | `src/bones.c` new `sanitize_name()` |
+| Archeologist's slingable touchstone conferred sling skill ([406]) | `src/weapon.c` `skill_init()` skips ammo in the starting-inventory pass |
+| Wearing or removing an amulet of restful sleep clobbered permanent sleepiness ([407]) | `src/do_wear.c` |
+| Monsters in suits or cloaks put on shirts; priests and minions wore helms of opposite alignment ([409][427]) | `src/worn.c` `m_dowear_type()` |
+| #sit while swallowed gave the wrong message ([484]) | `src/sit.c` |
+| Reverse genocide said "some <plural>" even for one monster ([485]) | `src/read.c` |
+| A stunned hero could cast spells ([554]) | `src/spell.c` `docast()` |
+
+Checked, N/A: `data.base` "bat"/"combat"/"jack boot" clashes ([509-511]); this tree's
+`data.base` has no standalone "bat" entry.
+
+Still not worked through: roughly 110 other entries in `doc/port-candidates-3.6.0.txt`.

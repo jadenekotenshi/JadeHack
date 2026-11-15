@@ -751,9 +751,15 @@ Amulet_on()
 		pline("It constricts your throat!");
 		Strangled = 6;
 		break;
-	case AMULET_OF_RESTFUL_SLEEP:
-		HSleeping = rnd(100);
+	case AMULET_OF_RESTFUL_SLEEP: {
+		long newnap = (long) rnd(98) + 2L, oldnap = (HSleeping & TIMEOUT);
+
+		if (newnap < oldnap || oldnap == 0L)
+		    /* avoid clobbering FROMOUTSIDE bit, which might have been
+		       set by eating one of these amulets (NetHack 3.6.0 fix) */
+		    HSleeping = (HSleeping & ~TIMEOUT) | newnap;
 		break;
+	    }
 	case AMULET_OF_YENDOR:
 		break;
     }
@@ -799,8 +805,9 @@ Amulet_off()
 		break;
 	case AMULET_OF_RESTFUL_SLEEP:
 		setworn((struct obj *)0, W_AMUL);
-		if (!ESleeping)
-			HSleeping = 0;
+		/* don't clobber FROMOUTSIDE; only clear the timeout bits */
+		if (!ESleeping && !(HSleeping & ~TIMEOUT))
+			HSleeping &= ~TIMEOUT;
 		return;
 	case AMULET_OF_YENDOR:
 		break;
