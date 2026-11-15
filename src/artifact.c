@@ -84,6 +84,11 @@ hack_artifacts()
 	    artilist[urole.questarti].alignment = alignmnt;
 	    artilist[urole.questarti].role = Role_switch;
 	}
+	/* Bards' first sacrifice gift is the Luck Blade, in their alignment */
+	if (Role_if(PM_BARD)) {
+	    artilist[ART_LUCK_BLADE].alignment = alignmnt;
+	    artilist[ART_LUCK_BLADE].role = PM_BARD;
+	}
 	return;
 }
 

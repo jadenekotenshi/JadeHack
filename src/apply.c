@@ -35,6 +35,7 @@ STATIC_DCL void FDECL(use_stone, (struct obj *));
 STATIC_DCL void FDECL(apply_flint, (struct obj *));
 STATIC_PTR int NDECL(set_trap);		/* occupation callback */
 STATIC_DCL int FDECL(use_whip, (struct obj *));
+STATIC_DCL int FDECL(use_bearded_axe, (struct obj *));
 STATIC_DCL int FDECL(use_pole, (struct obj *));
 STATIC_DCL int FDECL(use_cream_pie, (struct obj *));
 STATIC_DCL int FDECL(use_grapple, (struct obj *));
@@ -2304,6 +2305,47 @@ set_trap()
 	return 0;
 }
 
+/* apply a dwarvish bearded axe: hook an adjacent monster's weapon away,
+   or chop/dig like any other axe */
+STATIC_OVL int
+use_bearded_axe(obj)
+struct obj *obj;
+{
+    struct monst *mtmp;
+    struct obj *otmp;
+    int res = 0;
+
+    if (obj != uwep) {
+	if (!wield_tool(obj, "hook")) return 0;
+	res = 1;
+    }
+    if (!getdir("In what direction do you want to hook or chop?")) return res;
+    if ((u.dx || u.dy) && !u.dz && !u.uswallow &&
+	isok(u.ux + u.dx, u.uy + u.dy) &&
+	(mtmp = m_at(u.ux + u.dx, u.uy + u.dy)) != 0 &&
+	(otmp = MON_WEP(mtmp)) != 0) {
+	if (otmp->cursed) {
+	    pline("%s %s is stuck fast to %s hand.", s_suffix(Monnam(mtmp)),
+		  xname(otmp), mhis(mtmp));
+	} else if (rnl(20) < ACURR(A_DEX) - 6 + P_SKILL(P_AXE) &&
+		   !(Fumbling || Glib)) {
+	    You("hook %s %s and yank it away!", s_suffix(mon_nam(mtmp)),
+		xname(otmp));
+	    obj_extract_self(otmp);
+	    if (otmp->owornmask) setmnotwielded(mtmp, otmp);
+	    possibly_unwield(mtmp, FALSE);
+	    place_object(otmp, u.ux, u.uy);
+	    stackobj(otmp);
+	    newsym(u.ux, u.uy);
+	} else {
+	    You("fail to catch %s %s.", s_suffix(mon_nam(mtmp)), xname(otmp));
+	}
+	wakeup(mtmp);
+	return 1;
+    }
+    return use_pick_axe2(obj) ? 1 : res;
+}
+
 STATIC_OVL int
 use_whip(obj)
 struct obj *obj;
@@ -3265,6 +3307,9 @@ doapply()
 		/* Pole-weapons can strike at a distance */
 		if (is_pole(obj)) {
 			res = use_pole(obj);
+			break;
+		} else if (obj->otyp == DWARVISH_BEARDED_AXE) {
+			res = use_bearded_axe(obj);
 			break;
 		} else if (is_pick(obj) || is_axe(obj)) {
 			res = use_pick_axe(obj);

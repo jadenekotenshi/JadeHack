@@ -336,6 +336,7 @@ struct you {
 	int	uen, uenmax;		/* magical energy - M. Stephenson */
 	int ugangr;			/* if the gods are angry at you */
 	int ugifts;			/* number of artifacts bestowed */
+	int uinspire;			/* turns of Inspire Courage left */
 	int ublessed, ublesscnt;	/* blessing/duration from #pray */
 #ifndef GOLDOBJ
 	long	ugold, ugold0;

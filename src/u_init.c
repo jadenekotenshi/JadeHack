@@ -291,6 +291,7 @@ static const struct def_skill Skill_A[] = {
 #endif
     { P_TWO_WEAPON_COMBAT, P_BASIC },
     { P_BARE_HANDED_COMBAT, P_EXPERT },
+    { P_SHIELD, P_BASIC },
     { P_NONE, 0 }
 };
 
@@ -300,7 +301,7 @@ static const struct def_skill Skill_B[] = {
     { P_BROAD_SWORD, P_SKILLED },	{ P_LONG_SWORD, P_SKILLED },
     { P_TWO_HANDED_SWORD, P_EXPERT },	{ P_CURVED_SWORD, P_SKILLED },
     { P_CLUB, P_SKILLED },
-    { P_MACE, P_SKILLED },		{ P_MORNING_STAR, P_SKILLED },
+    { P_MACE, P_SKILLED },		
     { P_FLAIL, P_BASIC },		{ P_HAMMER, P_EXPERT },
     { P_QUARTERSTAFF, P_BASIC },	{ P_SPEAR, P_SKILLED },
     { P_BOW, P_BASIC },
@@ -310,6 +311,7 @@ static const struct def_skill Skill_B[] = {
 #endif
     { P_TWO_WEAPON_COMBAT, P_BASIC },
     { P_BARE_HANDED_COMBAT, P_MASTER },
+    { P_SHIELD, P_SKILLED },
     { P_NONE, 0 }
 };
 
@@ -321,8 +323,11 @@ static const struct def_skill Skill_Bard[] = {
     { P_SPEAR, P_SKILLED },		{ P_SLING, P_SKILLED },
     { P_CROSSBOW, P_SKILLED },		{ P_DART, P_EXPERT },
     { P_UNICORN_HORN, P_BASIC },
-    { P_ENCHANTMENT_SPELL, P_SKILLED },
+    { P_HEALING_SPELL, P_BASIC },	{ P_MATTER_SPELL, P_BASIC },
+    { P_DIVINATION_SPELL, P_SKILLED },	{ P_ENCHANTMENT_SPELL, P_EXPERT },
+    { P_MUSICAL_SPELL, P_EXPERT },
     { P_BARE_HANDED_COMBAT, P_EXPERT },
+    { P_SHIELD, P_BASIC },
     { P_NONE, 0 }
 };
 
@@ -330,7 +335,7 @@ static const struct def_skill Skill_C[] = {
     { P_KNIFE,  P_SKILLED },
     { P_AXE, P_SKILLED },		{ P_PICK_AXE, P_BASIC },
     { P_CLUB, P_EXPERT },		{ P_MACE, P_EXPERT },
-    { P_MORNING_STAR, P_BASIC },	{ P_FLAIL, P_SKILLED },
+    { P_FLAIL, P_SKILLED },
     { P_HAMMER, P_SKILLED },		{ P_QUARTERSTAFF, P_EXPERT },
     { P_POLEARMS, P_SKILLED },		{ P_SPEAR, P_EXPERT },
     
@@ -338,6 +343,7 @@ static const struct def_skill Skill_C[] = {
     { P_ESCAPE_SPELL, P_SKILLED },	{ P_MATTER_SPELL, P_SKILLED },
     { P_BOOMERANG, P_EXPERT }, { P_BARE_HANDED_COMBAT, P_MASTER },
     { P_TWO_WEAPON_COMBAT, P_BASIC },
+    { P_SHIELD, P_BASIC },
     { P_NONE, 0 }
 };
 
@@ -361,8 +367,8 @@ static const struct def_skill Skill_K[] = {
     { P_SHORT_SWORD, P_SKILLED },	{ P_BROAD_SWORD, P_EXPERT },
     { P_LONG_SWORD, P_EXPERT },	{ P_TWO_HANDED_SWORD, P_EXPERT },
     { P_CURVED_SWORD, P_SKILLED },
-    { P_CLUB, P_BASIC },		{ P_MACE, P_BASIC },
-    { P_MORNING_STAR, P_SKILLED },	{ P_FLAIL, P_BASIC },
+    { P_CLUB, P_BASIC },		{ P_MACE, P_SKILLED },
+    { P_FLAIL, P_BASIC },
     { P_HAMMER, P_BASIC },		{ P_POLEARMS, P_EXPERT },
     { P_SPEAR, P_EXPERT },		
     { P_LANCE, P_EXPERT },
@@ -373,6 +379,7 @@ static const struct def_skill Skill_K[] = {
 #endif
     { P_TWO_WEAPON_COMBAT, P_SKILLED },
     { P_BARE_HANDED_COMBAT, P_EXPERT },
+    { P_SHIELD, P_EXPERT },
     { P_NONE, 0 }
 };
 
@@ -390,7 +397,7 @@ static const struct def_skill Skill_Mon[] = {
 
 static const struct def_skill Skill_P[] = {
     { P_CLUB, P_EXPERT },		{ P_MACE, P_EXPERT },
-    { P_MORNING_STAR, P_EXPERT },	{ P_FLAIL, P_EXPERT },
+    { P_FLAIL, P_EXPERT },
     { P_HAMMER, P_EXPERT },		{ P_QUARTERSTAFF, P_EXPERT },
     { P_POLEARMS, P_SKILLED },		{ P_SPEAR, P_SKILLED },
     
@@ -401,6 +408,7 @@ static const struct def_skill Skill_P[] = {
     { P_HEALING_SPELL, P_EXPERT },	{ P_DIVINATION_SPELL, P_EXPERT },
     { P_CLERIC_SPELL, P_EXPERT }, { P_MATTER_SPELL, P_BASIC },
     { P_BARE_HANDED_COMBAT, P_BASIC },
+    { P_SHIELD, P_BASIC },
     { P_NONE, 0 }
 };
 
@@ -410,7 +418,7 @@ static const struct def_skill Skill_R[] = {
     { P_LONG_SWORD, P_SKILLED },	{ P_TWO_HANDED_SWORD, P_BASIC },
     { P_CURVED_SWORD, P_SKILLED },
     { P_CLUB, P_SKILLED },		{ P_MACE, P_SKILLED },
-    { P_MORNING_STAR, P_BASIC },	{ P_FLAIL, P_BASIC },
+    { P_FLAIL, P_BASIC },
     { P_HAMMER, P_BASIC },		{ P_POLEARMS, P_BASIC },
     { P_SPEAR, P_BASIC },		{ P_CROSSBOW, P_EXPERT },
     { P_DART, P_EXPERT },		{ P_SHURIKEN, P_SKILLED },
@@ -421,13 +429,14 @@ static const struct def_skill Skill_R[] = {
 #endif
     { P_TWO_WEAPON_COMBAT, P_EXPERT },
     { P_BARE_HANDED_COMBAT, P_EXPERT },
+    { P_SHIELD, P_BASIC },
     { P_NONE, 0 }
 };
 
 static const struct def_skill Skill_Ran[] = {
     { P_DAGGER, P_EXPERT },		 { P_KNIFE,  P_SKILLED },
     { P_AXE, P_SKILLED },	 { P_PICK_AXE, P_BASIC },
-    { P_SHORT_SWORD, P_BASIC },	 { P_MORNING_STAR, P_BASIC },
+    { P_SHORT_SWORD, P_BASIC },	 
     { P_FLAIL, P_SKILLED },	 { P_HAMMER, P_BASIC },
     { P_QUARTERSTAFF, P_BASIC }, { P_POLEARMS, P_SKILLED },
     { P_SPEAR, P_EXPERT },	 
@@ -444,6 +453,8 @@ static const struct def_skill Skill_Ran[] = {
 #endif
     { P_TWO_WEAPON_COMBAT, P_BASIC },
     { P_BARE_HANDED_COMBAT, P_BASIC },
+    { P_MACE, P_BASIC },
+    { P_SHIELD, P_SKILLED },
     { P_NONE, 0 }
 };
 
@@ -462,6 +473,7 @@ static const struct def_skill Skill_S[] = {
 #endif
     { P_TWO_WEAPON_COMBAT, P_EXPERT },
     { P_MARTIAL_ARTS, P_MASTER },
+    { P_SHIELD, P_SKILLED },
     { P_NONE, 0 }
 };
 
@@ -472,7 +484,7 @@ static const struct def_skill Skill_T[] = {
     { P_SHORT_SWORD, P_EXPERT },	{ P_BROAD_SWORD, P_BASIC },
     { P_LONG_SWORD, P_BASIC },		{ P_TWO_HANDED_SWORD, P_BASIC },
     { P_CURVED_SWORD, P_SKILLED },
-    { P_MACE, P_BASIC },		{ P_MORNING_STAR, P_BASIC },
+    { P_MACE, P_BASIC },		
     { P_FLAIL, P_BASIC },		{ P_HAMMER, P_BASIC },
     { P_QUARTERSTAFF, P_BASIC },	{ P_POLEARMS, P_BASIC },
     { P_SPEAR, P_BASIC },		
@@ -488,6 +500,7 @@ static const struct def_skill Skill_T[] = {
 #endif
     { P_TWO_WEAPON_COMBAT, P_SKILLED },
     { P_BARE_HANDED_COMBAT, P_SKILLED },
+    { P_SHIELD, P_BASIC },
     { P_NONE, 0 }
 };
 #endif /* TOURIST */
@@ -508,6 +521,7 @@ static const struct def_skill Skill_V[] = {
 #endif
     { P_TWO_WEAPON_COMBAT, P_SKILLED },
     { P_BARE_HANDED_COMBAT, P_EXPERT },
+    { P_SHIELD, P_EXPERT },
     { P_NONE, 0 }
 };
 
@@ -685,6 +699,18 @@ u_init()
 				rn2(2) ? WOODEN_HARP : WOODEN_FLUTE;
 		if (rn2(20) < 3) Bard[BARD_MINOR].trotyp = BELL;
 		ini_inv(Bard);
+		{
+		    /* the songs are always known */
+		    static const short songs[] = { SPE_LULLABY, SPE_CACOPHONY,
+			SPE_DROWSINESS, SPE_DESPAIR, SPE_FRIENDSHIP,
+			SPE_INSPIRE_COURAGE };
+		    int si;
+		    for (si = 0; si < SIZE(songs); si++) {
+			struct obj *song = mksobj(songs[si], FALSE, FALSE);
+			initialspell(song);
+			obfree(song, (struct obj *)0);
+		    }
+		}
 		/* bards know their instruments and a bardic repertoire */
 		knows_object(WOODEN_FLUTE);
 		knows_object(MAGIC_FLUTE);

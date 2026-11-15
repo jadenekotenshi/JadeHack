@@ -2532,12 +2532,12 @@ register struct	obj	*obj;
 		disclose = TRUE;
 	} else
 #endif
-	if (otyp == WAN_STINKING_FOG) {
+	if (otyp == WAN_STINKING_FOG || otyp == SPE_STENCH) {
 	    /* a line of single-square stinking clouds; also fills the zapper's
 	       own square when zapped at yourself */
 	    int fx = u.ux, fy = u.uy, steps, range = rn1(6, 6);
 
-	    makeknown(otyp);
+	    if (otyp == WAN_STINKING_FOG) makeknown(otyp);
 	    if (u.dz) {
 		pline("Noxious fog %s.", u.dz > 0 ? "seeps into the floor"
 						   : "billows up and thins out");
@@ -3518,6 +3518,10 @@ register int dx,dy;
 	/* Fireballs only damage when they explode */
 	if (type != ZT_SPELL(ZT_FIRE))
 	    range += zap_over_floor(sx, sy, type, &shopdamage, FALSE);
+
+	/* poison breath (green dragons) leaves stinking cloud squares behind */
+	if (abs(type) >= 20 && abstype == ZT_POISON_GAS)
+	    (void) create_gas_cloud(sx, sy, 1, 4);
 
 	if (mon) {
 	    if (type == ZT_SPELL(ZT_FIRE)) break;

@@ -1,203 +1,280 @@
 #	Bard.des
-#	Bard quest levels for JadeHack (original design: the Isle of
-#	Anthemoessa, the siren Aglaope and the Lyre of Orpheus).
+#	Bard quest levels for JadeHack, after the Bard quest of DNetHack:
+#	the Conservatorium, the Island of Anthemoessa and the Old Ruins,
+#	where the siren Aglaope keeps the Lyre of Orpheus.
 #
 LEVEL: "Brd-strt"
 FLAGS: noteleport,hardfloor,mazelevel
 INIT_MAP:solidfill,' '
-MON_GENERATION:86%, (64,"siren"), (16,'n'), (16,"giant eel"), (4,'S')
+MON_GENERATION:86%, (32,"giant spider"), (24,'S'), (24,'d'), (20,'f')
 GEOMETRY:center,center
 MAP
-}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}
-}}............................................}}
-}}...--------------------------------------...}}
-}}...|....................................|...}}
-}}...|....................................|...}}
-}}...|......-.....-.........-.....-.......|...}}
-}}...+....................................+...}}
-}}...|....................................|...}}
-}}...|......-.....-.........-.....-.......|...}}
-}}...|....................................|...}}
-}}...|....................................|...}}
-}}...------------------+-------------------...}}
-}}............................................}}
-}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}
+}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}
+}.T.....}}...............................................T.}
+}T..T.T.}}....--------------------------------.............}
+}.T..T..}}....|.......|..............|.......|........T....}
+}.......}}....|.......|..............|.......|...T.........}
+}..T....}}..T.|.......|..............|.......|.T......T....}
+}.......}}....|.......|..............|.......|.............}
+}.......}}..T.|.......|..............|.......|.............}
+}.......}}....|.......|..............|.......|.......T.....}
+}T............----+----------+-----------+----....T........}
+}.......}}....|..............................|........TTT..}
+}.......}}....|..............................|....T........}
+}T......}}....|...............{..............|.............}
+}.......}}....|..............................|..........T..}
+}T......}}....|..............................|.............}
+}......T}}....----------------+---------------....T........}
+}...T...}}..T..............................................}
+}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}
 ENDMAP
-REGION:(00,00,47,13),lit,"ordinary"
-REGION:(06,03,41,10),lit,"ordinary"
-STAIR:(45,06),down
-BRANCH:(03,06,03,06),(0,0,0,0)
-NON_DIGGABLE:(00,00,47,13)
-DOOR:locked,(23,11)
-DOOR:closed,(05,06)
-DOOR:closed,(42,06)
-# Amphion, on his dais
-OBJECT:('\',"throne"),(23,04)
-MONSTER:('@',"Amphion"),(23,04) {
+REGION:(00,00,59,17),lit,"ordinary"
+REGION:(23,03,36,08),lit,"ordinary"
+REGION:(15,03,21,08),lit,"tool shop"
+REGION:(38,03,44,08),lit,"liquor emporium"
+STAIR:(04,09),down
+BRANCH:(55,09,55,09),(0,0,0,0)
+NON_DIGGABLE:(14,02,45,15)
+DOOR:locked,(29,09)
+DOOR:closed,(30,15)
+DOOR:closed,(18,09)
+DOOR:closed,(41,09)
+# Pindar, on his throne
+OBJECT:('\',"throne"),(30,04)
+MONSTER:('@',"Pindar"),(30,04) {
   OBJECT:random
   OBJECT:random
   OBJECT:random
 }
-OBJECT:('(',"chest"),(23,03)
-# the students of the college
-MONSTER:('@',"lyrist"),(10,04) {
+OBJECT:('(',"chest"),(30,03)
+# the rhymers
+MONSTER:('@',"rhymer"),(25,05) {
   OBJECT:random
   OBJECT[25%]:random
 }
-MONSTER:('@',"lyrist"),(14,07) {
+MONSTER:('@',"rhymer"),(27,07) {
   OBJECT:random
   OBJECT[25%]:random
 }
-MONSTER:('@',"lyrist"),(18,04) {
+MONSTER:('@',"rhymer"),(33,05) {
   OBJECT:random
   OBJECT[25%]:random
 }
-MONSTER:('@',"lyrist"),(28,04) {
+MONSTER:('@',"rhymer"),(35,07) {
   OBJECT:random
   OBJECT[25%]:random
 }
-MONSTER:('@',"lyrist"),(32,07) {
+MONSTER:('@',"rhymer"),(25,12) {
   OBJECT:random
   OBJECT[25%]:random
 }
-MONSTER:('@',"lyrist"),(36,04) {
+MONSTER:('@',"rhymer"),(35,12) {
   OBJECT:random
   OBJECT[25%]:random
 }
-MONSTER:('@',"lyrist"),(20,09) {
+MONSTER:('@',"rhymer"),(20,12) {
   OBJECT:random
   OBJECT[25%]:random
 }
-MONSTER:('@',"lyrist"),(26,09) {
+MONSTER:('@',"rhymer"),(40,12) {
   OBJECT:random
   OBJECT[25%]:random
 }
-# the besiegers
-LOOP [8 + 1d6] {
-  MONSTER: ('n',"siren"),random
+# instruments for the tool shop
+OBJECT:('(',"wooden flute"),(16,04)
+OBJECT:('(',"wooden harp"),(17,04)
+OBJECT:('(',"tooled horn"),(18,04)
+OBJECT:('(',"bugle"),(19,04)
+OBJECT:('(',"leather drum"),(20,04)
+OBJECT:('(',"bell"),(16,06)
+OBJECT:('(',"tin whistle"),(17,06)
+# the river and what lives in it
+MONSTER:(';',"piranha"),(08,05)
+MONSTER:(';',"giant eel"),(09,13)
+LOOP [7] {
+  MONSTER:('n',"water nymph"),(07,07)
 }
-MONSTER: 'n',random
-MONSTER:(';',"giant eel"),(01,03)
-MONSTER:(';',"giant eel"),(46,10)
-MONSTER:(';',"giant eel"),(24,00)
+LOOP [6 + 1d4] {
+  MONSTER:random,random
+}
 LOOP [3 + 1d5] {
   TRAP:random,random
 }
 WALLIFY
 
-#
-#	The "locate" level: a cave-riddled shore on the way to Anthemoessa.
-#
-LEVEL: "Brd-loca"
+LEVEL: "Brd-fila"
 FLAGS:mazelevel,noflip
 INIT_MAP: mines, '.' , ' ', true, true, lit, true
-MON_GENERATION:86%, (64,"siren"), (16,'n'), (16,"giant eel"), (4,'S')
+MON_GENERATION:86%, (32,"giant spider"), (24,'S'), (24,'d'), (20,'f')
 NOMAP
 STAIR: random, up
 STAIR: random, down
-LOOP [8 + 1d6] {
+LOOP [7] {
   OBJECT: random, random
 }
-LOOP [6 + 1d6] {
+LOOP [4] {
   TRAP: random, random
 }
-LOOP [10 + 2d4] {
-  MONSTER:('n',"siren"),random
+LOOP [7] {
+  MONSTER: ('S', "snake"), random
+  MONSTER: ('s', "giant spider"), random
+  MONSTER: ('d', "jackal"), random
+  MONSTER: ('f', "kitten"), random
 }
-MONSTER:'n',random
-MONSTER:'n',random
-MONSTER:'S',random
-MONSTER:'S',random
 
 #
-#	The "goal" level: the island of Anthemoessa.  The siren Aglaope
-#	guards the Lyre of Orpheus.
+#	The "locate" level: the Island of Anthemoessa.
+#
+LEVEL: "Brd-loca"
+FLAGS:mazelevel
+INIT_MAP:solidfill,' '
+MON_GENERATION:86%, (32,"giant spider"), (24,'S'), (24,'d'), (20,'f')
+GEOMETRY:center,center
+MAP
+}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}
+}}}}}}}}}}}}}}}}}}}...............}}}}}}}}}}}}}}}}}}
+}}}}}}}}}}}}}.....}}}}}}}}}}}}}}}}}.....}}}}}}}}}}}}
+}}}}}}}}}}....}}}}}}}...........}}}}}}}....}}}}}}}}}
+}}}}}}}}...}}}}}.....................}}}}}...}}}}}}}
+}}}}}}...}}}}......|...........-........}}}}...}}}}}
+}}}}}...}}}.......-.-.|...................}}}...}}}}
+}}}}...}}}....|.............-|...................}}}
+}}}}..}}}}.......................|...............}}}
+}}}...}}}..............-..........................}}
+}}}}..}}}}.......................................}}}
+}}}}...}}}.......................................}}}
+}}}}}...}}}...............................}}}...}}}}
+}}}}}}...}}}}.....|.....................}}}}...}}}}}
+}}}}}}}}...}}}}}....................-}}}}}...}}}}}}}
+}}}}}}}}}}....}}}}}}}...........}}}}}}}....}}}}}}}}}
+}}}}}}}}}}}}}.....}}}}}}}}}}}}}}}}}.....}}}}}}}}}}}}
+}}}}}}}}}}}}}}}}}}}...............}}}}}}}}}}}}}}}}}}
+}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}
+ENDMAP
+REGION:(00,00,51,18),lit,"ordinary"
+STAIR:(47,09),up
+STAIR:(26,09),down
+OBJECT:('(',"chest"),(27,09)
+LOOP [9] {
+  OBJECT:random,random
+}
+LOOP [5] {
+  TRAP:random,random
+}
+LOOP [6] {
+  OBJECT:('`',"statue"),random
+}
+LOOP [4] {
+  OBJECT:('`',"boulder"),random
+}
+MONSTER:(';',"piranha"),(20,03)
+MONSTER:(';',"piranha"),(31,15)
+MONSTER:(';',"piranha"),(10,09)
+LOOP [2] {
+  MONSTER:('d',"jackal"),random
+  MONSTER:('f',"kitten"),random
+  MONSTER:('S',"snake"),random
+  MONSTER:('B',"giant bat"),random
+}
+MONSTER:('r',"giant rat"),random
+MONSTER:('u',"pony"),random
+WALLIFY
+
+LEVEL: "Brd-filb"
+FLAGS:mazelevel,noflip
+INIT_MAP: mines, '.' , ' ', true, true, lit, true
+MON_GENERATION:86%, (32,"giant spider"), (24,'S'), (24,'d'), (20,'f')
+NOMAP
+STAIR: random, up
+STAIR: random, down
+LOOP [7] {
+  OBJECT: random, random
+}
+LOOP [4] {
+  TRAP: random, random
+}
+MONSTER: ('s', "giant spider"), random
+MONSTER: ('s', "giant spider"), random
+MONSTER: ('S', "snake"), random
+MONSTER: ('S', "snake"), random
+MONSTER: ('S', "snake"), random
+MONSTER: ('r', "giant rat"), random
+
+#
+#	The "goal" level: the Old Ruins.  Aglaope sleeps among the chambers
+#	with the Lyre of Orpheus.
 #
 LEVEL: "Brd-goal"
 FLAGS:mazelevel
 INIT_MAP:solidfill,' '
-MON_GENERATION:86%, (64,"siren"), (16,'n'), (16,"giant eel"), (4,'S')
+MON_GENERATION:86%, (32,"giant spider"), (24,'S'), (24,'d'), (20,'f')
 GEOMETRY:center,center
 MAP
-}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}
-}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}
-}}}}}}}}}}}}}}}}.............}}}}}}}}}}}}}}}
-}}}}}}}}}}}}..-----------------..}}}}}}}}}}}
-}}}}}}}}}.....|...............|.....}}}}}}}}
-}}}}}}}.......|...............|.......}}}}}}
-}}}}}}........|...............|........}}}}}
-}}}}}}........|...............|........}}}}}
-}}}}}.........|...............|.........}}}}
-}}}}}}........--------+--------........}}}}}
-}}}}}}.................................}}}}}
-}}}}}}}...............................}}}}}}
-}}}}}}}}}...........................}}}}}}}}
-}}}}}}}}}}}}.....................}}}}}}}}}}}
-}}}}}}}}}}}}}}}}.............}}}}}}}}}}}}}}}
-}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}
+-------------------------------------------------------------
+|...........|...........|...........|...........|...........|
+|...........+...........|...........+...........|...........|
+|...........|...........+...........|...........+...........|
+|...........|...........|...........|...........|...........|
+-----+------------+------------+---------+------------+------
+-------------------------------------------------------------
+|...........|...........|...........|...........|...........|
+|...........|...........+...........|...........+...........|
+|...........+...........|...........+...........|...........|
+|...........|...........|...........|...........|...........|
+------+------------+---------+------------+------------+-----
+-------------------------------------------------------------
+|...........|...........|...........|...........|...........|
+|...........+...........|...........+...........|...........|
+|...........|...........+...........|...........+...........|
+|...........|...........|...........|...........|...........|
+-------------------------------------------------------------
 ENDMAP
-REGION:(00,00,43,15),lit,"ordinary"
-REGION:(15,04,29,08),lit,"ordinary"
-STAIR:(22,13),up
-NON_DIGGABLE:(14,03,30,09)
-DOOR:locked,(22,09)
-OBJECT:('(',"wooden harp"),(22,05),blessed,0,NAME:"The Lyre of Orpheus"
-MONSTER:('n',"Aglaope"),(22,05),hostile
-LOOP [4 + 1d4] {
+REGION:(00,00,60,17),lit,"ordinary"
+STAIR:(58,02),up
+NON_DIGGABLE:(00,00,60,17)
+DOOR:random,(12,02)
+DOOR:random,(12,09)
+DOOR:random,(12,14)
+DOOR:random,(24,03)
+DOOR:random,(24,08)
+DOOR:random,(24,15)
+DOOR:random,(36,02)
+DOOR:random,(36,09)
+DOOR:random,(36,14)
+DOOR:random,(48,03)
+DOOR:random,(48,08)
+DOOR:random,(48,15)
+DOOR:random,(05,05)
+DOOR:random,(06,11)
+DOOR:random,(18,05)
+DOOR:random,(19,11)
+DOOR:random,(31,05)
+DOOR:random,(29,11)
+DOOR:random,(41,05)
+DOOR:random,(42,11)
+DOOR:random,(54,05)
+DOOR:random,(55,11)
+OBJECT:('(',"wooden harp"),(30,08),blessed,0,NAME:"The Lyre of Orpheus"
+MONSTER:('n',"Aglaope"),(30,08),asleep {
+  OBJECT:('[',"water walking boots")
+}
+LOOP [8 + 1d6] {
+  OBJECT:('`',"boulder"),random
+}
+LOOP [6 + 1d6] {
+  OBJECT:('*',"rock"),random
+}
+LOOP [4] {
   OBJECT:random,random
 }
-LOOP [3 + 1d4] {
+LOOP [4] {
   TRAP:random,random
 }
-LOOP [10 + 2d5] {
-  MONSTER:('n',"siren"),random
+LOOP [2] {
+  MONSTER:('s',"giant spider"),random
+  MONSTER:('S',"snake"),random
+  MONSTER:('r',"giant rat"),random
+  MONSTER:('d',"jackal"),random
+  MONSTER:('f',"kitten"),random
 }
-MONSTER:'n',random
-MONSTER:'n',random
-MONSTER:('S',"cobra"),random
-MONSTER:('S',"water moccasin"),random
-MONSTER:(';',"giant eel"),(02,02)
-MONSTER:(';',"giant eel"),(41,13)
-MONSTER:(';',"electric eel"),(03,12)
-MONSTER:(';',"electric eel"),(40,02)
-MONSTER:(';',"kraken"),(21,00)
 WALLIFY
-
-LEVEL: "Brd-fila"
-FLAGS:mazelevel,noflip
-INIT_MAP: mines, '.' , ' ', true, true, random, true
-MON_GENERATION:86%, (64,"siren"), (16,'n'), (16,"giant eel"), (4,'S')
-NOMAP
-STAIR: random, up
-STAIR: random, down
-LOOP [2 + 2d4] {
-  OBJECT: random, random
-}
-LOOP [2 + 2d4] {
-  TRAP: random, random
-}
-LOOP [(2d4)] {
-  MONSTER: ('n',"siren"), random, hostile
-}
-MONSTER: 'n', random, hostile
-MONSTER: 'S', random, hostile
-
-LEVEL: "Brd-filb"
-FLAGS:mazelevel,noflip
-INIT_MAP: mines, '.' , ' ', true, true, random, true
-MON_GENERATION:86%, (64,"siren"), (16,'n'), (16,"giant eel"), (4,'S')
-NOMAP
-STAIR: random, up
-STAIR: random, down
-LOOP [2 + 2d4] {
-  OBJECT: random, random
-}
-LOOP [2 + 2d4] {
-  TRAP: random, random
-}
-LOOP [(4d4)] {
-  MONSTER: ('n',"siren"), random, hostile
-}
-MONSTER: 'n', random, hostile
-MONSTER: 'S', random, hostile
-

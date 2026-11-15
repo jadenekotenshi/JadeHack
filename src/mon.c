@@ -111,7 +111,7 @@ int mndx, mode;
 	switch (mndx) {
 /* Quest guardians */
 	case PM_STUDENT:     mndx = mode ? PM_ARCHEOLOGIST  : PM_HUMAN; break;
-	case PM_LYRIST:      mndx = mode ? PM_BARD      : PM_HUMAN; break;
+	case PM_RHYMER:      mndx = mode ? PM_BARD      : PM_HUMAN; break;
 	case PM_CHIEFTAIN:   mndx = mode ? PM_BARBARIAN : PM_HUMAN; break;
 	case PM_NEANDERTHAL: mndx = mode ? PM_CAVEMAN   : PM_HUMAN; break;
 	case PM_ATTENDANT:   mndx = mode ? PM_HEALER    : PM_HUMAN; break;
@@ -579,6 +579,16 @@ mcalcdistress()
 	if (mtmp->data->mmove == 0) {
 	    if (vision_full_recalc) vision_recalc(0);
 	    if (minliquid(mtmp)) continue;
+	}
+
+	/* a song's friendship wears off */
+	if (mtmp->mfriendtime > 0 && --mtmp->mfriendtime == 0 && mtmp->mtame &&
+	    !mtmp->isshk && !mtmp->ispriest) {
+	    mtmp->mtame = 0;
+	    mtmp->mpeaceful = 0;
+	    set_malign(mtmp);
+	    if (canspotmon(mtmp))
+		pline("%s is no longer friendly.", Monnam(mtmp));
 	}
 
 	/* regenerate hit points */

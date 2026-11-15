@@ -764,7 +764,8 @@ dobreathe()
 	if (!mattk)
 	    impossible("bad breath attack?");	/* mouthwash needed... */
 	else
-	    buzz((int) (20 + mattk->adtyp-1), (int)mattk->damn,
+	    buzz((int) (20 + mattk->adtyp-1),
+		     (int)(mattk->damn * max((int)mattk->damd, 6) / 6),
 		u.ux, u.uy, u.dx, u.dy);
 	return(1);
 }

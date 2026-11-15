@@ -1487,13 +1487,13 @@ boolean noisy;
 	if (uarms) {
 	    if (noisy) already_wearing(an(c_shield));
 	    err++;
-	} else if (uwep && bimanual(uwep)) {
+	} else if (uwep && bimanual(uwep) && !is_bracers(otmp)) {
 	    if (noisy) 
 		You("cannot wear a shield while wielding a two-handed %s.",
 		    is_sword(uwep) ? c_sword :
 		    (uwep->otyp == BATTLE_AXE) ? c_axe : c_weapon);
 	    err++;
-	} else if (u.twoweap) {
+	} else if (u.twoweap && !is_bracers(otmp)) {
 	    if (noisy)
 		You("cannot wear a shield while wielding two weapons.");
 	    err++;
@@ -1840,6 +1840,30 @@ find_ac()
 				(Race_if(PM_DWARF) && uarms->otyp == DWARVISH_ROUNDSHIELD)) {
 			uac -= racial_bonus;
 		}
+	}
+	/* shield skill: bonus to AC from a worn shield or bracers */
+	if (uarms && P_SKILL(P_SHIELD) >= P_BASIC) {
+	    int sk = P_SKILL(P_SHIELD), sb;
+	    if (is_bracers(uarms))
+		sb = (sk >= P_EXPERT) ? 3 : (sk >= P_SKILLED) ? 2 : 1;
+	    else
+		sb = (sk >= P_EXPERT) ? 5 : (sk >= P_SKILLED) ? 3 : 1;
+	    uac -= sb;
+	}
+	/* parrying daggers and main gauches, wielded in either hand; two of
+	   them (or one plus bracers) do not stack, the better one counts */
+	{
+	    int pb = 0, bb = 0;
+	    if (is_parry_wep(uwep)) pb = 1 + uwep->spe;
+	    if (u.twoweap && is_parry_wep(uswapwep) && 1 + uswapwep->spe > pb)
+		pb = 1 + uswapwep->spe;
+	    if (is_bracers(uarms)) {
+		bb = ARM_BONUS(uarms);
+		if (P_SKILL(P_SHIELD) >= P_BASIC)
+		    bb += (P_SKILL(P_SHIELD) >= P_EXPERT) ? 3 :
+			  (P_SKILL(P_SHIELD) >= P_SKILLED) ? 2 : 1;
+	    }
+	    if (pb > bb) uac -= (pb - bb);
 	}
 	if(uarmg) uac -= ARM_BONUS(uarmg);
 #ifdef TOURIST

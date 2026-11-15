@@ -89,6 +89,7 @@ register struct monst *mtmp;
 register boolean nearmiss;
 register struct attack *mattk;
 {
+	if (uarms && !rn2(3)) use_skill(P_SHIELD, 1);
 	if (!canspotmon(mtmp))
 	    map_invisible(mtmp->mx, mtmp->my);
 
@@ -2120,8 +2121,29 @@ gazemu(mtmp, mattk)	/* monster gazes at you */
 		    if (dmg < 1) {
 				 monstseesu(M_SEEN_COLD);
 		    }
-		    if ((int) mtmp->m_lev > rn2(20))
+		    if ((int) mtmp->m_lev > rn2(8))
 			destroy_item(POTION_CLASS, AD_COLD);
+		    if (dmg) mdamageu(mtmp, dmg);
+		}
+		break;
+	    case AD_ELEC:
+		if (!mtmp->mcan && canseemon(mtmp) &&
+			couldsee(mtmp->mx, mtmp->my) &&
+			mtmp->mcansee && !rn2(2)) {
+		    int dmg = d(mattk->damn,mattk->damd);
+
+		    pline("%s attacks you with a shocking gaze!", Monnam(mtmp));
+		    stop_occupation();
+		    dmg = resist_reduce(dmg,SHOCK_RES);
+		    if (how_resistant(SHOCK_RES) == 100) {
+			monstseesu(M_SEEN_ELEC);
+		    } else {
+			/* shocks detonate wands and rings */
+			if ((int) mtmp->m_lev > rn2(12))
+			    destroy_item(WAND_CLASS, AD_ELEC);
+			if ((int) mtmp->m_lev > rn2(12))
+			    destroy_item(RING_CLASS, AD_ELEC);
+		    }
 		    if (dmg) mdamageu(mtmp, dmg);
 		}
 		break;

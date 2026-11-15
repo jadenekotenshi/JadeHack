@@ -725,7 +725,8 @@ breamu(mtmp, mattk)			/* monster breathes at you (ranged) */
 				if(canseemon(mtmp))
 					pline("%s breathes %s!", Monnam(mtmp),
 				breathwep[typ-1]);
-				buzz((int) (-20 - (typ-1)), (int)mattk->damn,
+				buzz((int) (-20 - (typ-1)),
+				     (int)(mattk->damn * max((int)mattk->damd, 6) / 6),
 				mtmp->mx, mtmp->my, sgn(tbx), sgn(tby));
 				nomul(0, 0);
 				/* breath runs out sometimes. Also, give monster some

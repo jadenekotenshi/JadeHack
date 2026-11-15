@@ -91,6 +91,8 @@ register struct obj *obj;
 	 * *whenever* Sunsword is unwielded, from whatever cause.
 	 */
 	setworn(obj, W_WEP);
+	find_ac();
+	flags.botl = 1;
 	if (uwep == obj && artifact_light(olduwep) && olduwep->lamplit) {
 	    end_burn(olduwep, FALSE);
 	    if (!Blind) pline("%s glowing.", Tobjnam(olduwep, "stop"));
@@ -138,7 +140,7 @@ struct obj *wep;
 		mons[wep->corpsenm].mname, makeplural(body_part(HAND)));
 	    Sprintf(kbuf, "%s corpse", an(mons[wep->corpsenm].mname));
 	    instapetrify(kbuf);
-	} else if (uarms && bimanual(wep))
+	} else if (wearing_shield() && bimanual(wep))
 	    You("cannot wield a two-handed %s while wearing a shield.",
 		is_sword(wep) ? "sword" :
 		    wep->otyp == BATTLE_AXE ? "axe" : "weapon");
@@ -218,6 +220,8 @@ setuswapwep(obj)
 register struct obj *obj;
 {
 	setworn(obj, W_SWAPWEP);
+	find_ac();
+	flags.botl = 1;
 	update_inventory();
 }
 
@@ -499,7 +503,7 @@ const char *verb;	/* "rub",&c */
 	return FALSE;
     }
     /* check shield */
-    if (uarms && bimanual(obj)) {
+    if (wearing_shield() && bimanual(obj)) {
 	You("cannot %s a two-handed %s while wearing a shield.",
 	    verb, (obj->oclass == WEAPON_CLASS) ? "weapon" : "tool");
 	return FALSE;
@@ -545,7 +549,7 @@ can_twoweapon()
 	} else if (bimanual(uwep) || bimanual(uswapwep)) {
 		otmp = bimanual(uwep) ? uwep : uswapwep;
 		pline("%s isn't one-handed.", Yname2(otmp));
-	} else if (uarms)
+	} else if (wearing_shield())
 		You_cant("use two weapons while wearing a shield.");
 	else if (uswapwep->oartifact)
 		pline("%s %s being held second to another weapon!",
@@ -589,6 +593,8 @@ dotwoweapon()
 	if (u.twoweap) {
 		You("switch to your primary weapon.");
 		u.twoweap = 0;
+		find_ac();
+		flags.botl = 1;
 		update_inventory();
 		return 1;
 	}
@@ -598,6 +604,8 @@ dotwoweapon()
 		/* Success! */
 		You("begin two-weapon combat.");
 		u.twoweap = 1;
+		find_ac();
+		flags.botl = 1;
 		update_inventory();
 		return 1;
 	}
@@ -657,6 +665,8 @@ untwoweapon()
 	if (u.twoweap) {
 		You("can no longer use two weapons at once.");
 		u.twoweap = FALSE;
+		find_ac();
+		flags.botl = 1;
 		update_inventory();
 	}
 	return;

@@ -30,6 +30,8 @@ STATIC_DCL int FDECL(enhance_skill, (boolean));
 #define PN_CLERIC_SPELL			(-12)
 #define PN_ESCAPE_SPELL			(-13)
 #define PN_MATTER_SPELL			(-14)
+#define PN_MUSICAL_SPELL		(-15)
+#define PN_SHIELD			(-16)
 
 STATIC_DCL void FDECL(give_may_advance_msg, (int));
 
@@ -45,7 +47,7 @@ STATIC_VAR NEARDATA const short skill_names_indices[P_NUM_SKILLS] = {
 	0,                DAGGER,         KNIFE,        AXE,
 	PICK_AXE,         SHORT_SWORD,    BROADSWORD,   LONG_SWORD,
 	TWO_HANDED_SWORD, PN_CURVED_SWORD,  CLUB,
-	MACE,             MORNING_STAR,   FLAIL,
+	MACE,             FLAIL,
 	PN_HAMMER,        QUARTERSTAFF,   PN_POLEARMS,  SPEAR,
 	LANCE,            BOW,
 	SLING,            CROSSBOW,       DART,
@@ -53,8 +55,8 @@ STATIC_VAR NEARDATA const short skill_names_indices[P_NUM_SKILLS] = {
 	PN_ATTACK_SPELL,     PN_HEALING_SPELL,
 	PN_DIVINATION_SPELL, PN_ENCHANTMENT_SPELL,
 	PN_CLERIC_SPELL,     PN_ESCAPE_SPELL,
-	PN_MATTER_SPELL,
-	PN_BARE_HANDED,   PN_TWO_WEAPONS,
+	PN_MATTER_SPELL,  PN_MUSICAL_SPELL,
+	PN_BARE_HANDED,   PN_TWO_WEAPONS,  PN_SHIELD,
 #ifdef STEED
 	PN_RIDING
 #endif
@@ -77,6 +79,8 @@ STATIC_VAR NEARDATA const char * const odd_skill_names[] = {
     "clerical spells",
     "escape spells",
     "matter spells",
+    "musical spells",
+    "shield",
 };
 /* indexed vis `is_martial() */
 STATIC_VAR NEARDATA const char * const barehands_or_martial[] = {
@@ -490,8 +494,8 @@ static const NEARDATA short hwep[] = {
 #ifdef KOPS
 	  RUBBER_HOSE,
 #endif /* KOPS */
-	  WAR_HAMMER, SILVER_DAGGER, ELVEN_DAGGER, DAGGER, ORCISH_DAGGER,
-	  ATHAME, SCALPEL, SILVER_KNIFE, KNIFE, WORM_TOOTH
+	  WAR_HAMMER, SILVER_DAGGER, ELVEN_DAGGER, DAGGER, PARRYING_DAGGER, ORCISH_DAGGER,
+	  ATHAME, SCALPEL, SILVER_KNIFE, MAIN_GAUCHE, KNIFE, WORM_TOOTH
 	};
 
 struct obj *
@@ -1190,6 +1194,25 @@ uwep_skill_type()
 	return weapon_type(uwep);
 }
 
+/* effective skill in a weapon skill: gloves of expertise count as one rank
+   higher than the real skill (Expert becomes Master); restricted stays so */
+STATIC_OVL int
+eff_wskill(type)
+int type;
+{
+	int sk = P_SKILL(type);
+
+	if (uarmg && uarmg->otyp == GLOVES_OF_EXPERTISE &&
+	    type > P_NONE && type <= P_LAST_WEAPON &&
+	    sk > P_ISRESTRICTED && sk < P_MASTER) {
+	    if (sk == P_UNSKILLED) sk = P_BASIC;
+	    else if (sk == P_BASIC) sk = P_SKILLED;
+	    else if (sk == P_SKILLED) sk = P_EXPERT;
+	    else sk = P_MASTER;
+	}
+	return sk;
+}
+
 /*
  * Return hit bonus/penalty based on skill of weapon.
  * Treat restricted weapons as unskilled.
@@ -1209,13 +1232,14 @@ struct obj *weapon;
 	if (type == P_NONE) {
 		bonus = 0;
 	} else if (type <= P_LAST_WEAPON) {
-		switch (P_SKILL(type)) {
+		switch (eff_wskill(type)) {
 		default: impossible(bad_skill, P_SKILL(type)); /* fall through */
 		case P_ISRESTRICTED:
 		case P_UNSKILLED:   bonus = -4; break;
 		case P_BASIC:       bonus =  0; break;
 		case P_SKILLED:     bonus =  3; break;
 		case P_EXPERT:      bonus =  6; break;
+		case P_MASTER:      bonus =  9; break;
 		}
 	} else if (type == P_TWO_WEAPON_COMBAT) {
 		skill = P_SKILL(P_TWO_WEAPON_COMBAT);
@@ -1297,7 +1321,7 @@ struct obj *weapon;
     if (type == P_NONE) {
 	bonus = 0;
     } else if (type <= P_LAST_WEAPON) {
-	switch (P_SKILL(type)) {
+	switch (eff_wskill(type)) {
 	    default: impossible("weapon_dam_bonus: bad skill %d",P_SKILL(type));
 		     /* fall through */
 	    case P_ISRESTRICTED:
@@ -1305,6 +1329,7 @@ struct obj *weapon;
 	    case P_BASIC:	bonus =  0; break;
 	    case P_SKILLED:	bonus =  1; break;
 	    case P_EXPERT:	bonus =  2; break;
+	    case P_MASTER:	bonus =  3; break;
 	}
     } else if (type == P_TWO_WEAPON_COMBAT) {
 	skill = P_SKILL(P_TWO_WEAPON_COMBAT);
@@ -1384,6 +1409,8 @@ const struct def_skill *class_skill;
 		P_SKILL(P_HEALING_SPELL) = P_BASIC;
 	} else if (Role_if(PM_PRIEST)) {
 		P_SKILL(P_CLERIC_SPELL) = P_BASIC;
+	} else if (Role_if(PM_BARD)) {
+		P_SKILL(P_MUSICAL_SPELL) = P_BASIC;
 	} else if (Role_if(PM_WIZARD)) {
 		P_SKILL(P_ATTACK_SPELL) = P_BASIC;
 		P_SKILL(P_ENCHANTMENT_SPELL) = P_BASIC;
@@ -1398,6 +1425,10 @@ const struct def_skill *class_skill;
 	    if (P_SKILL(skill) == P_ISRESTRICTED)	/* skill pre-set */
 		P_SKILL(skill) = P_UNSKILLED;
 	}
+
+	/* Knights and Valkyries start out knowing how to use a shield */
+	if (Role_if(PM_KNIGHT) || Role_if(PM_VALKYRIE))
+		P_SKILL(P_SHIELD) = P_BASIC;
 
 	/* High potential fighters already know how to use their hands. */
 	if (P_MAX_SKILL(P_BARE_HANDED_COMBAT) > P_EXPERT)

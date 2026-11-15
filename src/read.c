@@ -919,7 +919,8 @@ register struct obj	*sobj;
 
 		/* KMH -- catch underflow */
 		s = sobj->cursed ? -otmp->spe : otmp->spe;
-		if (s > (special_armor ? 5 : 3) && rn2(s)) {
+		if (s > (otmp->otyp == DWARVISH_BRACERS ? 7 :
+			 special_armor ? 5 : 3) && rn2(s)) {
 		Your("%s violently %s%s%s for a while, then %s.",
 		     xname(otmp),
 		     otense(otmp, Blind ? "vibrate" : "glow"),

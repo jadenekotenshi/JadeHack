@@ -315,7 +315,8 @@ boolean ignore_oquan;
 			Sprintf(buf, "set of %s", actualn);
 			break;
 		}
-		if(is_boots(obj) || is_gloves(obj)) Strcpy(buf,"pair of ");
+		if(is_boots(obj) || is_gloves(obj) || is_bracers(obj))
+			Strcpy(buf,"pair of ");
 
 		if(obj->otyp >= ELVEN_SHIELD && obj->otyp <= ORCISH_SHIELD
 				&& !obj->dknown) {
@@ -1639,6 +1640,7 @@ const char *oldstr;
 	    /* but don't singularize "gauntlets", "boots", "Eyes of the.." */
 	    if (BSTRNCMPI(bp, p-3, "Eye", 3) &&
 		BSTRNCMP(bp, p-4, "boot", 4) &&
+		BSTRNCMP(bp, p-5, "glove", 5) &&
 		BSTRNCMP(bp, p-8, "gauntlet", 8))
 		while ((*p = *(p+1)) != 0) p++;
 	    return bp;
@@ -1688,6 +1690,7 @@ const char *oldstr;
 				return bp;
 
 		} else if (!BSTRCMP(bp, p-5, "boots") ||
+			   !BSTRCMP(bp, p-7, "bracers") ||
 			   !BSTRCMP(bp, p-9, "gauntlets") ||
 			   !BSTRCMP(bp, p-6, "tricks") ||
 			   !BSTRCMP(bp, p-9, "paralysis") ||

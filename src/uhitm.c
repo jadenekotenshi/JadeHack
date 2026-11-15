@@ -267,7 +267,7 @@ register struct monst *mtmp;
 	    if (uarm) {
 		Your("armor is rather cumbersome...");
 		tmp -= urole.spelarmr;
-	    } else if (!uwep && !uarms) {
+	    } else if (!uwep && !wearing_shield()) {
 		tmp += (u.ulevel / 3) + 2;
 	    }
 	}
@@ -315,6 +315,59 @@ register struct monst *mtmp;
 
 /* try to attack; return FALSE if monster evaded */
 /* u.dx and u.dy must be set */
+/* an automatic shield bash, tacked onto a melee attack (never with F,
+   never with bracers) */
+STATIC_OVL void
+shield_bash(mtmp)
+struct monst *mtmp;
+{
+	int sk, chance, dmg;
+	boolean small;
+
+	if (!wearing_shield() || flags.forcefight || mtmp->mhp < 1) return;
+	sk = P_SKILL(P_SHIELD);
+	if (sk < P_BASIC) return;
+	chance = (sk >= P_EXPERT) ? 4 : (sk >= P_SKILLED) ? 6 : 8;
+	if (rn2(chance)) return;
+
+	small = (uarms->otyp == SMALL_SHIELD || uarms->otyp == ELVEN_SHIELD);
+	dmg = small ? rnd(3) + 1 : rnd(6) + 2;
+	if (sk >= P_EXPERT) dmg += rnd(4);
+	if (uarms->spe > 0) dmg += uarms->spe;
+	You("bash %s with your %s!", mon_nam(mtmp), xname(uarms));
+	if (objects[uarms->otyp].oc_material == SILVER && hates_silver(mtmp->data)) {
+	    dmg += rnd(20);
+	    pline("%s %s on %s!", The(xname(uarms)), "sears", mon_nam(mtmp));
+	}
+	if (uarms->blessed && (is_undead(mtmp->data) || is_demon(mtmp->data)))
+	    dmg += rnd(4);
+	if (!rn2(4)) {
+	    switch (uarms->otyp) {
+	    case FLAME_SHIELD:
+		if (!resists_fire(mtmp)) dmg += rnd(6);
+		break;
+	    case ICE_SHIELD:
+		if (!resists_cold(mtmp)) dmg += rnd(6);
+		break;
+	    case LIGHTNING_SHIELD:
+		if (!resists_elec(mtmp)) dmg += rnd(6);
+		break;
+	    default: break;
+	    }
+	}
+	use_skill(P_SHIELD, 1);
+	wakeup(mtmp);
+	mtmp->mhp -= dmg;
+	if (mtmp->mhp < 1) {
+	    killed(mtmp);
+	    return;
+	}
+	if (sk >= P_EXPERT && !rn2(10) && !mtmp->mstun) {
+	    mtmp->mstun = 1;
+	    pline("%s is stunned!", Monnam(mtmp));
+	}
+}
+
 boolean
 attack(mtmp)
 register struct monst *mtmp;
@@ -418,6 +471,7 @@ register struct monst *mtmp;
 		(void) hmonas(mtmp, tmp);
 	else
 		(void) hitum(mtmp, tmp, youmonst.data->mattk);
+	if (!Upolyd && mtmp->mhp > 0) shield_bash(mtmp);
 	mtmp->mstrategy &= ~STRAT_WAITMASK;
 
 atk_done:
@@ -499,7 +553,7 @@ double_punch()
 {
 	int skl_lvl = P_SKILL(P_BARE_HANDED_COMBAT);
 
-	if (!uwep && !uarms && skl_lvl > P_BASIC)
+	if (!uwep && !wearing_shield() && skl_lvl > P_BASIC)
 	    return (boolean) ((skl_lvl - P_BASIC) > rn2(5));
 	return FALSE;
 }
@@ -589,7 +643,7 @@ int dieroll;
 	boolean ispoisoned = FALSE, needpoismsg = FALSE, poiskilled = FALSE;
 	boolean silvermsg = FALSE, silverobj = FALSE;
 	boolean valid_weapon_attack = FALSE;
-	boolean unarmed = !uwep && !uarm && !uarms;
+	boolean unarmed = !uwep && !uarm && !wearing_shield();
 	boolean bigpunch = (uarmg && uarmg->otyp == GAUNTLETS_OF_FORCE);
 #ifdef STEED
 	int jousting = 0;

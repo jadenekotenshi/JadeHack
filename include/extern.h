@@ -1975,6 +1975,7 @@ E void NDECL(age_spells);
 E int NDECL(docast);
 E int FDECL(spell_skilltype, (int));
 E int FDECL(spelleffects, (int,BOOLEAN_P));
+E boolean FDECL(is_song, (int));
 E void NDECL(losespells);
 E int NDECL(dovspell);
 E void FDECL(initialspell, (struct obj *));

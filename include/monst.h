@@ -62,6 +62,7 @@ struct monst {
 	schar mtame;		/* level of tameness, implies peaceful */
 	unsigned short mintrinsics;	/* low 8 correspond to mresists */
 	int mspec_used;		/* monster's special ability attack timeout */
+	int mfriendtime;	/* turns of song-induced friendship left */
 
 /* These should stay in the same order as monattk.h so
  * the mask translations will work properly */

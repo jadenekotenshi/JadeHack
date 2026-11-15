@@ -466,3 +466,22 @@ sirens, nemesis Aglaope on the Isle of Anthemoessa, artifact The Lyre of Orpheus
 Not implemented: techniques, the musicalize spell and songs, harp rumors, and
 the Shimmerstaff first gift.  The character menu in `charinit.c` gained a
 Bard row (accelerator `B`).
+
+## Batch 25: bracers, shields, songs, more monsters
+
+| Change | Notes |
+|---|---|
+| Parrying dagger / main gauche | dagger d4/d3 and knife d6/d4; +1 AC plus enchantment while wielded in either hand; two of them, or one plus bracers, do not stack (the better counts); `find_ac()` is refreshed on wield/twoweapon changes |
+| Dwarvish bearded axe | EvilHack stats (d8/d10, wt 70, "broad bearded axe"); apply it to hook a monster's weapon away, or chop as usual; dwarves have a 1/20 chance to carry one |
+| Silver mace | prob 3 (was never generated) |
+| Bracers | plain bracers (AC1 leather), runed bracers (AC2 wood, never random), dwarvish bracers (AC1 steel, safe to +7; dwarves carry them 1/40); shield-slot items that never bash, allow two-handed weapons and two-weapon fighting |
+| Crystal shield | dwarvish roundshield stats, weight 80, new material `CRYSTAL`, no spellcasting penalty |
+| Gloves of expertise | "snakeskin gloves", AC1; weapon skill counts as one rank higher (Expert becomes Master: +9 hit, +3 damage); martial arts and restricted skills unaffected |
+| Skills | morning star merged into mace; new Shield skill (Basic +1 AC, Skilled +3 / bracers +2, Expert +5 / bracers +3; auto shield bash 1/8, 1/6, 1/4 with +d4 and 1/10 stun at Expert; silver shields do silver damage, blessed shields hit undead and demons harder; trains when attacks miss you or you bash). Valkyries and Knights start at Basic and cap at Expert, Barbarians/Rangers/Samurai Skilled, Archeologists/Cavemen/Priests/Rogues/Tourists/Bards Basic |
+| Merozalghu | acid breath 4d12 (never at melee range, usable via #monster when polymorphed); `NATTK` is now 7; breath damage now scales with the damd field (dragons unchanged) |
+| Cryolisk / electrolisk | cold gaze that often freezes potions; shock gaze that detonates wands and rings unless you are shock resistant |
+| Green dragon | poison breath leaves single-square stinking clouds along its path |
+| Spellbook of stench | "sticky", level 4, matter, casts the wand of stinking fog effect |
+| Bard songs | six songs (lullaby, cacophony, drowsiness at level 1; despair, friendship, inspire courage at level 3) are always known, need an instrument in inventory, use Charisma, and belong to the new Musical spell skill (Bards reach Expert); Bards also get Basic healing/matter, Skilled divination, Expert enchantment; friendship is temporary taming, inspire courage boosts pets' damage |
+| Luck Blade | first sacrifice gift for Bards (takes the Bard's alignment) |
+| Bard quest | redone after the DNetHack quest: the Conservatorium, Pindar, rhymers, the Island of Anthemoessa, the Old Ruins, Aglaope and the Lyre of Orpheus |

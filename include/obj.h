@@ -186,6 +186,12 @@ struct obj {
 #define any_quest_artifact(o) ((o)->oartifact >= ART_ORB_OF_DETECTION)
 
 /* Armor */
+#define is_bracers(o)	((o) && ((o)->otyp == PLAIN_BRACERS || \
+			 (o)->otyp == RUNED_BRACERS || \
+			 (o)->otyp == DWARVISH_BRACERS))
+#define wearing_shield()	(uarms && !is_bracers(uarms))
+#define is_parry_wep(o)	((o) && ((o)->otyp == PARRYING_DAGGER || \
+			 (o)->otyp == MAIN_GAUCHE))
 #define is_shield(otmp) (otmp->oclass == ARMOR_CLASS && \
 			 objects[otmp->otyp].oc_armcat == ARM_SHIELD)
 #define is_helmet(otmp) (otmp->oclass == ARMOR_CLASS && \

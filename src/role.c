@@ -86,9 +86,9 @@ const struct Role roles[] = {
 	{"Well-known Bard", 0},
 	{"Master Bard", 0} },
 	"_Minerva", "Apollo", "Linus", /* Greek/Roman */
-	"Brd", "the College of Parnassus", "the Isle of Anthemoessa",
+	"Brd", "the Conservatorium", "the Island of Anthemoessa",
 	PM_BARD, NON_PM, NON_PM,
-	PM_AMPHION, PM_LYRIST, PM_AGLAOPE,
+	PM_PINDAR, PM_RHYMER, PM_AGLAOPE,
 	ART_LYRE_OF_ORPHEUS,
 	MH_HUMAN|MH_GNOME|MH_ORC | ROLE_MALE|ROLE_FEMALE |
 	  ROLE_NEUTRAL|ROLE_CHAOTIC,
@@ -97,8 +97,8 @@ const struct Role roles[] = {
 	{  10, 10, 15, 25, 10, 30 },
 	/* Init   Lower  Higher */
 	{ 10, 0,  0, 8,  1, 0 },	/* Hit points */
-	{  2, 0,  0, 2,  0, 2 },10,	/* Energy */
-	10, 5, 1, 2, 10, A_CHA, SPE_SLEEP,   -4
+	{  6, 0,  0, 2,  0, 2 },10,	/* Energy */
+	10, 5, 1, 2, 10, A_INT, SPE_SLEEP,   -4
 },
 {	{"Caveman", "Cavewoman"}, {
 	{"Troglodyte",  0},

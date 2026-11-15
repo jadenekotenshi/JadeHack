@@ -192,6 +192,7 @@ moveloop()
 
 		    monstermoves++;
 		    moves++;
+		    if (u.uinspire > 0) u.uinspire--;
 
 		    /********************************/
 		    /* once-per-turn things go here */

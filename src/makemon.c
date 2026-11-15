@@ -363,12 +363,13 @@ register struct monst *mtmp;
 		} else if (is_dwarf(ptr)) {
 		    if (rn2(7)) (void)mongets(mtmp, DWARVISH_CLOAK);
 		    if (rn2(7)) (void)mongets(mtmp, IRON_SHOES);
+		    if (!rn2(40)) (void)mongets(mtmp, DWARVISH_BRACERS);
 		    if (!rn2(4)) {
 			(void)mongets(mtmp, DWARVISH_SHORT_SWORD);
 			/* note: you can't use a mattock with a shield */
 			if (rn2(2)) (void)mongets(mtmp, DWARVISH_MATTOCK);
 			else {
-				(void)mongets(mtmp, AXE);
+				(void)mongets(mtmp, !rn2(5) ? DWARVISH_BEARDED_AXE : AXE);
 				(void)mongets(mtmp, DWARVISH_ROUNDSHIELD);
 			}
 			(void)mongets(mtmp, DWARVISH_IRON_HELM);
