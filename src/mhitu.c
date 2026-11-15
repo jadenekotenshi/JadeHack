@@ -324,6 +324,18 @@ mattacku(mtmp)
 	if(mtmp->mhp <= 0 || (Underwater && !is_swimmer(mtmp->data)))
 	    return(0);
 
+	/* odorous orbs have no real attack; they just stink */
+	if (mdat == &mons[PM_ODOROUS_ORB] && !u.uswallow) {
+	    static const char * const stinks[] = {
+		"stinks at you", "stinks in your general direction",
+		"emits gas", "stinks aimlessly" };
+	    if (youseeit)
+		pline("%s %s.", Monnam(mtmp), stinks[rn2(4)]);
+	    else
+		You("smell a foul odor.");
+	    return(0);
+	}
+
 	/* If swallowed, can only be affected by u.ustuck */
 	if(u.uswallow) {
 	    if(mtmp != u.ustuck)

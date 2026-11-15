@@ -37,6 +37,7 @@
 #define SPFX_STR	  0x8000000L   /* item bestows STR 18(**) */
 #define SPFX_CON	  0x10000000L   /* item bestows CON 25 */
 #define SPFX_POLYC  0x20000000L	 /* items grants polymorph control */
+#define SPFX_FAST   0x40000000L	 /* Very Fast while wielded/worn */
 
 #define SPDF_NONE		  0x00000000L /* No special effects */
 #define SPDF_MAGIC	  0x00000001L /* Magic resistance */

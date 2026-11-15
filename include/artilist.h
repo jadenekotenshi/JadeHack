@@ -166,6 +166,33 @@ A("Keolewa",CLUB,
 	PHYS(5,6), SPDF_NONE, NO_CARY, 0, A_NEUTRAL, PM_CAVEMAN, NON_PM, 1000L ),
 
 /*
+ *	JadeHack originals.  The flat damage bonuses (+4, +10) and Gungnir's
+ *	flat +5 to-hit are applied in spec_dbon()/spec_abon(); the damd value
+ *	here only has to be non-zero.  Luck Blade is a luckstone while carried
+ *	(SPFX_LUCK), Quicksilver gives Super Fast (speed 24) when wielded (SPFX_FAST),
+ *	Ravenbrand blocks blindness (SPDF_BLIND); the rest is in artifact_hit().
+ */
+A("Luck Blade",			SHORT_SWORD,
+	(SPFX_RESTR|SPFX_LUCK), 0, 0,
+	PHYS(5,4),	SPDF_NONE,	NO_CARY,	0, A_NEUTRAL, NON_PM, NON_PM, 3000L ),
+
+A("Quicksilver",		SILVER_SHORT_SWORD,
+	(SPFX_RESTR|SPFX_FAST), 0, 0,
+	PHYS(5,4),	SPDF_NONE,	NO_CARY,	0, A_NEUTRAL, NON_PM, NON_PM, 3500L ),
+
+A("Ravenbrand",			SCIMITAR,
+	SPFX_RESTR, 0, 0,
+	PHYS(5,10),	SPDF_BLIND,	NO_CARY,	0, A_NEUTRAL, NON_PM, NON_PM, 3500L ),
+
+A("Spineseeker",		STILETTO,
+	SPFX_RESTR, 0, 0,
+	PHYS(5,4),	SPDF_NONE,	NO_CARY,	0, A_CHAOTIC, PM_ROGUE, NON_PM, 2500L ),
+
+A("Gungnir",			SPEAR,
+	SPFX_RESTR, 0, 0,
+	PHYS(5,10),	SPDF_NONE,	NO_CARY,	0, A_NEUTRAL, NON_PM, NON_PM, 5000L ),
+
+/*
  *	The artifacts for the quest dungeon, all self-willed.
  */
 

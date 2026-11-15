@@ -412,3 +412,29 @@ wind!" and releases the same stinking cloud as a broken wand of stinking fog
 
 Food probs rebalanced (tripe -10, egg -10, tin -10) to keep the class at 1000.
 Tested in wizard build: wished items, 14 random rings (no nameless ones).
+
+## Batch 23: new artifacts and monsters
+
+Artifacts (`include/artilist.h`, `src/artifact.c`, `src/dothrow.c`; all `SPFX_RESTR`):
+
+| Artifact | Base | Align | Effects |
+|---|---|---|---|
+| Luck Blade | short sword | neutral | luckstone of equal BUC while carried; +d5 to hit, +4 damage; 1 in (20 - Luck) chance to strike deep for +3d8 |
+| Quicksilver | silver short sword | neutral | wielded: new `Super_fast` property (speed 24, `SUPER_FAST` in `prop.h`, `ESuper_fast`; counts as Fast/Very_fast; shows as "super fast" in ^X); +d5 to hit, +4 damage |
+| Ravenbrand | scimitar | neutral | +d5 to hit, +d10 damage; blindness resistance (`SPDF_BLIND` now actually grants `EBlind_resistance`, so Sunsword has it too); independent 1/5 slow, 1/3 extra d10, 1/5 blind with the requested messages |
+| Spineseeker | stiletto | chaotic, Rogue first gift | +d5 to hit, +4 damage, double damage to fleeing foes |
+| Gungnir | spear | neutral | flat +5 to hit, +10 damage; returns to your hand when thrown (any role) |
+
+Flat bonuses are special-cased by artifact in `spec_abon()`/`spec_dbon()`.
+
+Monsters (`src/monst.c`):
+lemming, lemming zombie, wire jelly (corpse gives 5% shock resistance by the
+existing corpse-weight rule), zuvembie, star vampire (always generated
+invisible), fire vampire (SLASH'EM stats as listed on the NetHack wiki; the
+unused spellcasting attack is omitted), Kuei-jin (never casts summon nasties),
+devil bunny, stinkbite (BOOM! + stinking cloud on death), merozalghu (MZ_HUMAN
+so it can wear body armor; added to the summon-nasties list; plural
+merozalghi), odorous orb (stink messages in `mattacku`, BLAM! + gas-spore
+explosion + stinking cloud on death). Starting weapons are in `makemon.c`.
+"Rare" and "very rare" both map to generation frequency 1.
+Rebuild makedefs and the data files after these changes (struct you grew).

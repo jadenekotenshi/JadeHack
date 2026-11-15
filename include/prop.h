@@ -82,7 +82,8 @@
 #define VULN_COLD			73
 #define VULN_ELEC			74
 #define VULN_ACID			75
-#define LAST_PROP		 	(VULN_ACID)
+#define SUPER_FAST		76
+#define LAST_PROP		 	(SUPER_FAST)
 
 /*** Where the properties come from ***/
 /* Definitions were moved here from obj.h and you.h */

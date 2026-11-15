@@ -369,8 +369,10 @@
 
 #define HFast			u.uprops[FAST].intrinsic
 #define EFast			u.uprops[FAST].extrinsic
-#define Fast			((HFast || EFast) && !Slow)
-#define Very_fast		(((HFast & ~INTRINSIC) || EFast) && !Slow)
+#define ESuper_fast		u.uprops[SUPER_FAST].extrinsic
+#define Super_fast		(ESuper_fast && !Slow)	/* speed 24 */
+#define Very_fast		(((HFast & ~INTRINSIC) || EFast || ESuper_fast) && !Slow)
+#define Fast			((HFast || EFast || ESuper_fast) && !Slow)
 
 #define HSlow		   u.uprops[SLOW].intrinsic
 #define ESlow		   u.uprops[SLOW].extrinsic

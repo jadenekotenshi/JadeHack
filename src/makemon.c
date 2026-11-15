@@ -446,7 +446,20 @@ register struct monst *mtmp;
 		(void)mongets(mtmp, KNIFE);
 		(void)mongets(mtmp, LONG_SWORD);
 		break;
+	    case S_VAMPIRE:
+		if (mm == PM_KUEI_JIN && rn2(2)) (void)mongets(mtmp, KATANA);
+		break;
+	    case S_ZRUTY:
+		if (mm == PM_MEROZALGHU && rn2(4))
+		    (void)mongets(mtmp, (rn2(3) ? MACE :
+				rn2(2) ? MORNING_STAR : FALCHION));
+		break;
 	    case S_ZOMBIE:
+		if (mm == PM_ZUVEMBIE) {
+		    if (rn2(2)) (void)mongets(mtmp,
+				(rn2(3) ? SHORT_SWORD : rn2(2) ? SCIMITAR : SPEAR));
+		    break;
+		}
 		if (!rn2(4)) (void)mongets(mtmp, LEATHER_ARMOR);
 		if (!rn2(4))
 			(void)mongets(mtmp, (rn2(3) ? KNIFE : SHORT_SWORD));
@@ -1200,6 +1213,7 @@ register int	mmflags;
 	    if (count_wsegs(mtmp)) place_worm_tail_randomly(mtmp, x, y);
 	}
 	set_malign(mtmp);		/* having finished peaceful changes */
+	if (mndx == PM_STAR_VAMPIRE) mon_set_minvis(mtmp);	/* always invisible */
 	if(anymon) {
 	    if ((ptr->geno & G_SGROUP) && rn2(2)) {
 		m_initsgrp(mtmp, mtmp->mx, mtmp->my);

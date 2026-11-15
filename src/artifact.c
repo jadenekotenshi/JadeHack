@@ -512,7 +512,8 @@ long wp_mask;
 			/* Doesn't have a specific resistance in the table */
 		}
 		if (oart->defn & SPDF_BLIND) {
-			/* Doesn't have a specific resistance in the table */
+			if (on) EBlind_resistance |= wp_mask;
+			else EBlind_resistance &= ~wp_mask;
 		}
 		if (oart->defn & SPDF_CONFUSE) {
 			/* Doesn't have a specific resistance in the table */
@@ -537,6 +538,10 @@ long wp_mask;
 	if (spfx & SPFX_SEARCH) {
 	    if(on) ESearching |= wp_mask;
 	    else ESearching &= ~wp_mask;
+	}
+	if (spfx & SPFX_FAST) {
+	    if (on) ESuper_fast |= wp_mask;
+	    else ESuper_fast &= ~wp_mask;
 	}
 	if (spfx & SPFX_POLYC) {
 		if (on) EPolymorph_control |= wp_mask;
@@ -784,6 +789,8 @@ struct monst *mon;
 	/* no need for an extra check for `NO_ATTK' because this will
 	   always return 0 for any artifact which has that attribute */
 
+	if (weap && otmp->oartifact == ART_GUNGNIR)
+	    return 5;			/* flat +5 to hit against everything */
 	if (weap && weap->attk.damn && spec_applies(weap, mon))
 	    return rnd((int)weap->attk.damn);
 	return 0;
@@ -808,6 +815,16 @@ int tmp;
 	else
 	    spec_dbon_applies = spec_applies(weap, mon);
 
+	if (spec_dbon_applies && otmp->oartifact) {
+	    /* flat damage bonuses */
+	    switch (otmp->oartifact) {
+		case ART_LUCK_BLADE:
+		case ART_QUICKSILVER:
+		case ART_SPINESEEKER:	return 4;
+		case ART_GUNGNIR:	return 10;
+		default: break;
+	    }
+	}
 	if (spec_dbon_applies)
 	    return weap->attk.damd ? rnd((int)weap->attk.damd) : max(tmp,1);
 	return 0;
@@ -1102,6 +1119,7 @@ int dieroll; /* needed for Magicbane and vorpal blades */
 	char hittee[BUFSZ];
 	struct artifact* atmp;
 	int j;
+	char buf2[BUFSZ];
 
 	Strcpy(hittee, youdefend ? you : mon_nam(mdef));
 
@@ -1171,6 +1189,61 @@ int dieroll; /* needed for Magicbane and vorpal blades */
 	if (attacks(AD_STUN, otmp) && dieroll <= MB_MAX_DIEROLL) {
 	    /* Magicbane's special attacks (possibly modifies hittee[]) */
 	    return Mb_hit(magr, mdef, otmp, dmgptr, dieroll, vis, hittee);
+	}
+
+	/* Spineseeker does double damage to fleeing foes */
+	if (otmp->oartifact == ART_SPINESEEKER && !youdefend && mdef->mflee)
+	    *dmgptr *= 2;
+
+	/* Luck Blade: sometimes strikes deep (1 in 20 - Luck) */
+	if (otmp->oartifact == ART_LUCK_BLADE && youattack &&
+		!rn2(max(1, 20 - Luck))) {
+	    You("strike deep into %s!", mon_nam(mdef));
+	    *dmgptr += d(3,8);
+	    return TRUE;
+	}
+
+	/* Ravenbrand: darkness slows, lacerates and blinds */
+	if (otmp->oartifact == ART_RAVENBRAND) {
+	    boolean slowed = FALSE, hurt = FALSE, blinded = FALSE;
+	    char who[BUFSZ];
+
+	    if (!rn2(5)) {
+		if (youdefend) {
+		    if (HFast) { HFast = 0L; slowed = TRUE; }
+		} else if (mdef->mspeed != MSLOW) {
+		    mon_adjust_speed(mdef, -2, (struct obj *)0);
+		    slowed = TRUE;
+		}
+	    }
+	    if (!rn2(3)) { *dmgptr += rnd(10); hurt = TRUE; }
+	    if (!rn2(5)) {
+		if (youdefend) {
+		    if (!Blind_resistance && !Blind) {
+			make_blinded(Blinded + (long)rnd(20), FALSE);
+			blinded = TRUE;
+		    }
+		} else if (haseyes(mdef->data) && mdef->mcansee &&
+			   !resists_blnd(mdef)) {
+		    mdef->mcansee = 0;
+		    mdef->mblinded = rn1(20, 10);
+		    blinded = TRUE;
+		}
+	    }
+	    Strcpy(who, youdefend ? "you" : mon_nam(mdef));
+	    if (realizes_damage) {
+		if (slowed && hurt)
+		    pline("%s %s entangled by barbed chains of darkness!",
+			  youdefend ? "You" : upstart(strcpy(buf2, who)),
+			  youdefend ? "are" : "is");
+		else if (slowed)
+		    pline("Strands of darkness entangle %s!", who);
+		else if (hurt)
+		    pline("Shards of darkness lacerate %s!", who);
+		if (blinded)
+		    pline("Darkness clings to %s!", who);
+		if (slowed || hurt || blinded) return TRUE;
+	    }
 	}
 
 	if (!spec_dbon_applies) {

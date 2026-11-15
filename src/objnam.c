@@ -1495,6 +1495,16 @@ const char *oldstr;
 		goto bottom;
 	}
 
+	/* merozalghu/merozalghi */
+	if (len >= 10 && !strcmpi(spot-9, "merozalghu")) {
+		*spot = 'i';
+		goto bottom;
+	}
+
+	/* Kuei-jin is its own plural */
+	if (len >= 8 && !strcmpi(spot-7, "kuei-jin"))
+		goto bottom;
+
 	/* sis/ses (nemesis) */
 	if (len >= 3 && !strcmp(spot-2, "sis")) {
 		*(spot-1) = 'e';

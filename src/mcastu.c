@@ -234,8 +234,13 @@ castmu(mtmp, mattk, thinks_it_foundyou, foundyou)
 
 	    do {
 			spellnum = rn2(ml);
-			if (mattk->adtyp == AD_SPEL)
+			if (mattk->adtyp == AD_SPEL) {
 				spellnum = choose_magic_spell(mtmp,spellnum);
+				/* Kuei-jin never summon nasties */
+				if (mtmp->data == &mons[PM_KUEI_JIN] &&
+				    spellnum == MGC_SUMMON_MONS)
+					spellnum = MGC_AGGRAVATION;
+			}
 			else
 				spellnum = choose_clerical_spell(mtmp,spellnum);
 			/* not trying to attack?  don't allow directed spells */

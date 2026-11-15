@@ -70,8 +70,10 @@ undead_to_corpse(mndx)
 int mndx;
 {
 	switch (mndx) {
+	case PM_LEMMING_ZOMBIE:	mndx = PM_LEMMING;  break;
+	case PM_ZUVEMBIE:
 	case PM_KOBOLD_ZOMBIE:
-	case PM_KOBOLD_MUMMY:	mndx = PM_KOBOLD;  break;
+	case PM_KOBOLD_MUMMY:	mndx = (mndx == PM_ZUVEMBIE) ? PM_HUMAN : PM_KOBOLD;  break;
 	case PM_DWARF_ZOMBIE:
 	case PM_DWARF_MUMMY:	mndx = PM_DWARF;  break;
 	case PM_GNOME_ZOMBIE:
@@ -242,6 +244,8 @@ register struct monst *mtmp;
 	    case PM_HUMAN_MUMMY:
 	    case PM_GIANT_MUMMY:
 	    case PM_ETTIN_MUMMY:
+	    case PM_LEMMING_ZOMBIE:
+	    case PM_ZUVEMBIE:
 	    case PM_KOBOLD_ZOMBIE:
 	    case PM_DWARF_ZOMBIE:
 	    case PM_GNOME_ZOMBIE:
@@ -1639,6 +1643,13 @@ boolean was_swallowed;			/* digestion */
 		}
 	}
 
+	/* stinkbites burst into a stinking cloud */
+	if (mdat == &mons[PM_STINKBITE] && !was_swallowed) {
+	    if (cansee(mon->mx, mon->my) || flags.soundok) pline("BOOM!");
+	    (void) create_gas_cloud(mon->mx, mon->my, 3, 8);
+	    return FALSE;
+	}
+
 	/* Gas spores always explode upon death */
 	for(i = 0; i < NATTK; i++) {
 	    if (mdat->mattk[i].aatyp == AT_BOOM) {
@@ -1674,7 +1685,10 @@ boolean was_swallowed;			/* digestion */
 	    	Sprintf(killer_buf, "%s explosion", s_suffix(mdat->mname));
 	    	killer = killer_buf;
 	    	killer_format = KILLED_BY_AN;
+	    	if (mdat == &mons[PM_ODOROUS_ORB]) pline("BLAM!");
 	    	explode(mon->mx, mon->my, -1, tmp, MON_EXPLODE, EXPL_NOXIOUS); 
+	    	if (mdat == &mons[PM_ODOROUS_ORB])
+		    (void) create_gas_cloud(mon->mx, mon->my, 3, 8);
 	    	return (FALSE);
 	    }
   	}

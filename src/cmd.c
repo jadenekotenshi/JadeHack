@@ -1213,7 +1213,7 @@ int final;	/* 0 => still in progress; 1 => over, survived; 2 => dead */
 	    you_are(buf);
 	}
 	if (Unchanging) you_can("not change from your current form");
-	if (Fast) you_are(Very_fast ? "very fast" : "fast");
+	if (Fast) you_are(Super_fast ? "super fast" : Very_fast ? "very fast" : "fast");
 	if (Slow) {
 		Strcpy(buf,"slow");
 #ifdef WIZARD
@@ -1561,7 +1561,7 @@ int final;
 	}
 	if (Unchanging)
 	  dump(youcould, "not change from your current form");
-	if (Fast) dump(youwere, Very_fast ? "very fast" : "fast");
+	if (Fast) dump(youwere, Super_fast ? "super fast" : Very_fast ? "very fast" : "fast");
 	if (Reflecting) dump(youhad, "reflection");
 	if (Free_action) dump(youhad, "free action");
 	if (Fixed_abil) dump(youhad, "fixed abilities");

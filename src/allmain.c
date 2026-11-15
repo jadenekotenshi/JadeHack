@@ -158,7 +158,10 @@ moveloop()
 		    {
 				moveamt = youmonst.data->mmove;
 
-				if (Very_fast) {	/* speed boots or potion */
+				if (Super_fast) {	/* Quicksilver: speed 24 */
+					if (moveamt < 2 * NORMAL_SPEED)
+						moveamt = 2 * NORMAL_SPEED;
+				} else if (Very_fast) {	/* speed boots or potion */
 					/* average movement is 1.67 times normal */
 					moveamt += NORMAL_SPEED / 2;
 					if (rn2(3) == 0) moveamt += NORMAL_SPEED / 2;
