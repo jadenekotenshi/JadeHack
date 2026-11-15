@@ -780,7 +780,7 @@ gcrownu()
 	    u.ugifts++;
 	}
 	/* acquire Stormbringer's skill regardless of weapon or gift */
-	unrestrict_weapon_skill(P_BROAD_SWORD);
+	unrestrict_weapon_skill(P_LONG_SWORD);
 	if (obj && obj->oartifact == ART_STORMBRINGER)
 	    discover_artifact(ART_STORMBRINGER);
 	break;

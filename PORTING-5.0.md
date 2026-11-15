@@ -497,3 +497,7 @@ Bard row (accelerator `B`).
 | Mephistopheles | unaligned devil lord (level 115, AC -15, speed 15), weapon, claw, claw, mage, cleric and fire spell attacks; fire, cold, shock, poison and disintegration resistant; flies, sees invisible; covetous; +7 ranseur; lives asleep in the Sanctum beside the temple until you hold the Amulet; rival of the Wizard of Yendor (they fight each other); gates in demons of any alignment (unaligned) |
 | Unicorn horn | no change needed: this tree's unicorn horn no longer cured attribute loss (that code was already disabled) |
 | The Mall | branch with two levels (the Mall and the Rat Sewers); entrance stairs down on a level from 7 to 14. The Mall is a lit concourse with twelve shops and a fountain; the Rat Sewers is a dark cavern full of every kind of r plus lemming zombies, with 3 scrolls, 2 armors, 2 weapons and a wand guaranteed. `botl.c` knows the branch name; `mall.des` is in the makefiles |
+
+## Batch 27: more skill merges
+
+Broadsword merged into long sword, club into mace, shuriken into dart (each role keeps the best of its old caps; skills renumbered again, `is_multigen`/`is_poisonable` now start at `-P_DART`; the runesword now uses the long sword skill). Rangers: short sword cap Skilled, long sword Basic.

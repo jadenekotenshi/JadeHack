@@ -99,7 +99,7 @@ PROJECTILE("silver crossbow bolt", (char *)0,
 WEAPON("dart", (char *)0,
 	1, 1, 0, 47,  1,  2,  3,  2, 0, P,   -P_DART, IRON, HI_METAL),
 WEAPON("shuriken", "throwing star",
-	0, 1, 0, 30,  1,  5,  8,  6, 2, P,   -P_SHURIKEN, IRON, HI_METAL),
+	0, 1, 0, 30,  1,  5,  8,  6, 2, P,   -P_DART, IRON, HI_METAL),
 WEAPON("boomerang", (char *)0,
 	1, 1, 0, 13,  5, 20,  9,  9, 0, 0,   -P_BOOMERANG, WOOD, HI_WOOD),
 
@@ -183,10 +183,10 @@ WEAPON("saber", (char *)0,
 WEAPON("messer", (char *)0,
 	1, 0, 0, 10, 35,  8,  6,  6, 0, S,   P_CURVED_SWORD, IRON, HI_METAL),
 WEAPON("broadsword", (char *)0,
-	1, 0, 0, 10, 70, 10,  4,  6, 0, S,   P_BROAD_SWORD, IRON, HI_METAL),
+	1, 0, 0, 10, 70, 10,  4,  6, 0, S,   P_LONG_SWORD, IRON, HI_METAL),
 						/* +d4 small, +1 large */
 WEAPON("elven broadsword", "runed broadsword",
-	0, 0, 0,  8, 70, 10,  6,  6, 0, S,   P_BROAD_SWORD, WOOD, HI_WOOD),
+	0, 0, 0,  8, 70, 10,  6,  6, 0, S,   P_LONG_SWORD, WOOD, HI_WOOD),
 						/* +d4 small, +1 large */
 WEAPON("long sword", (char *)0,
 	1, 0, 0, 34, 40, 15,  8, 12, 0, S,   P_LONG_SWORD, IRON, HI_METAL),
@@ -205,7 +205,7 @@ WEAPON("tsurugi", "long samurai sword",
 	0, 0, 1,  1, 60,500, 16,  8, 2, S,   P_TWO_HANDED_SWORD, METAL, HI_METAL),
 						/* +2d6 large */
 WEAPON("runesword", "runed broadsword",
-	0, 0, 0,  1, 40,300,  4,  6, 0, S,   P_BROAD_SWORD, IRON, CLR_BLACK),
+	0, 0, 0,  1, 40,300,  4,  6, 0, S,   P_LONG_SWORD, IRON, CLR_BLACK),
 						/* +d4 small, +1 large */
 						/* +5d2 +d8 from level drain */
 
@@ -268,7 +268,7 @@ WEAPON("war hammer", (char *)0,
 	1, 0, 0, 15, 50,  5,  4,  4, 0, B,   P_HAMMER, IRON, HI_METAL),
 						/* +1 small */
 WEAPON("club", (char *)0,
-	1, 0, 0, 15, 30,  3,  6,  3, 0, B,   P_CLUB, WOOD, HI_WOOD),
+	1, 0, 0, 15, 30,  3,  6,  3, 0, B,   P_MACE, WOOD, HI_WOOD),
 #ifdef KOPS
 WEAPON("rubber hose", (char *)0,
 	1, 0, 0,  0, 20,  3,  4,  3, 0, B,   P_WHIP, PLASTIC, CLR_BROWN),
@@ -282,7 +282,7 @@ WEAPON("staff of matter",     "staff", 0, 0, 1, 5, 40, 400,  6,  6, 0, B, P_QUAR
 WEAPON("staff of escape",     "staff", 0, 0, 1, 5, 40, 400,  6,  6, 0, B, P_QUARTERSTAFF, WOOD, HI_WOOD),
 WEAPON("staff of battle",     "staff", 0, 0, 1, 5, 40, 400,  6,  6, 0, B, P_QUARTERSTAFF, WOOD, HI_WOOD),
 /* two-piece */
-WEAPON("aklys", "thonged club", 0, 0, 0,  3, 15,  4,  6,  3, 0, B,   P_CLUB, IRON, HI_METAL),
+WEAPON("aklys", "thonged club", 0, 0, 0,  3, 15,  4,  6,  3, 0, B,   P_MACE, IRON, HI_METAL),
 WEAPON("flail", (char *)0, 1, 0, 0, 20, 15,  4,  6,  4, 0, B,   P_FLAIL, IRON, HI_METAL),
 						/* +1 small, +1d4 large */
 /* misc */

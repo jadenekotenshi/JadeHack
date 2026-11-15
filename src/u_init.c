@@ -280,7 +280,7 @@ static const struct def_skill Skill_A[] = {
     { P_DAGGER, P_BASIC },		{ P_KNIFE,  P_BASIC },
     { P_PICK_AXE, P_EXPERT },		{ P_SHORT_SWORD, P_BASIC },
     { P_CURVED_SWORD, P_EXPERT },
-    { P_CLUB, P_SKILLED },		{ P_QUARTERSTAFF, P_SKILLED },
+    { P_QUARTERSTAFF, P_SKILLED },
     { P_SLING, P_SKILLED },		{ P_DART, P_BASIC },
     { P_BOOMERANG, P_EXPERT },		{ P_WHIP, P_EXPERT },
     { P_UNICORN_HORN, P_SKILLED },
@@ -292,15 +292,16 @@ static const struct def_skill Skill_A[] = {
     { P_TWO_WEAPON_COMBAT, P_BASIC },
     { P_BARE_HANDED_COMBAT, P_EXPERT },
     { P_SHIELD, P_BASIC },
+    { P_MACE, P_SKILLED },
     { P_NONE, 0 }
 };
 
 static const struct def_skill Skill_B[] = {
     { P_DAGGER, P_BASIC },		{ P_AXE, P_EXPERT },
     { P_PICK_AXE, P_SKILLED },	{ P_SHORT_SWORD, P_EXPERT },
-    { P_BROAD_SWORD, P_SKILLED },	{ P_LONG_SWORD, P_SKILLED },
+    { P_LONG_SWORD, P_SKILLED },
     { P_TWO_HANDED_SWORD, P_EXPERT },	{ P_CURVED_SWORD, P_SKILLED },
-    { P_CLUB, P_SKILLED },
+    
     { P_MACE, P_SKILLED },		
     { P_FLAIL, P_BASIC },		{ P_HAMMER, P_EXPERT },
     { P_QUARTERSTAFF, P_BASIC },	{ P_SPEAR, P_SKILLED },
@@ -318,7 +319,7 @@ static const struct def_skill Skill_B[] = {
 static const struct def_skill Skill_Bard[] = {
     { P_DAGGER, P_SKILLED },		{ P_KNIFE,  P_BASIC },
     { P_SHORT_SWORD, P_SKILLED },	{ P_CURVED_SWORD, P_SKILLED },
-    { P_CLUB, P_SKILLED },		{ P_FLAIL, P_BASIC },
+    { P_FLAIL, P_BASIC },
     { P_QUARTERSTAFF, P_SKILLED },	{ P_POLEARMS, P_BASIC },
     { P_SPEAR, P_SKILLED },		{ P_SLING, P_SKILLED },
     { P_CROSSBOW, P_SKILLED },		{ P_DART, P_EXPERT },
@@ -328,13 +329,14 @@ static const struct def_skill Skill_Bard[] = {
     { P_MUSICAL_SPELL, P_EXPERT },
     { P_BARE_HANDED_COMBAT, P_EXPERT },
     { P_SHIELD, P_BASIC },
+    { P_MACE, P_SKILLED },
     { P_NONE, 0 }
 };
 
 static const struct def_skill Skill_C[] = {
     { P_KNIFE,  P_SKILLED },
     { P_AXE, P_SKILLED },		{ P_PICK_AXE, P_BASIC },
-    { P_CLUB, P_EXPERT },		{ P_MACE, P_EXPERT },
+    { P_MACE, P_EXPERT },
     { P_FLAIL, P_SKILLED },
     { P_HAMMER, P_SKILLED },		{ P_QUARTERSTAFF, P_EXPERT },
     { P_POLEARMS, P_SKILLED },		{ P_SPEAR, P_EXPERT },
@@ -350,12 +352,12 @@ static const struct def_skill Skill_C[] = {
 static const struct def_skill Skill_H[] = {
     { P_DAGGER, P_SKILLED },		{ P_KNIFE, P_EXPERT },
     { P_SHORT_SWORD, P_SKILLED },	{ P_CURVED_SWORD, P_BASIC },
-    { P_CLUB, P_SKILLED },
-    { P_MACE, P_BASIC },		{ P_QUARTERSTAFF, P_EXPERT },
+    
+    { P_MACE, P_SKILLED },		{ P_QUARTERSTAFF, P_EXPERT },
     { P_POLEARMS, P_BASIC },		{ P_SPEAR, P_BASIC },
     
     { P_SLING, P_SKILLED },		{ P_DART, P_EXPERT },
-    { P_SHURIKEN, P_SKILLED },		{ P_UNICORN_HORN, P_EXPERT },
+    { P_UNICORN_HORN, P_EXPERT },
     { P_HEALING_SPELL, P_EXPERT }, { P_MATTER_SPELL, P_BASIC },
     { P_BARE_HANDED_COMBAT, P_BASIC },
     { P_NONE, 0 }
@@ -364,10 +366,10 @@ static const struct def_skill Skill_H[] = {
 static const struct def_skill Skill_K[] = {
     { P_DAGGER, P_BASIC },		{ P_KNIFE, P_BASIC },
     { P_AXE, P_SKILLED },		{ P_PICK_AXE, P_BASIC },
-    { P_SHORT_SWORD, P_SKILLED },	{ P_BROAD_SWORD, P_EXPERT },
+    { P_SHORT_SWORD, P_SKILLED },	
     { P_LONG_SWORD, P_EXPERT },	{ P_TWO_HANDED_SWORD, P_EXPERT },
     { P_CURVED_SWORD, P_SKILLED },
-    { P_CLUB, P_BASIC },		{ P_MACE, P_SKILLED },
+    { P_MACE, P_SKILLED },
     { P_FLAIL, P_BASIC },
     { P_HAMMER, P_BASIC },		{ P_POLEARMS, P_EXPERT },
     { P_SPEAR, P_EXPERT },		
@@ -386,24 +388,25 @@ static const struct def_skill Skill_K[] = {
 static const struct def_skill Skill_Mon[] = {
     { P_QUARTERSTAFF, P_BASIC },    { P_SPEAR, P_BASIC },
     { P_CROSSBOW, P_BASIC },
-    { P_SHURIKEN, P_BASIC },
+    
     { P_ATTACK_SPELL, P_BASIC },    { P_HEALING_SPELL, P_EXPERT },
     { P_DIVINATION_SPELL, P_BASIC },{ P_ENCHANTMENT_SPELL, P_BASIC },
     { P_CLERIC_SPELL, P_SKILLED },  { P_ESCAPE_SPELL, P_BASIC },
     { P_MATTER_SPELL, P_BASIC },
     { P_MARTIAL_ARTS, P_GRAND_MASTER },
+    { P_DART, P_BASIC },
     { P_NONE, 0 }
 };
 
 static const struct def_skill Skill_P[] = {
-    { P_CLUB, P_EXPERT },		{ P_MACE, P_EXPERT },
+    { P_MACE, P_EXPERT },
     { P_FLAIL, P_EXPERT },
     { P_HAMMER, P_EXPERT },		{ P_QUARTERSTAFF, P_EXPERT },
     { P_POLEARMS, P_SKILLED },		{ P_SPEAR, P_SKILLED },
     
     { P_LANCE, P_BASIC },		{ P_BOW, P_BASIC },
     { P_SLING, P_BASIC },		{ P_CROSSBOW, P_BASIC },
-    { P_DART, P_BASIC },		{ P_SHURIKEN, P_BASIC },
+    { P_DART, P_BASIC },		
     { P_BOOMERANG, P_BASIC },		{ P_UNICORN_HORN, P_SKILLED },
     { P_HEALING_SPELL, P_EXPERT },	{ P_DIVINATION_SPELL, P_EXPERT },
     { P_CLERIC_SPELL, P_EXPERT }, { P_MATTER_SPELL, P_BASIC },
@@ -414,14 +417,14 @@ static const struct def_skill Skill_P[] = {
 
 static const struct def_skill Skill_R[] = {
     { P_DAGGER, P_EXPERT },		{ P_KNIFE,  P_EXPERT },
-    { P_SHORT_SWORD, P_EXPERT },	{ P_BROAD_SWORD, P_SKILLED },
+    { P_SHORT_SWORD, P_EXPERT },	
     { P_LONG_SWORD, P_SKILLED },	{ P_TWO_HANDED_SWORD, P_BASIC },
     { P_CURVED_SWORD, P_SKILLED },
-    { P_CLUB, P_SKILLED },		{ P_MACE, P_SKILLED },
+    { P_MACE, P_SKILLED },
     { P_FLAIL, P_BASIC },
     { P_HAMMER, P_BASIC },		{ P_POLEARMS, P_BASIC },
     { P_SPEAR, P_BASIC },		{ P_CROSSBOW, P_EXPERT },
-    { P_DART, P_EXPERT },		{ P_SHURIKEN, P_SKILLED },
+    { P_DART, P_EXPERT },		
     { P_DIVINATION_SPELL, P_SKILLED },	{ P_ESCAPE_SPELL, P_SKILLED },
     { P_MATTER_SPELL, P_SKILLED },
 #ifdef STEED
@@ -436,14 +439,14 @@ static const struct def_skill Skill_R[] = {
 static const struct def_skill Skill_Ran[] = {
     { P_DAGGER, P_EXPERT },		 { P_KNIFE,  P_SKILLED },
     { P_AXE, P_SKILLED },	 { P_PICK_AXE, P_BASIC },
-    { P_SHORT_SWORD, P_BASIC },	 
+    { P_SHORT_SWORD, P_SKILLED }, { P_LONG_SWORD, P_BASIC },
     { P_FLAIL, P_SKILLED },	 { P_HAMMER, P_BASIC },
     { P_QUARTERSTAFF, P_BASIC }, { P_POLEARMS, P_SKILLED },
     { P_SPEAR, P_EXPERT },	 
     { P_CURVED_SWORD, P_SKILLED },
     { P_BOW, P_EXPERT },
     { P_SLING, P_EXPERT },	 { P_CROSSBOW, P_EXPERT },
-    { P_DART, P_EXPERT },	 { P_SHURIKEN, P_SKILLED },
+    { P_DART, P_EXPERT },	 
     { P_BOOMERANG, P_EXPERT },	 { P_WHIP, P_BASIC },
     { P_HEALING_SPELL, P_BASIC }, { P_MATTER_SPELL, P_BASIC },
     { P_DIVINATION_SPELL, P_EXPERT },
@@ -460,13 +463,13 @@ static const struct def_skill Skill_Ran[] = {
 
 static const struct def_skill Skill_S[] = {
     { P_DAGGER, P_BASIC },		{ P_KNIFE,  P_SKILLED },
-    { P_SHORT_SWORD, P_EXPERT },	{ P_BROAD_SWORD, P_SKILLED },
+    { P_SHORT_SWORD, P_EXPERT },	
     { P_LONG_SWORD, P_EXPERT },		{ P_TWO_HANDED_SWORD, P_EXPERT },
     { P_CURVED_SWORD, P_BASIC },
     { P_FLAIL, P_SKILLED },		{ P_QUARTERSTAFF, P_BASIC },
     { P_POLEARMS, P_SKILLED },		{ P_SPEAR, P_BASIC },
     { P_LANCE, P_SKILLED },
-    { P_BOW, P_EXPERT },		{ P_SHURIKEN, P_EXPERT },
+    { P_BOW, P_EXPERT },		
     { P_ATTACK_SPELL, P_SKILLED },	{ P_CLERIC_SPELL, P_SKILLED },
 #ifdef STEED
     { P_RIDING, P_SKILLED },
@@ -474,6 +477,7 @@ static const struct def_skill Skill_S[] = {
     { P_TWO_WEAPON_COMBAT, P_EXPERT },
     { P_MARTIAL_ARTS, P_MASTER },
     { P_SHIELD, P_SKILLED },
+    { P_DART, P_EXPERT },
     { P_NONE, 0 }
 };
 
@@ -481,7 +485,7 @@ static const struct def_skill Skill_S[] = {
 static const struct def_skill Skill_T[] = {
     { P_DAGGER, P_EXPERT },		{ P_KNIFE,  P_SKILLED },
     { P_AXE, P_BASIC },			{ P_PICK_AXE, P_BASIC },
-    { P_SHORT_SWORD, P_EXPERT },	{ P_BROAD_SWORD, P_BASIC },
+    { P_SHORT_SWORD, P_EXPERT },	
     { P_LONG_SWORD, P_BASIC },		{ P_TWO_HANDED_SWORD, P_BASIC },
     { P_CURVED_SWORD, P_SKILLED },
     { P_MACE, P_BASIC },		
@@ -491,7 +495,7 @@ static const struct def_skill Skill_T[] = {
     { P_LANCE, P_BASIC },
     { P_BOW, P_BASIC },			{ P_SLING, P_BASIC },
     { P_CROSSBOW, P_BASIC },		{ P_DART, P_EXPERT },
-    { P_SHURIKEN, P_BASIC },		{ P_BOOMERANG, P_BASIC },
+    { P_BOOMERANG, P_BASIC },
     { P_WHIP, P_BASIC },		{ P_UNICORN_HORN, P_SKILLED },
     { P_DIVINATION_SPELL, P_BASIC },	{ P_ENCHANTMENT_SPELL, P_BASIC },
     { P_ESCAPE_SPELL, P_SKILLED }, { P_MATTER_SPELL, P_BASIC },
@@ -508,7 +512,7 @@ static const struct def_skill Skill_T[] = {
 static const struct def_skill Skill_V[] = {
     { P_DAGGER, P_EXPERT },		{ P_AXE, P_EXPERT },
     { P_PICK_AXE, P_SKILLED },		{ P_SHORT_SWORD, P_SKILLED },
-    { P_BROAD_SWORD, P_SKILLED },	{ P_LONG_SWORD, P_EXPERT },
+    { P_LONG_SWORD, P_EXPERT },
     { P_TWO_HANDED_SWORD, P_EXPERT },	{ P_CURVED_SWORD, P_BASIC },
     { P_HAMMER, P_EXPERT },
     { P_QUARTERSTAFF, P_BASIC },	{ P_POLEARMS, P_SKILLED },
@@ -527,7 +531,7 @@ static const struct def_skill Skill_V[] = {
 
 static const struct def_skill Skill_W[] = {
     { P_DAGGER, P_EXPERT },		{ P_KNIFE,  P_SKILLED },
-    { P_CLUB, P_BASIC },		{ P_QUARTERSTAFF, P_EXPERT },
+    { P_QUARTERSTAFF, P_EXPERT },
     { P_DART, P_SKILLED },
     { P_ATTACK_SPELL, P_EXPERT },	{ P_HEALING_SPELL, P_EXPERT },
     { P_DIVINATION_SPELL, P_EXPERT },	{ P_ENCHANTMENT_SPELL, P_EXPERT },
@@ -537,6 +541,7 @@ static const struct def_skill Skill_W[] = {
     { P_RIDING, P_BASIC },
 #endif
     { P_BARE_HANDED_COMBAT, P_BASIC },
+    { P_MACE, P_BASIC },
     { P_NONE, 0 }
 };
 

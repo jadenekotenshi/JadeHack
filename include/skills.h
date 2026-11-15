@@ -25,48 +25,45 @@
 #define P_AXE                3
 #define P_PICK_AXE           4
 #define P_SHORT_SWORD        5
-#define P_BROAD_SWORD        6
-#define P_LONG_SWORD         7
-#define P_TWO_HANDED_SWORD   8
-#define P_CURVED_SWORD       9	/* scimitars and sabers */
-#define P_CLUB              10	/* Heavy-shafted bludgeon */
-#define P_MACE              11	/* maces and morning stars */
-#define P_FLAIL             12	/* Two pieces hinged or chained together */
-#define P_HAMMER            13	/* Heavy head on the end */
-#define P_QUARTERSTAFF      14	/* Long-shafted bludgeon */
-#define P_POLEARMS          15
-#define P_SPEAR             16	/* spears, javelins and tridents */
-#define P_LANCE             17
-#define P_BOW               18
-#define P_SLING             19
-#define P_CROSSBOW          20
-#define P_DART              21
-#define P_SHURIKEN          22
-#define P_BOOMERANG         23
-#define P_WHIP              24
-#define P_UNICORN_HORN      25	/* last weapon */
+#define P_LONG_SWORD         6
+#define P_TWO_HANDED_SWORD   7
+#define P_CURVED_SWORD       8	/* scimitars and sabers */
+#define P_MACE              9	/* maces and morning stars */
+#define P_FLAIL             10	/* Two pieces hinged or chained together */
+#define P_HAMMER            11	/* Heavy head on the end */
+#define P_QUARTERSTAFF      12	/* Long-shafted bludgeon */
+#define P_POLEARMS          13
+#define P_SPEAR             14	/* spears, javelins and tridents */
+#define P_LANCE             15
+#define P_BOW               16
+#define P_SLING             17
+#define P_CROSSBOW          18
+#define P_DART              19
+#define P_BOOMERANG         20
+#define P_WHIP              21
+#define P_UNICORN_HORN      22	/* last weapon */
 #define P_FIRST_WEAPON      P_DAGGER
 #define P_LAST_WEAPON       P_UNICORN_HORN
 
 /* Spell Skills added by Larry Stewart-Zerba */
-#define P_ATTACK_SPELL      26
-#define P_HEALING_SPELL     27
-#define P_DIVINATION_SPELL  28
-#define P_ENCHANTMENT_SPELL 29
-#define P_CLERIC_SPELL      30
-#define P_ESCAPE_SPELL      31
-#define P_MATTER_SPELL      32
+#define P_ATTACK_SPELL      23
+#define P_HEALING_SPELL     24
+#define P_DIVINATION_SPELL  25
+#define P_ENCHANTMENT_SPELL 26
+#define P_CLERIC_SPELL      27
+#define P_ESCAPE_SPELL      28
+#define P_MATTER_SPELL      29
 #define P_FIRST_SPELL		P_ATTACK_SPELL
-#define P_MUSICAL_SPELL     33	/* songs; needs an instrument */
+#define P_MUSICAL_SPELL     30	/* songs; needs an instrument */
 #define P_LAST_SPELL		P_MUSICAL_SPELL
 
 /* Other types of combat */
-#define P_BARE_HANDED_COMBAT	34
+#define P_BARE_HANDED_COMBAT	31
 #define P_MARTIAL_ARTS		P_BARE_HANDED_COMBAT	/* Role distinguishes */
-#define P_TWO_WEAPON_COMBAT	35	/* Finally implemented */
-#define P_SHIELD		36	/* shield blocking and bashing */
+#define P_TWO_WEAPON_COMBAT	32	/* Finally implemented */
+#define P_SHIELD		33	/* shield blocking and bashing */
 #ifdef STEED
-#define P_RIDING		37	/* How well you control your steed */
+#define P_RIDING		34	/* How well you control your steed */
 #define P_LAST_H_TO_H		P_RIDING
 #else
 #define P_LAST_H_TO_H		P_SHIELD

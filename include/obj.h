@@ -179,10 +179,10 @@ struct obj {
 			 otmp->oclass == TOOL_CLASS) && \
 			 objects[otmp->otyp].oc_bimanual)
 #define is_multigen(otmp)	(otmp->oclass == WEAPON_CLASS && \
-			 objects[otmp->otyp].oc_skill >= -P_SHURIKEN && \
+			 objects[otmp->otyp].oc_skill >= -P_DART && \
 			 objects[otmp->otyp].oc_skill <= -P_BOW)
 #define is_poisonable(otmp)	(otmp->oclass == WEAPON_CLASS && \
-			 objects[otmp->otyp].oc_skill >= -P_SHURIKEN && \
+			 objects[otmp->otyp].oc_skill >= -P_DART && \
 			 objects[otmp->otyp].oc_skill <= -P_BOW)
 #define uslinging()	(uwep && objects[uwep->otyp].oc_skill == P_SLING)
 #define any_quest_artifact(o) ((o)->oartifact >= ART_ORB_OF_DETECTION)

@@ -580,7 +580,7 @@ struct monst *mtmp;
 	/* Multishot calculations */
 	multishot = 1;
 	if ((ammo_and_launcher(otmp, mwep) || skill == P_DAGGER ||
-		skill == -P_DART || skill == -P_SHURIKEN) && !mtmp->mconf) {
+		skill == -P_DART) && !mtmp->mconf) {
 	    /* Assumes lords are skilled, princes are expert */
 	    if (is_prince(mtmp->data)) multishot += 2;
 	    else if (is_lord(mtmp->data)) multishot++;
@@ -805,7 +805,7 @@ int whodidit;	/* 1==hero, 0=other, -1==just check whether it'll pass thru */
 		int oskill = objects[obj_type].oc_skill;
 
 		hits = (oskill != -P_BOW  && oskill != -P_CROSSBOW &&
-			oskill != -P_DART && oskill != -P_SHURIKEN &&
+			oskill != -P_DART &&
 			oskill != P_SPEAR &&
 			oskill != P_KNIFE);	/* but not dagger */
 		break;

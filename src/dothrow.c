@@ -152,7 +152,7 @@ int shotlimit;
 	 */
 	skill = objects[obj->otyp].oc_skill;
 	if ((ammo_and_launcher(obj, uwep) || skill == P_DAGGER ||
-			skill == -P_DART || skill == -P_SHURIKEN) &&
+			skill == -P_DART) &&
 		!(Confusion || Stunned)) {
 	    /* Bonus if the player is proficient in this weapon... */
 	    switch (P_SKILL(weapon_type(obj))) {
