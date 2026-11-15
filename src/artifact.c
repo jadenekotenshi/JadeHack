@@ -945,6 +945,8 @@ struct monst *mon;
 	/* no need for an extra check for `NO_ATTK' because this will
 	   always return 0 for any artifact which has that attribute */
 
+	if (weap && otmp->oartifact == ART_DRAMBORLEG)
+	    return rnd(8);		/* +d8 to hit against everything */
 	if (weap && otmp->oartifact == ART_GUNGNIR)
 	    return 5;			/* flat +5 to hit against everything */
 	if (weap && weap->attk.damn && spec_applies(weap, mon))
@@ -968,8 +970,10 @@ int tmp;
 	if (!weap || (weap->attk.adtyp == AD_PHYS && /* check for `NO_ATTK' */
 			weap->attk.damn == 0 && weap->attk.damd == 0))
 	    spec_dbon_applies = FALSE;
-	else if (otmp->oartifact == ART_GRIMTOOTH)
-	    /* warns against elves, but the bonus applies to everything */
+	else if (otmp->oartifact == ART_GRIMTOOTH ||
+		 otmp->oartifact == ART_DRAMBORLEG)
+	    /* these warn against one kind of monster, but the bonus applies
+	       to everything */
 	    spec_dbon_applies = TRUE;
 	else
 	    spec_dbon_applies = spec_applies(weap, mon);
@@ -1431,6 +1435,16 @@ int dieroll; /* needed for Magicbane and vorpal blades */
 	if (atmp->spfx & (SPFX_DFLAG2 | SPFX_DCLAS)) {
 		j = rn2(2);	  /* 50% chance of instakill for some artifacts */
 		switch (otmp->oartifact) {
+			case ART_DRAMBORLEG:
+				/* Dramborleg slays balrogs outright */
+				if (!youdefend && mdef->data == &mons[PM_BALROG]) {
+					if (youattack)
+					    You("obliterate %s with a powerful strike!",
+						mon_nam(mdef));
+					*dmgptr = (2 * mdef->mhp + FATAL_DAMAGE_MODIFIER);
+					return TRUE;
+				}
+				return FALSE;
 			case ART_DRAGONBANE:
 				if (youattack && j) {
 					You("pierce the heart of %s!", mon_nam(mdef));

@@ -411,7 +411,7 @@ DRGN_ARMR("yellow dragon scales", 0, ACID_RES,   500, 7, CLR_YELLOW),
 ARMOR("plate mail", (char *)0,
 	1, 0, 1, 0,	44, 5, 350, 600,  3, 2, ARM_SUIT, IRON, HI_METAL),
 ARMOR("crystal plate mail", (char *)0,
-	1, 0, 1, 0,	15, 5, 350, 820,  3, 2, ARM_SUIT, GLASS, CLR_WHITE),
+	1, 0, 1, 0,	15, 5, 150, 820,  3, 2, ARM_SUIT, GEMSTONE, CLR_WHITE),
 #ifdef TOURIST
 ARMOR("bronze plate mail", (char *)0,
 	1, 0, 1, 0,	30, 5, 300, 400,  4, 0, ARM_SUIT, COPPER, HI_COPPER),

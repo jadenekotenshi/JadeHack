@@ -194,6 +194,14 @@ A("Pernicimordax",		CRYSTEEL_FALCHION,
 	(SPFX_RESTR|SPFX_ATTK), 0, 0,
 	COLD(5,6),	SPDF_NONE,	NO_CARY,	TIMED_COLD_RES, A_NEUTRAL, NON_PM, NON_PM, 3500L ),
 
+/*
+ *	Dramborleg (as in EvilHack): warns of demons, but its +d8 to hit and
+ *	+d8 damage apply to everything, and it kills balrogs outright.
+ */
+A("Dramborleg",			DWARVISH_BEARDED_AXE,
+	(SPFX_RESTR|SPFX_INTEL|SPFX_WARN|SPFX_DFLAG2), 0, M2_DEMON,
+	PHYS(8,8),	SPDF_MAGIC,	NO_CARY,	0, A_LAWFUL, NON_PM, NON_PM, 9000L ),
+
 A("Spineseeker",		STILETTO,
 	SPFX_RESTR, 0, 0,
 	PHYS(5,4),	SPDF_NONE,	NO_CARY,	0, A_CHAOTIC, PM_ROGUE, NON_PM, 2500L ),

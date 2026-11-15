@@ -505,3 +505,7 @@ Broadsword merged into long sword, club into mace, shuriken into dart (each role
 ## Batch 28: crysteel falchion and Pernicimordax
 
 Crysteel falchion ("crystal falchion"): a falchion of gemstone, +1 to hit and +1 damage, probability 1 (taken from darts). Pernicimordax: neutral artifact crysteel falchion, +d5 to hit, +3d6 cold damage to anything not cold resistant, doubled damage against merozalghi, and #invoke grants 100%% cold resistance for 100+3d100 more turns (`u.ucoldres`, ticked in `allmain.c`).
+
+## Batch 29: crystal plate mail, Dramborleg, destroy armor
+
+Crystal plate mail now weighs 150 and is gemstone. Dramborleg (after EvilHack): lawful self-willed dwarvish bearded axe, +d8 to hit and +d8 damage against everything, warns of demons, kills balrogs outright, magic resistance and +1 magic cancellation while wielded. The monster Destroy Armor spell, against a hero with magic resistance, now only strips erodeproofing from an erodeproof target and does nothing more.

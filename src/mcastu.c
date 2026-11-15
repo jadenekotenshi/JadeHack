@@ -522,6 +522,9 @@ int spellnum;
 				pline("Your %s glows brown for a moment.",xname(oatmp));
 			}
 			oatmp->oerodeproof = 0;
+			/* magic resistance: the protection is stripped but the
+			   armor is otherwise left alone */
+			if (Antimagic) return;
 		}
 		if (greatest_erosion(oatmp) == MAX_ERODE) {
 			destroy_arm(oatmp);

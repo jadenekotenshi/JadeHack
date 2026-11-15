@@ -878,6 +878,10 @@ struct monst *mon;
 	    armpro = objects[armor->otyp].a_can;
 #endif
 	/* an amulet of guarding adds 2 to magic cancellation, up to 3 */
+	/* wielded Dramborleg adds 1 to magic cancellation */
+	if (mon == &youmonst && uwep && uwep->oartifact == ART_DRAMBORLEG &&
+	    armpro < 3)
+	    armpro++;
 	if (mon == &youmonst && uamul && uamul->otyp == AMULET_OF_GUARDING) {
 	    armpro += 2;
 	    if (armpro > 3) armpro = 3;
