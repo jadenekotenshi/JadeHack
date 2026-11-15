@@ -1490,6 +1490,40 @@ boolean want_dump;
     }
 }
 
+/* #vanquished command (NetHack 5.0): list vanquished creatures during play */
+void
+show_vanquished()
+{
+    int i, n = 0;
+
+    for (i = LOW_PM; i < NUMMONS; i++)
+	if (mvitals[i].died) n++;
+    if (!n) {
+	pline("No creatures have been vanquished.");
+	return;
+    }
+#ifdef DUMP_LOG
+    do_vanquished('y', FALSE, FALSE);
+#else
+    list_vanquished('y', FALSE);
+#endif
+}
+
+/* #genocided command (NetHack 5.0): list genocided species during play */
+void
+show_genocided()
+{
+    if (!num_genocides()) {
+	pline("No species have been genocided.");
+	return;
+    }
+#ifdef DUMP_LOG
+    list_genocided('y', FALSE, FALSE);
+#else
+    list_genocided('y', FALSE);
+#endif
+}
+
 /* number of monster species which have been genocided */
 int
 num_genocides()

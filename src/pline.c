@@ -360,6 +360,7 @@ register struct monst *mtmp;
 {
 	aligntyp alignment;
 	char info[BUFSZ], monnambuf[BUFSZ];
+	const char *szname;
 
 	if (mtmp->ispriest || mtmp->data == &mons[PM_ALIGNED_PRIEST]
 				|| mtmp->data == &mons[PM_ANGEL])
@@ -423,6 +424,18 @@ register struct monst *mtmp;
 	/* and unlike a normal mon_nam, use "saddled" even if it has a name */
 	Strcpy(monnambuf, x_monnam(mtmp, ARTICLE_THE, (char *)0,
 	    (SUPPRESS_IT|SUPPRESS_INVISIBLE), FALSE));
+
+	/* include the monster's size (NetHack 5.0) */
+	switch (mtmp->data->msize) {
+	    case MZ_TINY:	szname = "tiny"; break;
+	    case MZ_SMALL:	szname = "small"; break;
+	    case MZ_MEDIUM:	szname = "medium"; break;
+	    case MZ_LARGE:	szname = "large"; break;
+	    case MZ_HUGE:	szname = "huge"; break;
+	    case MZ_GIGANTIC:	szname = "gigantic"; break;
+	    default:		szname = (const char *)0; break;
+	}
+	if (szname) Sprintf(eos(info), ", %s", szname);
 
 	pline("Status of %s (%s):  Level %d  HP %d(%d)  AC %d%s.",
 		monnambuf,

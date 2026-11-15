@@ -880,6 +880,42 @@ found:
     return FALSE;
 }
 
+/* returns TRUE if the hero declines to step onto a known hazard at x,y */
+STATIC_OVL boolean
+hazard_declined(x, y)
+xchar x, y;
+{
+	struct trap *t;
+	char qbuf[QBUFSZ];
+	int cmap;
+	boolean lev_or_fly = (Levitation || Flying);
+
+	if (flags.swimconfirm && glyph_is_cmap(levl[x][y].glyph) &&
+		!is_pool(u.ux, u.uy) && !is_lava(u.ux, u.uy)) {
+	    cmap = glyph_to_cmap(levl[x][y].glyph);
+	    if (!lev_or_fly &&
+		    (((cmap == S_pool || cmap == S_water) && is_pool(x, y) &&
+		      !Wwalking) ||
+		     (cmap == S_lava && is_lava(x, y)))) {
+		Sprintf(qbuf, "Really step into that %s?",
+			cmap == S_lava ? "lava" : "water");
+		if (yn(qbuf) != 'y') return TRUE;
+	    }
+	}
+	if (flags.trapconfirm && (t = t_at(x, y)) != 0 && t->tseen) {
+	    /* floor-bound traps can't hurt a levitating or flying hero */
+	    if (lev_or_fly && (t->ttyp == PIT || t->ttyp == SPIKED_PIT ||
+			t->ttyp == BEAR_TRAP || t->ttyp == LANDMINE ||
+			t->ttyp == SQKY_BOARD))
+		return FALSE;
+	    Sprintf(qbuf, "Really step into %s?",
+		    an(defsyms[trap_to_defsym(t->ttyp)].explanation));
+	    if (yn(qbuf) != 'y') return TRUE;
+	}
+	return FALSE;
+}
+
+
 void
 domove()
 {
@@ -1283,6 +1319,14 @@ domove()
 			door_opened = 0;
 		}
  		return;
+	}
+
+	/* NetHack 5.0 paranoid_confirm:swim / :trap -- ask before a deliberate
+	   single step into known water, lava, or a known trap */
+	if (!flags.run && hazard_declined(x, y)) {
+		flags.move = 0;
+		nomul(0, 0);
+		return;
 	}
 
 	/* Move ball and chain.  */

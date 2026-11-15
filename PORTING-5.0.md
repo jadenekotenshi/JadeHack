@@ -289,3 +289,22 @@ Checked, not needed: `squadprob[]` size ([5.0 62]; `NSTYPES` is 4 here), monster
 multishot launcher typo ([3.6.3 29]; already uses the monster's weapon), monsters
 not wielding digging tools ([3.6.2 19]; same logic as 5.0), musical note grammar
 ([5.0 117]; no notes in this tree).
+
+## Batch 15: 5.0 interface features, group A (ported; build OK)
+
+| Feature (5.0 entry) | Where here | Tested |
+|---|---|---|
+| `#vanquished` and `#genocided` commands ([120][123]) | `src/end.c` `show_vanquished()`/`show_genocided()`, `src/cmd.c` | in game (empty-list messages) |
+| `?` at the "genocide what?" prompts lists what is already genocided ([139]) | `src/read.c` | build only |
+| Monster size in probing and stethoscope output ([133]) | `src/pline.c` `mstatusline()` | in game ("...AC 10, small.") |
+| Farlook shows "asleep", "can't move" or "meditating" ([100][101]) | `src/pager.c` `lookat()` | build only |
+| `swimconfirm` (default on) and `trapconfirm` (default off) boolean options ask before a deliberate step into known water/lava or a known trap ([96-98]) | `include/flag.h`, `src/options.c`, `src/hack.c` `hazard_declined()` | build only |
+
+`swimconfirm`/`trapconfirm` follow this tree's existing `prayconfirm` style rather
+than 5.0's `paranoid_confirmation:` syntax. They only prompt on single steps,
+not while running or travelling. `struct flag` grew, so data files must be rebuilt
+(`make dlb`) as with earlier struct changes.
+
+Not ported from group A: grave headstone text on farlook ([147]; needs a "read"
+flag on engravings), unpaid items on the floor in `I u` ([124]), toggle feedback
+and `name:value` boolean syntax ([71][45][177]), `sortdiscoveries` ([60]).

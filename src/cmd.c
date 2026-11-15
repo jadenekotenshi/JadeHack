@@ -147,6 +147,8 @@ STATIC_DCL int NDECL(wiz_port_debug);
 STATIC_PTR int NDECL(enter_explore_mode);
 STATIC_PTR int NDECL(doattributes);
 STATIC_PTR int NDECL(doconduct); /**/
+STATIC_PTR int NDECL(dovanquished);
+STATIC_PTR int NDECL(dogenocided);
 STATIC_PTR boolean NDECL(minimal_enlightenment);
 
 #ifdef OVLB
@@ -1756,6 +1758,22 @@ doconduct()
 	return 0;
 }
 
+/* #vanquished: what has been killed so far (NetHack 5.0) */
+STATIC_PTR int
+dovanquished()
+{
+	show_vanquished();
+	return 0;
+}
+
+/* #genocided: which species are gone (NetHack 5.0) */
+STATIC_PTR int
+dogenocided()
+{
+	show_genocided();
+	return 0;
+}
+
 void
 show_conduct(final)
 int final;
@@ -2099,6 +2117,7 @@ struct ext_func_tab extcmdlist[] = {
 	{"annotate", "name current level", donamelevel, TRUE},
 	{"chat", "talk to someone", dotalk, TRUE},	/* converse? */
 	{"conduct", "list which challenges you have adhered to", doconduct, TRUE},
+	{"genocided", "list which monster species have been genocided", dogenocided, TRUE},
 	{"dip", "dip an object into something", dodip, FALSE},
 	{"enhance", "advance or check weapons skills", enhance_weapon_skill,
 							TRUE},
@@ -2111,6 +2130,7 @@ struct ext_func_tab extcmdlist[] = {
 	{"name", "name an item or type of object", ddocall, TRUE},
 	{"offer", "offer a sacrifice to the gods", dosacrifice, FALSE},
 	{"overview", "show an overview of the dungeon", dooverview, TRUE},
+	{"vanquished", "list the creatures vanquished so far", dovanquished, TRUE},
 	{"pray", "pray to the gods for help", dopray, TRUE},
 	{"quit", "exit without saving current game", done2, TRUE},
 #ifdef STEED

@@ -84,6 +84,8 @@ struct flag {
 	boolean  toptenwin;	/* ending list in window instead of stdout */
 	boolean  verbose;	/* max battle info */
 	boolean  prayconfirm;	/* confirm before praying */
+	boolean  swimconfirm;	/* confirm before stepping into water or lava */
+	boolean  trapconfirm;	/* confirm before stepping onto a known trap */
 	int	 end_top, end_around;	/* describe desired score list */
 	unsigned ident;		/* social security number for each monster */
 	unsigned moonphase;

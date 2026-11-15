@@ -1654,6 +1654,12 @@ do_class_genocide()
 		    getlin("What class of monsters do you wish to genocide?",
 			buf);
 		    (void)mungspaces(buf);
+		    /* '?' shows what has been genocided already, then
+		       asks again without costing a try (NetHack 5.0) */
+		    if (buf[0] == '?' && !buf[1]) {
+			show_genocided();
+			buf[0] = 0;
+		    }
 		} while (buf[0]=='\033' || !buf[0]);
 		/* choosing "none" preserves genocideless conduct */
 		if (!strcmpi(buf, "none") ||
@@ -1828,6 +1834,12 @@ int how;
 		getlin("What monster do you want to genocide? [type the name]",
 			buf);
 		(void)mungspaces(buf);
+		/* '?' shows what has been genocided already (NetHack 5.0) */
+		if (buf[0] == '?' && !buf[1]) {
+		    show_genocided();
+		    i--;	/* doesn't count as a try */
+		    continue;
+		}
 		/* choosing "none" preserves genocideless conduct */
 		if (!strcmpi(buf, "none") || !strcmpi(buf, "nothing")) {
 		    /* ... but no free pass if cursed */

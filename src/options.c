@@ -224,6 +224,7 @@ static struct Bool_Opt
 	{"sound", &flags.soundok, TRUE, SET_IN_GAME},
 	{"sparkle", &flags.sparkle, TRUE, SET_IN_GAME},
 	{"standout", &flags.standout, FALSE, SET_IN_GAME},
+	{"swimconfirm", &flags.swimconfirm, TRUE, SET_IN_GAME},
 	{"splash_screen",     &iflags.wc_splash_screen, TRUE, DISP_IN_GAME},	/*WC*/
 	{"tiled_map",     &iflags.wc_tiled_map, PREFER_TILED, DISP_IN_GAME},	/*WC*/
 	{"time", &flags.time, FALSE, SET_IN_GAME},
@@ -236,6 +237,7 @@ static struct Bool_Opt
 #if 0
 	{"toptenwin",&flags.toptenwin, FALSE, SET_IN_GAME},  /* TODO: fix HUP bug */
 #endif
+	{"trapconfirm", &flags.trapconfirm, FALSE, SET_IN_GAME},
 	{"travel", &iflags.travelcmd, TRUE, SET_IN_GAME},
 	{"use_darkgray", &iflags.wc2_darkgray, FALSE, SET_IN_FILE},
 #ifdef WIN32CON

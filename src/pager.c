@@ -151,6 +151,16 @@ lookat(x, y, buf, monbuf)
 	    if (mtmp->mleashed)
 		Strcat(buf, ", leashed to you");
 
+	    /* what a monster is up to, if you can tell (NetHack 5.0) */
+	    if (accurate && canspotmon(mtmp)) {
+		if (mtmp->msleeping)
+		    Strcat(buf, ", asleep");
+		else if (mtmp->mfrozen || !mtmp->mcanmove)
+		    Strcat(buf, ", can't move");
+		else if (mtmp->mstrategy & STRAT_WAITMASK)
+		    Strcat(buf, ", meditating");
+	    }
+
 	    if (mtmp->mtrapped && cansee(mtmp->mx, mtmp->my)) {
 		struct trap *t = t_at(mtmp->mx, mtmp->my);
 		int tt = t ? t->ttyp : NO_TRAP;
