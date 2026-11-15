@@ -161,8 +161,12 @@ register char oclass;
 		sum = 0;
 		for(i = first; i < last; i++) sum += objects[i].oc_prob;
 		if(sum == 0) {
+			int named = 0, k = 0;
 			for(i = first; i < last; i++)
-			    objects[i].oc_prob = (1000+i-first)/(last-first);
+			    if (OBJ_NAME(objects[i])) named++;
+			for(i = first; i < last; i++)
+			    if (OBJ_NAME(objects[i]))
+				objects[i].oc_prob = (1000+k++)/named;
 			goto check;
 		}
 		if(sum != 1000)

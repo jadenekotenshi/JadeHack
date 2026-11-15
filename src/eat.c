@@ -1505,6 +1505,7 @@ struct obj *otmp;
 		break;
 	    case MEATBALL:
 	    case MEAT_STICK:
+	    case JERKY:
 	    case HUGE_CHUNK_OF_MEAT:
 	    case MEAT_RING:
 		goto give_feedback;

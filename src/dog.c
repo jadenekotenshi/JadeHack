@@ -692,6 +692,7 @@ register struct obj *obj;
 		case MEATBALL:
 		case MEAT_RING:
 		case MEAT_STICK:
+		case JERKY:
 		case HUGE_CHUNK_OF_MEAT:
 		    return (carni ? DOGFOOD : MANFOOD);
 		case EGG:

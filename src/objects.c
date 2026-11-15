@@ -84,9 +84,9 @@ NEARDATA struct objclass objects[] = {
 PROJECTILE("arrow", (char *)0,
 		1, 47, 1, 2, 6, 6, 0, IRON, -P_BOW, HI_METAL),
 PROJECTILE("elven arrow", "runed arrow",
-		0, 20, 1, 2, 7, 6, 0, WOOD, -P_BOW, HI_WOOD),
+		0, 19, 1, 2, 7, 6, 0, WOOD, -P_BOW, HI_WOOD),
 PROJECTILE("orcish arrow", "crude arrow",
-		0, 20, 1, 2, 5, 6, 0, IRON, -P_BOW, CLR_BLACK),
+		0, 18, 1, 2, 5, 6, 0, IRON, -P_BOW, CLR_BLACK),
 PROJECTILE("silver arrow", (char *)0,
 		1, 15, 1, 5, 6, 6, 0, SILVER, -P_BOW, HI_SILVER),
 PROJECTILE("ya", "bamboo arrow",
@@ -129,7 +129,7 @@ WEAPON("orcish dagger", "crude dagger",
 WEAPON("silver dagger", (char *)0,
 	1, 1, 0,  4, 10, 40,  4,  3, 2, P,   P_DAGGER, SILVER, HI_SILVER),
 WEAPON("athame", (char *)0,
-	1, 1, 0,  0, 10,  4,  4,  3, 2, S,   P_DAGGER, IRON, HI_METAL),
+	1, 1, 0,  1, 10,  4,  4,  3, 2, S,   P_DAGGER, IRON, HI_METAL),
 WEAPON("scalpel", (char *)0,
 	1, 1, 0,  0,  5,  6,  3,  3, 2, S,   P_KNIFE, METAL, HI_METAL),
 WEAPON("knife", (char *)0,
@@ -190,10 +190,10 @@ WEAPON("katana", "samurai sword",
 	0, 0, 0,  8, 40, 80, 10, 12, 1, S,   P_LONG_SWORD, IRON, HI_METAL),
 /* special swords set up for artifacts */
 WEAPON("tsurugi", "long samurai sword",
-	0, 0, 1,  0, 60,500, 16,  8, 2, S,   P_TWO_HANDED_SWORD, METAL, HI_METAL),
+	0, 0, 1,  1, 60,500, 16,  8, 2, S,   P_TWO_HANDED_SWORD, METAL, HI_METAL),
 						/* +2d6 large */
 WEAPON("runesword", "runed broadsword",
-	0, 0, 0,  0, 40,300,  4,  6, 0, S,   P_BROAD_SWORD, IRON, CLR_BLACK),
+	0, 0, 0,  1, 40,300,  4,  6, 0, S,   P_BROAD_SWORD, IRON, CLR_BLACK),
 						/* +d4 small, +1 large */
 						/* +5d2 +d8 from level drain */
 
@@ -594,6 +594,10 @@ RING("see invisible", SEE_INVIS, "engagement",
 					    150, 1, 0, 5, IRON, HI_METAL),
 RING("protection from shape changers", PROT_FROM_SHAPE_CHANGERS, "shiny",
 					    100, 1, 0, 5, IRON, CLR_BRIGHT_CYAN),
+RING((char *)0, 0, "zirconium",             100, 1, 0, 5, METAL, HI_METAL),
+RING((char *)0, 0, "zircon",                100, 1, 0, 8, MINERAL, CLR_WHITE),
+RING((char *)0, 0, "osmium",                100, 1, 0, 8, METAL, HI_METAL),
+RING((char *)0, 0, "plastic",               100, 1, 0, 5, PLASTIC, CLR_WHITE),
 #undef RING
 
 /* amulets ... - THE Amulet comes last because it is special */
@@ -744,11 +748,12 @@ OBJECT(OBJ("Bell of Opening", "silver bell"),
 /* meatballs/sticks/rings are only created from objects via stone to flesh */
 
 /* meat */
-FOOD("tripe ration",       140, 2, 10, 0, FLESH, 200, CLR_BROWN),
+FOOD("tripe ration",       130, 2, 10, 0, FLESH, 200, CLR_BROWN),
 FOOD("corpse",               0, 1,  0, 0, FLESH,   0, CLR_BROWN),
-FOOD("egg",                 85, 1,  1, 1, FLESH,  80, CLR_WHITE),
+FOOD("egg",                 75, 1,  1, 1, FLESH,  80, CLR_WHITE),
 FOOD("meatball",             0, 1,  1, 0, FLESH,   5, CLR_BROWN),
 FOOD("meat stick",           0, 1,  1, 0, FLESH,   5, CLR_BROWN),
+FOOD("jerky",               20, 1,  1, 0, FLESH,  50, CLR_BROWN),
 FOOD("huge chunk of meat",   0,20,400, 0, FLESH,2000, CLR_BROWN),
 /* special case because it's not mergable */
 OBJECT(OBJ("meat ring", (char *)0),
@@ -760,6 +765,7 @@ FOOD("kelp frond",           0, 1,  1, 0, VEGGY,  30, CLR_GREEN),
 FOOD("eucalyptus leaf",      3, 1,  1, 0, VEGGY,  30, CLR_GREEN),
 FOOD("apple",               15, 1,  2, 0, VEGGY,  50, CLR_RED),
 FOOD("orange",              10, 1,  2, 0, VEGGY,  80, CLR_ORANGE),
+FOOD("grapefruit",          10, 1,  2, 0, VEGGY,  80, CLR_YELLOW),
 FOOD("pear",                10, 1,  2, 0, VEGGY,  50, CLR_BRIGHT_GREEN),
 FOOD("melon",               10, 1,  5, 0, VEGGY, 100, CLR_BRIGHT_GREEN),
 FOOD("banana",              10, 1,  2, 0, VEGGY,  80, CLR_YELLOW),
@@ -779,7 +785,7 @@ FOOD("cram ration",         20, 3, 15, 0, VEGGY, 600, HI_ORGANIC),
 FOOD("food ration",        380, 5, 20, 0, VEGGY, 800, HI_ORGANIC),
 FOOD("K-ration",             0, 1, 10, 0, VEGGY, 400, HI_ORGANIC),
 FOOD("C-ration",             0, 1, 10, 0, VEGGY, 300, HI_ORGANIC),
-FOOD("tin",                 75, 0, 10, 1, METAL,   0, HI_METAL),
+FOOD("tin",                 65, 0, 10, 1, METAL,   0, HI_METAL),
 #undef FOOD
 
 /* potions ... */
@@ -815,6 +821,14 @@ POTION("salt water",	"polka-dot",	    0, 0,			  0,  50, CLR_RED),
 POTION((char*)0, "greasy",              0, 0,           0, 100, CLR_BLACK),
 POTION((char*)0, "slimy",               0, 0,           0, 100, CLR_BROWN),
 POTION((char*)0, "chartreuse",          0, 0,           0, 100, CLR_GREEN),
+POTION((char*)0, "gunky",               0, 0,           0, 100, CLR_BROWN),
+POTION((char*)0, "gelatinous",          0, 0,           0, 100, CLR_WHITE),
+POTION((char*)0, "stinky",              0, 0,           0, 100, CLR_GREEN),
+POTION((char*)0, "coppery",             0, 0,           0, 100, CLR_BROWN),
+POTION((char*)0, "banana-yellow",       0, 0,           0, 100, CLR_YELLOW),
+POTION((char*)0, "sickly green",        0, 0,           0, 100, CLR_GREEN),
+POTION((char*)0, "mauve",               0, 0,           0, 100, CLR_MAGENTA),
+POTION((char*)0, "lime green",          0, 0,           0, 100, CLR_BRIGHT_GREEN),
 POTION("water", "clear",                0, 0,          92, 100, CLR_CYAN),
 #undef POTION
 

@@ -399,3 +399,16 @@ Rebuild makedefs and the data files after changing `objects.c`.
 Addendum: breaking a wand of wind while hallucinating prints "Ha ha, you broke
 wind!" and releases the same stinking cloud as a broken wand of stinking fog
 (`src/apply.c`); tested in game.
+
+## Batch 22: original JadeHack additions, part 2
+
+| Change | Notes |
+|---|---|
+| Grapefruit | stats of an orange (80 nutrition, weight 2), prob 10 |
+| Jerky | stats of a meat stick but 50 nutrition, prob 20; random generation (so Tourists' random starting food can include it); handled as meat in `dog.c`/`eat.c` |
+| Potion appearances | gunky, gelatinous, stinky, coppery, banana-yellow, sickly green, mauve, lime green (spare nameless slots in `objects.c`) |
+| Ring appearances | zirconium (metal), zircon (stone, hard), osmium (metal, hard), plastic (plastic) as spare nameless slots; `o_init.c` now spreads uniform ring probabilities over named rings only |
+| Random runeswords, athames, tsurugis | prob 1 each (taken from orcish/elven arrows); artifact generation may therefore yield Stormbringer or Magicbane; Muramasa keeps SPFX_NOGEN so is never random |
+
+Food probs rebalanced (tripe -10, egg -10, tin -10) to keep the class at 1000.
+Tested in wizard build: wished items, 14 random rings (no nameless ones).
