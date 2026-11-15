@@ -262,10 +262,12 @@ struct obj *otmp;
 		break;
 	case SPE_HEALING:
 	case SPE_EXTRA_HEALING:
+	case SPE_SUPERIOR_HEALING:
 		reveal_invis = TRUE;
 	    if (mtmp->data != &mons[PM_PESTILENCE]) {
 		wake = FALSE;		/* wakeup() makes the target angry */
-		mtmp->mhp += d(6, otyp == SPE_EXTRA_HEALING ? 8 : 4);
+		mtmp->mhp += d(6, otyp == SPE_SUPERIOR_HEALING ? 12 :
+			       otyp == SPE_EXTRA_HEALING ? 8 : 4);
 		if (mtmp->mhp > mtmp->mhpmax)
 		    mtmp->mhp = mtmp->mhpmax;
 		if (mtmp->mblinded) {
@@ -282,6 +284,7 @@ struct obj *otmp;
 			} else
 			    mimic_hit_msg(mtmp, otyp);
 		    } else pline("%s looks%s better.", Monnam(mtmp),
+				 otyp == SPE_SUPERIOR_HEALING ? " vastly" :
 				 otyp == SPE_EXTRA_HEALING ? " much" : "" );
 		}
 		if (mtmp->mtame || mtmp->mpeaceful) {
@@ -290,7 +293,8 @@ struct obj *otmp;
 	    } else {	/* Pestilence */
 		/* Pestilence will always resist; damage is half of 3d{4,8} */
 		(void) resist(mtmp, otmp->oclass,
-			      d(3, otyp == SPE_EXTRA_HEALING ? 8 : 4), TELL);
+			      d(3, otyp == SPE_SUPERIOR_HEALING ? 12 :
+				otyp == SPE_EXTRA_HEALING ? 8 : 4), TELL);
 	    }
 		break;
 	case WAN_LIGHT:	/* (broken wand) */
@@ -1640,6 +1644,7 @@ struct obj *obj, *otmp;
 	case WAN_NOTHING:
 	case SPE_HEALING:
 	case SPE_EXTRA_HEALING:
+	case SPE_SUPERIOR_HEALING:
 	case SPE_POLYMORPH_CREATURE:
 		res = 0;
 		break;
@@ -2143,9 +2148,13 @@ boolean ordinary;
 		    break;
 		case SPE_HEALING:
 		case SPE_EXTRA_HEALING:
-		    healup(d(6, obj->otyp == SPE_EXTRA_HEALING ? 8 : 4),
-			   0, FALSE, (obj->otyp == SPE_EXTRA_HEALING));
+	case SPE_SUPERIOR_HEALING:
+		    healup(d(6, obj->otyp == SPE_SUPERIOR_HEALING ? 12 :
+			       obj->otyp == SPE_EXTRA_HEALING ? 8 : 4),
+			   0, FALSE, (obj->otyp == SPE_EXTRA_HEALING ||
+				      obj->otyp == SPE_SUPERIOR_HEALING));
 		    You_feel("%sbetter.",
+			obj->otyp == SPE_SUPERIOR_HEALING ? "vastly " :
 			obj->otyp == SPE_EXTRA_HEALING ? "much " : "");
 		    break;
 		case WAN_LIGHT:	/* (broken wand) */
@@ -2269,6 +2278,7 @@ struct obj *obj;	/* wand or spell */
 		case WAN_SPEED_MONSTER:
 		case SPE_HEALING:
 		case SPE_EXTRA_HEALING:
+	case SPE_SUPERIOR_HEALING:
 		case SPE_DRAIN_LIFE:
 		case WAN_OPENING:
 		case SPE_KNOCK:
@@ -3619,8 +3629,11 @@ register int dx,dy;
 		    }
 		}
 		range -= 2;
+		/* an impede absorbs the whole ray */
+		if (mon->mhp > 0 && mon->data == &mons[PM_IMPEDE]) break;
 	    } else {
 		miss(fltxt,mon);
+		if (mon->data == &mons[PM_IMPEDE]) break;
 	    }
 	} else if (sx == u.ux && sy == u.uy && range >= 0) {
 	    nomul(0, 0);

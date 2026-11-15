@@ -202,6 +202,14 @@ A("Dramborleg",			DWARVISH_BEARDED_AXE,
 	(SPFX_RESTR|SPFX_INTEL|SPFX_WARN|SPFX_DFLAG2), 0, M2_DEMON,
 	PHYS(8,8),	SPDF_MAGIC,	NO_CARY,	0, A_LAWFUL, NON_PM, NON_PM, 9000L ),
 
+/*
+ *	Mouser's Scalpel (as in Hack'EM): +5 to hit, +1 damage, and each hit
+ *	may strike again for +d8+1+enchantment (see artifact_hit()).
+ */
+A("Mouser's Scalpel",		RAPIER,
+	SPFX_RESTR, 0, 0,
+	PHYS(5,1),	SPDF_NONE,	NO_CARY,	0, A_NEUTRAL, NON_PM, NON_PM, 600L ),
+
 A("Spineseeker",		STILETTO,
 	SPFX_RESTR, 0, 0,
 	PHYS(5,4),	SPDF_NONE,	NO_CARY,	0, A_CHAOTIC, PM_ROGUE, NON_PM, 2500L ),

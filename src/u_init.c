@@ -255,6 +255,7 @@ static struct inv_sub { short race_pm, item_otyp, subs_otyp; } inv_subs[] = {
     { PM_ELF,	CRAM_RATION,		LEMBAS_WAFER	      },
     { PM_ORC,	DAGGER,			ORCISH_DAGGER	      },
     { PM_ORC,	SPEAR,			ORCISH_SPEAR	      },
+    { PM_ORC,	SCIMITAR,		ORCISH_SCIMITAR	      },
     { PM_ORC,	SHORT_SWORD,		ORCISH_SHORT_SWORD    },
     { PM_ORC,	BOW,			ORCISH_BOW	      },
     { PM_ORC,	ARROW,			ORCISH_ARROW	      },

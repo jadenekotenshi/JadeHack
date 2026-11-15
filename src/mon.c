@@ -57,7 +57,8 @@ remove_monster(x,y)
 int x,y;
 {
     if (level.monsters[x][y] &&
-	(level.monsters[x][y]->data == &mons[PM_GIANT_TURTLE] &&
+	((level.monsters[x][y]->data == &mons[PM_GIANT_TURTLE] ||
+	  level.monsters[x][y]->data == &mons[PM_IMPEDE]) &&
 	 (!level.monsters[x][y]->minvis || See_invisible)))
 	unblock_point(x,y);
     level.monsters[x][y] = (struct monst *)0;
@@ -297,6 +298,15 @@ register struct monst *mtmp;
 	    case PM_GOLD_GOLEM:
 		/* Good luck gives more coins */
 		obj = mkgold((long)(200 - rnl(101)), x, y);
+		mtmp->mnamelth = 0;
+		break;
+	    case PM_GLUE_GOLEM:
+		/* sometimes the glue was made from something unwholesome */
+		if (!rn2(3)) {
+		    obj = mkcorpstat(CORPSE, (struct monst *)0,
+				     &mons[PM_HORSE], x, y, TRUE);
+		    obj->age -= 250L;	/* long dead, certainly tainted */
+		}
 		mtmp->mnamelth = 0;
 		break;
 	    case PM_PAPER_GOLEM:
@@ -689,6 +699,10 @@ movemon()
 	}
 	if(dochugw(mtmp))		/* otherwise just move the monster */
 	    continue;
+	if (mtmp->data == &mons[PM_IMPEDE]) {	/* it blocks sight where it stands */
+	    block_point(mtmp->mx, mtmp->my);
+	    vision_full_recalc = 1;
+	}
     }
 #if 0
     /* part of the original warning code which was replaced in 3.3.1 */
@@ -3054,7 +3068,8 @@ short otyp;
 	    case M_AP_MONSTER:
 		break;
 	    case M_AP_OBJECT:
-		if (otyp == SPE_HEALING || otyp == SPE_EXTRA_HEALING) {
+		if (otyp == SPE_HEALING || otyp == SPE_EXTRA_HEALING ||
+		    otyp == SPE_SUPERIOR_HEALING) {
 		    pline("%s seems a more vivid %s than before.",
 				The(simple_typename(ap)),
 				c_obj_colors[objects[ap].oc_color]);

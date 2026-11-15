@@ -176,6 +176,8 @@ TRAP:"magic", random
 
 # Random monsters.
 # The ghosts.
+# Kerberos, the hound of Hades, guards the Valley
+MONSTER:('d',"Kerberos"),random
 MONSTER:(' ',"ghost"),random
 MONSTER:(' ',"ghost"),random
 MONSTER:(' ',"ghost"),random

@@ -945,6 +945,8 @@ struct monst *mon;
 	/* no need for an extra check for `NO_ATTK' because this will
 	   always return 0 for any artifact which has that attribute */
 
+	if (weap && otmp->oartifact == ART_MOUSER_S_SCALPEL)
+	    return 5;			/* flat +5 to hit */
 	if (weap && otmp->oartifact == ART_DRAMBORLEG)
 	    return rnd(8);		/* +d8 to hit against everything */
 	if (weap && otmp->oartifact == ART_GUNGNIR)
@@ -1364,6 +1366,20 @@ int dieroll; /* needed for Magicbane and vorpal blades */
 	if (otmp->oartifact == ART_SUNSWORD &&
 		!(youdefend ? (how_resistant(FIRE_RES) > 99) : resists_fire(mdef)))
 	    *dmgptr += rnd(6);
+
+	/* Mouser's Scalpel: 1/5 chance of an extra blow, which may chain */
+	if (otmp->oartifact == ART_MOUSER_S_SCALPEL && !youdefend && !rn2(5)) {
+	    int blows = 0;
+	    do {
+		*dmgptr += rnd(8) + 1 + otmp->spe;
+		blows++;
+	    } while (blows < 6 && rn2(11) < 5);
+	    if (youattack || canseemon(mdef))
+		pline("%s %s %s %s!", youattack ? "You" : Monnam(magr),
+		      youattack ? "strike" : "strikes",
+		      blows > 1 ? "again and again at" : "again at",
+		      mon_nam(mdef));
+	}
 
 	/* Spineseeker does double damage to fleeing foes */
 	if (otmp->oartifact == ART_SPINESEEKER && !youdefend && mdef->mflee)

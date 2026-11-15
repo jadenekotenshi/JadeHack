@@ -1020,6 +1020,7 @@ boolean atme;
 	case SPE_DETECT_UNSEEN:
 	case SPE_HEALING:
 	case SPE_EXTRA_HEALING:
+	case SPE_SUPERIOR_HEALING:
 	case SPE_DRAIN_LIFE:
 	case SPE_STONE_TO_FLESH:
 		if (!(objects[pseudo->otyp].oc_dir == NODIR)) {
@@ -1389,6 +1390,7 @@ int spell;
 	/* `healing spell' bonus */
 	if (spellid(spell) == SPE_HEALING ||
 	    spellid(spell) == SPE_EXTRA_HEALING ||
+	    spellid(spell) == SPE_SUPERIOR_HEALING ||
 	    spellid(spell) == SPE_CURE_BLINDNESS ||
 	    spellid(spell) == SPE_CURE_SICKNESS ||
 	    spellid(spell) == SPE_RESTORE_ABILITY ||

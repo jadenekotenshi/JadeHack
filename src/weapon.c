@@ -305,7 +305,7 @@ struct monst *mon;
 		otmp->oclass == BALL_CLASS || otmp->oclass == CHAIN_CLASS) {
 	    int bonus = 0;
 
-	    if (otmp->blessed && (is_undead(ptr) || is_demon(ptr)))
+	    if (otmp->blessed && hates_blessed(ptr))
 		bonus += rnd(4);
 	    if (is_axe(otmp) && is_wooden(ptr))
 		bonus += rnd(4);
@@ -1429,7 +1429,7 @@ const struct def_skill *class_skill;
 	}
 
 	/* Knights and Valkyries start out knowing how to use a shield */
-	if (Role_if(PM_KNIGHT) || Role_if(PM_VALKYRIE))
+	if (Role_if(PM_KNIGHT) || Role_if(PM_VALKYRIE) || Role_if(PM_BARD))
 		P_SKILL(P_SHIELD) = P_BASIC;
 
 	/* High potential fighters already know how to use their hands. */

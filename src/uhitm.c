@@ -339,7 +339,7 @@ struct monst *mtmp;
 	    dmg += rnd(20);
 	    pline("%s %s on %s!", The(xname(uarms)), "sears", mon_nam(mtmp));
 	}
-	if (uarms->blessed && (is_undead(mtmp->data) || is_demon(mtmp->data)))
+	if (uarms->blessed && hates_blessed(mtmp->data))
 	    dmg += rnd(4);
 	if (!rn2(4)) {
 	    switch (uarms->otyp) {
@@ -668,7 +668,7 @@ int dieroll;
 		tmp = rnd(2);
 		 valid_weapon_attack = TRUE;	/* remove dorky 1 = d1 and no bonuses */
 	    /* blessed gloves give bonuses when fighting 'bare-handed' */
-	    if (uarmg && uarmg->blessed && (is_undead(mdat) || is_demon(mdat)))
+	    if (uarmg && uarmg->blessed && hates_blessed(mdat))
 		tmp += rnd(4);
 		 /* fighting with fists will get the gloves' bonus... */
 		 if (uarmg) {

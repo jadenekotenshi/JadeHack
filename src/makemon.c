@@ -394,7 +394,7 @@ register struct monst *mtmp;
 		switch (mm != PM_ORC_CAPTAIN ? mm :
 			rn2(2) ? PM_MORDOR_ORC : PM_URUK_HAI) {
 		    case PM_MORDOR_ORC:
-			if(!rn2(3)) (void)mongets(mtmp, SCIMITAR);
+			if(!rn2(3)) (void)mongets(mtmp, ORCISH_SCIMITAR);
 			if(!rn2(3)) (void)mongets(mtmp, ORCISH_SHIELD);
 			if(!rn2(3)) (void)mongets(mtmp, KNIFE);
 			if(!rn2(3)) (void)mongets(mtmp, ORCISH_CHAIN_MAIL);
@@ -412,7 +412,7 @@ register struct monst *mtmp;
 		    default:
 			if (mm != PM_ORC_SHAMAN && rn2(2))
 			  (void)mongets(mtmp, (mm == PM_GOBLIN || rn2(2) == 0)
-						   ? ORCISH_DAGGER : SCIMITAR);
+						   ? ORCISH_DAGGER : ORCISH_SCIMITAR);
 		}
 		break;
 	    case S_OGRE:
@@ -1012,6 +1012,13 @@ register int	mmflags;
 		} while(!goodpos(x, y, &fakemon, gpflags) && tryct++ < 50);
 		mndx = monsndx(ptr);
 	}
+	/* now and then an arch-lich in the castle or below is Koshchei */
+	if (ptr == &mons[PM_ARCH_LICH] && !rn2(10) &&
+	    (In_hell(&u.uz) || Is_stronghold(&u.uz)) &&
+	    !(mvitals[PM_KOSHCHEI_THE_DEATHLESS].mvflags & (G_GENOD|G_EXTINCT))) {
+	    ptr = &mons[PM_KOSHCHEI_THE_DEATHLESS];
+	    mndx = PM_KOSHCHEI_THE_DEATHLESS;
+	}
 	(void) propagate(mndx, countbirth, FALSE);
 	xlth = ptr->pxlth;
 	if (mmflags & MM_EDOG) xlth += sizeof(struct edog);
@@ -1248,6 +1255,7 @@ register int	mmflags;
 			mtmp->mstrategy |= STRAT_CLOSE;
 	}
 
+	if (mndx == PM_IMPEDE) block_point(mtmp->mx, mtmp->my);
 	if (!in_mklev)
 	    newsym(mtmp->mx,mtmp->my);	/* make sure the mon shows up */
 
@@ -1726,6 +1734,7 @@ int type;
 {
 	switch(type) {
 		case PM_STRAW_GOLEM: return 20;
+		case PM_GLUE_GOLEM: return 60;
 		case PM_PAPER_GOLEM: return 20;
 		case PM_ROPE_GOLEM: return 30;
 		case PM_LEATHER_GOLEM: return 40;

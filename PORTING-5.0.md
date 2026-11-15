@@ -509,3 +509,9 @@ Crysteel falchion ("crystal falchion"): a falchion of gemstone, +1 to hit and +1
 ## Batch 29: crystal plate mail, Dramborleg, destroy armor
 
 Crystal plate mail now weighs 150 and is gemstone. Dramborleg (after EvilHack): lawful self-willed dwarvish bearded axe, +d8 to hit and +d8 damage against everything, warns of demons, kills balrogs outright, magic resistance and +1 magic cancellation while wielded. The monster Destroy Armor spell, against a hero with magic resistance, now only strips erodeproofing from an erodeproof target and does nothing more.
+
+## Batch 30: another big monster batch
+
+New monsters: toxic mimic, glue golem (a third of the time leaves a tainted horse corpse), impede (very slow; blocks sight, absorbs rays and thrown things stop at it; hates silver and blessed items), megapede, gug (bite can paralyze), giant shoggoth (Gehennom only; shoggoth corpses are now poisonous and acidic and confer poison and acid resistance), giant solifuge (grabs like an owlbear), antaloon, snow ant, iron ant, chain devil (added to summon nasties), marraenoloth (Gehennom only), ultroloth, piscoloth, Koshchei the Deathless (1 in 10 arch-liches in the Castle or Gehennom, only generation route), nupperibo, dretch, Kerberos (EvilHack's Cerberus, placed in the Valley), yochlol, drow warrior/mage/cleric and driders (random generation). Merozalghi now come in small groups. Notes: the yochlol is a plain demon here (EvilHack has none; I used dNetHack's stats without the shapeshifting), and drider's web spit is omitted.
+Items: orcish scimitar (very rare randomly; orcs carry it instead of scimitars; curved sword skill) and Mouser's Scalpel (rapier, neutral, +5 to hit, +1 damage, 1 in 5 chance of an extra blow that may chain, each worth d8+1+enchantment).
+Spell: superior healing (level 5 healing spell, heals 6d12; same casting bonus as other healing spells). Bards now start with Basic shield skill.

@@ -274,6 +274,7 @@ register struct permonst *ptr;
 /* returns TRUE if monster is especially affected by silver weapons */
 {
 	return((boolean)(is_were(ptr) || ptr->mlet==S_VAMPIRE || is_demon(ptr) ||
+		ptr == &mons[PM_IMPEDE] ||
 		ptr == &mons[PM_SHADE] ||
 		(ptr->mlet==S_IMP && ptr != &mons[PM_TENGU])));
 }
