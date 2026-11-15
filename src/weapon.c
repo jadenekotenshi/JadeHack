@@ -1429,7 +1429,7 @@ const struct def_skill *class_skill;
 	}
 
 	/* Knights and Valkyries start out knowing how to use a shield */
-	if (Role_if(PM_KNIGHT) || Role_if(PM_VALKYRIE) || Role_if(PM_BARD))
+	if (Role_if(PM_KNIGHT) || Role_if(PM_VALKYRIE))
 		P_SKILL(P_SHIELD) = P_BASIC;
 
 	/* High potential fighters already know how to use their hands. */
