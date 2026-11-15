@@ -392,7 +392,13 @@ boolean ignore_oquan;
 					break;
 				}
 			}
-			if (!f) impossible("Bad fruit #%d?", obj->spe);
+			if (!f) {
+			    /* the fruit chain is freed when bones are saved, but
+			       windows may still redraw the hero's inventory */
+			    Strcpy(buf, "slime mold");
+			    if (!program_state.gameover)
+				impossible("Bad fruit #%d?", obj->spe);
+			}
 			break;
 		}
 
