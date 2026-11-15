@@ -180,7 +180,11 @@
 /* #define COMPRESS "/usr/bin/compress"	 Lempel-Ziv compression */
 /* #define COMPRESS_EXTENSION ".Z"	 compress's extension */
 /* An example of one alternative you might want to use: */
+#ifdef __APPLE__
+#define COMPRESS "/usr/bin/gzip" /* gzip lives here on macOS */
+#else
 #define COMPRESS "/bin/gzip" /* FSF gzip compression */
+#endif
 #define COMPRESS_EXTENSION ".gz" 	/* normal gzip extension */
 #endif
 
