@@ -237,3 +237,23 @@ Checked, N/A: `data.base` "bat"/"combat"/"jack boot" clashes ([509-511]); this t
 `data.base` has no standalone "bat" entry.
 
 Still not worked through: roughly 110 other entries in `doc/port-candidates-3.6.0.txt`.
+
+## Batch 12: more non-shop 3.6.0 candidates (ported; build OK, game starts, not exercised in play)
+
+| Fix | Where here |
+|---|---|
+| Wielding a polearm and then pressing ESC at the target prompt took no time ([426]) | `src/apply.c` `use_pole()`, `use_grapple()` |
+| A hero polymorphed into a handless form could throw ([298]) | `src/dothrow.c` |
+| Eating an artifact the hero can't touch ([300]) | `src/eat.c` `doeat()` |
+| A T-shirt worn under a suit could be read ([430]) | `src/read.c` |
+| Alchemy explosion didn't wake nearby monsters ([401]) | `src/potion.c` |
+| Stone-resistant monsters couldn't wield cockatrice corpses barehanded ([481]) | `src/weapon.c` |
+| #untrap didn't require reaching the floor ([370]) | `src/trap.c` `dountrap()` |
+| Cockatrice nest/Medusa statues were all giant ants when the record file is empty ([470]) | `src/mkobj.c` `mk_tt_object()` |
+
+Skipped on inspection: bag of holding weight off by one ([456]); this tree's
+`DELTA_CWT` macro and `weight()` use matching formulas that 5.0 reworked
+together, so changing one without the other would be worse. Amnesia ([368])
+already looks correct here.
+
+Still not worked through: roughly 100 other entries in `doc/port-candidates-3.6.0.txt`.

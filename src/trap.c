@@ -3251,6 +3251,10 @@ dountrap()	/* disarm a trap */
 	    pline("You're too strained to do that.");
 	    return 0;
 	}
+	if (!can_reach_floor()) {	/* NetHack 3.6.0 fix */
+	    You_cant("reach the %s.", surface(u.ux, u.uy));
+	    return 0;
+	}
 	if ((nohands(youmonst.data) && !webmaker(youmonst.data)) || !youmonst.data->mmove) {
 	    pline("And just how do you expect to do that?");
 	    return 0;

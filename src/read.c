@@ -140,6 +140,16 @@ doread()
 		You_cant("feel any Braille writing.");
 		return 0;
 	    }
+	    /* can't read a shirt worn under a suit; under a cloak is OK
+	       (NetHack 3.6.0 fix) */
+	    if (uarm && scroll == uarmu) {
+		char sbuf[BUFSZ];
+
+		pline("%s shirt is obscured by %s %s.",
+		      scroll->unpaid ? "That" : "Your",
+		      shk_your(sbuf, uarm), xname(uarm));
+		return 0;
+	    }
 	    u.uconduct.literate++;
 	    if(flags.verbose)
 		pline("It reads:");

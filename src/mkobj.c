@@ -1125,7 +1125,17 @@ register int x, y;
 	initialize_it = (objtype != STATUE);
 	if ((otmp = mksobj_at(objtype, x, y, initialize_it, FALSE)) != 0) {
 	    /* tt_oname will return null if the scoreboard is empty */
-	    if ((otmp2 = tt_oname(otmp)) != 0) otmp = otmp2;
+	    if ((otmp2 = tt_oname(otmp)) != 0) {
+		otmp = otmp2;
+	    } else if (objtype == STATUE) {
+		/* empty record file: statue wasn't initialized above, so it
+		   would be a giant ant (monster #0); pick a random species
+		   (NetHack 3.6.0 fix) */
+		int mndx = rndmonnum();
+
+		if (mndx >= LOW_PM) otmp->corpsenm = mndx;
+		otmp->owt = weight(otmp);
+	    }
 	}
 	return(otmp);
 }

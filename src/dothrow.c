@@ -255,6 +255,9 @@ dothrow()
 	if (notake(youmonst.data)) {
 	    You("are physically incapable of throwing anything.");
 	    return 0;
+	} else if (nohands(youmonst.data)) {
+	    You("have no hands!");	/* NetHack 3.6.0 fix */
+	    return 0;
 	}
 
 	if(check_capacity((char *)0)) return(0);

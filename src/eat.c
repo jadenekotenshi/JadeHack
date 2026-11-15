@@ -2044,6 +2044,10 @@ doeat()		/* generic "eat" command funtion (see cmd.c) */
 	    /* let them eat rings */
 	    You_cant("eat %s you're wearing.", something);
 	    return 0;
+	} else if (otmp->oartifact && !touch_artifact(otmp, &youmonst)) {
+	    /* can't eat an artifact you're unable to touch; the blast
+	       takes a turn (NetHack 3.6.0 fix) */
+	    return 1;
 	}
 	if (is_metallic(otmp) &&
 	    u.umonnum == PM_RUST_MONSTER && otmp->oerodeproof) {

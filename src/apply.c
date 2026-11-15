@@ -2610,7 +2610,7 @@ use_pole (obj)
 		cc.y = u.uy;
 	}
 	if (getpos(&cc, TRUE, "the spot to hit") < 0)
-	    return 0;	/* user pressed ESC */
+	    return res;	/* user pressed ESC; wielding took a move (3.6.0 fix) */
 
 	/* Calculate range */
 	typ = uwep_skill_type();
@@ -2722,7 +2722,7 @@ use_grapple (obj)
 	cc.x = u.ux;
 	cc.y = u.uy;
 	if (getpos(&cc, TRUE, "the spot to hit") < 0)
-	    return 0;	/* user pressed ESC */
+	    return res;	/* user pressed ESC; wielding took a move (3.6.0 fix) */
 
 	/* Calculate range */
 	typ = uwep_skill_type();
