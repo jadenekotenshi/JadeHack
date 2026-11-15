@@ -1173,6 +1173,7 @@ light_cocktail(obj)
 	struct obj *obj;	/* obj is a potion of oil */
 {
 	char buf[BUFSZ];
+	boolean split1off;
 
 	if (u.uswallow) {
 	    You(no_elbow_room);
@@ -1187,13 +1188,23 @@ light_cocktail(obj)
 	     * age of the potions.  Not exactly the best solution,
 	     * but its easy.
 	     */
-	    freeinv(obj);
-	    (void) addinv(obj);
+	    /* don't re-merge a worn (wielded/quivered) potion: it could merge
+	       into a different worn stack and leave a stale pointer
+	       (NetHack 3.6.x "null obj after quiver merge" panic) */
+	    if (!obj->owornmask) {
+		freeinv(obj);
+		(void) addinv(obj);
+	    }
 	    return;
 	} else if (Underwater) {
 	    There("is not enough oxygen to sustain a fire.");
 	    return;
 	}
+
+	/* split before billing so only the lit potion is charged for
+	   (NetHack 3.6.0 fix: whole unpaid stack used to be bought) */
+	split1off = (obj->quan > 1L);
+	if (split1off) obj = splitobj(obj, 1L);
 
 	You("light %s potion.%s", shk_your(buf, obj),
 	    Blind ? "" : "  It gives off a dim light.");
@@ -1207,16 +1218,14 @@ light_cocktail(obj)
 	}
 	makeknown(obj->otyp);
 
-	if (obj->quan > 1L) {
-	    obj = splitobj(obj, 1L);
-	    begin_burn(obj, FALSE);	/* burn before free to get position */
+	begin_burn(obj, FALSE);	/* after shop billing; burn before free to get position */
+	if (split1off) {
 	    obj_extract_self(obj);	/* free from inv */
 
 	    /* shouldn't merge */
 	    obj = hold_another_object(obj, "You drop %s!",
 				      doname(obj), (const char *)0);
-	} else
-	    begin_burn(obj, FALSE);
+	}
 }
 
 static NEARDATA const char cuddly[] = { TOOL_CLASS, GEM_CLASS, 0 };

@@ -6,6 +6,7 @@
 #include "prop.h"
 
 STATIC_DCL void FDECL(mkbox_cnts,(struct obj *));
+STATIC_DCL unsigned FDECL(nextoid, (struct obj *, struct obj *));
 STATIC_DCL void FDECL(obj_timer_checks,(struct obj *, XCHAR_P, XCHAR_P, int));
 #ifdef OVL1
 STATIC_DCL void FDECL(container_weight, (struct obj *));
@@ -253,6 +254,41 @@ rndmonnum()	/* select a random, common monster type */
  * has its wornmask cleared and is positioned just following the original
  * in the nobj chain (and nexthere chain when on the floor).
  */
+/* Shop prices of unidentified objects depend on o_id % 4 (see get_cost()).
+ * Return 1 if oid would give obj the surcharge, else 0. */
+STATIC_OVL int
+oid_price_adjustment(obj, oid)
+struct obj *obj;
+unsigned oid;
+{
+	if ((!obj->dknown || !objects[obj->otyp].oc_name_known) &&
+	    !(obj->oclass == GEM_CLASS &&
+	      objects[obj->otyp].oc_material == GLASS))
+	    return ((oid % 4) == 0);
+	return 0;
+}
+
+/* Pick an o_id for newobj, a copy or piece of oldobj, that yields the same
+ * shop price as oldobj has (NetHack 3.6.0/3.6.2 fix: splitting a stack or
+ * making a billing dummy could change the price). */
+STATIC_OVL unsigned
+nextoid(oldobj, newobj)
+struct obj *oldobj, *newobj;
+{
+	int olddif, newdif, trylimit = 256;
+	unsigned oid = flags.ident - 1;	/* loop increment will reverse -1 */
+
+	olddif = oid_price_adjustment(oldobj, oldobj->o_id);
+	do {
+	    ++oid;
+	    if (!oid) ++oid;		/* avoid 0 if value wrapped */
+	    newdif = oid_price_adjustment(newobj, oid);
+	} while (newdif != olddif && --trylimit >= 0);
+	flags.ident = oid;		/* last ident used */
+	if (!++flags.ident) ++flags.ident;
+	return oid;
+}
+
 struct obj *
 splitobj(obj, num)
 struct obj *obj;
@@ -264,8 +300,7 @@ long num;
 	    panic("splitobj");	/* can't split containers */
 	otmp = newobj(obj->oxlth + obj->onamelth);
 	*otmp = *obj;		/* copies whole structure */
-	otmp->o_id = flags.ident++;
-	if (!otmp->o_id) otmp->o_id = flags.ident++;	/* ident overflowed */
+	otmp->o_id = nextoid(obj, otmp);
 	otmp->timed = 0;	/* not timed, yet */
 	otmp->lamplit = 0;	/* ditto */
 	otmp->owornmask = 0L;	/* new object isn't worn */
@@ -366,9 +401,9 @@ register struct obj *otmp;
 	dummy = newobj(otmp->oxlth + otmp->onamelth);
 	*dummy = *otmp;
 	dummy->where = OBJ_FREE;
-	dummy->o_id = flags.ident++;
-	if (!dummy->o_id) dummy->o_id = flags.ident++;	/* ident overflowed */
+	dummy->o_id = nextoid(otmp, dummy);
 	dummy->timed = 0;
+	dummy->owornmask = 0L;		/* dummy object is not worn */
 	if (otmp->oxlth)
 	    (void)memcpy((genericptr_t)dummy->oextra,
 			(genericptr_t)otmp->oextra, otmp->oxlth);
@@ -376,7 +411,9 @@ register struct obj *otmp;
 	    (void)strncpy(ONAME(dummy), ONAME(otmp), (int)otmp->onamelth);
 	if (Is_candle(dummy)) dummy->lamplit = 0;
 	addtobill(dummy, FALSE, TRUE, TRUE);
-	otmp->no_charge = 1;
+	/* no_charge is only meaningful for floor and contained objects */
+	otmp->no_charge = (otmp->where == OBJ_FLOOR ||
+			   otmp->where == OBJ_CONTAINED) ? 1 : 0;
 	otmp->unpaid = 0;
 	return;
 }

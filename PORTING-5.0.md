@@ -66,23 +66,29 @@ whether this tree's throw code has the stale pointer).
 | Gating in a demon when `ndemon()`/`dprince()`/`dlord()` returned NON_PM indexed `mons[-1]` | `src/minion.c` `msummon()`: four `cnt` computations check `dtype != NON_PM` |
 | "Tin cures stoning" | This tree has no monster tin-eating, so the tin case is N/A. The same bug class does exist for generic eggs (corpsenm NON_PM), fixed in `src/dog.c` (`dogfood()`), `src/mon.c` (`mstoning()`) and `src/muse.c` (egg stoning check), alongside the earlier `eat.c` fix. |
 
-## Batch 6: shop fixes (partly ported)
+## Batch 6/7: shop fixes (ported; build OK, game starts, not exercised in a shop)
 
-Ported: `stolen_value()` in `src/shk.c` now charges `quan * get_cost()` instead of
-the price of one item, so stolen/broken/thrown-out stacks are billed in full
-(3.6.0 "some types of shop theft of a stack only charged for a single one").
+| Fix | Where here |
+|---|---|
+| Stolen/broken/thrown-out stacks billed for one item (3.6.0) | `src/shk.c` `stolen_value()` multiplies by `quan` |
+| Price of a billed or split object changed because its new `o_id` lost/gained the `o_id % 4` surcharge (3.6.0, 3.6.2) | `src/mkobj.c` new `nextoid()` keeps the surcharge the same; used by `splitobj()` and `bill_dummy_object()` |
+| Billing dummy was flagged as worn; hero's own object kept a stale `no_charge` (3.6.0) | `src/mkobj.c` `bill_dummy_object()` clears `owornmask`; `no_charge` only for floor/contained objects |
+| Hero reviving a shop-owned corpse (undead turning) was never charged (3.6.0) | `src/zap.c` `revive(obj, by_hero)` bills via `stolen_value()` after splitting one off |
+| Applying an unpaid stack of oil made hero buy the whole stack (3.6.0) | `src/apply.c` `light_cocktail()` splits first, then bills |
+| Snuffing a wielded/quivered oil potion re-merged it and could leave a stale pointer (5.0) | `src/apply.c` `light_cocktail()` skips re-merge when worn |
 
 Checked, not ported:
-- Horn of plenty (3.6.0/5.0): the shop claiming ownership of the created item is
-  a rules change, not an exploit fix; `apply.c` here has no equivalent code.
-- Monster pickup of unpaid floor items (5.0 `mpickobj()`): `steal()` already
-  takes stolen unpaid items off the bill; the floor-item case is rare.
-- Gold into a hero-owned container giving credit (3.6.1): 5.0's `in_container()`
-  and `sellobj()` differ structurally from this tree and I couldn't identify
-  the specific change that fixes it without rewriting the shop code.
+- Horn of plenty shop ownership: a rules change, not an exploit fix.
+- Tin stack charging (3.6.1): same logic already here; the bug was in 3.6's new tin code.
+- Teleported-object robbery (5.0): this tree deliberately bills the hero; 5.0 chose robbery.
+- Thrown wand shatter, `#tip` gold, shop-owned boulders: features or code this tree lacks.
+- Gold into a hero-owned container (3.6.1): 5.0 `in_container()`/`sellobj()` differ
+  structurally; no single fix identified.
+- Statue reanimation charge (3.6.0 [90]): not looked at in code.
 
-Not yet read in code: sold-twice cases (3.6.0 [122], [123]), container gold on
-`#tip`, tin stack, shop wall repair, the teleported-object robbery case.
+Not read in code: sold-twice [122]/[123], shop wall repair [17]/[18]/[292]/[293],
+unpaid item dropped into an engulfer [62]/[63], bag of holding explosion [73],
+nested container gold [103], stolen-by-monster floor item [5.0 mpickobj].
 
 ## N/A because SporkHack changed or removed the code
 

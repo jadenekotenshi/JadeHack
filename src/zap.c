@@ -574,8 +574,9 @@ int *container_nesting;
  * successful.  Note: this does NOT use up the corpse if it fails.
  */
 struct monst *
-revive(obj)
+revive(obj, by_hero)
 register struct obj *obj;
+boolean by_hero;	/* caused by the hero (shop charges apply) */
 {
 	register struct monst *mtmp = (struct monst *)0;
 	struct obj *container = (struct obj *)0;
@@ -715,6 +716,17 @@ register struct obj *obj;
 				/* not useupf(), which charges */
 				if (obj->quan > 1L)
 				    obj = splitobj(obj, 1L);
+				/* hero reviving a shop-owned corpse pays for it
+				   (NetHack 3.6.0 fix); not for the shk's own */
+				if (by_hero && !obj->no_charge &&
+					costly_spot(x, y)) {
+				    struct monst *shkp =
+					shop_keeper(*in_rooms(x, y, SHOPBASE));
+				    if (shkp && mtmp != shkp)
+					(void) stolen_value(obj, x, y,
+						(boolean) shkp->mpeaceful,
+						FALSE);
+				}
 				delobj(obj);
 				newsym(x, y);
 				break;
@@ -768,7 +780,7 @@ struct monst *mon;
 	    if (youseeit) Strcpy(corpse, corpse_xname(otmp, TRUE));
 
 	    /* for a merged group, only one is revived; should this be fixed? */
-	    if ((mtmp2 = revive(otmp)) != 0) {
+	    if ((mtmp2 = revive(otmp, TRUE)) != 0) {
 		++res;
 		if (youseeit) {
 		    if (!once++) Strcpy(owner,
@@ -1603,7 +1615,7 @@ struct obj *obj, *otmp;
 		if (obj->otyp == EGG)
 			revive_egg(obj);
 		else
-			res = !!revive(obj);
+			res = !!revive(obj, TRUE);
 		break;
 	case WAN_OPENING:
 	case SPE_KNOCK:
