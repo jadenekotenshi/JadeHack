@@ -128,7 +128,10 @@ Boots_on()
 	case ELVEN_BOOTS:
 		if (!oldprop && !HStealth && !BStealth) {
 			makeknown(uarmf->otyp);
-			You("walk very quietly.");
+			if (Levitation || Flying)
+			    You("float imperceptibly.");
+			else
+			    You("walk very quietly.");
 		}
 		break;
 	case FUMBLE_BOOTS:
@@ -217,10 +220,21 @@ Cloak_on()
 	u.uprops[objects[uarmc->otyp].oc_oprop].extrinsic & ~WORN_CLOAK;
 
     switch(uarmc->otyp) {
-	case ELVEN_CLOAK:
 	case CLOAK_OF_PROTECTION:
-	case CLOAK_OF_DISPLACEMENT:
 		makeknown(uarmc->otyp);
+		break;
+	case ELVEN_CLOAK:
+		/* only discovered if stealth actually changes
+		   (NetHack 3.6.0 fix) */
+		if (!oldprop && !HStealth && !BStealth) {
+			makeknown(uarmc->otyp);
+			You("move very quietly.");
+		}
+		break;
+	case CLOAK_OF_DISPLACEMENT:
+		/* can't tell unless it changes displacement and hero can see */
+		if (!oldprop && !Blind)
+			makeknown(uarmc->otyp);
 		break;
 	case ORCISH_CLOAK:
 		if (Race_if(PM_ORC)) {
@@ -815,7 +829,6 @@ register struct obj *obj;
 	case RIN_TELEPORTATION:
 	case RIN_REGENERATION:
 	case RIN_SEARCHING:
-	case RIN_STEALTH:
 	case RIN_HUNGER:
 	case RIN_AGGRAVATE_MONSTER:
 	case RIN_POISON_RESISTANCE:
@@ -830,6 +843,13 @@ register struct obj *obj;
 	case RIN_SLOW_DIGESTION:
 	case RIN_SUSTAIN_ABILITY:
 	case MEAT_RING:
+		break;
+	case RIN_STEALTH:
+		/* NetHack 3.6.0: putting it on never discovered it */
+		if (!oldprop && !HStealth && !BStealth) {
+			makeknown(RIN_STEALTH);
+			You("move very quietly.");
+		}
 		break;
 	case RIN_WARNING:
 		see_monsters();

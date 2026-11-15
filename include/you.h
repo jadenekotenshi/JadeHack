@@ -239,6 +239,8 @@ struct you {
 	int last_str_turn;	/* 0: none, 1: half turn, 2: full turn */
 				/* +: turn right, -: turn left */
 	int ulevel;		/* 1 to MAXULEV */
+	short uhpinc[MAXULEV];	/* HP gained going from level N to N+1 */
+	short ueninc[MAXULEV];	/* Pw gained going from level N to N+1 */
 	int ulevelmax;
 	unsigned utrap;		/* trap timeout */
 	unsigned utraptype;	/* defined if utrap nonzero */

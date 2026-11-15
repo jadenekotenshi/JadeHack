@@ -870,7 +870,7 @@ boolean atme;
 			} else {
 			    explode(u.dx, u.dy,
 				    pseudo->otyp - SPE_MAGIC_MISSILE + 10,
-				    u.ulevel/2 + 1 + spell_damage_bonus(), 0,
+				    max(1, u.ulevel/2 + 1 + spell_damage_bonus()), 0,
 					(pseudo->otyp == SPE_CONE_OF_COLD) ?
 						EXPL_FROSTY : EXPL_FIERY);
 			}

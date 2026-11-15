@@ -130,8 +130,10 @@ struct obj *otmp;
 		} else if (u.uswallow || rnd(20) < 10 + find_mac(mtmp)) {
 			dmg = d(2,12);
 			if(dbldam) dmg *= 2;
-			if (otyp == SPE_FORCE_BOLT)
+			if (otyp == SPE_FORCE_BOLT) {
 			    dmg += spell_damage_bonus();
+			    if (dmg < 1) dmg = 1;	/* low-Int penalty can't heal */
+			}
 			hit(zap_type_text, mtmp, exclam(dmg));
 			(void) resist(mtmp, otmp->oclass, dmg, TELL);
 		} else miss(zap_type_text, mtmp);
@@ -165,8 +167,10 @@ struct obj *otmp;
 			wake = TRUE;
 			dmg = rnd(8);
 			if(dbldam) dmg *= 2;
-			if (otyp == SPE_TURN_UNDEAD)
+			if (otyp == SPE_TURN_UNDEAD) {
 				dmg += spell_damage_bonus();
+				if (dmg < 1) dmg = 1;
+			}
 			flags.bypasses = TRUE;	/* for make_corpse() */
 			if (!resist(mtmp, otmp->oclass, dmg, NOTELL)) {
 			    if (mtmp->mhp > 0) monflee(mtmp, 0, FALSE, TRUE);
@@ -321,8 +325,10 @@ struct obj *otmp;
 	case SPE_DRAIN_LIFE:
 		dmg = rnd(8);
 		if(dbldam) dmg *= 2;
-		if (otyp == SPE_DRAIN_LIFE)
+		if (otyp == SPE_DRAIN_LIFE) {
 			dmg += spell_damage_bonus();
+			if (dmg < 1) dmg = 1;
+		}
 		if (resists_drli(mtmp))
 		    shieldeff(mtmp->mx, mtmp->my);
 		else if (!resist(mtmp, otmp->oclass, dmg, NOTELL) &&
@@ -3005,8 +3011,10 @@ struct obj **ootmp;	/* to return worn armor for caller to disintegrate */
 		    break;
 		}
 		tmp = d(nd,6);
-		if (spellcaster)
+		if (spellcaster) {
 		    tmp += spell_damage_bonus();
+		    if (tmp < 1) tmp = 1;	/* NetHack 3.6.0: never negative */
+		}
 #ifdef WIZ_PATCH_DEBUG
 		if (spellcaster)
 		    pline("Damage = %d + %d", tmp-spell_damage_bonus(),
@@ -3020,8 +3028,10 @@ struct obj **ootmp;	/* to return worn armor for caller to disintegrate */
 		}
 		tmp = d(nd,6);
 		if (resists_cold(mon)) tmp += 7;
-		if (spellcaster)
+		if (spellcaster) {
 		    tmp += spell_damage_bonus();
+		    if (tmp < 1) tmp = 1;	/* NetHack 3.6.0: never negative */
+		}
 #ifdef WIZ_PATCH_DEBUG
 		if (spellcaster)
 		    pline("Damage = %d + %d",tmp-spell_damage_bonus(),
@@ -3040,8 +3050,10 @@ struct obj **ootmp;	/* to return worn armor for caller to disintegrate */
 		}
 		tmp = d(nd,6);
 		if (resists_fire(mon)) tmp += d(nd, 3);
-		if (spellcaster)
+		if (spellcaster) {
 		    tmp += spell_damage_bonus();
+		    if (tmp < 1) tmp = 1;	/* NetHack 3.6.0: never negative */
+		}
 #ifdef WIZ_PATCH_DEBUG
 		if (spellcaster)
 		    pline("Damage = %d + %d", tmp-spell_damage_bonus(),
@@ -3106,8 +3118,10 @@ struct obj **ootmp;	/* to return worn armor for caller to disintegrate */
 		    /* can still blind the monster */
 		} else
 		    tmp = d(nd,6);
-		if (spellcaster)
+		if (spellcaster) {
 		    tmp += spell_damage_bonus();
+		    if (tmp < 1) tmp = 1;	/* NetHack 3.6.0: never negative */
+		}
 #ifdef WIZ_PATCH_DEBUG
 		if (spellcaster)
 		    pline("Damage = %d + %d", tmp-spell_damage_bonus(),

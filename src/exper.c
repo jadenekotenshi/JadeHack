@@ -138,20 +138,16 @@ const char *drainer;	/* cause of death, if drain should be fatal */
 		/* no drainer or lifesaved */
 		u.uexp = 0;
 	}
-	num = newhp();
-	gainmaxhp(-num);
+	/* take back exactly what was gained for this level (NetHack 3.6.0:
+	   random amounts let lose-level/regain-level cycles boost HP and Pw) */
+	num = (u.ulevel >= 1 && u.ulevel < MAXULEV) ? (int)u.uhpinc[u.ulevel] : 0;
+	u.uhpmax -= num;
 	if (u.uhpmax < 1) u.uhpmax = 1;
 	u.uhp -= num;
 	if (u.uhp < 1) u.uhp = 1;
 	else if (u.uhp > u.uhpmax) u.uhp = u.uhpmax;
 
-	if (u.ulevel < urole.xlev)
-	    num = rn1((int)ACURR(A_WIS)/2 + urole.enadv.lornd + urace.enadv.lornd,
-			urole.enadv.lofix + urace.enadv.lofix);
-	else
-	    num = rn1((int)ACURR(A_WIS)/2 + urole.enadv.hirnd + urace.enadv.hirnd,
-			urole.enadv.hifix + urace.enadv.hifix);
-	num = enermod(num);		/* M. Stephenson */
+	num = (u.ulevel >= 1 && u.ulevel < MAXULEV) ? (int)u.ueninc[u.ulevel] : 0;
 	u.uenmax -= num;
 	if (u.uenmax < 0) u.uenmax = 0;
 	u.uen -= num;
@@ -189,6 +185,7 @@ boolean incr;	/* true iff via incremental experience growth */
 	 * and we don't want to screw them on level gain */
 	u.uhpmax += num;
 	u.uhp += num;
+	if (u.ulevel < MAXULEV) u.uhpinc[u.ulevel] = (short) num;
 	if (Upolyd) {
 	    num = rnd(8);
 	    u.mhmax += num;
@@ -203,6 +200,7 @@ boolean incr;	/* true iff via incremental experience growth */
 	num = enermod(num);	/* M. Stephenson */
 	u.uenmax += num;
 	u.uen += num;
+	if (u.ulevel < MAXULEV) u.ueninc[u.ulevel] = (short) num;
 	if (u.ulevel < MAXULEV) {
 	    if (incr) {
 		long tmp = newuexp(u.ulevel + 1);

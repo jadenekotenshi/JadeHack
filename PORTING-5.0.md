@@ -182,3 +182,25 @@ were introduced in 3.6 itself, so expect a good share to be N/A once the code
 is checked. Highest value first: the two `mons[-1]` accesses in
 `doc/port-candidates-3.6.5.txt` (gating a non-valid demon, tin cures stoning),
 then shop exploits, then the rest.
+
+## Batch 9: non-shop 3.6.0 candidates, first pass (ported; build OK, tested where noted)
+
+| Fix | Where here | Tested |
+|---|---|---|
+| Silver ammo wielded/thrown without a launcher did no silver damage ([31]) | `src/uhitm.c` | build only |
+| Plural of "Nazgul" ([34]) | `src/objnam.c` | build only |
+| Nymphs/monkeys could take rings from under gloves or a cursed weapon; nymphs could steal boulders ([105][106][367]) | `src/steal.c` | build only |
+| Wielded artifact light (Sunsword) kept shining after its monster died ([145]) | `src/steal.c` `mdrop_obj()` | build only |
+| Lose-level/regain-level cycles boosted HP/Pw ([153]); `u.uhpinc[]`/`u.ueninc[]` record each level's gain | `include/you.h`, `src/exper.c` | in game (`#levelchange`: 23 HP back to exactly 16) |
+| Elven cloak, cloak of displacement and ring of stealth discovered wrongly or never ([438][439][440]); "float imperceptibly" while levitating ([232]) | `src/do_wear.c` | in game (elven cloak message) |
+| Low-Int spell damage could go negative and heal ([432]) | `src/zap.c`, `src/spell.c` | build only |
+
+Struct `you` changed size: saves, bones, and the data files (`dungeon`, `nhdat`)
+must be rebuilt together or the game stops with "Dungeon description not valid".
+
+Checked, not needed: slimeproof already covers noncorporeal monsters ([111]).
+Skipped on inspection: score wraparound ([48], needs >2 billion points), empty
+wand engraving turn ([301], unclear), lock pick ESC turn ([404], already
+returns without using a move).
+
+Not yet worked through: about 150 other entries in `doc/port-candidates-3.6.0.txt`.

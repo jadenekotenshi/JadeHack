@@ -239,6 +239,7 @@ char *objnambuf;
 	struct obj *otmp;
 	int tmp, could_petrify, named = 0, armordelay;
 	boolean monkey_business; /* true iff an animal is doing the thievery */
+	int retrycnt = 0;
 
 	if (objnambuf) *objnambuf = '\0';
 	/* the following is true if successful on first of two attacks. */
@@ -261,8 +262,8 @@ nothing_to_steal:
 	}
 
 	monkey_business = is_animal(mtmp->data);
-	if (monkey_business) {
-	    ;	/* skip ring special cases */
+	if (monkey_business || uarmg) {
+	    ;	/* skip ring special cases (can't take rings from under gloves) */
 	} else if (Adornment & LEFT_RING) {
 	    otmp = uleft;
 	    goto gotobj;
@@ -271,6 +272,7 @@ nothing_to_steal:
 	    goto gotobj;
 	}
 
+retry:
 	tmp = 0;
 	for(otmp = invent; otmp; otmp = otmp->nobj)
 	    if ((!uarm || otmp != uarmc) && otmp != uskin
@@ -295,6 +297,9 @@ nothing_to_steal:
 		impossible("Steal fails!");
 		return(0);
 	}
+	/* can't steal ring(s) while wearing gloves (NetHack 3.6.0 fix) */
+	if ((otmp == uleft || otmp == uright) && uarmg)
+	    otmp = uarmg;
 	/* can't steal gloves while wielding - so steal the wielded item. */
 	if (otmp == uarmg && uwep)
 	    otmp = uwep;
@@ -307,6 +312,12 @@ nothing_to_steal:
 gotobj:
 	if(otmp->o_id == stealoid) return(0);
 
+	/* only giants can be robbed of boulders (NetHack 3.6.0 fix) */
+	if (otmp->otyp == BOULDER && !throws_rocks(mtmp->data)) {
+	    if (!retrycnt++) goto retry;
+	    goto cant_take;
+	}
+
 	/* animals can't overcome curse stickiness nor unlock chains */
 	if (monkey_business) {
 	    boolean ostuck;
@@ -317,7 +328,11 @@ gotobj:
 	    else if (otmp == uquiver || otmp == ulauncher || (otmp == uswapwep && !u.twoweap))
 		ostuck = FALSE;	/* not really worn; curse doesn't matter */
 	    else
-		ostuck = (otmp->cursed && otmp->owornmask);
+		ostuck = ((otmp->cursed && otmp->owornmask) ||
+			  /* nymphs can steal rings from under a cursed weapon
+			     but animals can't */
+			  (otmp == uright && welded(uwep)) ||
+			  (otmp == uleft && welded(uwep) && bimanual(uwep)));
 
 	    if (ostuck || !can_carry(mtmp, otmp)) {
 		static const char * const how[] = { "steal","snatch","grab","take" };
@@ -543,6 +558,9 @@ boolean verbosely;
 	    obj->no_charge = 1;
 #endif
 	}
+	/* a dead monster's wielded artifact must stop emitting light too
+	   (bug fixed in 3.4.1, reintroduced in 3.4.3) */
+	if (obj->owornmask & W_WEP) setmnotwielded(mon, obj);
 	obj->owornmask = 0L;
     }
     if (verbosely && cansee(omx, omy))
