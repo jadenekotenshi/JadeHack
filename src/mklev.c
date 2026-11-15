@@ -20,6 +20,15 @@
 
 
 STATIC_DCL void FDECL(mkfount,(int,struct mkroom *));
+
+/* themed rooms (NetHack 5.0 themeroom_fills), see mkthemedroom() below */
+#define THEMED_ROOM_CHANCE 16	/* 1 in N eligible rooms (tunable) */
+#define THEME_COUNT 13
+
+STATIC_DCL boolean FDECL(themed_free, (int,int));
+STATIC_DCL boolean FDECL(theme_eligible, (int,struct mkroom *));
+STATIC_DCL boolean FDECL(mkthemedroom, (struct mkroom *));
+
 #ifdef SINKS
 STATIC_DCL void FDECL(mksink,(struct mkroom *));
 #endif
@@ -965,6 +974,12 @@ skip0:
 	for(croom = rooms; croom->hx > 0; croom++) {
 	    if (croom->rtype != OROOM && croom->rtype != RNDVAULT) continue;
 	    if (croom->rtype == RNDVAULT && !croom->needfill) continue;
+		/* rarely, an ordinary room gets a themed fill (NetHack 5.0) */
+		if (croom->rtype == OROOM && !rn2(THEMED_ROOM_CHANCE) &&
+		    !has_upstairs(croom) && !has_dnstairs(croom) &&
+		    (croom->hx - croom->lx + 1) * (croom->hy - croom->ly + 1) >= 9 &&
+		    mkthemedroom(croom))
+		    continue;
 		/* put a sleeping monster inside */
 		/* Note: monster may be on the stairs. This cannot be
 		   avoided: maybe the player fell through a trap door
@@ -1658,6 +1673,220 @@ register struct mkroom *croom;
 	/* -1 - A_CHAOTIC, 0 - A_NEUTRAL, 1 - A_LAWFUL */
 	al = rn2((int)A_LAWFUL+2) - 1;
 	levl[m.x][m.y].altarmask = Align2amask( al );
+}
+
+/*
+ * Themed rooms, after NetHack 5.0's themerms.lua "themeroom_fills".
+ * About one eligible ordinary room in THEMED_ROOM_CHANCE gets one of these
+ * contents; most also skip the normal random room contents.
+ * (5.0 builds these from Lua; this is a C rendition of the self-contained ones.)
+ */
+
+/* is this room square plain floor with nothing on it? */
+STATIC_OVL boolean
+themed_free(x, y)
+int x, y;
+{
+	return (levl[x][y].typ == ROOM && !occupied(x, y) &&
+		!m_at(x, y) && !OBJ_AT(x, y));
+}
+
+STATIC_OVL boolean
+theme_eligible(t, croom)
+int t;
+struct mkroom *croom;
+{
+	switch (t) {
+	    case 1:  return (boolean) (level_difficulty() >= 4);	/* boulders */
+	    case 7:  return (boolean) !croom->rlit;		/* lamp */
+	    case 11: return (boolean) !level.flags.noteleport;	/* tele hub */
+	    case 12: return (boolean) croom->rlit;		/* garden */
+	    default: return TRUE;
+	}
+}
+
+/* Returns TRUE if the room has been completely handled and should not get
+ * the usual random contents; FALSE if it got a themed fill *and* should
+ * also get normal contents (or if no theme could be applied). */
+STATIC_OVL boolean
+mkthemedroom(croom)
+struct mkroom *croom;
+{
+	int x, y, t, n, tries = 0, lx = croom->lx, hx = croom->hx,
+	    ly = croom->ly, hy = croom->hy;
+	int area = (hx - lx + 1) * (hy - ly + 1);
+	boolean both = !rn2(5);	/* 2 in 10 keep normal contents (as in 5.0) */
+	coord pos;
+	struct obj *otmp;
+	struct monst *mtmp;
+	static const short trapkinds[] = {
+	    ARROW_TRAP, DART_TRAP, ROCKTRAP, BEAR_TRAP, LANDMINE,
+	    SLP_GAS_TRAP, RUST_TRAP, ANTI_MAGIC
+	};
+	static const short roles[] = {
+	    PM_ARCHEOLOGIST, PM_BARBARIAN, PM_CAVEMAN, PM_HEALER, PM_KNIGHT,
+	    PM_MONK, PM_PRIEST, PM_ROGUE, PM_RANGER, PM_SAMURAI,
+#ifdef TOURIST
+	    PM_TOURIST,
+#endif
+	    PM_VALKYRIE, PM_WIZARD
+	};
+
+	do {
+	    t = rn2(THEME_COUNT);
+	} while (!theme_eligible(t, croom) && ++tries < 50);
+	if (tries >= 50) return FALSE;
+
+	switch (t) {
+	    case 0:	/* Ice room */
+		for (x = lx; x <= hx; x++)
+		    for (y = ly; y <= hy; y++)
+			if (themed_free(x, y)) levl[x][y].typ = ICE;
+		break;
+	    case 1:	/* Boulder room */
+		for (x = lx; x <= hx; x++)
+		    for (y = ly; y <= hy; y++)
+			if (rn2(100) < 30 && themed_free(x, y)) {
+			    if (rn2(2)) {
+				(void) mksobj_at(BOULDER, x, y, TRUE, FALSE);
+			    } else {
+				pos.x = x; pos.y = y;
+				mktrap(ROLLING_BOULDER_TRAP, 0, croom, &pos);
+			    }
+			}
+		break;
+	    case 2:	/* Spider nest */
+		for (x = lx; x <= hx; x++)
+		    for (y = ly; y <= hy; y++)
+			if (rn2(100) < 30 && themed_free(x, y)) {
+			    (void) maketrap(x, y, WEB);
+			    if (level_difficulty() > 8 && rn2(5)) {
+				mtmp = makemon(mkclass(S_SPIDER, 0), x, y,
+					       NO_MM_FLAGS);
+				if (mtmp) mtmp->msleeping = 1;
+			    }
+			}
+		break;
+	    case 3:	/* Trap room: one kind of trap, many of them */
+		n = trapkinds[rn2(SIZE(trapkinds))];
+		for (x = lx; x <= hx; x++)
+		    for (y = ly; y <= hy; y++)
+			if (rn2(100) < 30 && themed_free(x, y)) {
+			    pos.x = x; pos.y = y;
+			    mktrap(n, 0, croom, &pos);
+			}
+		break;
+	    case 4:	/* Buried treasure */
+		if (somexyspace(croom, &pos, 0)) {
+		    otmp = mksobj_at(CHEST, pos.x, pos.y, TRUE, FALSE);
+		    if (otmp) {
+			for (n = d(3, 4); n > 0; n--) {
+			    struct obj *item = mkobj(RANDOM_CLASS, FALSE);
+			    if (item) (void) add_to_container(otmp, item);
+			}
+			otmp->owt = weight(otmp);
+			bury_objs(pos.x, pos.y);
+		    }
+		}
+		break;
+	    case 5:	/* Massacre: corpses of fallen adventurers */
+		n = roles[rn2(SIZE(roles))];
+		for (y = d(5, 5); y > 0; y--) {
+		    if (!rn2(10)) n = roles[rn2(SIZE(roles))];
+		    if (somexyspace(croom, &pos, 1))
+			(void) mkcorpstat(CORPSE, (struct monst *) 0,
+					  &mons[n], pos.x, pos.y, TRUE);
+		}
+		break;
+	    case 6:	/* Statuary */
+		for (n = d(5, 5); n > 0; n--)
+		    if (somexyspace(croom, &pos, 1))
+			(void) mkcorpstat(STATUE, (struct monst *) 0,
+					  (struct permonst *) 0,
+					  pos.x, pos.y, TRUE);
+		for (n = d(1, 3); n > 0; n--)
+		    if (somexyspace(croom, &pos, 1))
+			mktrap(STATUE_TRAP, 0, croom, &pos);
+		break;
+	    case 7:	/* Light source in a dark room */
+		if (somexyspace(croom, &pos, 1)) {
+		    otmp = mksobj_at(OIL_LAMP, pos.x, pos.y, TRUE, FALSE);
+		    if (otmp) {
+			otmp->age = 1000L;	/* plenty of oil */
+			otmp->spe = 1;
+			begin_burn(otmp, FALSE);
+		    }
+		}
+		break;
+	    case 8: {	/* Temple of the gods: one altar of each alignment */
+		int al;
+		for (al = A_CHAOTIC; al <= A_LAWFUL; al++) {
+		    if (!somexyspace(croom, &pos, 9)) break;
+		    levl[pos.x][pos.y].typ = ALTAR;
+		    levl[pos.x][pos.y].altarmask = Align2amask(al);
+		}
+		break;
+	    }
+	    case 9:	/* Ghost of an Adventurer, with some of their gear */
+		if (somexyspace(croom, &pos, 1)) {
+		    mtmp = makemon(&mons[PM_GHOST], pos.x, pos.y, NO_MM_FLAGS);
+		    if (mtmp) {
+			mtmp->msleeping = 1;
+			mtmp->mstrategy |= STRAT_WAITFORU;
+		    }
+#define THEME_ITEM(pct, make) \
+		    if (rn2(100) < (pct)) { otmp = (make); \
+			if (otmp) otmp->blessed = 0; }
+		    THEME_ITEM(65, mksobj_at(DAGGER, pos.x, pos.y, TRUE, FALSE));
+		    THEME_ITEM(55, mkobj_at(WEAPON_CLASS, pos.x, pos.y, TRUE));
+		    if (rn2(100) < 45) {
+			otmp = mksobj_at(BOW, pos.x, pos.y, TRUE, FALSE);
+			if (otmp) otmp->blessed = 0;
+			otmp = mksobj_at(ARROW, pos.x, pos.y, TRUE, FALSE);
+			if (otmp) otmp->blessed = 0;
+		    }
+		    THEME_ITEM(65, mkobj_at(ARMOR_CLASS, pos.x, pos.y, TRUE));
+		    THEME_ITEM(20, mkobj_at(RING_CLASS, pos.x, pos.y, TRUE));
+		    THEME_ITEM(20, mkobj_at(SCROLL_CLASS, pos.x, pos.y, TRUE));
+#undef THEME_ITEM
+		}
+		break;
+	    case 10:	/* Storeroom: chests, some of them mimics */
+		for (x = lx; x <= hx; x++)
+		    for (y = ly; y <= hy; y++)
+			if (rn2(100) < 30 && themed_free(x, y)) {
+			    if (!rn2(4)) {
+				(void) mksobj_at(CHEST, x, y, TRUE, FALSE);
+			    } else {
+				mtmp = makemon(mkclass(S_MIMIC, 0), x, y,
+					       NO_MM_FLAGS);
+				if (mtmp) {
+				    mtmp->m_ap_type = M_AP_OBJECT;
+				    mtmp->mappearance = CHEST;
+				}
+			    }
+			}
+		break;
+	    case 11:	/* Teleportation hub */
+		for (n = 2 + rn2(3); n > 0; n--)
+		    if (somexyspace(croom, &pos, 1)) {
+			struct trap *ttmp = maketrap(pos.x, pos.y, TELEP_TRAP);
+
+			if (ttmp) ttmp->tseen = 1;
+		    }
+		break;
+	    case 12:	/* Garden: sleeping wood nymphs and the odd fountain */
+		for (n = area / 6; n > 0; n--) {
+		    if (somexyspace(croom, &pos, 1)) {
+			mtmp = makemon(&mons[PM_WOOD_NYMPH], pos.x, pos.y,
+				       NO_MM_FLAGS);
+			if (mtmp) mtmp->msleeping = 1;
+		    }
+		    if (rn2(100) < 30) mkfount(0, croom);
+		}
+		break;
+	}
+	return (boolean) !both;
 }
 
 static void

@@ -333,3 +333,17 @@ invocation items at the quest leader ([140]), applying gold to flip a coin
 iron footwear vs. floor traps ([171]), purple worm poly intrinsics ([116]),
 spinach tins in the Monk quest ([117]), and monsters seeing/remembering hero
 resistances ([76][77], a balance decision).
+
+## Batch 17: group C (partly done; build OK, uncommitted)
+
+| Feature | Where here | Tested |
+|---|---|---|
+| Themed rooms: 13 fills (ice, boulders, spider nest, trap room, buried treasure, massacre, statuary, lamp, three altars, ghost, storeroom, teleport hub, garden); about 1 in 16 eligible ordinary rooms (`THEMED_ROOM_CHANCE`), 80% skip normal contents | `src/mklev.c` `mkthemedroom()` | in game at 100%: DL2-14 generated with no panics; ice/boulder/massacre rooms seen |
+| Item-actions menu: `i` then pick an item for a "Do what with it?" menu (wield, wear, eat, read, zap, throw, drop, call...) | `src/invent.c` `itemactions()`, `getobj()` preselect | in game (wield, take off menus) |
+| Shield of drain resistance (new; small shield probability 5 to 3 to keep the class at 1000) | `src/objects.c` | built; data files rebuilt |
+
+Overlap found: Spork already has gold dragons and gold dragon armor (monsters,
+light, scales), and its "lightning shield" is 5.0's shield of shock resistance,
+so neither was added. Not done: remaining 5.0 options (name:value booleans,
+toggle feedback, #toggle, sortdiscoveries), gold-armor hallucination cure.
+Objects changed, so rebuild data (`make dlb`) with the binary.

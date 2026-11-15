@@ -457,7 +457,7 @@ CLOAK("cloak of displacement", "piece of cloth",
 
 /* shields */
 SHIELD("small shield", (char *)0,
-		1, 0, 0, 0,	     5, 0, 30,	3,  9, 0, WOOD, HI_WOOD),
+		1, 0, 0, 0,	     3, 0, 30,	3,  9, 0, WOOD, HI_WOOD),
 SHIELD("elven shield", "blue and green shield",
 		0, 0, 0, 0,	     2, 0, 36,	7,  8, 0, WOOD, CLR_GREEN),
 SHIELD("Uruk-hai shield", "white-handed shield",
@@ -483,6 +483,9 @@ SHIELD("shield of light", "shiny shield",
 		0, 1, 0, 0,				 2, 0, 50, 300, 8, 0, IRON, CLR_YELLOW),
 SHIELD("shield of mobility", "slippery shield",
 		0, 1, 0, FREE_ACTION, 2, 0, 50, 300, 9, 0, IRON, HI_METAL),
+/* from NetHack 5.0; the shock-resistance shield there is JadeHack's lightning shield */
+SHIELD("shield of drain resistance", "dark gray shield",
+		0, 1, 0, DRAIN_RES,   2, 0, 50, 300, 8, 0, IRON, CLR_BLACK),
 
 /* gloves */
 /* these have their color but not material shuffled, so the IRON must stay

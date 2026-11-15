@@ -8,6 +8,8 @@
 #define CONTAINED_SYM	'>'	/* designator for inside a container */
 
 #ifdef OVL1
+STATIC_DCL int FDECL(itemactions, (struct obj *));
+STATIC_DCL int FDECL(dodrop_obj_only, (struct obj *));
 STATIC_DCL void NDECL(reorder_invent);
 STATIC_DCL boolean FDECL(mergable,(struct obj *,struct obj *));
 STATIC_DCL void FDECL(invdisp_nothing, (const char *,const char *));
@@ -809,6 +811,11 @@ const char *action;
     return !strcmp(action, "wear") || !strcmp(action, "put on");
 }
 
+/* object chosen from the 'i' menu; getobj() hands it to the next command
+   instead of prompting (NetHack 5.0 "item actions") */
+static struct obj *itemaction_obj = (struct obj *) 0;
+
+
 /*
  * getobj returns:
  *	struct obj *xxx:	object to do something with.
@@ -841,6 +848,18 @@ register const char *let,*word;
 	long cnt;
 	boolean prezero = FALSE;
 	long dummymask;
+
+	/* the item-actions menu (itemactions) has already chosen the object */
+	if (itemaction_obj) {
+	    struct obj *pre = itemaction_obj;
+
+	    itemaction_obj = (struct obj *) 0;
+	    for (otmp = invent; otmp; otmp = otmp->nobj)
+		if (otmp == pre) break;
+	    if (otmp && (!*let || index(let, ALL_CLASSES) ||
+			 index(let, otmp->oclass)))
+		return otmp;
+	}
 
 	if(*let == ALLOW_COUNT) let++, allowcnt = 1;
 #ifndef GOLDOBJ
@@ -1724,12 +1743,156 @@ long quan;		/* if non-0, print this quantity, not obj->quan */
 #endif /* OVL1 */
 #ifdef OVLB
 
+/* Context menu for one inventory item: what can be done with it. */
+STATIC_OVL int
+itemactions(obj)
+struct obj *obj;
+{
+	winid win;
+	anything any;
+	menu_item *pick = (menu_item *) 0;
+	char title[BUFSZ];
+	int n, act, res = 0;
+	boolean worn = (obj->owornmask & (W_ARMOR | W_RING | W_AMUL | W_TOOL)) != 0L;
+	enum {
+	    IA_NONE, IA_APPLY, IA_WIELD, IA_QUIVER, IA_THROW, IA_WEAR,
+	    IA_TAKEOFF, IA_PUTON, IA_REMOVE, IA_EAT, IA_QUAFF, IA_DIP,
+	    IA_READ, IA_ZAP, IA_ENGRAVE, IA_CALL, IA_ADJUST, IA_DROP
+	};
+
+	if (obj->oclass == COIN_CLASS) return dodrop_obj_only(obj);
+
+	win = create_nhwindow(NHW_MENU);
+	start_menu(win);
+	any.a_void = 0;
+	Sprintf(title, "Do what with %s?", the(xname(obj)));
+	add_menu(win, NO_GLYPH, &any, 0, 0, ATR_BOLD, title, MENU_UNSELECTED);
+
+#define IA(key, id, text) \
+	do { any.a_int = (id); \
+	     add_menu(win, NO_GLYPH, &any, (key), 0, ATR_NONE, (text), \
+		      MENU_UNSELECTED); } while (0)
+
+	switch (obj->oclass) {
+	    case WEAPON_CLASS:
+		if (obj != uwep) IA('w', IA_WIELD, "Wield this as your weapon");
+		if (is_pole(obj) || obj->otyp == BULLWHIP)
+		    IA('a', IA_APPLY, "Apply this");
+		if (obj != uquiver) IA('Q', IA_QUIVER, "Ready this for firing");
+		IA('t', IA_THROW, "Throw this");
+		break;
+	    case ARMOR_CLASS:
+		if (worn) IA('T', IA_TAKEOFF, "Take this off");
+		else IA('W', IA_WEAR, "Wear this");
+		break;
+	    case RING_CLASS:
+	    case AMULET_CLASS:
+		if (worn) IA('R', IA_REMOVE, "Remove this");
+		else IA('P', IA_PUTON, "Put this on");
+		break;
+	    case TOOL_CLASS:
+		if (obj->otyp == BLINDFOLD || obj->otyp == TOWEL ||
+		    obj->otyp == LENSES) {
+		    if (worn) IA('R', IA_REMOVE, "Remove this");
+		    else IA('P', IA_PUTON, "Put this on");
+		}
+		IA('a', IA_APPLY, "Apply this");
+		if (is_weptool(obj) && obj != uwep)
+		    IA('w', IA_WIELD, "Wield this as your weapon");
+		break;
+	    case FOOD_CLASS:
+		IA('e', IA_EAT, "Eat this");
+		IA('t', IA_THROW, "Throw this");
+		break;
+	    case POTION_CLASS:
+		IA('q', IA_QUAFF, "Quaff this");
+		IA('D', IA_DIP, "Dip something into this");
+		IA('t', IA_THROW, "Throw this");
+		break;
+	    case SCROLL_CLASS:
+	    case SPBOOK_CLASS:
+		IA('r', IA_READ, "Read this");
+		break;
+	    case WAND_CLASS:
+		IA('z', IA_ZAP, "Zap this");
+		IA('E', IA_ENGRAVE, "Engrave with this");
+		IA('t', IA_THROW, "Throw this");
+		break;
+	    case GEM_CLASS:
+	    case ROCK_CLASS:
+	    case BALL_CLASS:
+	    case CHAIN_CLASS:
+	    default:
+		IA('t', IA_THROW, "Throw this");
+		break;
+	}
+	IA('c', IA_CALL, "Call (name) this type of object");
+	IA('#', IA_ADJUST, "Adjust this item's inventory letter");
+	if (!worn) IA('d', IA_DROP, "Drop this");
+
+#undef IA
+	end_menu(win, (char *) 0);
+	n = select_menu(win, PICK_ONE, &pick);
+	destroy_nhwindow(win);
+	if (n <= 0) return 0;
+	act = pick->item.a_int;
+	free((genericptr_t) pick);
+
+	itemaction_obj = obj;
+	switch (act) {
+	    case IA_APPLY:	res = doapply(); break;
+	    case IA_WIELD:	res = dowield(); break;
+	    case IA_QUIVER:	res = dowieldquiver(); break;
+	    case IA_THROW:	res = dothrow(); break;
+	    case IA_WEAR:	res = dowear(); break;
+	    case IA_TAKEOFF:	res = dotakeoff(); break;
+	    case IA_PUTON:	res = doputon(); break;
+	    case IA_REMOVE:	res = doremring(); break;
+	    case IA_EAT:	res = doeat(); break;
+	    case IA_QUAFF:	res = dodrink(); break;
+	    case IA_DIP:	res = dodip(); break;
+	    case IA_READ:	res = doread(); break;
+	    case IA_ZAP:	res = dozap(); break;
+	    case IA_ENGRAVE:	res = doengrave(); break;
+	    case IA_ADJUST:	res = doorganize(); break;
+	    case IA_DROP:	res = dodrop(); break;
+	    case IA_CALL:
+		itemaction_obj = (struct obj *) 0;
+		docall(obj);
+		break;
+	    default: break;
+	}
+	itemaction_obj = (struct obj *) 0;	/* in case nothing asked for it */
+	return res;
+}
+
+/* gold has nothing but dropping; just drop it */
+STATIC_OVL int
+dodrop_obj_only(obj)
+struct obj *obj;
+{
+	itemaction_obj = obj;
+	{
+	    int res = dodrop();
+	    itemaction_obj = (struct obj *) 0;
+	    return res;
+	}
+}
+
 /* the 'i' command */
 int
 ddoinv()
 {
-	(void) display_inventory((char *)0, FALSE);
-	return 0;
+	char c;
+	struct obj *obj;
+
+	/* pick an item to get a menu of things to do with it (NetHack 5.0) */
+	c = display_inventory((char *)0, TRUE);
+	if (!c || c == '\033') return 0;
+	for (obj = invent; obj; obj = obj->nobj)
+	    if (obj->invlet == c) break;
+	if (!obj) return 0;
+	return itemactions(obj);
 }
 
 /*
