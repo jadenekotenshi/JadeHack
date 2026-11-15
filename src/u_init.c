@@ -396,6 +396,7 @@ static const struct def_skill Skill_Mon[] = {
     { P_MATTER_SPELL, P_BASIC },
     { P_MARTIAL_ARTS, P_GRAND_MASTER },
     { P_DART, P_BASIC },
+    { P_MUSICAL_SPELL, P_BASIC },
     { P_NONE, 0 }
 };
 
@@ -413,6 +414,7 @@ static const struct def_skill Skill_P[] = {
     { P_CLERIC_SPELL, P_EXPERT }, { P_MATTER_SPELL, P_BASIC },
     { P_BARE_HANDED_COMBAT, P_BASIC },
     { P_SHIELD, P_BASIC },
+    { P_MUSICAL_SPELL, P_BASIC },
     { P_NONE, 0 }
 };
 
@@ -706,16 +708,10 @@ u_init()
 		if (rn2(20) < 3) Bard[BARD_MINOR].trotyp = BELL;
 		ini_inv(Bard);
 		{
-		    /* the songs are always known */
-		    static const short songs[] = { SPE_LULLABY, SPE_CACOPHONY,
-			SPE_DROWSINESS, SPE_DESPAIR, SPE_FRIENDSHIP,
-			SPE_INSPIRE_COURAGE };
-		    int si;
-		    for (si = 0; si < SIZE(songs); si++) {
-			struct obj *song = mksobj(songs[si], FALSE, FALSE);
-			initialspell(song);
-			obfree(song, (struct obj *)0);
-		    }
+		    /* Bards begin knowing the sleep spell, which Lullaby needs */
+		    struct obj *sleepbook = mksobj(SPE_SLEEP, FALSE, FALSE);
+		    initialspell(sleepbook);
+		    obfree(sleepbook, (struct obj *)0);
 		}
 		/* bards know their instruments and a bardic repertoire */
 		knows_object(WOODEN_FLUTE);

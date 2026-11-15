@@ -601,6 +601,12 @@ mcalcdistress()
 		pline("%s is no longer friendly.", Monnam(mtmp));
 	}
 
+	/* song effects wear off */
+	if (mtmp->mconftime > 0 && --mtmp->mconftime == 0) mtmp->mconf = 0;
+	if (mtmp->mslowtime > 0 && --mtmp->mslowtime == 0 &&
+	    mtmp->permspeed == MSLOW)
+	    mon_adjust_speed(mtmp, 1, (struct obj *)0);
+
 	/* regenerate hit points */
 	mon_regen(mtmp, FALSE);
 

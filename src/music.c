@@ -475,6 +475,208 @@ struct obj *instr;
  * So you want music...
  */
 
+/*** Musicalize: performing songs with a tonal instrument (Bard patch) ***/
+
+static const struct song {
+	const char *name, *what;
+	short spell;		/* spell the hero must know */
+	schar level;		/* energy cost is twice this */
+	short pref1, pref2;	/* preferred and alternative instruments */
+	schar turns;		/* base duration of the effect */
+} songs[] = {
+    { "Lullaby", "a soothing lullaby", SPE_SLEEP, 1,
+	WOODEN_HARP, WOODEN_FLUTE, 4 },
+    { "Cacophony", "a jarring cacophony", SPE_CONFUSE_MONSTER, 1,
+	LEATHER_DRUM, TOOLED_HORN, 5 },
+    { "Drowsiness", "a drowsy melody", SPE_SLOW_MONSTER, 1,
+	WOODEN_FLUTE, WOODEN_HARP, 5 },
+    { "Despair", "a song of despair", SPE_CAUSE_FEAR, 3,
+	TOOLED_HORN, LEATHER_DRUM, 6 },
+    { "Friendship", "a song of friendship", SPE_CHARM_MONSTER, 3,
+	WOODEN_HARP, WOODEN_FLUTE, 6 },
+    { "Inspire Courage", "a rousing march", SPE_CAUSE_FEAR, 3,
+	BUGLE, LEATHER_DRUM, 6 }
+};
+
+static struct {
+	int song;		/* index into songs[] */
+	int left;		/* turns of performing remaining */
+	int dur;		/* effect duration when it finishes */
+} perf;
+
+STATIC_DCL int NDECL(sing_song);
+
+/* the "magic" versions count as their ordinary kinds for preference */
+STATIC_OVL int
+basic_instrument(otyp)
+int otyp;
+{
+	switch (otyp) {
+	    case MAGIC_FLUTE: return WOODEN_FLUTE;
+	    case MAGIC_HARP: return WOODEN_HARP;
+	    case FROST_HORN:
+	    case FIRE_HORN: return TOOLED_HORN;
+	    case DRUM_OF_EARTHQUAKE: return LEATHER_DRUM;
+	    default: return otyp;
+	}
+}
+
+/* your chance, in percent, of bringing a song off */
+STATIC_OVL int
+song_chance(sp, instr)
+const struct song *sp;
+struct obj *instr;
+{
+	int basic = basic_instrument(instr->otyp);
+	boolean drum = (basic == LEATHER_DRUM);
+	int skl = P_SKILL(P_MUSICAL_SPELL) - P_UNSKILLED + 1;
+	long chance = (long)(drum ? ACURR(A_STR) : ACURR(A_DEX)) * 2 * skl
+			+ u.ulevel;
+
+	if (basic == sp->pref1 || instr->oartifact) chance = chance * 3 / 2;
+	if ((Upolyd ? u.mh : u.uhp) * 10 < (Upolyd ? u.mhmax : u.uhpmax) * 3)
+	    chance *= 2;
+	if (uarms && (drum || basic == WOODEN_HARP)) chance /= 2;
+	if (Blind) chance += u.ulevel;
+	if (instr->oartifact == ART_LYRE_OF_ORPHEUS &&
+	    sp->spell != SPE_SLEEP && sp->spell != SPE_CHARM_MONSTER)
+	    chance /= 2;
+	return (int) min(chance, 100L);
+}
+
+/* the song reaches its end; work its effect on everyone who can hear */
+STATIC_OVL void
+song_effect(sp, dur)
+const struct song *sp;
+int dur;
+{
+	struct monst *mtmp, *nxt;
+	int skl = P_SKILL(P_MUSICAL_SPELL), range = 8 + u.ulevel / 2, d2;
+
+	You("finish %s.", sp->what);
+	wake_nearby();
+	if (sp->spell == SPE_CAUSE_FEAR && sp->level == 3 &&
+	    !strcmp(sp->name, "Inspire Courage")) {
+	    u.uinspire = dur;
+	    pline("Your companions look emboldened!");
+	    return;
+	}
+	for (mtmp = fmon; mtmp; mtmp = nxt) {
+	    int t = dur;
+	    nxt = mtmp->nmon;
+	    if (DEADMONSTER(mtmp)) continue;
+	    d2 = distu(mtmp->mx, mtmp->my);
+	    if (d2 > range * range) continue;
+	    if (mtmp->mtame) {
+		/* pets are only mildly affected, or not at all with skill */
+		if (skl >= P_SKILLED) continue;
+		t = (dur + 1) / 2;
+		if (!strcmp(sp->name, "Friendship")) continue;
+	    } else if (mtmp->mpeaceful && strcmp(sp->name, "Friendship")) {
+		continue;
+	    }
+	    if (resist(mtmp, TOOL_CLASS, 0, NOTELL)) continue;
+	    switch (sp->spell) {
+		case SPE_SLEEP:
+		    if (sleep_monst(mtmp, t, TOOL_CLASS))
+			pline("%s falls asleep.", Monnam(mtmp));
+		    break;
+		case SPE_CONFUSE_MONSTER:
+		    mtmp->mconf = 1;
+		    mtmp->mconftime = t;
+		    pline("%s looks confused.", Monnam(mtmp));
+		    break;
+		case SPE_SLOW_MONSTER:
+		    if (mtmp->permspeed != MSLOW) {
+			mon_adjust_speed(mtmp, -1, (struct obj *)0);
+			mtmp->mslowtime = t;
+		    }
+		    break;
+		case SPE_CAUSE_FEAR:
+		    monflee(mtmp, t, FALSE, TRUE);
+		    break;
+		case SPE_CHARM_MONSTER:
+		    if (!mtmp->mtame && !is_covetous(mtmp->data) &&
+			!mtmp->isshk && !mtmp->ispriest && !mtmp->isgd &&
+			!(mtmp->data->geno & G_UNIQ) &&
+			tamedog(mtmp, (struct obj *)0)) {
+			mtmp->mfriendtime = t;
+			pline("%s seems friendly.", Monnam(mtmp));
+		    }
+		    break;
+	    }
+	}
+}
+
+/* occupation: the song takes a few turns and can be interrupted */
+STATIC_OVL int
+sing_song()
+{
+	if (--perf.left > 0) return 1;
+	song_effect(&songs[perf.song], perf.dur);
+	use_skill(P_MUSICAL_SPELL, songs[perf.song].level);
+	return 0;
+}
+
+/* pick and perform a song with this instrument */
+STATIC_OVL int
+perform_song(instr)
+struct obj *instr;
+{
+	winid win;
+	anything any;
+	menu_item *picks = 0;
+	int i, n, count = 0, cost, chance, dur;
+	const struct song *sp;
+	char buf[BUFSZ];
+
+	win = create_nhwindow(NHW_MENU);
+	start_menu(win);
+	any.a_void = 0;
+	for (i = 0; i < SIZE(songs); i++) {
+	    if (!spell_known_p(songs[i].spell)) continue;
+	    any.a_int = i + 1;
+	    Sprintf(buf, "%-16s %2d Pw  %3d%%", songs[i].name,
+		    2 * songs[i].level, song_chance(&songs[i], instr));
+	    add_menu(win, NO_GLYPH, &any, 0, 0, ATR_NONE, buf, MENU_UNSELECTED);
+	    count++;
+	}
+	if (!count) {
+	    destroy_nhwindow(win);
+	    You("do not know any spells you could set to music.");
+	    return 0;
+	}
+	end_menu(win, "Perform which song?");
+	n = select_menu(win, PICK_ONE, &picks);
+	destroy_nhwindow(win);
+	if (n <= 0) return 0;
+	i = picks[0].item.a_int - 1;
+	free((genericptr_t) picks);
+	sp = &songs[i];
+
+	cost = 2 * sp->level;
+	if (u.uen < cost) {
+	    You("lack the energy to perform %s.", sp->name);
+	    return 0;
+	}
+	chance = song_chance(sp, instr);
+	if (rn2(100) >= chance) {
+	    u.uen -= (cost + 1) / 2;
+	    flags.botl = 1;
+	    pline("%s falls flat.", The(xname(instr)));
+	    return 1;
+	}
+	u.uen -= cost;
+	flags.botl = 1;
+	dur = sp->turns + (ACURR(A_CHA) > 12 ? (ACURR(A_CHA) - 12) / 4 : 0);
+	perf.song = i;
+	perf.left = (sp->level > 1) ? 3 : 2;
+	perf.dur = dur;
+	You("begin to perform %s.", sp->what);
+	set_occupation(sing_song, "performing", 0);
+	return 1;
+}
+
 int
 do_play_instrument(instr)
 struct obj *instr;
@@ -488,6 +690,10 @@ struct obj *instr;
 	You_cant("play music underwater!");
 	return(0);
     }
+    if (P_SKILL(P_MUSICAL_SPELL) >= P_BASIC && yn("Perform a song?") == 'y')
+	return perform_song(instr);
+    if (P_SKILL(P_MUSICAL_SPELL) == P_UNSKILLED)
+	use_skill(P_MUSICAL_SPELL, 1);	/* noodling about gets you to Basic */
     if (instr->otyp != LEATHER_DRUM && instr->otyp != DRUM_OF_EARTHQUAKE) {
 	c = yn("Improvise?");
     }

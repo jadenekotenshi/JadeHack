@@ -64,6 +64,8 @@ struct monst {
 	int mspec_used;		/* monster's special ability attack timeout */
 	int mfriendtime;	/* turns of song-induced friendship left */
 	int mstuntime;		/* turns of thundering stun left */
+	int mconftime;		/* turns of song-induced confusion left */
+	int mslowtime;		/* turns of song-induced slowness left */
 
 /* These should stay in the same order as monattk.h so
  * the mask translations will work properly */

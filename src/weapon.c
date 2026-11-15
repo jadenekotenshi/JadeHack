@@ -79,7 +79,7 @@ STATIC_VAR NEARDATA const char * const odd_skill_names[] = {
     "clerical spells",
     "escape spells",
     "matter spells",
-    "musical spells",
+    "musicalize spell",
     "shield",
 };
 /* indexed vis `is_martial() */

@@ -537,9 +537,7 @@ age_spells()
 	 * does not alter the loss of memory.
 	 */
 	for (i = 0; i < MAXSPELL && spellid(i) != NO_SPELL; i++)
-	    if (is_song(spellid(i)))
-		spellknow(i) = KEEN;	/* songs are never forgotten */
-	    else if (spellknow(i))
+	    if (spellknow(i))
 		decrnknow(i);
 	return;
 }
@@ -747,89 +745,16 @@ int spell;
     return;
 }
 
-/* a Bard's songs: always known, but you need an instrument to play them */
+/* is the spell with this object type currently known to the hero? */
 boolean
-is_song(otyp)
+spell_known_p(otyp)
 int otyp;
 {
-	return (otyp >= SPE_LULLABY && otyp <= SPE_INSPIRE_COURAGE);
-}
+	int i;
 
-STATIC_OVL boolean
-have_instrument()
-{
-	struct obj *o;
-
-	for (o = invent; o; o = o->nobj)
-	    switch (o->otyp) {
-		case WOODEN_FLUTE: case MAGIC_FLUTE:
-		case TOOLED_HORN: case FROST_HORN: case FIRE_HORN:
-		case WOODEN_HARP: case MAGIC_HARP:
-		case BUGLE: case LEATHER_DRUM: case DRUM_OF_EARTHQUAKE:
-		    return TRUE;
-		default: break;
-	    }
+	for (i = 0; i < MAXSPELL && spellid(i) != NO_SPELL; i++)
+	    if (spellid(i) == otyp && spellknow(i) > 0) return TRUE;
 	return FALSE;
-}
-
-/* perform a song; skill adds to how long it lasts */
-STATIC_OVL void
-do_song(otyp, skill)
-int otyp, skill;
-{
-	struct monst *mtmp, *nxt;
-	int base, dur;
-	const char *what = "a tune";
-
-	switch (otyp) {
-	    case SPE_LULLABY:		base = 4; what = "a soothing lullaby"; break;
-	    case SPE_CACOPHONY:		base = 5; what = "a jarring cacophony"; break;
-	    case SPE_DROWSINESS:	base = 5; what = "a drowsy melody"; break;
-	    case SPE_DESPAIR:		base = 6; what = "a song of despair"; break;
-	    case SPE_FRIENDSHIP:	base = 6; what = "a song of friendship"; break;
-	    default:			base = 6; what = "a rousing march"; break;
-	}
-	dur = base + 2 * max(skill, P_UNSKILLED);
-	You("perform %s.", what);
-	wake_nearby();
-	if (otyp == SPE_INSPIRE_COURAGE) {
-	    u.uinspire = dur * 2;
-	    pline("Your companions look emboldened!");
-	    return;
-	}
-	for (mtmp = fmon; mtmp; mtmp = nxt) {
-	    nxt = mtmp->nmon;
-	    if (DEADMONSTER(mtmp) || mtmp->mtame) continue;
-	    if (distu(mtmp->mx, mtmp->my) > 64 || !couldsee(mtmp->mx, mtmp->my))
-		continue;
-	    if (mtmp->mpeaceful && otyp != SPE_FRIENDSHIP) continue;
-	    if (resist(mtmp, TOOL_CLASS, 0, NOTELL)) continue;
-	    switch (otyp) {
-		case SPE_LULLABY:
-		    if (sleep_monst(mtmp, rnd(dur), TOOL_CLASS))
-			pline("%s falls asleep.", Monnam(mtmp));
-		    break;
-		case SPE_CACOPHONY:
-		    mtmp->mconf = 1;
-		    pline("%s looks confused.", Monnam(mtmp));
-		    break;
-		case SPE_DROWSINESS:
-		    mon_adjust_speed(mtmp, -1, (struct obj *)0);
-		    break;
-		case SPE_DESPAIR:
-		    monflee(mtmp, dur, FALSE, TRUE);
-		    break;
-		case SPE_FRIENDSHIP:
-		    if (!mtmp->mtame && !is_covetous(mtmp->data) &&
-			!mtmp->isshk && !mtmp->ispriest && !mtmp->isgd &&
-			!(mtmp->data->geno & G_UNIQ) &&
-			tamedog(mtmp, (struct obj *)0)) {
-			mtmp->mfriendtime = dur;
-			pline("%s seems friendly.", Monnam(mtmp));
-		    }
-		    break;
-	    }
-	}
 }
 
 int
@@ -860,10 +785,6 @@ boolean atme;
 	}
 	energy = (spellev(spell) * 5);    /* 5 <= energy <= 35 */
 
-	if (is_song(spellid(spell)) && !have_instrument()) {
-	    You("need a musical instrument to perform that song.");
-	    return(0);
-	}
 
 	if (u.uhunger <= 10 && spellid(spell) != SPE_OBTAIN_FOOD) {
 		You("are too hungry to cast that spell.");
@@ -984,15 +905,6 @@ boolean atme;
 		}
 		break;
 	    } /* else fall through... */
-
-	case SPE_LULLABY:
-	case SPE_CACOPHONY:
-	case SPE_DROWSINESS:
-	case SPE_DESPAIR:
-	case SPE_FRIENDSHIP:
-	case SPE_INSPIRE_COURAGE:
-		do_song(pseudo->otyp, P_SKILL(P_MUSICAL_SPELL));
-		break;
 
 	case SPE_STENCH:
 		if (atme) u.dx = u.dy = u.dz = 0;
@@ -1364,8 +1276,7 @@ int spell;
 	{
 	    int sk_ = spell_skilltype(spellid(spell));
 	    /* songs use Charisma, and so do a Bard's enchantment spells */
-	    statused = (sk_ == P_MUSICAL_SPELL ||
-			(Role_if(PM_BARD) && sk_ == P_ENCHANTMENT_SPELL)) ?
+	    statused = (Role_if(PM_BARD) && sk_ == P_ENCHANTMENT_SPELL) ?
 			ACURR(A_CHA) : ACURR(urole.spelstat);
 	}
 	

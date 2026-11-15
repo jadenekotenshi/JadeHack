@@ -954,13 +954,6 @@ SPELL("detect foot",		 "chartreuse",	 P_DIVINATION_SPELL,	  20,  2, 7, 1, NODIR,
 SPELL("reflection",		 "decrepit",    P_MATTER_SPELL,		  20,  7, 6, 1, IMMEDIATE, CLR_BROWN),
 SPELL("repair armor",	 "paperback",   P_MATTER_SPELL,		  15,  6, 3, 1, IMMEDIATE, HI_PAPER),
 SPELL("stench",		 "sticky",      P_MATTER_SPELL,		  10,  6, 4, 1, IMMEDIATE, CLR_GREEN),
-/* bardic songs: always known to Bards, never generated, need an instrument */
-SPELL("lullaby",	 "scored",      P_MUSICAL_SPELL,	   0,  2, 1, 1, NODIR, HI_PAPER),
-SPELL("cacophony",	 "notated",     P_MUSICAL_SPELL,	   0,  2, 1, 1, NODIR, HI_PAPER),
-SPELL("drowsiness",	 "chanted",     P_MUSICAL_SPELL,	   0,  2, 1, 1, NODIR, HI_PAPER),
-SPELL("despair",	 "rhymed",      P_MUSICAL_SPELL,	   0,  6, 3, 1, NODIR, HI_PAPER),
-SPELL("friendship",	 "ruled",       P_MUSICAL_SPELL,	   0,  6, 3, 1, NODIR, HI_PAPER),
-SPELL("inspire courage", "staved",      P_MUSICAL_SPELL,	   0,  6, 3, 1, NODIR, HI_PAPER),
 SPELL((char*)0,		    "canvas",      P_MATTER_SPELL,		   0,  2, 1, 1, NODIR, CLR_BROWN),
 SPELL((char*)0,			 "hardcover",   P_MATTER_SPELL,		   0,  2, 1, 1, NODIR, CLR_BROWN),
 /* blank spellbook must come last because it retains its description */
