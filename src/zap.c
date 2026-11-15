@@ -1830,6 +1830,15 @@ register struct obj *obj;
 			if(!findit()) return;
 			if (!Blind) known = TRUE;
 			break;
+		case WAN_STASIS: {
+			/* no message, so it can't be told from other no-message
+			   NODIR wands; keep the longest duration (NetHack 5.0) */
+			long until = moves + (long) rn1(21, 10);
+
+			if (until > level.flags.stasis_until)
+			    level.flags.stasis_until = until;
+			break;
+		}
 		case WAN_CREATE_MONSTER:
 			known = create_critters(rn2(23) ? 1 : rn1(7,2),
 					(struct permonst *)0);

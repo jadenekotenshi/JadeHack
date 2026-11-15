@@ -631,6 +631,12 @@ movemon()
 	/* Find a monster that we have not treated yet.	 */
 	if(DEADMONSTER(mtmp))
 	    continue;
+	/* wand of stasis: nothing on the level moves until it wears off, and
+	   no movement piles up meanwhile (NetHack 5.0) */
+	if (level.flags.stasis_until > moves) {
+	    mtmp->movement = 0;
+	    continue;
+	}
 	if(mtmp->movement < NORMAL_SPEED)
 	    continue;
 

@@ -1942,6 +1942,14 @@ struct permonst _mons2[] = {
 	SIZ(WT_HUMAN, 20, 0, MS_HUMANOID, MZ_HUMAN), MR_POISON, 0,
 	M1_HUMANOID|M1_OMNIVORE|M1_POIS|M1_TPORT, M2_HOSTILE, M3_INFRAVISIBLE,
 	0, CLR_CYAN),
+/* from NetHack 5.0 (originally SLASH'EM): hit polymorphs the target */
+    MON("genetic engineer", S_QUANTMECH,
+	LVL(12, 12, 3, 10, 0), (G_GENO|1),
+	A(ATTK(AT_CLAW, AD_POLY, 1, 4),
+	  NO_ATTK, NO_ATTK, NO_ATTK, NO_ATTK, NO_ATTK),
+	SIZ(WT_HUMAN, 20, 0, MS_HUMANOID, MZ_HUMAN), MR_POISON, 0,
+	M1_HUMANOID|M1_OMNIVORE|M1_POIS|M1_TPORT, M2_HOSTILE|M2_NASTY,
+	M3_INFRAVISIBLE, 0, CLR_GREEN),
 /*
  * Rust monster or disenchanter
  */

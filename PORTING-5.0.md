@@ -358,3 +358,21 @@ Objects changed, so rebuild data (`make dlb`) with the binary.
 | Gold dragon scales / scale mail confer hallucination resistance ([89]) | `src/objects.c` | build only |
 
 Not ported: `sortdiscoveries` ([60]), rebinding keys and `#saveoptions`.
+
+## Batch 19: new items and monster from 5.0 (ported; build OK)
+
+| New content | Where here | Tested |
+|---|---|---|
+| Amulet of flying ("cubical"): grants flight; "You are now in flight." / "You land." (and `spoteffects()` after landing over water or lava) | `src/objects.c`, `src/do_wear.c` | in game |
+| Amulet of guarding ("perforated"): AC +2 and magic cancellation +2 (max 3) | `src/objects.c`, `src/do_wear.c` `find_ac()`, `src/mhitu.c` `magic_negation()` | in game (AC 6 to 4) |
+| Helm of caution ("engraved helmet", inside the shuffled helmet range): warning while worn | `src/objects.c` | wished for; effect not exercised |
+| Wand of stasis (uses the spare "spiked" wand slot): freezes every monster on the level for 10-30 turns, no message | `src/objects.c`, `src/zap.c`, `src/mon.c` `movemon()`, `level.flags.stasis_until` in `include/rm.h` | in game (monster stayed put) |
+| Genetic engineer (Q, level 12): claw polymorphs the hero unless magic resistant | `src/monst.c`, `include/monattk.h` `AD_POLY`, `src/mhitu.c` | monster created; hit effect not seen |
+
+Probabilities were rebalanced so the amulet (1000), armor (1000) and wand
+classes still total 1000. `level.flags` grew (`stasis_until`), so rebuild
+`dungeon`/`nhdat` with the binary and rebuild `makedefs` after editing
+`objects.c`/`monst.c`.
+
+Not ported: displacer beast (its point is the 5.0 monster-displacement
+mechanic, which this tree lacks).

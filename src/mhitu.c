@@ -864,6 +864,11 @@ struct monst *mon;
 	if (armor && armpro < objects[armor->otyp].a_can)
 	    armpro = objects[armor->otyp].a_can;
 #endif
+	/* an amulet of guarding adds 2 to magic cancellation, up to 3 */
+	if (mon == &youmonst && uamul && uamul->otyp == AMULET_OF_GUARDING) {
+	    armpro += 2;
+	    if (armpro > 3) armpro = 3;
+	}
 
 	return armpro;
 }
@@ -1363,6 +1368,18 @@ dopois:
 		    if (!rn2(20)) stealamulet(mtmp);
 		break;
 
+	    case AD_POLY:
+		hitmsg(mtmp, mattk);
+		if (uncancelled && dmg < (Upolyd ? u.mh : u.uhp)) {
+		    if (Antimagic) {
+			shieldeff(u.ux, u.uy);
+			You_feel("a momentary twinge.");
+		    } else if (!Unchanging) {
+			You("undergo a freakish metamorphosis!");
+			polyself(FALSE);
+		    }
+		}
+		break;
 	    case AD_TLPT:
 		hitmsg(mtmp, mattk);
 		if (uncancelled || mtmp->mnum == PM_BOOJUM) {

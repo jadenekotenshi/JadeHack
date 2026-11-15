@@ -716,6 +716,25 @@ Amulet_on()
 	case AMULET_OF_POWER:
 	case FAKE_AMULET_OF_YENDOR:
 		break;
+	case AMULET_OF_FLYING:
+		/* setworn() has already set extrinsic flying; was it new? */
+		if (Flying && !Levitation) {
+		    boolean already_flying;
+
+		    EFlying &= ~W_AMUL;
+		    already_flying = !!Flying;
+		    EFlying |= W_AMUL;
+		    if (!already_flying) {
+			makeknown(AMULET_OF_FLYING);
+			flags.botl = 1;
+			You("are now in flight.");
+		    }
+		}
+		break;
+	case AMULET_OF_GUARDING:
+		makeknown(AMULET_OF_GUARDING);
+		find_ac();
+		break;
 	case AMULET_OF_UNCHANGING:
 		if (Slimed) {
 		    Slimed = 0;
@@ -784,6 +803,24 @@ Amulet_off()
 	case AMULET_OF_POWER:
 	case FAKE_AMULET_OF_YENDOR:
 		break;
+	case AMULET_OF_FLYING: {
+		boolean was_flying = !!Flying;
+
+		/* remove it first to see whether flying actually stops */
+		setworn((struct obj *)0, W_AMUL);
+		if (was_flying && !Flying) {
+		    flags.botl = 1;
+		    You("%s.", (is_pool(u.ux, u.uy) || is_lava(u.ux, u.uy) ||
+				Is_waterlevel(&u.uz) || Is_airlevel(&u.uz))
+				? "stop flying" : "land");
+		    spoteffects(TRUE);
+		}
+		return;
+	    }
+	case AMULET_OF_GUARDING:
+		setworn((struct obj *)0, W_AMUL);
+		find_ac();
+		return;
 	case AMULET_OF_MAGICAL_BREATHING:
 		if (Underwater) {
 		    /* HMagical_breathing must be set off
@@ -1775,6 +1812,9 @@ find_ac()
 			uac -= racial_bonus;
 		}
 	}
+	/* amulet of guarding: fixed +2, main benefit is to magic cancellation
+	   (NetHack 5.0) */
+	if (uamul && uamul->otyp == AMULET_OF_GUARDING) uac -= 2;
 	if(uarmh) {
 		uac -= ARM_BONUS(uarmh);
 		if ((Race_if(PM_ORC) && uarmh->otyp == ORCISH_HELM) ||
