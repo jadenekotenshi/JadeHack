@@ -182,7 +182,10 @@ moveloop()
 
 		    youmonst.movement += moveamt;
 		    if (youmonst.movement < 0) youmonst.movement = 0;
-		    settrack();
+		    /* a ring of stealth leaves no tracks (NetHack 5.0) */
+		    if (!((uleft && uleft->otyp == RIN_STEALTH) ||
+			  (uright && uright->otyp == RIN_STEALTH)))
+			settrack();
 
 		    monstermoves++;
 		    moves++;

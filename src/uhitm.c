@@ -491,6 +491,20 @@ int dieroll;
 	return(malive);
 }
 
+/* Bare-handed or martial arts fighter without a shield, with enough skill,
+ * sometimes gets a second attack (NetHack 5.0).  Chance per attack:
+ *   unskilled/basic 0%, skilled 20%, expert 40%, master 60%, grand master 80% */
+STATIC_OVL boolean
+double_punch()
+{
+	int skl_lvl = P_SKILL(P_BARE_HANDED_COMBAT);
+
+	if (!uwep && !uarms && skl_lvl > P_BASIC)
+	    return (boolean) ((skl_lvl - P_BASIC) > rn2(5));
+	return FALSE;
+}
+
+
 STATIC_OVL boolean
 hitum(mon, tmp, uattk)		/* returns TRUE if monster still lives */
 struct monst *mon;
@@ -514,6 +528,13 @@ struct attack *uattk;
             mhit = (tmp > dieroll || u.uswallow);
             malive = known_hitum(mon, uswapwep, &mhit, uattk, dieroll);
             /* second passive counter-attack only occurs if second attack hits */
+            if (mhit)
+                (void) passive(mon, mhit, malive, AT_WEAP);
+        } else if (!u.twoweap && malive && m_at(x, y) == mon && double_punch()) {
+            /* second punch or kick */
+            dieroll = rnd(20);
+            mhit = (tmp > dieroll || u.uswallow);
+            malive = known_hitum(mon, (struct obj *)0, &mhit, uattk, dieroll);
             if (mhit)
                 (void) passive(mon, mhit, malive, AT_WEAP);
         }

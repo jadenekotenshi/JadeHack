@@ -164,6 +164,10 @@ int shotlimit;
 	    switch (Role_switch) {
 	    case PM_RANGER:
 		multishot++;
+		/* the Longbow of Diana helps with any arrow (NetHack 5.0) */
+		if (uwep && uwep->oartifact == ART_LONGBOW_OF_DIANA &&
+			skill == -P_BOW)
+		    multishot++;
 		break;
 	    case PM_ROGUE:
 		if (skill == P_DAGGER) multishot++;
@@ -1690,6 +1694,8 @@ xchar x, y;		/* object location (ox, oy may not be right) */
 boolean hero_caused;	/* is this the hero's fault? */
 boolean from_invent;
 {
+	boolean explosion = FALSE;
+
 	switch (obj->oclass == POTION_CLASS ? POT_WATER : obj->otyp) {
 		case MIRROR:
 			if (hero_caused)
@@ -1726,6 +1732,9 @@ boolean from_invent;
 			/* breaking your own eggs is bad luck */
 			if (hero_caused && obj->spe && obj->corpsenm >= LOW_PM)
 			    change_luck((schar) -min(obj->quan, 5L));
+			/* pyrolisk eggs explode when broken (NetHack 5.0) */
+			if (obj->corpsenm == PM_PYROLISK)
+			    explosion = TRUE;
 			break;
 	}
 	if (hero_caused) {
@@ -1754,6 +1763,8 @@ boolean from_invent;
 	    }
 	}
 	delobj(obj);
+	if (explosion)
+	    explode(x, y, -11, d(3,6), 0, EXPL_FIERY);
 }
 
 struct monst *

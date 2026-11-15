@@ -308,3 +308,28 @@ not while running or travelling. `struct flag` grew, so data files must be rebui
 Not ported from group A: grave headstone text on farlook ([147]; needs a "read"
 flag on engravings), unpaid items on the floor in `I u` ([124]), toggle feedback
 and `name:value` boolean syntax ([71][45][177]), `sortdiscoveries` ([60]).
+
+## Batch 16: 5.0 gameplay features, group B (ported; build OK, game starts)
+
+| Feature (5.0 entry) | Where here | Tested |
+|---|---|---|
+| Blessed scroll of teleportation grants one-shot teleport control ([52]) | `src/read.c` | build only (wizard mode always has control) |
+| Full healing, and blessed extra healing, cure wounded legs ([91][92]) | `src/potion.c` | build only |
+| Drinking a burning potion of oil cures sliming ([80]) | `src/potion.c` | build only |
+| Vomiting on an altar angers the god ([82]) | `src/eat.c` `vomit()` | build only |
+| High bare-handed/martial arts skill sometimes hits twice ([138]): skilled 20%, expert 40%, master 60%, grand master 80% | `src/uhitm.c` `double_punch()`, `hitum()` | build only |
+| Rangers get +1 multishot with any arrow while wielding the Longbow of Diana ([119]) | `src/dothrow.c` | build only |
+| A ring of stealth leaves no tracks ([172]) | `src/allmain.c` | build only |
+| Pyrolisk eggs explode when broken ([157]) | `src/dothrow.c` `breakobj()` | build only |
+| Dropped potions often break on hot ground in Gehennom and the Plane of Fire ([150]) | `src/do.c` `flooreffects()` | build only |
+
+Balance notes: [138] is a large buff for Monks and Samurai; ring-of-stealth
+no-tracks ([172]) makes pets follow less reliably.
+
+Not ported from group B: food poisoning countdown messages ([90]), tourists
+reading conical hats ([55]), giants wearing mummy wrappings ([118]), throwing
+invocation items at the quest leader ([140]), applying gold to flip a coin
+([141]), dipping to clean slippery fingers / test potions in a sink ([144][145]),
+iron footwear vs. floor traps ([171]), purple worm poly intrinsics ([116]),
+spinach tins in the Monk quest ([117]), and monsters seeing/remembering hero
+resistances ([76][77], a balance decision).

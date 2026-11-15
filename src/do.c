@@ -208,6 +208,24 @@ const char *verb;
 		    newsym(x, y);
 		}
 		return water_damage(obj, FALSE, FALSE);
+	} else if (obj->oclass == POTION_CLASS &&
+		(Inhell || Is_firelevel(&u.uz)) &&
+		(levl[x][y].typ == ROOM || levl[x][y].typ == CORR)) {
+		/* Potions are sometimes destroyed when landing on very hot
+		 * ground (NetHack 5.0).  Odds are 50% for nonblessed and 30%
+		 * for blessed potions, adjusted by Luck if the hero has
+		 * handled the object; oil isn't affected. */
+		int survival_chance = obj->blessed ? 70 : 50;
+
+		if (cansee(x, y))
+		    pline("%s up as %s the hot ground.", Tobjnam(obj, "heat"),
+			  is_plural(obj) ? "they hit" : "it hits");
+		if (obj->invlet) survival_chance += Luck * 2;
+		if (obj->otyp == POT_OIL) survival_chance = 100;
+		if (!obj_resists(obj, survival_chance, 100)) {
+		    /* breaks() gives the breakage message and frees obj */
+		    if (breaks(obj, x, y)) return TRUE;
+		}
 	} else if (u.ux == x && u.uy == y &&
 		(!u.utrap || u.utraptype != TT_PIT) &&
 		(t = t_at(x,y)) != 0 && t->tseen &&

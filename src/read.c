@@ -1215,7 +1215,16 @@ register struct obj	*sobj;
 				known = TRUE;
 				if (yn("Do you wish to teleport?")=='n')
 					break;
-			}
+				/* a blessed scroll grants one-shot teleport
+				   control (NetHack 5.0) */
+				{
+				    long savetc = HTeleport_control;
+
+				    HTeleport_control |= I_SPECIAL;
+				    tele();
+				    HTeleport_control = savetc;
+				}
+			} else
 			tele();
 			if(Teleport_control || !couldsee(u.ux0, u.uy0) ||
 			   (distu(u.ux0, u.uy0) >= 16))

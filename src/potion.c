@@ -894,6 +894,12 @@ peffects(otmp)
 		       (otmp->blessed ? 5 : !otmp->cursed ? 2 : 0) / (otmp->odiluted ? 2 : 1),
 		       !otmp->cursed, TRUE);
 		(void) make_hallucinated(0L,TRUE,0L);
+		/* blessed extra healing mends wounded legs (NetHack 5.0) */
+		if (Wounded_legs && otmp->blessed
+#ifdef STEED
+		    && !u.usteed	/* heal_legs() would heal steed's legs */
+#endif
+		    ) heal_legs();
 		exercise(A_CON, TRUE);
 		exercise(A_STR, TRUE);
 		break;
@@ -908,6 +914,13 @@ peffects(otmp)
 		    pluslvl(FALSE);
 		}
 		(void) make_hallucinated(0L,TRUE,0L);
+		/* full healing mends wounded legs; while riding, only blessed
+		   does (and it heals the steed's) (NetHack 5.0) */
+		if (Wounded_legs && !otmp->cursed
+#ifdef STEED
+		    && (!u.usteed || otmp->blessed)
+#endif
+		    ) heal_legs();
 		exercise(A_STR, TRUE);
 		exercise(A_CON, TRUE);
 		break;
@@ -969,6 +982,8 @@ peffects(otmp)
 			    } else {
 					You("burn your %s.", body_part(FACE));
 					losehp(resist_reduce(d(2,4),FIRE_RES)+d(1,4), "burning potion of oil", KILLED_BY_AN);
+					/* the flame also burns away slime (NetHack 5.0) */
+					if (Slimed) burn_away_slime();
 			    }
 			} else if(otmp->cursed)
 			    pline("This tastes like castor oil.");

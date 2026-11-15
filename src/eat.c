@@ -2645,6 +2645,9 @@ vomit()		/* A good idea from David Neves */
 {
 	make_sick(0L, (char *) 0, TRUE, SICK_VOMITABLE);
 	nomul(-2, "vomiting");
+	/* vomiting on an altar is rather impolite (NetHack 5.0) */
+	if (IS_ALTAR(levl[u.ux][u.uy].typ))
+	    altar_wrath(u.ux, u.uy);
 }
 
 int
