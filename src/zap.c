@@ -2532,6 +2532,28 @@ register struct	obj	*obj;
 		disclose = TRUE;
 	} else
 #endif
+	if (otyp == WAN_STINKING_FOG) {
+	    /* a line of single-square stinking clouds; also fills the zapper's
+	       own square when zapped at yourself */
+	    int fx = u.ux, fy = u.uy, steps, range = rn1(6, 6);
+
+	    makeknown(otyp);
+	    if (u.dz) {
+		pline("Noxious fog %s.", u.dz > 0 ? "seeps into the floor"
+						   : "billows up and thins out");
+	    } else if (!u.dx && !u.dy) {
+		(void) create_gas_cloud(u.ux, u.uy, 1, 8);
+	    } else {
+		for (steps = 0; steps < range; steps++) {
+		    fx += u.dx; fy += u.dy;
+		    if (!isok(fx, fy) || !ZAP_POS(levl[fx][fy].typ) ||
+			    closed_door(fx, fy))
+			break;
+		    (void) create_gas_cloud(fx, fy, 1, 8);
+		}
+	    }
+	    return;
+	}
 	if (objects[otyp].oc_dir == IMMEDIATE) {
 	    obj_zapped = FALSE;
 
@@ -3702,7 +3724,10 @@ xchar x, y;
 	    if (lev->icedpool == ICED_POOL) lev->typ = POOL;
 	    else lev->typ = MOAT;
 #else
-	    lev->typ = (lev->icedpool == ICED_POOL ? POOL : MOAT);
+	    /* ice over a pool or moat melts back to water; ice laid on dry
+	       floor (themed ice rooms, scroll of ice) melts to plain floor */
+	    lev->typ = (lev->icedpool == ICED_POOL ? POOL :
+			lev->icedpool == ICED_MOAT ? MOAT : ROOM);
 #endif
 	    lev->icedpool = 0;
 	}
@@ -3711,7 +3736,7 @@ xchar x, y;
 	if (Underwater) vision_recalc(1);
 	newsym(x,y);
 	if (cansee(x,y)) Norep("The ice crackles and melts.");
-	if ((otmp = sobj_at(BOULDER, x, y)) != 0) {
+	if (is_pool(x, y) && (otmp = sobj_at(BOULDER, x, y)) != 0) {
 	    if (cansee(x,y)) pline("%s settles...", An(xname(otmp)));
 	    do {
 		obj_extract_self(otmp);	/* boulder isn't being pushed */

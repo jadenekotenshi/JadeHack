@@ -1490,6 +1490,74 @@ register struct obj	*sobj;
 		}
 		punish(sobj);
 		break;
+	case SCR_ICE: {
+		coord cc;
+		int dam, x, y;
+
+		known = TRUE;
+		if (confused) {
+		    /* only the floor around you freezes; nothing is hurt */
+		    cc.x = u.ux; cc.y = u.uy;
+		    pline_The("air around you turns bitterly cold.");
+		    dam = 0;
+		} else {
+		    You("have found a scroll of ice!");
+		    pline("Where do you want to center the blast?");
+		    cc.x = u.ux;
+		    cc.y = u.uy;
+		    if (getpos(&cc, TRUE, "the desired position") < 0) {
+			pline("%s", Never_mind);
+			return 0;
+		    }
+		    if (!cansee(cc.x, cc.y) || distu(cc.x, cc.y) >= 32) {
+			You_feel("a sudden chill.");
+			return 0;
+		    }
+		    /* damage by beatitude: blessed 6d6, uncursed 4d6, cursed 2d6 */
+		    dam = d(4 + 2 * bcsign(sobj), 6);
+		    explode(cc.x, cc.y, 13, dam, SCROLL_CLASS, EXPL_FROSTY);
+		}
+		/* leave ice on the floor in the blast area */
+		for (x = cc.x - 1; x <= cc.x + 1; x++)
+		    for (y = cc.y - 1; y <= cc.y + 1; y++) {
+			if (!isok(x, y)) continue;
+			if (Is_waterlevel(&u.uz)) continue;
+			if (is_lava(x, y)) {
+			    levl[x][y].typ = ROOM;	/* lava cools to rock */
+			    newsym(x, y);
+			} else if (is_pool(x, y)) {
+			    levl[x][y].icedpool =
+				(levl[x][y].typ == POOL ? ICED_POOL : ICED_MOAT);
+			    levl[x][y].typ = ICE;
+			    bury_objs(x, y);
+			    newsym(x, y);
+			} else if (levl[x][y].typ == FOUNTAIN ||
+				   levl[x][y].typ == SINK) {
+			    /* fountains and sinks freeze solid and are destroyed */
+			    if (cansee(x, y))
+				pline_The("%s freezes solid!",
+					  levl[x][y].typ == FOUNTAIN ?
+					  "fountain" : "sink");
+			    if (levl[x][y].typ == FOUNTAIN) {
+				if (level.flags.nfountains > 0)
+				    level.flags.nfountains--;
+				levl[x][y].looted = 0;
+			    } else if (level.flags.nsinks > 0) {
+				level.flags.nsinks--;
+			    }
+			    levl[x][y].typ = ICE;
+			    levl[x][y].icedpool = 0;
+			    newsym(x, y);
+			} else if (levl[x][y].typ == ROOM ||
+				   levl[x][y].typ == CORR) {
+			    levl[x][y].typ = ICE;
+			    levl[x][y].icedpool = 0;
+			    del_engr_at(x, y);
+			    newsym(x, y);
+			}
+		    }
+		break;
+	}
 	case SCR_STINKING_CLOUD: {
 	        coord cc;
 

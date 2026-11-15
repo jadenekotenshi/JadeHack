@@ -376,3 +376,22 @@ classes still total 1000. `level.flags` grew (`stasis_until`), so rebuild
 
 Not ported: displacer beast (its point is the 5.0 monster-displacement
 mechanic, which this tree lacks).
+
+## Batch 20: JadeHack originals, set 1 (build OK, tested in game)
+
+Not from NetHack; designed for JadeHack.
+
+| New content | Details |
+|---|---|
+| Falchion | d8/d8, steel, curved sword skill, generation prob 15 (as scimitar) |
+| Kriegsmesser | two-handed, 2d6 small and large, steel, curved sword skill, prob 22 (as two-handed sword); extra rnd(6) in `dmgval()` |
+| Saber | d8/d8, steel, curved sword skill, prob 6; plain "saber" now names this one ("silver saber" is unchanged, "sabre" is an alias) |
+| Messer | d6/d6, steel, curved sword skill, prob 10 (as short sword) |
+| Wand of stinking fog ("zirconium", took the spare "jeweled" slot) | zapped: a line of single-square stinking clouds (6-11 squares, stops at walls and doors; at yourself, a cloud on your square). Engraved: "The bugs on the floor flee!". Broken: same as a scroll of stinking cloud of equal beatitude centered on you |
+| Six new scroll labels: ARGLE BARGLE, HAPAX LEGOMENON, PARPENJAWEEDIE, ZALGO FHTAGN, LOREM IPSUM (spare, unused) and LUKEN BOKE (scroll of ice) | `src/objects.c` |
+| Scroll of ice (LUKEN BOKE, prob 20): pick a target within sight; frost blast of 4d6 (blessed 6d6, cursed 2d6) with the usual cold effects on potions and other items, then the 3x3 area freezes: floor becomes ice, pools freeze, fountains and sinks freeze solid and are destroyed, lava cools to plain floor. Confused: no blast, floor around you freezes | `src/read.c` |
+
+Supporting changes: weapon, wand and scroll class probabilities rebalanced to
+stay at 1000; `melt_ice()` now melts floor ice back to plain floor (not moat)
+and only settles boulders into real pools; this also fixes themed ice rooms.
+Rebuild makedefs and the data files after changing `objects.c`.

@@ -1786,7 +1786,7 @@ struct alt_spellings {
 } spellings[] = {
 	{ "pickax", PICK_AXE },
 	{ "whip", BULLWHIP },
-	{ "saber", SILVER_SABER },
+	{ "sabre", SABER },
 	{ "silver sabre", SILVER_SABER },
 	{ "smooth shield", SHIELD_OF_REFLECTION },
 	{ "grey dragon scale mail", GRAY_DRAGON_SCALE_MAIL },

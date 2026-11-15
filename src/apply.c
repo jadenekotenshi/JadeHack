@@ -2884,6 +2884,13 @@ do_break_wand(obj)
     case WAN_SECRET_DOOR_DETECTION:
 	pline(nothing_else_happens);
 	goto discard_broken_wand;
+    case WAN_STINKING_FOG:
+	/* same as a scroll of stinking cloud of equal beatitude, centered on
+	   the hero */
+	(void) create_gas_cloud(u.ux, u.uy, 3 + bcsign(obj),
+				8 + 4 * bcsign(obj));
+	makeknown(obj->otyp);
+	goto discard_broken_wand;
     case WAN_DEATH:
     case WAN_LIGHTNING:
 	dmg *= 4;

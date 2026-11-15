@@ -238,6 +238,8 @@ struct monst *mon;
 		case TSURUGI:
 		case DWARVISH_MATTOCK:
 		case TWO_HANDED_SWORD:	tmp += d(2,6); break;
+
+		case KRIEGSMESSER:	tmp += rnd(6); break;	/* 2d6 */
 	    }
 	} else {
 	    if (objects[otyp].oc_wsdam)
@@ -263,6 +265,7 @@ struct monst *mon;
 		case RUNESWORD:
 		case VOULGE:		tmp += rnd(4); break;
 
+		case KRIEGSMESSER:
 		case ACID_VENOM:	tmp += rnd(6); break;
 	    }
 	}

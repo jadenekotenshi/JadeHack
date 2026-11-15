@@ -750,6 +750,9 @@ doengrave()
 		    case WAN_WIND:
 			Strcpy(post_engr_text, "The bugs on the floor are blown away!");
 			break;
+		    case WAN_STINKING_FOG:
+			Strcpy(post_engr_text, "The bugs on the floor flee!");
+			break;
 
 		    /* type = ENGRAVE wands */
 		    case WAN_DIGGING:
