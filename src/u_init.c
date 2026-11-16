@@ -396,7 +396,7 @@ static const struct def_skill Skill_Mon[] = {
     { P_MATTER_SPELL, P_BASIC },
     { P_MARTIAL_ARTS, P_GRAND_MASTER },
     { P_DART, P_BASIC },
-    { P_MUSICAL_SPELL, P_BASIC },
+    { P_MUSICAL_SPELL, P_SKILLED },
     { P_NONE, 0 }
 };
 
@@ -502,6 +502,7 @@ static const struct def_skill Skill_T[] = {
     { P_WHIP, P_BASIC },		{ P_UNICORN_HORN, P_SKILLED },
     { P_DIVINATION_SPELL, P_BASIC },	{ P_ENCHANTMENT_SPELL, P_BASIC },
     { P_ESCAPE_SPELL, P_SKILLED }, { P_MATTER_SPELL, P_BASIC },
+    { P_MUSICAL_SPELL, P_BASIC },
 #ifdef STEED
     { P_RIDING, P_BASIC },
 #endif
