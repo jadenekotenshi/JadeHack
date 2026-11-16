@@ -533,3 +533,15 @@ The six always-known song spells are gone, along with the Musical spell category
 ## Batch 34: glowing potion
 
 New potion appearance "glowing" (`objects.c`, a filler description shuffled in with the others, so it lands on a random potion type each game). A potion with that appearance is a very poor light source while carried in open inventory (not inside a container): it lights a radius-2 circle around the hero, the same radius as a lit bag of poo, but it never burns out and needs no lighting. It keeps glowing after the potion type is identified. Implemented in `do_light_sources()` (`light.c`) via `is_glowing_potion()` (`obj.h`); `addinv()` and `freeinv_core()` force a vision recalc when one is picked up or leaves inventory. Adding a potion description shifts object numbers: rebuild the special levels and data files, and old saves and bones will not load.
+
+## Batch 35: ghost mouse, ghost rat, demighost
+
+Three undead `r` that pass through walls (`M1_WALLWALK`, unsolid, breathless; resist cold, sleep, poison and stone) and attack with a cold touch. All are `G_NOGEN|G_NOCORPSE`, so they only appear where placed: the Rat Sewers (`dat/mall.des`, 6+2d4 mice, 4+2d4 rats, 2+2d4 demighosts).
+
+| Monster | Level | Speed | AC | Attack | Colour |
+|---|---|---|---|---|---|
+| ghost mouse | 1 | 12 | 6 | touch cold 1d2 | gray |
+| ghost rat | 2 | 12 | 6 | touch cold 1d4 | cyan |
+| demighost | 3 | 14 | 5 | touch cold 1d6 | bright cyan |
+
+The spec gave only the mouse and rat damage and called the demighost "slightly stronger than a ghost rat"; its level, speed, AC and 1d6 are my choice. Rebuild the special levels and data files; old saves will not load.

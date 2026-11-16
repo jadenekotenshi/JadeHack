@@ -102,6 +102,15 @@ LOOP [4 + 2d4] {
   MONSTER: ('r', "wererat"), random, hostile
 }
 LOOP [6 + 2d4] {
+  MONSTER: ('r', "ghost mouse"), random, hostile
+}
+LOOP [4 + 2d4] {
+  MONSTER: ('r', "ghost rat"), random, hostile
+}
+LOOP [2 + 2d4] {
+  MONSTER: ('r', "demighost"), random, hostile
+}
+LOOP [6 + 2d4] {
   MONSTER: ('r', "rock mole"), random, hostile
 }
 LOOP [4 + 2d4] {
