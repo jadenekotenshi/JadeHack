@@ -213,6 +213,11 @@ struct obj {
 #define ITEM_PROP_MASK	0x00001FFFL
 #define ITEM_DMG_PROPS	(ITEM_FIRE|ITEM_FROST|ITEM_SHOCK|ITEM_VENOM|ITEM_DRLI)
 #define MAX_ITEM_PROPS	13
+/* a potion with the "glowing" appearance sheds a faint light (radius 2, like
+   a lit bag of poo) while carried in the hero's open inventory */
+#define is_glowing_potion(o)	((o)->oclass == POTION_CLASS && \
+				 OBJ_DESCR(objects[(o)->otyp]) && \
+				 !strcmp(OBJ_DESCR(objects[(o)->otyp]), "glowing"))
 #define is_shield(otmp) (otmp->oclass == ARMOR_CLASS && \
 			 objects[otmp->otyp].oc_armcat == ARM_SHIELD)
 #define is_helmet(otmp) (otmp->oclass == ARMOR_CLASS && \

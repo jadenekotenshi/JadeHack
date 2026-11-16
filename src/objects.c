@@ -858,6 +858,7 @@ POTION((char*)0, "banana-yellow",       0, 0,           0, 100, CLR_YELLOW),
 POTION((char*)0, "sickly green",        0, 0,           0, 100, CLR_GREEN),
 POTION((char*)0, "mauve",               0, 0,           0, 100, CLR_MAGENTA),
 POTION((char*)0, "skunky",              0, 0,           0, 100, CLR_BLACK),
+POTION((char*)0, "glowing",              0, 0,           0, 100, CLR_BRIGHT_CYAN),
 POTION((char*)0, "lime green",          0, 0,           0, 100, CLR_BRIGHT_GREEN),
 POTION("water", "clear",                0, 0,          92, 100, CLR_CYAN),
 #undef POTION

@@ -376,6 +376,7 @@ struct obj *obj;
 
 	if (obj->where != OBJ_FREE)
 	    panic("addinv: obj not free");
+	if (is_glowing_potion(obj)) vision_full_recalc = 1;
 	obj->no_charge = 0;	/* not meaningful for invent */
 
 	addinv_core1(obj);
@@ -560,6 +561,7 @@ void
 freeinv_core(obj)
 struct obj *obj;
 {
+	if (is_glowing_potion(obj)) vision_full_recalc = 1;
 	if (obj->oclass == COIN_CLASS) {
 #ifndef GOLDOBJ
 		u.ugold -= obj->quan;

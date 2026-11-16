@@ -122,6 +122,8 @@ del_light_source(type, id)
     impossible("del_light_source: not found type=%d, id=0x%lx", type, (long)id);
 }
 
+STATIC_DCL boolean NDECL(hero_carries_glow);
+
 /* Mark locations that are temporarily lit via mobile light sources. */
 void
 do_light_sources(cs_rows)
@@ -200,6 +202,32 @@ do_light_sources(cs_rows)
 	    }
 	}
     }
+
+    /* faint glow from a "glowing" potion carried in open inventory (radius 2) */
+    if (at_hero_range < 2 && hero_carries_glow()) {
+	limits = circle_ptr(2);
+	max_y = u.uy + 2; if (max_y >= ROWNO) max_y = ROWNO-1;
+	y = u.uy - 2; if (y < 0) y = 0;
+	for (; y <= max_y; y++) {
+	    row = cs_rows[y];
+	    offset = limits[abs(y - u.uy)];
+	    if ((min_x = (u.ux - offset)) < 0) min_x = 0;
+	    if ((max_x = (u.ux + offset)) >= COLNO) max_x = COLNO-1;
+	    for (x = min_x; x <= max_x; x++)
+		if (row[x] & COULD_SEE) row[x] |= TEMP_LIT;
+	}
+    }
+}
+
+/* a "glowing" potion in open inventory is a very poor light source */
+STATIC_OVL boolean
+hero_carries_glow()
+{
+    struct obj *o;
+
+    for (o = invent; o; o = o->nobj)
+	if (is_glowing_potion(o)) return TRUE;
+    return FALSE;
 }
 
 /* (mon->mx == 0) implies migrating */
