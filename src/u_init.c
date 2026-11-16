@@ -957,7 +957,7 @@ u_init()
 #endif
 
 	find_ac();			/* get initial ac value */
-	init_attr(75);			/* init attribute values */
+	init_attr(Role_if(PM_CAVEMAN) ? 80 : 75);	/* init attribute values */
 	max_rank_sz();			/* set max str size for class ranks */
 /*
  *	Do we really need this?

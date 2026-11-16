@@ -94,7 +94,7 @@ const struct Role roles[] = {
 	  ROLE_NEUTRAL|ROLE_CHAOTIC,
 	/* Str Int Wis Dex Con Cha */
 	{   7,  7,  7, 10,  6, 10 },
-	{  10, 10, 15, 25, 10, 30 },
+	{  20, 10, 10, 20, 10, 30 },
 	/* Init   Lower  Higher */
 	{ 10, 0,  0, 8,  1, 0 },	/* Hit points */
 	{  6, 0,  0, 2,  0, 2 },10,	/* Energy */
