@@ -542,6 +542,6 @@ Three undead `r` that pass through walls (`M1_WALLWALK`, unsolid, breathless; re
 |---|---|---|---|---|---|
 | ghost mouse | 1 | 12 | 6 | touch cold 1d2 | red |
 | ghost rat | 2 | 12 | 6 | touch cold 1d4 | red |
-| demighost | 3 | 14 | 5 | touch cold 1d6 | bright magenta |
+| demighost | 3 | 14 | 5 | touch cold 1d6 | orange (bright red) |
 
 The spec gave only the mouse and rat damage and called the demighost "slightly stronger than a ghost rat"; its level, speed, AC and 1d6 are my choice. Rebuild the special levels and data files; old saves will not load.
