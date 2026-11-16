@@ -437,6 +437,8 @@ so it can wear body armor; added to the summon-nasties list; plural
 merozalghi), odorous orb (stink messages in `mattacku`, BLAM! + gas-spore
 explosion + stinking cloud on death). Starting weapons are in `makemon.c`.
 "Rare" and "very rare" both map to generation frequency 1.
+Colors: lemming and lemming zombie are green, stinkbite bright green, antaloon
+green, and wire jelly bright yellow (`CLR_YELLOW`).
 Rebuild makedefs and the data files after these changes (struct you grew).
 
 ## Batch 24: Bard, rapier, silver knives/bolts, skill merge, assorted
