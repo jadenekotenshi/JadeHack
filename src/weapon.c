@@ -1197,7 +1197,8 @@ uwep_skill_type()
 }
 
 /* effective skill in a weapon skill: gloves of expertise count as one rank
-   higher than the real skill (Expert becomes Master); restricted stays so */
+   higher than the real skill (Expert becomes Master), and a restricted skill
+   counts as Basic (though it stays restricted and cannot be advanced) */
 STATIC_OVL int
 eff_wskill(type)
 int type;
@@ -1205,9 +1206,9 @@ int type;
 	int sk = P_SKILL(type);
 
 	if (uarmg && uarmg->otyp == GLOVES_OF_EXPERTISE &&
-	    type > P_NONE && type <= P_LAST_WEAPON &&
-	    sk > P_ISRESTRICTED && sk < P_MASTER) {
-	    if (sk == P_UNSKILLED) sk = P_BASIC;
+	    type > P_NONE && type <= P_LAST_WEAPON && sk < P_MASTER) {
+	    if (sk == P_ISRESTRICTED) sk = P_BASIC;
+	    else if (sk == P_UNSKILLED) sk = P_BASIC;
 	    else if (sk == P_BASIC) sk = P_SKILLED;
 	    else if (sk == P_SKILLED) sk = P_EXPERT;
 	    else sk = P_MASTER;

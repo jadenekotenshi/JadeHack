@@ -478,7 +478,7 @@ Bard row (accelerator `B`).
 | Silver mace | prob 3 (was never generated) |
 | Bracers | plain bracers (AC1 leather), runed bracers (AC2 wood, never random), dwarvish bracers (AC1 steel, safe to +7; dwarves carry them 1/40); shield-slot items that never bash, allow two-handed weapons and two-weapon fighting |
 | Crystal shield | dwarvish roundshield stats, weight 80, new material `CRYSTAL`, no spellcasting penalty |
-| Gloves of expertise | "snakeskin gloves", AC1; weapon skill counts as one rank higher (Expert becomes Master: +9 hit, +3 damage); martial arts and restricted skills unaffected |
+| Gloves of expertise | "snakeskin gloves", AC1; weapon skill counts as one rank higher (Expert becomes Master: +9 hit, +3 damage); a restricted weapon skill counts as Basic (it stays restricted and cannot be advanced); martial arts unaffected |
 | Skills | morning star merged into mace; new Shield skill (Basic +1 AC, Skilled +3 / bracers +2, Expert +5 / bracers +3; auto shield bash 1/8, 1/6, 1/4 with +d4 and 1/10 stun at Expert; silver shields do silver damage, blessed shields hit undead and demons harder; trains when attacks miss you or you bash). Valkyries and Knights start at Basic and cap at Expert, Barbarians/Rangers/Samurai Skilled, Archeologists/Cavemen/Priests/Rogues/Tourists/Bards Basic |
 | Merozalghu | acid breath 4d12 (never at melee range, usable via #monster when polymorphed); `NATTK` is now 7; breath damage now scales with the damd field (dragons unchanged) |
 | Cryolisk / electrolisk | cold gaze that often freezes potions; shock gaze that detonates wands and rings unless you are shock resistant |
