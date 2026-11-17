@@ -85,6 +85,8 @@ E int NDECL(doinvoke);
 E void FDECL(arti_speak, (struct obj *));
 E boolean FDECL(artifact_light, (struct obj *));
 E void NDECL(fix_lotr_rings);
+E boolean NDECL(vilya_worn);
+E int NDECL(vilya_ac_bonus);
 E int FDECL(lotr_ring_damage, (struct monst *));
 E int NDECL(lotr_cha_bonus);
 E long FDECL(spec_m2, (struct obj *));

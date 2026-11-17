@@ -98,6 +98,8 @@ fix_lotr_rings()
 		lotr_base_ring("ruby", "gold", RIN_FIRE_RESISTANCE);
 	artilist[ART_NENYA].otyp =
 		lotr_base_ring("diamond", "platinum", RIN_COLD_RESISTANCE);
+	artilist[ART_VILYA].otyp =
+		lotr_base_ring("sapphire", "brass", RIN_PROTECTION);
 }
 
 /* extra damage from Narya (non fire resistant foes) and Nenya (non cold
@@ -116,6 +118,24 @@ struct monst *mon;
 	     (uright && uright->oartifact == ART_NENYA)) && !resists_cold(mon))
 	    dmg += rnd(10);
 	return dmg;
+}
+
+/* is Vilya being worn? */
+boolean
+vilya_worn()
+{
+	return (boolean)((uleft && uleft->oartifact == ART_VILYA) ||
+			 (uright && uright->oartifact == ART_VILYA));
+}
+
+/* Vilya's AC bonus: the D&D 3rd edition Intelligence modifier,
+   (Int - 10) / 2 rounded down, but never a penalty */
+int
+vilya_ac_bonus()
+{
+	int mod = ((int) ACURR(A_INT) - 10) / 2;
+
+	return (vilya_worn() && mod > 0) ? mod : 0;
 }
 
 /* Charisma-based spellcasting bonus from each of the two rings worn */
@@ -834,6 +854,10 @@ long wp_mask;
 			if (on) EWarning |= wp_mask;
 				else EWarning &= ~wp_mask;
 	    }
+	}
+	if (otmp->oartifact == ART_VILYA && wp_mask != W_ART) {
+	    if (on) EMagical_breathing |= wp_mask;
+	    else EMagical_breathing &= ~wp_mask;
 	}
 	if (spfx & SPFX_EREGEN) {
 	    if (on) EEnergy_regeneration |= wp_mask;

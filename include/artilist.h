@@ -253,6 +253,16 @@ A("Nenya",			RIN_COLD_RESISTANCE,
 	NO_ATTK,	SPDF_COLD,	NO_CARY,	0, A_NONE, NON_PM, NON_PM, 5000L ),
 
 /*
+ *	Vilya: shock and disintegration resistance, warning (spfx) and magical
+ *	breathing (set_artifact_intrinsic()); an Intelligence-based AC bonus
+ *	(find_ac()), +1 HP regeneration (moveloop) and failure-free healing
+ *	spells (spell.c).  Base ring chosen in fix_lotr_rings().
+ */
+A("Vilya",			RIN_PROTECTION,
+	(SPFX_RESTR|SPFX_WARN), 0, 0,
+	NO_ATTK,	(SPDF_ELEC|SPDF_DISINT),	NO_CARY,	0, A_NONE, NON_PM, NON_PM, 5000L ),
+
+/*
  *	The artifacts for the quest dungeon, all self-willed.
  */
 

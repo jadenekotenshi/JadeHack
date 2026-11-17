@@ -263,6 +263,20 @@ moveloop()
 			}
 		    }
 
+		    /* Vilya: one extra hit point of regeneration per turn */
+		    if (vilya_worn() && !u.uinvulnerable) {
+			if (Upolyd) {
+			    if (u.mh >= 1 && u.mh < u.mhmax) {
+				u.mh++;
+				flags.botl = 1;
+			    }
+			} else if (u.uhp < u.uhpmax) {
+			    u.uhp++;
+			    flags.botl = 1;
+			}
+			find_ac();	/* Intelligence may have changed */
+		    }
+
 		    /* moving around while encumbered is hard work */
 		    if (wtcap > MOD_ENCUMBER && u.umoved) {
 			if(!(wtcap < EXT_ENCUMBER ? moves%30 : moves%10)) {

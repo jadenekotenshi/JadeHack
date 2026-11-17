@@ -594,20 +594,20 @@ docast()
 {
 	int spell_no;
 
-	if (getspell(&spell_no)) {
-	    /* NetHack 3.6.0: a stunned hero can't cast (except with Narya's or
-	       Nenya's own spell) */
-	    if (Stunned && !ring_spell_free(spellid(spell_no))) {
-		You("are too impaired to cast a spell.");
-		return 0;
-	    }
-	    return spelleffects(spell_no, FALSE);
+	/* NetHack 3.6.0: a stunned hero can't cast */
+	if (Stunned) {
+	    You("are too impaired to cast a spell.");
+	    return 0;
 	}
+	if (getspell(&spell_no))
+	    return spelleffects(spell_no, FALSE);
 	return 0;
 }
 
-/* Narya's fireball and Nenya's cone of cold can always be cast by the
-   wearer, whatever else hampers spellcasting (but not lack of energy) */
+/* Narya's fireball, Nenya's cone of cold and Vilya's healing spells can
+   always be cast by the wearer, whatever else hampers spellcasting except
+   lack of energy, stun, hands that are not free, and hunger so bad that
+   you are about to faint (those are checked as usual) */
 boolean
 ring_spell_free(otyp)
 int otyp;
@@ -616,9 +616,24 @@ int otyp;
 
 	if (otyp == SPE_FIREBALL) art = ART_NARYA;
 	else if (otyp == SPE_CONE_OF_COLD) art = ART_NENYA;
+	else if (otyp == SPE_HEALING || otyp == SPE_EXTRA_HEALING ||
+		 otyp == SPE_SUPERIOR_HEALING) art = ART_VILYA;
 	else return FALSE;
 	return (boolean)((uleft && uleft->oartifact == art) ||
 			 (uright && uright->oartifact == art));
+}
+
+/* which spell a ring teaches (0 if none) and its bit in u.uringspells */
+STATIC_OVL int
+ring_taught_spell(obj, bit)
+struct obj *obj;
+int *bit;
+{
+	if (!obj || obj->oclass != RING_CLASS) return 0;
+	if (obj->oartifact == ART_NARYA) { *bit = 1; return SPE_FIREBALL; }
+	if (obj->oartifact == ART_NENYA) { *bit = 2; return SPE_CONE_OF_COLD; }
+	if (obj->oartifact == ART_VILYA) { *bit = 4; return SPE_HEALING; }
+	return 0;
 }
 
 /* wearing Narya or Nenya teaches its spell if it is not already known */
@@ -628,10 +643,8 @@ struct obj *obj;
 {
 	int i, otyp, bit;
 
-	if (!obj || obj->oclass != RING_CLASS) return;
-	if (obj->oartifact == ART_NARYA) { otyp = SPE_FIREBALL; bit = 1; }
-	else if (obj->oartifact == ART_NENYA) { otyp = SPE_CONE_OF_COLD; bit = 2; }
-	else return;
+	otyp = ring_taught_spell(obj, &bit);
+	if (!otyp) return;
 	if (spell_known_p(otyp)) return;
 	for (i = 0; i < MAXSPELL; i++)
 	    if (spellid(i) == NO_SPELL) {
@@ -652,10 +665,8 @@ struct obj *obj;
 {
 	int i, otyp, bit;
 
-	if (!obj || obj->oclass != RING_CLASS) return;
-	if (obj->oartifact == ART_NARYA) { otyp = SPE_FIREBALL; bit = 1; }
-	else if (obj->oartifact == ART_NENYA) { otyp = SPE_CONE_OF_COLD; bit = 2; }
-	else return;
+	otyp = ring_taught_spell(obj, &bit);
+	if (!otyp) return;
 	if (!(u.uringspells & bit)) return;
 	u.uringspells &= ~bit;
 	for (i = 0; i < MAXSPELL; i++)
@@ -854,15 +865,13 @@ boolean atme;
 	energy = (spellev(spell) * 5);    /* 5 <= energy <= 35 */
 
 
-	if (ringfree) {
-	    ;
-	} else if (u.uhunger <= 10 && spellid(spell) != SPE_OBTAIN_FOOD) {
+	if (u.uhunger <= 10 && spellid(spell) != SPE_OBTAIN_FOOD) {
 		You("are too hungry to cast that spell.");
 		return(0);
-	} else if (ACURR(A_STR) < 4)  {
+	} else if (!ringfree && ACURR(A_STR) < 4)  {
 		You("lack the strength to cast spells.");
 		return(0);
-	} else if(check_capacity(
+	} else if(!ringfree && check_capacity(
 		"Your concentration falters while carrying so much stuff.")) {
 	    return (1);
 	} else if (!freehand()) {

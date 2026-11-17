@@ -1836,6 +1836,8 @@ find_ac()
 	/* amulet of guarding: fixed +2, main benefit is to magic cancellation
 	   (NetHack 5.0) */
 	if (uamul && uamul->otyp == AMULET_OF_GUARDING) uac -= 2;
+	/* Vilya: Intelligence modifier */
+	uac -= vilya_ac_bonus();
 	if(uarmh) {
 		uac -= ARM_BONUS(uarmh);
 		if ((Race_if(PM_ORC) && uarmh->otyp == ORCISH_HELM) ||
