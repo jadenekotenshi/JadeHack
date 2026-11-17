@@ -991,6 +991,7 @@ int tmp;
 		case ART_SPINESEEKER:	return 4;
 		case ART_GUNGNIR:	return 10;
 		case ART_PERNICIMORDAX:	return d(3,6);
+		case ART_KIKU_ICHIMONJI: return d(2,6);
 		default: break;
 	    }
 	}
@@ -1369,6 +1370,21 @@ int dieroll; /* needed for Magicbane and vorpal blades */
 	if (otmp->oartifact == ART_SUNSWORD &&
 		!(youdefend ? (how_resistant(FIRE_RES) > 99) : resists_fire(mdef)))
 	    *dmgptr += rnd(6);
+
+	/* Ichigeki: 1/20 chance to strike a fatal weakness in anything that
+	   has a definite shape (not shapeless, oozy or incorporeal) */
+	if (otmp->oartifact == ART_ICHIGEKI && !youdefend && !rn2(20) &&
+		!amorphous(mdef->data) && !noncorporeal(mdef->data) &&
+		!unsolid(mdef->data) && !is_rider(mdef->data) &&
+		mdef->data->mlet != S_PUDDING && mdef->data->mlet != S_JELLY &&
+		mdef->data->mlet != S_BLOB && !(youattack && u.uswallow)) {
+	    *dmgptr = 2 * mdef->mhp + FATAL_DAMAGE_MODIFIER;
+	    if (youattack || canseemon(mdef))
+		pline("Ichigeki hits %s fatal weakness!",
+		      s_suffix(mon_nam(mdef)));
+	    otmp->dknown = TRUE;
+	    return TRUE;
+	}
 
 	/* Mouser's Scalpel: 1/5 chance of an extra blow, which may chain */
 	if (otmp->oartifact == ART_MOUSER_S_SCALPEL && !youdefend && !rn2(5)) {
@@ -1940,7 +1956,8 @@ boolean
 artifact_light(obj)
     struct obj *obj;
 {
-    return (get_artifact(obj) && obj->oartifact == ART_SUNSWORD);
+    return (get_artifact(obj) && (obj->oartifact == ART_SUNSWORD ||
+				       obj->oartifact == ART_CLAIOMH_SOLAIS));
 }
 
 /* KMH -- Talking artifacts are finally implemented */

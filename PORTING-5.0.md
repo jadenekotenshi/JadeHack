@@ -567,3 +567,12 @@ Rogues start with Two-weapon combat at Basic (`skill_init()` in `weapon.c`).
 Boots of shielding make you immune to bear traps (the trap snaps shut harmlessly), spear traps, spiked pits (you step across them; ordinary pits still work) and wounded legs (`set_wounded_legs()` returns early). Armor class probabilities were kept at 1000 by trimming low boots (17 to 15), high boots (13 to 12) and leather gloves (10 to 9). The new objects shift object numbers: rebuild the special levels and data files; old saves and bones will not load.
 
 Interpretation notes: "Fast" is the speed-boots property (very fast, 5/3 speed), not the weaker intrinsic; the spiked pit is bypassed entirely rather than just its spikes being blunted.
+
+## Batch 38: artifact changes
+
+- Frost Brand is now a broadsword and Fire Brand a two-handed sword (`artilist.h`). Existing games with the old artifacts will not load anyway: the artifact count changed.
+- Snickersnee is renamed **Kiku-Ichimonji** (`ART_KIKU_ICHIMONJI`); its damage bonus to all targets is now 2d6 instead of 1d8 (flat dice in `spec_dbon()`), to-hit bonus unchanged (d5).
+- New **Claiomh Solais**: lawful falchion, not self-willed. Lights like Sunsword (`artifact_light()`, radius 2, only snuffed by unwielding), +d5 to hit and +d10 damage to everything, polymorph control while wielded (`SPFX_POLYC`).
+- New **Ichigeki**: neutral dagger, +d3 to hit and +d6 damage to everything. Each hit has a 1 in 20 chance to strike a fatal weakness and kill outright ("Ichigeki hits <monster>'s fatal weakness!"); it does not work on shapeless (amorphous), unsolid or incorporeal monsters, puddings, jellies, blobs, the Riders, or while you are swallowed (`artifact_hit()`).
+- `makesingular()` no longer strips the "s" from "Solais", so the artifact can be wished for.
+- Adding artifacts changes the version check, so the dungeon and data files must be rebuilt (`make dungeon`, `dlb`); old saves and bones will not load.
