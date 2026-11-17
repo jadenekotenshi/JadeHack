@@ -946,6 +946,10 @@ register int pm;
 		catch_lycanthropy = TRUE;
 		u.ulycn = PM_WERERAVEN;
 		break;
+	    case PM_HUMAN_WERESPIDER:
+		catch_lycanthropy = TRUE;
+		u.ulycn = PM_WERESPIDER;
+		break;
 	    case PM_NURSE:
 		if (Upolyd) u.mh = u.mhmax;
 		else u.uhp = u.uhpmax;

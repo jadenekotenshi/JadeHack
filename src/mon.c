@@ -1582,6 +1582,23 @@ register struct monst *mtmp;
 	lifesaved_monster(mtmp);
 	if (mtmp->mhp > 0) return;
 
+	/* deep ones share a soul: when one dies the others grow stronger */
+	if (is_deep_one(mtmp->data)) {
+	    struct monst *kin;
+	    int gain = (mtmp->data == &mons[PM_DEEPEST_ONE]) ? 8 :
+		       (mtmp->data == &mons[PM_DEEPER_ONE]) ? 4 : 2;
+
+	    for (kin = fmon; kin; kin = kin->nmon) {
+		if (kin == mtmp || DEADMONSTER(kin) || !is_deep_one(kin->data))
+		    continue;
+		kin->mhpmax += gain;
+		kin->mhp += gain;
+		/* about one level for every eight hit points gained */
+		if (kin->mhpmax > 8 * (kin->m_lev + 1) + 4 && kin->m_lev < 49)
+		    kin->m_lev++;
+	    }
+	}
+
 #ifdef STEED
 	/* Player is thrown from his steed when it dies */
 	if (mtmp == u.usteed)
@@ -1619,6 +1636,8 @@ register struct monst *mtmp;
 	    set_mon_data(mtmp, &mons[PM_HUMAN_WERESHARK], -1);
 	else if (mtmp->data == &mons[PM_WERERAVEN])
 	    set_mon_data(mtmp, &mons[PM_HUMAN_WERERAVEN], -1);
+	else if (mtmp->data == &mons[PM_WERESPIDER])
+	    set_mon_data(mtmp, &mons[PM_HUMAN_WERESPIDER], -1);
 	else if (mtmp->data == &mons[PM_WEREDEMON_HOUND])
 	    set_mon_data(mtmp, &mons[PM_WEREDEMON], -1);
 

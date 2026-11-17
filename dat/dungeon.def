@@ -52,8 +52,12 @@ DUNGEON:	"Gehennom" "G" (20, 5)
 DESCRIPTION:	mazelike
 DESCRIPTION:	hellish
 ALIGNMENT:	noalign
+BRANCH:		"The Spider Caves" @ (2, 3)
+BRANCH:		"The Sunless Sea" @ (3, 3)
+BRANCH:		"The Giant Caverns" @ (6, 4)
 BRANCH:		"Vlad's Tower" @ (9, 5) up
 LEVEL:		"valley" "V" @ (1, 0)
+CHAINBRANCH:	"Vecna's Domain" "valley" + (1, 0) portal
 LEVEL:		"sanctum" "none" @ (-1, 0)
 LEVEL:		"juiblex" "J" @ (4, 4)
 LEVEL:		"baalz" "B" @ (6, 4)
@@ -145,3 +149,32 @@ LEVEL:		"fire"   "none" @ (3, 0)
 LEVEL:		"air"    "none" @ (4, 0)
 LEVEL:		"earth"  "none" @ (5, 0)
 LEVEL:		"dummy"  "none" @ (6, 0)
+
+#
+#	Vecna's Domain: reached by a magic portal from the level below the
+#	Valley of the Dead.
+#
+DUNGEON:	"Vecna's Domain" "none" (3, 0)
+DESCRIPTION:	mazelike
+ALIGNMENT:	chaotic
+LEVEL:		"vecna1" "none" @ (1, 0)
+LEVEL:		"vecna2" "none" @ (2, 0)
+LEVEL:		"vecna3" "none" @ (3, 0)
+
+#
+#	Three one-level branches of Gehennom, after SLASH'EM.
+#
+DUNGEON:	"The Spider Caves" "none" (1, 0)
+DESCRIPTION:	mazelike
+ALIGNMENT:	chaotic
+LEVEL:		"spiders" "none" @ (1, 0)
+
+DUNGEON:	"The Sunless Sea" "none" (1, 0)
+DESCRIPTION:	mazelike
+ALIGNMENT:	chaotic
+LEVEL:		"sunless" "none" @ (1, 0)
+
+DUNGEON:	"The Giant Caverns" "none" (1, 0)
+DESCRIPTION:	mazelike
+ALIGNMENT:	chaotic
+LEVEL:		"giants" "none" @ (1, 0)

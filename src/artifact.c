@@ -873,6 +873,10 @@ long wp_mask;
 		EStone_resistance &= ~wp_mask;
 	    }
 	}
+	if (otmp->oartifact == ART_SWORD_OF_KAS && wp_mask != W_ART) {
+	    if (on) EStone_resistance |= wp_mask;
+	    else EStone_resistance &= ~wp_mask;
+	}
 	if (otmp->oartifact == ART_VILYA && wp_mask != W_ART) {
 	    if (on) EMagical_breathing |= wp_mask;
 	    else EMagical_breathing &= ~wp_mask;
@@ -1433,6 +1437,20 @@ int dieroll; /* needed for Magicbane and vorpal blades */
 		(mdef->data->mlet == S_SNAKE || mdef->data->mlet == S_NAGA ||
 		 mdef->data->mlet == S_DRAGON || slithy(mdef->data)))
 	    *dmgptr *= 2;
+
+	/* the Sword of Kas: triple damage against Vecna, double against liches
+	   (other non-chaotic foes are doubled by the artifact itself), and a
+	   poisoned edge that a lawful hero finds dishonorable */
+	if (otmp->oartifact == ART_SWORD_OF_KAS && !youdefend) {
+	    if (mdef->data == &mons[PM_VECNA]) *dmgptr *= 3;
+	    else if (mdef->data->mlet == S_LICH && !spec_dbon_applies)
+		*dmgptr *= 2;
+	    if (!resists_poison(mdef)) *dmgptr += rnd(6);
+	    if (youattack && u.ualign.type == A_LAWFUL) {
+		You("dishonorably use a poisoned weapon!");
+		adjalign(-1);
+	    }
+	}
 
 	/* Pernicimordax is deadly to merozalghi, on top of its cold */
 	if (otmp->oartifact == ART_PERNICIMORDAX && !youdefend &&

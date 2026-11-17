@@ -504,6 +504,7 @@ const char *in_str;
 		{ "human werebear",	PM_HUMAN_WEREBEAR },
 		{ "human wereshark",	PM_HUMAN_WERESHARK },
 		{ "human wereraven",	PM_HUMAN_WERERAVEN },
+		{ "human werespider",	PM_HUMAN_WERESPIDER },
 	    /* Some irregular plurals */
 		{ "incubi",		PM_INCUBUS },
 		{ "succubi",		PM_SUCCUBUS },

@@ -421,6 +421,27 @@ A("The Treasury of Proteus",	CHEST,
 	SEA_CHANGE,	A_CHAOTIC, PM_PIRATE, NON_PM, 5000L ),
 
 /*
+ *	Vecna's Domain (after EvilHack).  The Sword of Kas, a chaotic
+ *	two-handed sword: +d10 to hit, double damage against anything that
+ *	is not chaotic and against liches, triple against Vecna, a poisoned
+ *	edge (see artifact_hit()), stoning resistance and Strength 25 while
+ *	wielded.  It is not restricted, so any alignment may wield it (a
+ *	lawful hero pays for the poison in alignment).  The Hand and the Eye of Vecna are Vecna's death drops, one
+ *	or the other; neither is ever generated otherwise.
+ */
+A("The Sword of Kas",		TWO_HANDED_SWORD,
+	(SPFX_NOGEN|SPFX_DALIGN), 0, 0,
+	PHYS(10,0),	SPDF_NONE,	NO_CARY,	0, A_CHAOTIC, NON_PM, NON_PM, 15000L ),
+
+A("The Hand of Vecna",		LEATHER_GLOVES,
+	(SPFX_NOGEN|SPFX_RESTR|SPFX_REGEN), 0, 0,
+	NO_ATTK,	(SPDF_COLD|SPDF_DRAIN),	NO_CARY,	0, A_CHAOTIC, NON_PM, NON_PM, 8000L ),
+
+A("The Eye of Vecna",		LENSES,
+	(SPFX_NOGEN|SPFX_RESTR|SPFX_ESP|SPFX_SEARCH|SPFX_HALRES), 0, 0,
+	NO_ATTK,	SPDF_BLIND,	NO_CARY,	0, A_CHAOTIC, NON_PM, NON_PM, 8000L ),
+
+/*
  *  terminator; otyp must be zero
  */
 A(0, 0, 0, 0, 0, NO_ATTK, SPDF_NONE, NO_CARY, 0, A_NONE, NON_PM, NON_PM, 0L )

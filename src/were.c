@@ -57,6 +57,8 @@ int pm;
 	    case PM_WERESHARK:	      return(PM_HUMAN_WERESHARK);
 	    case PM_HUMAN_WERESHARK:  return(PM_WERESHARK);
 	    case PM_WERERAVEN:	      return(PM_HUMAN_WERERAVEN);
+	    case PM_WERESPIDER:	      return(PM_HUMAN_WERESPIDER);
+	    case PM_HUMAN_WERESPIDER: return(PM_WERESPIDER);
 	    case PM_HUMAN_WERERAVEN:  return(PM_WERERAVEN);
 	    case PM_WEREDEMON:	      return(PM_WEREDEMON_HOUND);
 	    case PM_WEREDEMON_HOUND:  return(PM_WEREDEMON);
@@ -162,6 +164,11 @@ char *genbuf;
 		case PM_HUMAN_WERERAVEN:
 			typ = PM_RAVEN;
 			if (genbuf) Strcpy(genbuf, "raven");
+			break;
+		case PM_WERESPIDER:
+		case PM_HUMAN_WERESPIDER:
+			typ = rn2(3) ? PM_CAVE_SPIDER : PM_GIANT_SPIDER;
+			if (genbuf) Strcpy(genbuf, "spider");
 			break;
 		case PM_WEREDEMON:
 		case PM_WEREDEMON_HOUND:

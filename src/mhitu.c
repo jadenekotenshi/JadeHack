@@ -1694,6 +1694,12 @@ dopois:
 		flags.botl = 1;
 	    }
 
+	    /* the hound of Tindalos drinks what it reaches: vampiric */
+	    if (mtmp->data == &mons[PM_HOUND_OF_TINDALOS] &&
+		    mattk->aatyp == AT_TUCH && mtmp->mhp < mtmp->mhpmax) {
+		mtmp->mhp += dmg / 2;
+		if (mtmp->mhp > mtmp->mhpmax) mtmp->mhp = mtmp->mhpmax;
+	    }
 	    mdamageu(mtmp, dmg);
 	}
 

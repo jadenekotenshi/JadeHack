@@ -355,7 +355,11 @@ char *buf;
 	else {
 		/* ports with more room may expand this one */
 		Sprintf(buf, "%s:%-2d ", 
-				iflags.show_dgn_name ? short_dgn_names[u.uz.dnum] : "Dlvl",
+				!iflags.show_dgn_name ? "Dlvl" :
+				u.uz.dnum < (int)(sizeof short_dgn_names /
+						  sizeof short_dgn_names[0]) ?
+					short_dgn_names[u.uz.dnum] :
+					dungeons[u.uz.dnum].dname,
 				depth(&u.uz));
 		ret = 0;
 	}

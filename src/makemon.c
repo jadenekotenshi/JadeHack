@@ -178,6 +178,44 @@ pirate_blade()
 	}
 }
 
+/* surround mtmp with n hostile monsters of another kind */
+STATIC_OVL void
+deep_company(mtmp, pm, n)
+struct monst *mtmp;
+int pm, n;
+{
+	coord mm;
+	struct monst *mon;
+
+	while (n-- > 0) {
+	    mm.x = mtmp->mx;
+	    mm.y = mtmp->my;
+	    if (!enexto(&mm, mm.x, mm.y, &mons[pm])) break;
+	    mon = makemon(&mons[pm], mm.x, mm.y, NO_MM_FLAGS);
+	    if (mon) {
+		mon->mpeaceful = FALSE;
+		mon->mavenge = 0;
+		set_malign(mon);
+	    }
+	}
+}
+
+/* give a monster a specific named artifact (if it still exists to give) */
+STATIC_OVL void
+mk_mon_artifact(mtmp, otyp, art)
+struct monst *mtmp;
+int otyp, art;
+{
+	struct obj *otmp;
+
+	if (exist_artifact(otyp, artiname(art))) return;
+	otmp = mksobj(otyp, FALSE, FALSE);
+	if (!otmp) return;
+	otmp = oname(otmp, artiname(art));
+	if (otmp->oartifact != art) { obfree(otmp, (struct obj *)0); return; }
+	(void) mpickobj(mtmp, otmp);
+}
+
 /* give a pirate monster a cursed, damaged object */
 STATIC_OVL void
 mk_pirate_gear(mtmp, otyp, erosion)
@@ -496,6 +534,18 @@ register struct monst *mtmp;
 		(void)mongets(mtmp, LONG_SWORD);
 		break;
 	    case S_VAMPIRE:
+		if (mm == PM_KAS) {
+		    struct obj *armor;
+
+		    mk_mon_artifact(mtmp, TWO_HANDED_SWORD, ART_SWORD_OF_KAS);
+		    (void)mongets(mtmp, PLATE_MAIL);
+		    (void)mongets(mtmp, HELMET);
+		    (void)mongets(mtmp, LEATHER_GLOVES);
+		    (void)mongets(mtmp, IRON_SHOES);
+		    armor = mksobj(RIN_SLOW_DIGESTION, FALSE, FALSE);
+		    if (armor) (void) mpickobj(mtmp, armor);
+		    break;
+		}
 		if (mm == PM_KUEI_JIN && (In_V_tower(&u.uz) || rn2(2))) (void)mongets(mtmp, KATANA);
 		break;
 	    case S_ZRUTY:
@@ -773,7 +823,22 @@ register struct	monst	*mtmp;
 		}
 		break;
 	    case S_LICH:
-		if (ptr == &mons[PM_MASTER_LICH] && !rn2(13))
+		if (ptr == &mons[PM_VECNA]) {
+		    /* a cursed, rotted robe and a ring of slow digestion, and
+		       the Hand or the Eye of Vecna for whoever kills him */
+		    otmp = mksobj(ROBE, FALSE, FALSE);
+		    if (otmp) {
+			curse(otmp);
+			otmp->oeroded = 2;
+			(void) mpickobj(mtmp, otmp);
+		    }
+		    otmp = mksobj(RIN_SLOW_DIGESTION, FALSE, FALSE);
+		    if (otmp) (void) mpickobj(mtmp, otmp);
+		    if (rn2(2))
+			mk_mon_artifact(mtmp, LEATHER_GLOVES, ART_HAND_OF_VECNA);
+		    else
+			mk_mon_artifact(mtmp, LENSES, ART_EYE_OF_VECNA);
+		} else if (ptr == &mons[PM_MASTER_LICH] && !rn2(13))
 			(void)mongets(mtmp, (rn2(7) ? ATHAME : WAN_NOTHING));
 		else if (ptr == &mons[PM_ARCH_LICH] && !rn2(3)) {
 			otmp = mksobj(rn2(3) ? ATHAME : QUARTERSTAFF,
@@ -1300,6 +1365,14 @@ register int	mmflags;
 	}
 	set_malign(mtmp);		/* having finished peaceful changes */
 	if (mndx == PM_STAR_VAMPIRE) mon_set_minvis(mtmp);	/* always invisible */
+	if (anymon && (mndx == PM_DEEPER_ONE || mndx == PM_DEEPEST_ONE)) {
+	    /* a deeper one brings 3 to 12 deep ones, a deepest one 10 to 19
+	       deep ones and 3 to 12 deeper ones */
+	    deep_company(mtmp, PM_DEEP_ONE, mndx == PM_DEEPER_ONE ?
+			 rn1(10, 3) : rn1(10, 10));
+	    if (mndx == PM_DEEPEST_ONE)
+		deep_company(mtmp, PM_DEEPER_ONE, rn1(10, 3));
+	}
 	if(anymon) {
 	    if ((ptr->geno & G_SGROUP) && rn2(2)) {
 		m_initsgrp(mtmp, mtmp->mx, mtmp->my);
