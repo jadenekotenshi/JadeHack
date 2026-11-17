@@ -329,6 +329,7 @@ static const struct def_skill Skill_Bard[] = {
     { P_DIVINATION_SPELL, P_SKILLED },	{ P_ENCHANTMENT_SPELL, P_EXPERT },
     { P_MUSICAL_SPELL, P_EXPERT },
     { P_BARE_HANDED_COMBAT, P_EXPERT },
+    { P_TWO_WEAPON_COMBAT, P_BASIC },
     { P_SHIELD, P_BASIC },
     { P_MACE, P_SKILLED },
     { P_NONE, 0 }
