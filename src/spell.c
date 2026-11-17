@@ -1368,7 +1368,8 @@ int spell;
 	    splcaster += (uarmc && uarmc->otyp == ROBE) ? urole.spelarmr/2 : urole.spelarmr;
 	else if (uarmc && uarmc->otyp == ROBE)
 	    splcaster -= urole.spelarmr/2;
-	if (uarms && uarms->otyp != CRYSTAL_SHIELD) splcaster += urole.spelshld;
+	if (uarms && uarms->otyp != CRYSTAL_SHIELD && uarms->oartifact != ART_AEGIS)
+	    splcaster += urole.spelshld;
 
 	if (uarmh && is_metallic(uarmh) && !paladin_bonus)
 		splcaster += uarmhbon;
@@ -1433,7 +1434,7 @@ int spell;
 	 * to cast a spell.  The penalty is not quite so bad for the
 	 * player's role-specific spell.
 	 */
-	if (uarms && uarms->otyp != CRYSTAL_SHIELD &&
+	if (uarms && uarms->otyp != CRYSTAL_SHIELD && uarms->oartifact != ART_AEGIS &&
 	    weight(uarms) > (int) objects[SMALL_SHIELD].oc_weight) {
 		if (spellid(spell) == urole.spelspec) {
 			chance /= 2;

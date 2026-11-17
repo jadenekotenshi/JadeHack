@@ -599,4 +599,4 @@ While worn: shock and disintegration resistance (defn field), warning (spfx), ma
 
 New lawful artifact, a dwarvish roundshield named **Aegis** (not self-willed, `SPFX_NOGEN` so it never generates randomly or as a sacrifice gift; wishable). Worn effects: reflection and petrification resistance (`set_artifact_intrinsic()`), shock resistance (defn), magic cancellation 3 on its own (`magic_negation()`), and a 1 in 3 chance for each shield bash to terrify the target (`shield_bash()` in `uhitm.c`; the bash itself still needs Basic shield skill and its usual odds). It is the crowning gift of a lawful Healer (`gcrownu()` in `pray.c`, if it does not already exist; also unrestricts the shield skill). `makesingular()` was taught that "Aegis" is not a plural so it can be wished for.
 
-Heads-up: a Healer wearing a heavy shield still takes the normal spellcasting penalty for shields.
+Aegis never causes a spellcasting penalty, like the crystal shield (`percent_success()` skips both the role shield penalty and the heavy-shield halving for it).
