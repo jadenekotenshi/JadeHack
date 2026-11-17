@@ -494,6 +494,7 @@ mattacku(mtmp)
 /*	Special demon handling code */
 	if(!mtmp->cham && is_demon(mdat) && !range2
 	   && mtmp->data != &mons[PM_BALROG]
+	   && mtmp->data != &mons[PM_WEREDEMON]
 	   && mtmp->data != &mons[PM_SUCCUBUS]
 	   && mtmp->data != &mons[PM_INCUBUS])
 	    if(!mtmp->mcan && !rn2(13))	msummon(mtmp);
@@ -501,7 +502,7 @@ mattacku(mtmp)
 /*	Special lycanthrope handling code */
 	if(!mtmp->cham && is_were(mdat) && !range2) {
 
-	    if(is_human(mdat)) {
+	    if(is_were_base(mdat)) {
 		if(!rn2(5 - (night() * 2)) && !mtmp->mcan) new_were(mtmp);
 	    } else if(!rn2(30) && !mtmp->mcan) new_were(mtmp);
 	    mdat = mtmp->data;

@@ -86,6 +86,11 @@
 #define polyok(ptr)		(((ptr)->mflags2 & M2_NOPOLY) == 0L)
 #define is_undead(ptr)		(((ptr)->mflags2 & M2_UNDEAD) != 0L)
 #define is_were(ptr)		(((ptr)->mflags2 & M2_WERE) != 0L)
+/* a lycanthrope's beast form, as opposed to its human (or, for the
+   weredemon, demon) base form */
+#define is_were_beast(ptr)	(is_were(ptr) && (ptr)->mlet != S_HUMAN && \
+				 (ptr) != &mons[PM_WEREDEMON])
+#define is_were_base(ptr)	(is_were(ptr) && !is_were_beast(ptr))
 #define is_elf(ptr)		(((ptr)->mflags2 & M2_ELF) != 0L)
 #define is_dwarf(ptr)		(((ptr)->mflags2 & M2_DWARF) != 0L)
 #define is_gnome(ptr)		(((ptr)->mflags2 & M2_GNOME) != 0L)

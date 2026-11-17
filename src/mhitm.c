@@ -968,7 +968,7 @@ mdamagem(magr, mdef, mattk)
 		if (!magr->mcan && !rn2(10)) {
 		    mdef->mcan = 1;	/* cancelled regardless of lifesave */
 		    mdef->mstrategy &= ~STRAT_WAITFORU;
-		    if (is_were(pd) && pd->mlet != S_HUMAN)
+		    if (is_were_beast(pd))
 			were_change(mdef);
 		    if (pd == &mons[PM_CLAY_GOLEM]) {
 			    if (vis) {

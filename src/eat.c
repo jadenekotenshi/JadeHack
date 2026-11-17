@@ -922,6 +922,30 @@ register int pm;
 		catch_lycanthropy = TRUE;
 		u.ulycn = PM_WEREWOLF;
 		break;
+	    case PM_HUMAN_WERELYNX:
+		catch_lycanthropy = TRUE;
+		u.ulycn = PM_WERELYNX;
+		break;
+	    case PM_HUMAN_WEREPANTHER:
+		catch_lycanthropy = TRUE;
+		u.ulycn = PM_WEREPANTHER;
+		break;
+	    case PM_HUMAN_WERETIGER:
+		catch_lycanthropy = TRUE;
+		u.ulycn = PM_WERETIGER;
+		break;
+	    case PM_HUMAN_WEREBEAR:
+		catch_lycanthropy = TRUE;
+		u.ulycn = PM_WEREBEAR;
+		break;
+	    case PM_HUMAN_WERESHARK:
+		catch_lycanthropy = TRUE;
+		u.ulycn = PM_WERESHARK;
+		break;
+	    case PM_HUMAN_WERERAVEN:
+		catch_lycanthropy = TRUE;
+		u.ulycn = PM_WERERAVEN;
+		break;
 	    case PM_NURSE:
 		if (Upolyd) u.mh = u.mhmax;
 		else u.uhp = u.uhpmax;

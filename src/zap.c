@@ -2345,7 +2345,7 @@ boolean			youattack, allow_cancel_kill, self_cancel;
 	} else {
 	    mdef->mcan = TRUE;
 
-	    if (is_were(mdef->data) && mdef->data->mlet != S_HUMAN)
+	    if (is_were_beast(mdef->data))
 		were_change(mdef);
 
 	    if (mdef->data == &mons[PM_CLAY_GOLEM]) {

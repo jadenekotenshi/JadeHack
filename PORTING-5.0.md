@@ -692,3 +692,23 @@ Like Grayswandir, Frost Brand and Pernicimordax now refuse to be wielded togethe
 ## Batch 52: Sunsword and Werebane bonuses against their targets
 
 Sunsword's +d5 to hit and +d4 damage against undead, and Werebane's against lycanthropes, never applied: both artifacts name a pseudo class (`S_UNDEAD`, `S_WERE`) that exists only for the warning code, and `spec_applies()` compared it to the real monster class. It now treats `S_UNDEAD` as "has `M2_UNDEAD`" and `S_WERE` as "has `M2_WERE`" (or a lycanthropic hero). Sunsword's bonus is worth about +2.5 damage and a to-hit bonus against undead: a +7 Sunsword now does about 17.5 to a small undead monster that is not fire resistant (15.0 against non-undead that is not fire resistant); Werebane gains the same sort of bonus against lycanthropes. The warnings are unchanged. Only the binary changes; saves and bones still load.
+
+## Batch 53: more lycanthropes
+
+Seven new shapeshifters, each a base form that changes into a beast form like the werewolf (`monst.c`, `were.c`). Each pair has the same level; the beast's bite gives you that lycanthropy. Rebuild everything (the monster list changed, so `lev_comp`, the `.lev` files and `quest.dat` too); old saves and bones do not load.
+
+| Pair | Level | Human-form weapon | Beast form |
+|---|---|---|---|
+| werelynx (f) | 7 | 2d4 | speed 15, AC 6, claws 1d6 x2, bite 1d10 (lycanthropy) |
+| werepanther (f) | 9 | 2d4 | speed 15, AC 6, claws 1d8 x2, bite 1d10 |
+| weretiger (f) | 11 | 2d6 | speed 12, AC 5, claws 2d4 x2, bite 2d6 |
+| werebear (Y) | 12 | 2d6 | speed 12, AC 4, claws 1d8 x2, bite 2d6 |
+| wereshark (;) | 13 | 2d6 | speed 12, AC 2, bite 4d6 |
+| wereraven (B) | 6 | 2d4 | speed 20, flies, bite 1d6 (lycanthropy), claw 1d6 blinding |
+
+- All are chaotic, poison resistant, regenerate, hostile, not polymorphable; the human forms (@) are normal random monsters whose corpses give lycanthropy, the beast forms are never random. They summon help like the others: lynxes, panthers (and a lynx), jaguars and tigers, owlbears and yetis, ravens; the wereshark summons nothing.
+- **Wereshark**: only changes into a shark in the water (`new_were()`), in the sea or any pool, and a hero with wereshark lycanthropy only changes while standing in water (`you_were()`), since a shark stranded on land withers away (as other eels do).
+- **Weredemon** (&, level 14, Gehennom only; `G_HELL`): the demon form has a weapon 2d8, claw 1d8 and a fire breath 3d6, resists fire and poison, hates silver like any demon. It changes into a "weredemon hound" (a hell hound: bite 3d6, fire breath 3d6, vulnerable to cold), which is shown as "changes into a hell hound". Neither form inflicts lycanthropy (the bite is plain physical), and the demon form does not summon demons (it summons hell hound pups and hell hounds like other weres). Dying in hound form leaves the demon form as the "true form".
+- New macros `is_were_base()` and `is_were_beast()` (`mondata.h`) replace the old checks on `S_HUMAN`/`is_human()` in the lycanthrope code (`were.c`, `mhitu.c`, `mhitm.c`, `mon.c`, `potion.c`, `zap.c`), since the weredemon's base form is not human.
+- Wizard mode: "human werebear", "human werewolf" and so on now create the human forms (`name_to_mon()`).
+- Werebane now has real targets at the top end (its +d5 to hit and +d4 damage applies to all of them).

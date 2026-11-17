@@ -13,7 +13,7 @@ register struct monst *mon;
 	if (!is_were(mon->data))
 	    return;
 
-	if (is_human(mon->data)) {
+	if (is_were_base(mon->data)) {
 	    if (!Protection_from_shape_changers &&
 		!rn2(night() ? (flags.moonphase == FULL_MOON ?  3 : 30)
 			     : (flags.moonphase == FULL_MOON ? 10 : 50))) {
@@ -24,6 +24,7 @@ register struct monst *mon;
 		    switch (monsndx(mon->data)) {
 		    case PM_WEREWOLF:	howler = "wolf";    break;
 		    case PM_WEREJACKAL: howler = "jackal";  break;
+		    case PM_WEREDEMON_HOUND: howler = "hound";  break;
 		    default:		howler = (char *)0; break;
 		    }
 		    if (howler)
@@ -45,6 +46,20 @@ counter_were(pm)
 int pm;
 {
 	switch(pm) {
+	    case PM_WEREBEAR:	      return(PM_HUMAN_WEREBEAR);
+	    case PM_HUMAN_WEREBEAR:   return(PM_WEREBEAR);
+	    case PM_WERETIGER:	      return(PM_HUMAN_WERETIGER);
+	    case PM_HUMAN_WERETIGER:  return(PM_WERETIGER);
+	    case PM_WEREPANTHER:      return(PM_HUMAN_WEREPANTHER);
+	    case PM_HUMAN_WEREPANTHER: return(PM_WEREPANTHER);
+	    case PM_WERELYNX:	      return(PM_HUMAN_WERELYNX);
+	    case PM_HUMAN_WERELYNX:   return(PM_WERELYNX);
+	    case PM_WERESHARK:	      return(PM_HUMAN_WERESHARK);
+	    case PM_HUMAN_WERESHARK:  return(PM_WERESHARK);
+	    case PM_WERERAVEN:	      return(PM_HUMAN_WERERAVEN);
+	    case PM_HUMAN_WERERAVEN:  return(PM_WERERAVEN);
+	    case PM_WEREDEMON:	      return(PM_WEREDEMON_HOUND);
+	    case PM_WEREDEMON_HOUND:  return(PM_WEREDEMON);
 	    case PM_WEREWOLF:	      return(PM_HUMAN_WEREWOLF);
 	    case PM_HUMAN_WEREWOLF:   return(PM_WEREWOLF);
 	    case PM_WEREJACKAL:	      return(PM_HUMAN_WEREJACKAL);
@@ -67,9 +82,14 @@ register struct monst *mon;
 	    return;
 	}
 
+	/* a wereshark only takes its beast form in the water */
+	if (pm == PM_WERESHARK && !is_pool(mon->mx, mon->my)) return;
+
 	if(canseemon(mon) && !Hallucination)
 	    pline("%s changes into a %s.", Monnam(mon),
 			is_human(&mons[pm]) ? "human" :
+			pm == PM_WEREDEMON ? "demon" :
+			pm == PM_WEREDEMON_HOUND ? "hell hound" :
 			mons[pm].mname+4);
 
 	set_mon_data(mon, &mons[pm], 0);
@@ -118,6 +138,40 @@ char *genbuf;
 			typ = rn2(5) ? PM_WOLF : PM_WINTER_WOLF ;
 			if (genbuf) Strcpy(genbuf, "wolf");
 			break;
+		case PM_WERELYNX:
+		case PM_HUMAN_WERELYNX:
+			typ = PM_LYNX;
+			if (genbuf) Strcpy(genbuf, "lynx");
+			break;
+		case PM_WEREPANTHER:
+		case PM_HUMAN_WEREPANTHER:
+			typ = rn2(4) ? PM_PANTHER : PM_LYNX;
+			if (genbuf) Strcpy(genbuf, "big cat");
+			break;
+		case PM_WERETIGER:
+		case PM_HUMAN_WERETIGER:
+			typ = rn2(3) ? PM_JAGUAR : PM_TIGER;
+			if (genbuf) Strcpy(genbuf, "big cat");
+			break;
+		case PM_WEREBEAR:
+		case PM_HUMAN_WEREBEAR:
+			typ = rn2(4) ? PM_OWLBEAR : PM_YETI;
+			if (genbuf) Strcpy(genbuf, "bear");
+			break;
+		case PM_WERERAVEN:
+		case PM_HUMAN_WERERAVEN:
+			typ = PM_RAVEN;
+			if (genbuf) Strcpy(genbuf, "raven");
+			break;
+		case PM_WEREDEMON:
+		case PM_WEREDEMON_HOUND:
+			typ = rn2(3) ? PM_HELL_HOUND_PUP : PM_HELL_HOUND;
+			if (genbuf) Strcpy(genbuf, "hell hound");
+			break;
+		case PM_WERESHARK:
+		case PM_HUMAN_WERESHARK:
+			/* sharks come only to the water */
+			continue;
 		default:
 			continue;
 	    }
@@ -138,6 +192,8 @@ you_were()
 	char qbuf[QBUFSZ];
 
 	if (Unchanging || (u.umonnum == u.ulycn)) return;
+	/* a wereshark can only change into its beast form in the water */
+	if (u.ulycn == PM_WERESHARK && !is_pool(u.ux, u.uy)) return;
 	if (Polymorph_control) {
 	    /* `+4' => skip "were" prefix to get name of beast */
 	    Sprintf(qbuf, "Do you want to change into %s? ",

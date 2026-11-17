@@ -1219,7 +1219,7 @@ boolean your_fault;
 			damage_mon(mon,d(2,6),AD_ACID);
 			/* should only be by you */
 			if (mon->mhp < 1) killed(mon);
-			else if (is_were(mon->data) && !is_human(mon->data))
+			else if (is_were_beast(mon->data))
 			    new_were(mon);	/* revert to human */
 		    } else if (obj->cursed) {
 			angermon = FALSE;
@@ -1227,7 +1227,7 @@ boolean your_fault;
 			    pline("%s looks healthier.", Monnam(mon));
 			mon->mhp += d(2,6);
 			if (mon->mhp > mon->mhpmax) mon->mhp = mon->mhpmax;
-			if (is_were(mon->data) && is_human(mon->data) &&
+			if (is_were_base(mon->data) &&
 				!Protection_from_shape_changers)
 			    new_were(mon);	/* transform into beast */
 		    }

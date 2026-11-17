@@ -494,6 +494,16 @@ const char *in_str;
 #endif
 		{ "olog hai",		PM_OLOG_HAI },
 		{ "arch lich",		PM_ARCH_LICH },
+	    /* lycanthropes in human form */
+		{ "human wererat",	PM_HUMAN_WERERAT },
+		{ "human werejackal",	PM_HUMAN_WEREJACKAL },
+		{ "human werewolf",	PM_HUMAN_WEREWOLF },
+		{ "human werelynx",	PM_HUMAN_WERELYNX },
+		{ "human werepanther",	PM_HUMAN_WEREPANTHER },
+		{ "human weretiger",	PM_HUMAN_WERETIGER },
+		{ "human werebear",	PM_HUMAN_WEREBEAR },
+		{ "human wereshark",	PM_HUMAN_WERESHARK },
+		{ "human wereraven",	PM_HUMAN_WERERAVEN },
 	    /* Some irregular plurals */
 		{ "incubi",		PM_INCUBUS },
 		{ "succubi",		PM_SUCCUBUS },

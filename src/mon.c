@@ -1607,6 +1607,20 @@ register struct monst *mtmp;
 	    set_mon_data(mtmp, &mons[PM_HUMAN_WEREWOLF], -1);
 	else if (mtmp->data == &mons[PM_WERERAT])
 	    set_mon_data(mtmp, &mons[PM_HUMAN_WERERAT], -1);
+	else if (mtmp->data == &mons[PM_WERELYNX])
+	    set_mon_data(mtmp, &mons[PM_HUMAN_WERELYNX], -1);
+	else if (mtmp->data == &mons[PM_WEREPANTHER])
+	    set_mon_data(mtmp, &mons[PM_HUMAN_WEREPANTHER], -1);
+	else if (mtmp->data == &mons[PM_WERETIGER])
+	    set_mon_data(mtmp, &mons[PM_HUMAN_WERETIGER], -1);
+	else if (mtmp->data == &mons[PM_WEREBEAR])
+	    set_mon_data(mtmp, &mons[PM_HUMAN_WEREBEAR], -1);
+	else if (mtmp->data == &mons[PM_WERESHARK])
+	    set_mon_data(mtmp, &mons[PM_HUMAN_WERESHARK], -1);
+	else if (mtmp->data == &mons[PM_WERERAVEN])
+	    set_mon_data(mtmp, &mons[PM_HUMAN_WERERAVEN], -1);
+	else if (mtmp->data == &mons[PM_WEREDEMON_HOUND])
+	    set_mon_data(mtmp, &mons[PM_WEREDEMON], -1);
 
 	/* if MAXMONNO monsters of a given type have died, and it
 	 * can be done, extinguish that monster.
@@ -2479,7 +2493,7 @@ rescham()
 			(void) newcham(mtmp, &mons[cham_to_pm[mcham]],
 				       FALSE, FALSE);
 		}
-		if(is_were(mtmp->data) && mtmp->data->mlet != S_HUMAN)
+		if(is_were_beast(mtmp->data))
 			new_were(mtmp);
 		if(mtmp->m_ap_type && cansee(mtmp->mx, mtmp->my)) {
 			seemimic(mtmp);
@@ -2521,7 +2535,7 @@ struct monst *mon;
 	    if (mcham) {
 		mon->cham = CHAM_ORDINARY;
 		(void) newcham(mon, &mons[cham_to_pm[mcham]], FALSE, FALSE);
-	    } else if (is_were(mon->data) && !is_human(mon->data)) {
+	    } else if (is_were_beast(mon->data)) {
 		new_were(mon);
 	    }
 	} else if (mon->cham == CHAM_ORDINARY) {
