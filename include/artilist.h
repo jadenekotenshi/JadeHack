@@ -253,6 +253,15 @@ A("Nenya",			RIN_COLD_RESISTANCE,
 	NO_ATTK,	SPDF_COLD,	NO_CARY,	0, A_NONE, NON_PM, NON_PM, 5000L ),
 
 /*
+ *	Yoichi no Yumi: a lawful yumi (randomly generated, but never a gift);
+ *	ya fired from it get +d10 to hit and +d12 damage (dothrow.c, uhitm.c),
+ *	and #invoke makes 2d12 ya matching its blessing and enchantment.
+ */
+A("Yoichi no Yumi",		YUMI,
+	SPFX_RESTR, 0, 0,
+	NO_ATTK,	SPDF_NONE,	NO_CARY,	CREATE_YA, A_LAWFUL, NON_PM, NON_PM, 4000L ),
+
+/*
  *	Kusanagi: a lawful broadsword (the samurai call it a ninja-to), the
  *	crowning gift of a Samurai.  +d10 damage against everything and double
  *	damage against snakes, dragons and other serpentine monsters (see

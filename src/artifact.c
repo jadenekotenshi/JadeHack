@@ -252,6 +252,8 @@ aligntyp alignment;	/* target alignment, or A_NONE */
 		    (a->alignment == alignment ||
 			(a->alignment == A_NONE && u.ugifts > 0))) &&
 		(!(a->spfx & SPFX_NOGEN) || unique) && !artiexist[m]) {
+		if (by_align && m == ART_YOICHI_NO_YUMI)
+		    continue;	/* never a sacrifice or crowning gift */
 		if (by_align && a->race != NON_PM && race_hostile(&mons[a->race]))
 		    continue;	/* skip enemies' equipment */
 		else if (by_align && Role_if(a->role))
@@ -1977,6 +1979,20 @@ arti_invoke(obj)
 	case ENLIGHTENING:
 	    enlightenment(0);
 	    break;
+	case CREATE_YA: {
+	    struct obj *otmp = mksobj(YA, FALSE, FALSE);
+
+	    if (!otmp) goto nothing_special;
+	    otmp->quan = (long) d(2,12);
+	    otmp->blessed = obj->blessed;
+	    otmp->cursed = obj->cursed;
+	    otmp->bknown = obj->bknown;
+	    otmp->spe = obj->spe;
+	    otmp->owt = weight(otmp);
+	    otmp = hold_another_object(otmp, "Suddenly %s out.",
+				       aobjnam(otmp, "fall"), (const char *)0);
+	    break;
+	  }
 	case WIND_BLAST: {
 	    struct obj pseudo;
 
@@ -2120,6 +2136,7 @@ struct obj *pri, *sec;
 	case ART_DEMONBANE:
 	case ART_WEREBANE:
 	case ART_TROLLSBANE:
+	case ART_OGRESMASHER:
 	    return TRUE;
 	default:
 	    break;

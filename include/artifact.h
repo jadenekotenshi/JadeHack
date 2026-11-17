@@ -84,5 +84,6 @@ struct artifact {
 #define FLING_POISON	(LAST_PROP+10)
 #define TIMED_COLD_RES	(LAST_PROP+11)
 #define WIND_BLAST	(LAST_PROP+12)
+#define CREATE_YA	(LAST_PROP+13)
 
 #endif /* ARTIFACT_H */

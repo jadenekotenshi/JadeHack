@@ -623,3 +623,10 @@ Two-weapon combat used to refuse any artifact in the off hand. `can_twoweapon()`
 - Spineseeker, Dragonbane, Demonbane, Werebane and Trollsbane (the Banes other than Sunsword): second to anything.
 - Grayswandir (primary) accepts no artifact in the off hand.
 - Every other artifact weapon refuses the off hand.
+
+## Batch 44: Yoichi no Yumi, and Ogresmasher off hand
+
+- Ogresmasher now also accepts being held second to anything (`artifact_offhand_ok()`), like the other Banes. Giantslayer is a sling and cannot be held in the off hand anyway.
+- New lawful artifact **Yoichi no Yumi**, a yumi (the Samurai's "long bow"). It is not `SPFX_NOGEN`, so it can be generated randomly, but `mk_artifact()` never picks it as a sacrifice or crowning gift. Ya fired from it get +d10 to hit (`thitmonst()` in `dothrow.c`) and +d12 damage (`hmon_hitmon()` in `uhitm.c`); other ammo and melee are unaffected. `#invoke` (new `CREATE_YA` power) makes 2d12 ya with the same blessing and enchantment as the bow, using the normal artifact invoke cooldown.
+- So that it can actually turn up, the yumi's random generation probability went from 0 to 2 (taken from the plain bow, 32 to 30); the yumi's other appearance ("long bow") is unchanged.
+Rebuild the data files; old saves and bones will not load.

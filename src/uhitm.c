@@ -1061,6 +1061,12 @@ int dieroll;
 		tmp += rnd(6);
 	}
 
+	/* Yoichi no Yumi: ya fired from it do +d12 damage */
+	if (thrown && obj && obj->otyp == YA && uwep &&
+		uwep->oartifact == ART_YOICHI_NO_YUMI &&
+		ammo_and_launcher(obj, uwep))
+	    tmp += rnd(12);
+
 	/* Narya and Nenya: extra damage with any melee, thrown or fired hit */
 	tmp += lotr_ring_damage(mon);
 

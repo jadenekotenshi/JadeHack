@@ -1409,6 +1409,9 @@ register struct obj   *obj;
 		    tmp += uwep->spe - greatest_erosion(uwep);
 		    tmp += weapon_hit_bonus(uwep);
 		    if (uwep->oartifact) tmp += spec_abon(uwep, mon);
+		    /* Yoichi no Yumi: +d10 to hit with ya */
+		    if (uwep->oartifact == ART_YOICHI_NO_YUMI && obj->otyp == YA)
+			tmp += rnd(10);
 		    /*
 		     * Elves and Samurais are highly trained w/bows,
 		     * especially their own special types of bow.
