@@ -2310,8 +2310,10 @@ struct obj *pri, *sec;
     if (!sec || !sec->oartifact) return TRUE;
     /* only artifact weapons are restricted; other artifacts never matter */
     if (sec->oclass != WEAPON_CLASS && !is_weptool(sec)) return TRUE;
-    /* Grayswandir will not accept any off-hand artifact */
-    if (p == ART_GRAYSWANDIR) return FALSE;
+    /* Grayswandir, Frost Brand and Pernicimordax will not accept any
+       off-hand artifact (and none of them is accepted in the off hand) */
+    if (p == ART_GRAYSWANDIR || p == ART_FROST_BRAND ||
+	    p == ART_PERNICIMORDAX) return FALSE;
 
     switch (sec->oartifact) {
 	case ART_GRIMTOOTH:

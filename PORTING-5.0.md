@@ -684,3 +684,7 @@ The Luck Blade's deep strike now happens with chance 1 in (14 - Luck) per hit (i
 ## Batch 50: Pernicimordax
 
 Pernicimordax's cold damage is now 4d4 (mean 10) instead of 3d6 (mean 10.5), against anything that is not cold resistant (`spec_dbon()`, `COLD(5,4)` in `artilist.h`). It is a little more consistent (spread 4 to 16 rather than 3 to 18) and still drops to a plain +1 falchion against cold-resistant monsters. Against small monsters at +7 the mean is 22.5 (was 23.0), or 12.5 against cold-resistant ones. Only the binary changes; saves and bones still load.
+
+## Batch 51: no artifact partners for Frost Brand and Pernicimordax
+
+Like Grayswandir, Frost Brand and Pernicimordax now refuse to be wielded together with any other artifact weapon when two-weaponing (`artifact_offhand_ok()`): they accept no artifact in the off hand, and they are not on anyone's accepted list for the off hand, so they cannot be the off-hand weapon either. An ordinary weapon in the other hand is still fine. (Fire Brand is two-handed, so the question does not arise.) Only the binary changes; saves and bones still load.
