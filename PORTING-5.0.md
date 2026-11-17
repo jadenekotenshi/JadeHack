@@ -688,3 +688,7 @@ Pernicimordax's cold damage is now 4d4 (mean 10) instead of 3d6 (mean 10.5), aga
 ## Batch 51: no artifact partners for Frost Brand and Pernicimordax
 
 Like Grayswandir, Frost Brand and Pernicimordax now refuse to be wielded together with any other artifact weapon when two-weaponing (`artifact_offhand_ok()`): they accept no artifact in the off hand, and they are not on anyone's accepted list for the off hand, so they cannot be the off-hand weapon either. An ordinary weapon in the other hand is still fine. (Fire Brand is two-handed, so the question does not arise.) Only the binary changes; saves and bones still load.
+
+## Batch 52: Sunsword and Werebane bonuses against their targets
+
+Sunsword's +d5 to hit and +d4 damage against undead, and Werebane's against lycanthropes, never applied: both artifacts name a pseudo class (`S_UNDEAD`, `S_WERE`) that exists only for the warning code, and `spec_applies()` compared it to the real monster class. It now treats `S_UNDEAD` as "has `M2_UNDEAD`" and `S_WERE` as "has `M2_WERE`" (or a lycanthropic hero). Sunsword's bonus is worth about +2.5 damage and a to-hit bonus against undead: a +7 Sunsword now does about 17.5 to a small undead monster that is not fire resistant (15.0 against non-undead that is not fire resistant); Werebane gains the same sort of bonus against lycanthropes. The warnings are unchanged. Only the binary changes; saves and bones still load.

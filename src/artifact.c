@@ -1007,6 +1007,13 @@ struct monst *mtmp;
 	if (weap->spfx & SPFX_DMONS) {
 	    return (ptr == &mons[(int)weap->mtype]);
 	} else if (weap->spfx & SPFX_DCLAS) {
+	    /* S_UNDEAD and S_WERE are not real monster classes: they stand for
+	       "undead" and "lycanthrope" (they also drive the warning) */
+	    if (weap->mtype == S_UNDEAD)
+		return (boolean)((ptr->mflags2 & M2_UNDEAD) != 0L);
+	    if (weap->mtype == S_WERE)
+		return (boolean)((ptr->mflags2 & M2_WERE) != 0L ||
+				 (yours && u.ulycn >= LOW_PM));
 	    return (weap->mtype == (unsigned long)ptr->mlet);
 	} else if (weap->spfx & SPFX_DFLAG1) {
 	    return ((ptr->mflags1 & weap->mtype) != 0L);
