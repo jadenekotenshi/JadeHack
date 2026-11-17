@@ -2342,6 +2342,11 @@ struct obj *pri, *sec;
 	case ART_TROLLSBANE:
 	case ART_OGRESMASHER:
 	    return TRUE;
+	/* Quicksilver and the Luck Blade are a pair */
+	case ART_LUCK_BLADE:
+	    return (boolean)(p == ART_QUICKSILVER);
+	case ART_QUICKSILVER:
+	    return (boolean)(p == ART_LUCK_BLADE);
 	/* only a Pirate can hold Reaver in the off hand */
 	case ART_REAVER:
 	    return (boolean)Role_if(PM_PIRATE);

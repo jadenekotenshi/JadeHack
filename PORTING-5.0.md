@@ -724,3 +724,7 @@ Mephistopheles is now an `M2_PRINCE` instead of an `M2_LORD`, so `is_dprince()` 
 ## Batch 56: Mephistopheles slows down
 
 Mephistopheles's speed goes from 15 to 12 (`monst.c`), the same as an unhurried hero, so a hero with intrinsic speed, speed boots or Quicksilver can outrun him and fight hit-and-run. He is still covetous, so he teleports to a hero who carries the Amulet. Only the binary changes; saves and bones still load. (Batch 26's "speed 15" line is out of date.)
+
+## Batch 57: Quicksilver and the Luck Blade pair up
+
+`artifact_offhand_ok()` now accepts Quicksilver in the off hand with the Luck Blade as the main weapon and the other way round, so the two can be two-weaponed together (each still refuses every other artifact partner). Both are short swords, so the usual two-weapon skill rules apply, and a Pirate, Rogue or anyone else who can two-weapon with a short sword gets speed 24 from Quicksilver and the Luck Blade's luck and deep strike in one go. Only the binary changes; saves and bones still load.
