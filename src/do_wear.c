@@ -104,6 +104,7 @@ Boots_on()
 	case HIGH_BOOTS:
 	case JUMPING_BOOTS:
 	case KICKING_BOOTS:
+	case BOOTS_OF_SHIELDING:
 		break;
 	case WATER_WALKING_BOOTS:
 		if (u.uinwater) spoteffects(TRUE);
@@ -206,6 +207,7 @@ Boots_off()
 	case JUMPING_BOOTS:
 	case KICKING_BOOTS:
 	case GNOMISH_BOOTS:
+	case BOOTS_OF_SHIELDING:
 		break;
 	default: impossible(unknown_type, c_boots, otyp);
     }
@@ -449,6 +451,14 @@ Gloves_on()
 		case LEATHER_GLOVES:
 		case GAUNTLETS_OF_FORCE:
 		case GAUNTLETS_OF_FORTUNE:
+		case GAUNTLETS_OF_PROTECTION:
+			break;
+		case GAUNTLETS_OF_HASTE:
+			if (!oldprop && !(HFast & TIMEOUT)) {
+				makeknown(uarmg->otyp);
+				You_feel("yourself speed up%s.",
+					(oldprop || HFast) ? " a bit more" : "");
+			}
 			break;
 		case GAUNTLETS_OF_FUMBLING:
 			if (!oldprop && !(HFumbling & ~TIMEOUT))
@@ -470,6 +480,7 @@ int
 Gloves_off()
 {
     long oldprop = u.uprops[objects[uarmg->otyp].oc_oprop].extrinsic & ~WORN_GLOVES;
+    boolean was_haste = FALSE;
 
     takeoff_mask &= ~W_ARMG;
 
@@ -477,6 +488,10 @@ Gloves_off()
 		case LEATHER_GLOVES:
 		case GAUNTLETS_OF_FORCE:
 		case GAUNTLETS_OF_FORTUNE:
+		case GAUNTLETS_OF_PROTECTION:
+			break;
+		case GAUNTLETS_OF_HASTE:
+			was_haste = TRUE;	/* message after they come off */
 			break;
 		case GAUNTLETS_OF_FUMBLING:
 			if (!oldprop && !(HFumbling & ~TIMEOUT))
@@ -492,6 +507,10 @@ Gloves_off()
 		default: impossible(unknown_type, c_gloves, uarmg->otyp);
     }
     setworn((struct obj *)0, W_ARMG);
+    if (was_haste && !Very_fast && !cancelled_don) {
+	makeknown(GAUNTLETS_OF_HASTE);
+	You_feel("yourself slow down%s.", Fast ? " a bit" : "");
+    }
     cancelled_don = FALSE;
     (void) encumber_msg();		/* immediate feedback for GoP */
 

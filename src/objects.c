@@ -532,7 +532,7 @@ SHIELD("dwarvish bracers", (char *)0,
  * CLR_BROWN (== HI_LEATHER)
  */
 GLOVES("leather gloves", "old gloves",
-		0, 0,  0,		  10, 1, 10,  8,  9, 0, LEATHER, HI_LEATHER),
+		0, 0,  0,		   9, 1, 10,  8,  9, 0, LEATHER, HI_LEATHER),
 GLOVES("gauntlets of fumbling", "padded gloves",
 		0, 1,  FUMBLING,  6, 1, 10, 50,  9, 0, LEATHER, HI_LEATHER),
 GLOVES("gauntlets of power", "riding gloves",
@@ -541,20 +541,25 @@ GLOVES("gauntlets of dexterity", "fencing gloves",
 		0, 1,  0,			5, 1, 10, 50,  9, 0, LEATHER, HI_LEATHER),
 GLOVES("gauntlets of force", "fur-lined mittens",
 		0, 1,  0,			5, 1, 10, 50,  9, 0, LEATHER, HI_LEATHER),
+GLOVES("gauntlets of haste", "crystal chitin gauntlets",
+		0, 1,  FAST,		1, 1, 10, 150, 10, 0, LEATHER, HI_LEATHER),
 GLOVES("gauntlets of fortune", "ragged gloves",
 		0, 1,  LUCKY,		5, 1, 10, 50,  9, 0, LEATHER, HI_LEATHER),
 GLOVES("gloves of expertise", "snakeskin gloves",
 		0, 1,  0,		3, 1, 10, 50,  9, 0, LEATHER, HI_LEATHER),
+/* fixed appearance: protection also gives MC3 */
+GLOVES("gauntlets of protection", "adamantine gauntlets",
+		0, 1,  0,		1, 1, 20, 200, 8, 3, METAL, HI_METAL),
 
 /* boots */
 BOOTS("low boots", "walking shoes",
-		0, 0,  0,	  17, 2, 10,  8,  9, 0, LEATHER, HI_LEATHER),
+		0, 0,  0,	  15, 2, 10,  8,  9, 0, LEATHER, HI_LEATHER),
 BOOTS("iron shoes", "hard shoes",
 		0, 0,  0,	   6, 2, 50, 16,  8, 0, IRON, HI_METAL),
 BOOTS("gnomish boots", "little black boots",
 		0, 0,  0,	   7, 2, 10, 16,  10, 0, LEATHER, CLR_BLACK),
 BOOTS("high boots", "jackboots",
-		0, 0,  0,	  13, 2, 20, 12,  8, 0, LEATHER, HI_LEATHER),
+		0, 0,  0,	  12, 2, 20, 12,  8, 0, LEATHER, HI_LEATHER),
 /* With shuffled appearances... */
 BOOTS("speed boots", "combat boots",
 		0, 1,  FAST,	  10, 2, 20, 50,  9, 0, LEATHER, HI_LEATHER),
@@ -572,6 +577,10 @@ BOOTS("fumble boots", "riding boots",
 		0, 1,  FUMBLING,  11, 2, 20, 30,  9, 0, LEATHER, HI_LEATHER),
 BOOTS("levitation boots", "snow boots",
 		0, 1,  LEVITATION,11, 2, 15, 30,  9, 0, LEATHER, HI_LEATHER),
+/* fixed appearance: immune to bear traps, spear traps, spiked pits and
+   wounded legs */
+BOOTS("boots of shielding", "crystal boots",
+		0, 1,  0,		2, 2, 20, 100,  8, 0, GEMSTONE, HI_GLASS),
 #undef HELM
 #undef CLOAK
 #undef SHIELD

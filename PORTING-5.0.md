@@ -555,3 +555,15 @@ Quicksilver: if you are already fast or very fast when you wield it, you get the
 Bards can advance Two-weapon combat to Basic (cap only; they start Unskilled).
 
 Rogues start with Two-weapon combat at Basic (`skill_init()` in `weapon.c`).
+
+## Batch 37: gauntlets of protection, gauntlets of haste, boots of shielding
+
+| Item | Appearance | AC | MC | Prob | Notes |
+|---|---|---|---|---|---|
+| gauntlets of protection | "adamantine gauntlets" (fixed) | 2 | 3 | 1 | metal, wt 20, cost 200 |
+| gauntlets of haste | "crystal chitin gauntlets" (shuffled with the other gloves) | 0 (enchantable) | 0 | 1 | grants the same Fast property as speed boots, with the same speed-up and slow-down messages; leather, wt 10, cost 150 |
+| boots of shielding | "crystal boots" (fixed) | 2 | 0 | 2 | gemstone, wt 20, cost 100 |
+
+Boots of shielding make you immune to bear traps (the trap snaps shut harmlessly), spear traps, spiked pits (you step across them; ordinary pits still work) and wounded legs (`set_wounded_legs()` returns early). Armor class probabilities were kept at 1000 by trimming low boots (17 to 15), high boots (13 to 12) and leather gloves (10 to 9). The new objects shift object numbers: rebuild the special levels and data files; old saves and bones will not load.
+
+Interpretation notes: "Fast" is the speed-boots property (very fast, 5/3 speed), not the weaker intrinsic; the spiked pit is bypassed entirely rather than just its spikes being blunted.

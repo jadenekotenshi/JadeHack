@@ -1783,6 +1783,9 @@ register int timex;
 	 * Caller is also responsible for adjusting messages.
 	 */
 
+	/* boots of shielding protect the legs */
+	if (uarmf && uarmf->otyp == BOOTS_OF_SHIELDING) return;
+
 	if(!Wounded_legs) {
 		ATEMP(A_DEX)--;
 		flags.botl = 1;

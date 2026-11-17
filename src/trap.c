@@ -803,6 +803,11 @@ unsigned trflags;
 	    case BEAR_TRAP:
 		if(Levitation || Flying) break;
 		seetrap(trap);
+		if (uarmf && uarmf->otyp == BOOTS_OF_SHIELDING) {
+		    pline("%s bear trap snaps shut, but your %s shield your %s.",
+			    A_Your[trap->madeby_u], xname(uarmf), makeplural(body_part(FOOT)));
+		    break;
+		}
 		if(amorphous(youmonst.data) || is_whirly(youmonst.data) ||
 						    unsolid(youmonst.data)) {
 		    pline("%s bear trap closes harmlessly through you.",
@@ -921,6 +926,11 @@ glovecheck:		(void) rust_dmg(uarmg, "gauntlets", 1, TRUE, &youmonst);
 		/* KMH -- You can't escape the Sokoban level traps */
 		if (!In_sokoban(&u.uz) && (Levitation || Flying)) break;
 		seetrap(trap);
+		if (ttype == SPIKED_PIT && !In_sokoban(&u.uz) &&
+			uarmf && uarmf->otyp == BOOTS_OF_SHIELDING) {
+		    You("step across the spikes; your %s shield you.", xname(uarmf));
+		    break;
+		}
 		if (!In_sokoban(&u.uz) && is_clinger(youmonst.data)) {
 		    if(trap->tseen) {
 			You("see %s %spit below you.", a_your[trap->madeby_u],
@@ -1257,7 +1267,9 @@ glovecheck:		(void) rust_dmg(uarmg, "gauntlets", 1, TRUE, &youmonst);
 		 case SPEAR_TRAP:
 		seetrap(trap);
 		pline("A spear stabs up from a hole in the ground at you!");
-		if (thick_skinned(youmonst.data)) {
+		if (uarmf && uarmf->otyp == BOOTS_OF_SHIELDING) {
+			pline("But it glances off your %s.", xname(uarmf));
+		} else if (thick_skinned(youmonst.data)) {
 			pline("But it breaks off against your body.");
 			deltrap(trap);
                         newsym(u.ux, u.uy);
