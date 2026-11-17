@@ -533,6 +533,13 @@ register struct monst *mtmp;
 		(void)mongets(mtmp, KNIFE);
 		(void)mongets(mtmp, LONG_SWORD);
 		break;
+	    case S_IMP:
+		/* redcaps carry a reaping polearm */
+		if (mm == PM_REDCAP) {
+		    if (rn2(4)) (void)mongets(mtmp, VOULGE);
+		    if (!rn2(2)) (void)mongets(mtmp, PICK_AXE);
+		}
+		break;
 	    case S_VAMPIRE:
 		if (mm == PM_KAS) {
 		    struct obj *armor;
