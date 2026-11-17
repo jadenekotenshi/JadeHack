@@ -640,3 +640,14 @@ Rebuild the data files; old saves and bones will not load.
   The plain arrow's generation probability dropped from 47 to 43 to keep the weapon class at 1000. "Rare" and "very rare" both map to probability 1 as before.
 - **The Wallet of Perseus** (as in SLASH'EM): an unaligned artifact bag of holding, base price 10000. Contents weigh 1/3 (uncursed), 1/6 (blessed) or 4x (cursed), instead of 1/2, 1/4 and 2x (`bag_contents_weight()` in `mkobj.c`, shared with the pickup code). It is never generated at random (only weapons, armor and rings can turn into artifacts); it can come as a sacrifice gift after the first gift, from wishing, or from bones. `makesingular()` learned that "Perseus" is not a plural.
 Rebuild the data files; old saves and bones will not load.
+
+## Batch 46: role skill and starting-gear changes
+
+All in `u_init.c`; no data rebuild or save break (skill caps are looked up at start, but existing characters keep what they have).
+
+- Barbarian and Ranger: two-weapon combat cap Basic to Skilled.
+- Archeologist: spear, cap Expert (was restricted).
+- Healer: clerical spells, cap Skilled (was restricted).
+- Knight: axe and curved sword raised from Skilled to Expert. Two-handed sword, polearms and spear were already Expert.
+- Priest: attack spells, cap Basic (was restricted).
+- Dwarvish Knights start with a dwarvish bearded axe (+1, blessed) instead of the long sword, via the race substitution table (`inv_subs`). It is wielded and the skill is Basic from the start like any starting weapon.

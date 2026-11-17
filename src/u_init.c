@@ -266,6 +266,7 @@ static struct inv_sub { short race_pm, item_otyp, subs_otyp; } inv_subs[] = {
     { PM_DWARF, SPEAR,			DWARVISH_SPEAR	      },
     { PM_DWARF, SHORT_SWORD,		DWARVISH_SHORT_SWORD  },
     { PM_DWARF, HELMET,			DWARVISH_IRON_HELM    },
+    { PM_DWARF, LONG_SWORD,		DWARVISH_BEARDED_AXE  },
  /* { PM_DWARF, SMALL_SHIELD,		DWARVISH_ROUNDSHIELD  }, */
  /* { PM_DWARF, PICK_AXE,		DWARVISH_MATTOCK      }, */
     { PM_GNOME, BOW,			CROSSBOW	      },
@@ -282,6 +283,7 @@ static const struct def_skill Skill_A[] = {
     { P_PICK_AXE, P_EXPERT },		{ P_SHORT_SWORD, P_BASIC },
     { P_CURVED_SWORD, P_EXPERT },
     { P_QUARTERSTAFF, P_SKILLED },
+    { P_SPEAR, P_EXPERT },
     { P_SLING, P_SKILLED },		{ P_DART, P_BASIC },
     { P_BOOMERANG, P_EXPERT },		{ P_WHIP, P_EXPERT },
     { P_UNICORN_HORN, P_SKILLED },
@@ -311,7 +313,7 @@ static const struct def_skill Skill_B[] = {
 #ifdef STEED
     { P_RIDING, P_BASIC },
 #endif
-    { P_TWO_WEAPON_COMBAT, P_BASIC },
+    { P_TWO_WEAPON_COMBAT, P_SKILLED },
     { P_BARE_HANDED_COMBAT, P_MASTER },
     { P_SHIELD, P_SKILLED },
     { P_NONE, 0 }
@@ -361,16 +363,17 @@ static const struct def_skill Skill_H[] = {
     { P_SLING, P_SKILLED },		{ P_DART, P_EXPERT },
     { P_UNICORN_HORN, P_EXPERT },
     { P_HEALING_SPELL, P_EXPERT }, { P_MATTER_SPELL, P_BASIC },
+    { P_CLERIC_SPELL, P_SKILLED },
     { P_BARE_HANDED_COMBAT, P_BASIC },
     { P_NONE, 0 }
 };
 
 static const struct def_skill Skill_K[] = {
     { P_DAGGER, P_BASIC },		{ P_KNIFE, P_BASIC },
-    { P_AXE, P_SKILLED },		{ P_PICK_AXE, P_BASIC },
+    { P_AXE, P_EXPERT },		{ P_PICK_AXE, P_BASIC },
     { P_SHORT_SWORD, P_SKILLED },	
     { P_LONG_SWORD, P_EXPERT },	{ P_TWO_HANDED_SWORD, P_EXPERT },
-    { P_CURVED_SWORD, P_SKILLED },
+    { P_CURVED_SWORD, P_EXPERT },
     { P_MACE, P_SKILLED },
     { P_FLAIL, P_BASIC },
     { P_HAMMER, P_BASIC },		{ P_POLEARMS, P_EXPERT },
@@ -413,6 +416,7 @@ static const struct def_skill Skill_P[] = {
     { P_BOOMERANG, P_BASIC },		{ P_UNICORN_HORN, P_SKILLED },
     { P_HEALING_SPELL, P_EXPERT },	{ P_DIVINATION_SPELL, P_EXPERT },
     { P_CLERIC_SPELL, P_EXPERT }, { P_MATTER_SPELL, P_BASIC },
+    { P_ATTACK_SPELL, P_BASIC },
     { P_BARE_HANDED_COMBAT, P_BASIC },
     { P_SHIELD, P_BASIC },
     { P_MUSICAL_SPELL, P_BASIC },
@@ -458,7 +462,7 @@ static const struct def_skill Skill_Ran[] = {
 #ifdef STEED
     { P_RIDING, P_BASIC },
 #endif
-    { P_TWO_WEAPON_COMBAT, P_BASIC },
+    { P_TWO_WEAPON_COMBAT, P_SKILLED },
     { P_BARE_HANDED_COMBAT, P_BASIC },
     { P_MACE, P_BASIC },
     { P_SHIELD, P_SKILLED },
