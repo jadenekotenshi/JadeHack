@@ -716,3 +716,7 @@ Seven new shapeshifters, each a base form that changes into a beast form like th
 ## Batch 54: weresharks in the Pirate quest
 
 Two weresharks (in shark form) now lurk in the water of the flooded filler level and two more in the shoreline of Shipwreck Island, besides that level's six sharks (`dat/Pirate.des`, regenerated with `util/genpir.py`; the layouts are unchanged). Out of the water they take human form; in the water they change into sharks and back as usual. Needs the data files rebuilt.
+
+## Batch 55: Mephistopheles is a demon prince
+
+Mephistopheles is now an `M2_PRINCE` instead of an `M2_LORD`, so `is_dprince()` is true for him and `is_dlord()` is not. The consequences: when he gates in demons he uses the prince odds (1 in 20 a prince, 1 in 4 a lord, otherwise an ordinary demon, instead of 1 in 50 and 1 in 20), his missile attacks get the prince multishot (+2 rather than +1), his spells call up more demons, and gear he is given is at least +1. He is exempt from the rule that demon princes start peaceful, invisible and open to bribery (`makemon.c`), so he is still hostile, visible and asleep in the Sanctum as before. Only the binary changes; saves and bones still load.

@@ -1275,7 +1275,10 @@ register int	mmflags;
 			set_apparxy(mtmp);
 		}
 	}
-	if(is_dprince(ptr) && ptr->msound == MS_BRIBE) {
+	/* demon princes can be bribed, so they start out peaceful and unseen;
+	   Mephistopheles is the exception and stays hostile */
+	if(is_dprince(ptr) && ptr->msound == MS_BRIBE &&
+	   mndx != PM_MEPHISTOPHELES) {
 	    mtmp->mpeaceful = mtmp->minvis = mtmp->perminvis = 1;
 	    mtmp->mavenge = 0;
 	    if (uwep && uwep->oartifact == ART_EXCALIBUR)
