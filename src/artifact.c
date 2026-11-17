@@ -2088,6 +2088,45 @@ nothing_special:
 }
 
 
+/* may artifact (or ordinary weapon) "sec" be held in the off hand while
+   "pri" is the primary weapon?  Only certain artifacts accept it. */
+boolean
+artifact_offhand_ok(pri, sec)
+struct obj *pri, *sec;
+{
+    int p = pri ? pri->oartifact : 0;
+
+    if (!sec || !sec->oartifact) return TRUE;
+    /* only artifact weapons are restricted; other artifacts never matter */
+    if (sec->oclass != WEAPON_CLASS && !is_weptool(sec)) return TRUE;
+    /* Grayswandir will not accept any off-hand artifact */
+    if (p == ART_GRAYSWANDIR) return FALSE;
+
+    switch (sec->oartifact) {
+	case ART_GRIMTOOTH:
+	    return (boolean)(p != ART_STING && p != ART_ORCRIST);
+	case ART_STING:
+	case ART_ORCRIST:
+	    return (boolean)(p != ART_GRIMTOOTH);
+	case ART_KUSANAGI:
+	    return (boolean)(p == ART_KIKU_ICHIMONJI || p == ART_ICHIGEKI);
+	case ART_ICHIGEKI:
+	    return (boolean)(p == ART_KIKU_ICHIMONJI || p == ART_KUSANAGI);
+	case ART_KIKU_ICHIMONJI:
+	    return (boolean)(p == ART_ICHIGEKI || p == ART_KUSANAGI);
+	/* Spineseeker and the Banes (but not Sunsword) go with anything */
+	case ART_SPINESEEKER:
+	case ART_DRAGONBANE:
+	case ART_DEMONBANE:
+	case ART_WEREBANE:
+	case ART_TROLLSBANE:
+	    return TRUE;
+	default:
+	    break;
+    }
+    return FALSE;
+}
+
 /* WAC return TRUE if artifact is always lit */
 boolean
 artifact_light(obj)

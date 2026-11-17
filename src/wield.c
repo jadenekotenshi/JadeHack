@@ -551,9 +551,15 @@ can_twoweapon()
 		pline("%s isn't one-handed.", Yname2(otmp));
 	} else if (wearing_shield())
 		You_cant("use two weapons while wearing a shield.");
-	else if (uswapwep->oartifact)
-		pline("%s %s being held second to another weapon!",
-			Yname2(uswapwep), otense(uswapwep, "resist"));
+	else if (!artifact_offhand_ok(uwep, uswapwep)) {
+		if (uwep->oartifact == ART_GRAYSWANDIR)
+		    pline("%s %s to fight beside another artifact!",
+			  Yname2(uwep), otense(uwep, "refuse"));
+		else
+		    pline("%s %s being held second to %s!",
+			  Yname2(uswapwep), otense(uswapwep, "resist"),
+			  uwep->oartifact ? yname(uwep) : "another weapon");
+	}
 	else if (!uarmg && !Stone_resistance && (uswapwep->otyp == CORPSE &&
 		    touch_petrifies(&mons[uswapwep->corpsenm]))) {
 		char kbuf[BUFSZ];

@@ -610,3 +610,16 @@ New lawful artifact **Kusanagi**, a broadsword (Samurai see it as a "ninja-to" t
 - Cuts through spider webs when you walk into one (`dotrap()`).
 - `#invoke` (new `WIND_BLAST` power) acts like zapping a wand of wind, including in the self direction; it uses the normal artifact invoke cooldown.
 Rebuild the data files; old saves and bones will not load.
+
+## Batch 43: artifact dual-wielding
+
+Two-weapon combat used to refuse any artifact in the off hand. `can_twoweapon()` (`wield.c`) now asks `artifact_offhand_ok(primary, secondary)` (`artifact.c`). Only artifact *weapons* are restricted; other artifacts are unaffected. An ordinary weapon in the off hand is always fine.
+
+- Grimtooth: fine in the off hand, except second to Sting or Orcrist.
+- Sting and Orcrist: fine in the off hand, except second to Grimtooth.
+- Kusanagi: only second to Kiku-Ichimonji or Ichigeki.
+- Ichigeki: only second to Kiku-Ichimonji or Kusanagi.
+- Kiku-Ichimonji: only second to Ichigeki or Kusanagi.
+- Spineseeker, Dragonbane, Demonbane, Werebane and Trollsbane (the Banes other than Sunsword): second to anything.
+- Grayswandir (primary) accepts no artifact in the off hand.
+- Every other artifact weapon refuses the off hand.
