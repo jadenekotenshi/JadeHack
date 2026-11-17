@@ -50,8 +50,7 @@ STATIC_DCL int FDECL(dump_container, (struct obj*, BOOLEAN_P));
  *  by weight() in mkobj.c.
  */
 #define DELTA_CWT(cont,obj)		\
-    ((cont)->cursed ? (obj)->owt * 2 :	\
-		      1 + ((obj)->owt / ((cont)->blessed ? 4 : 2)))
+    bag_contents_weight((cont), (int)(obj)->owt)
 #define GOLD_WT(n)		(((n) + 50L) / 100L)
 /* if you can figure this out, give yourself a hearty pat on the back... */
 #define GOLD_CAPACITY(w,n)	(((w) * -100L) - ((n) + 50L) - 1L)

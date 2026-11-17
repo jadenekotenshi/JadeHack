@@ -82,7 +82,7 @@ NEARDATA struct objclass objects[] = {
 
 /* missiles */
 PROJECTILE("arrow", (char *)0,
-		1, 47, 1, 2, 6, 6, 0, IRON, -P_BOW, HI_METAL),
+		1, 43, 1, 2, 6, 6, 0, IRON, -P_BOW, HI_METAL),
 PROJECTILE("elven arrow", "runed arrow",
 		0, 19, 1, 2, 7, 6, 0, WOOD, -P_BOW, HI_WOOD),
 PROJECTILE("orcish arrow", "crude arrow",
@@ -91,6 +91,13 @@ PROJECTILE("silver arrow", (char *)0,
 		1, 15, 1, 5, 6, 6, 0, SILVER, -P_BOW, HI_SILVER),
 PROJECTILE("ya", "bamboo arrow",
 		0, 15, 1, 4, 7, 7, 1, METAL, -P_BOW, HI_METAL),
+/* special arrows: see thitmonst() */
+PROJECTILE("lucky arrow", "shimmery green arrow",
+		0,  2, 1, 40, 8, 8, 0, METAL, -P_BOW, CLR_BRIGHT_GREEN),
+PROJECTILE("burst arrow", "shimmery blue arrow",
+		0,  1, 1, 30, 4, 4, 0, METAL, -P_BOW, CLR_CYAN),
+PROJECTILE("sleep arrow", "narrow arrow",
+		0,  1, 1, 30, 4, 4, 0, METAL, -P_BOW, CLR_MAGENTA),
 PROJECTILE("crossbow bolt", (char *)0,
 		1, 39, 1, 2, 4, 6, 0, IRON, -P_CROSSBOW, HI_METAL),
 PROJECTILE("silver crossbow bolt", (char *)0,

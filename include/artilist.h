@@ -253,6 +253,16 @@ A("Nenya",			RIN_COLD_RESISTANCE,
 	NO_ATTK,	SPDF_COLD,	NO_CARY,	0, A_NONE, NON_PM, NON_PM, 5000L ),
 
 /*
+ *	The Wallet of Perseus (as in SLASH'EM): an unaligned bag of holding
+ *	that shrinks its contents even more (see bag_contents_weight()).  It
+ *	is never generated at random, only as a sacrifice gift (never the
+ *	first one), by wishing, or from bones.
+ */
+A("The Wallet of Perseus",	BAG_OF_HOLDING,
+	SPFX_RESTR, 0, 0,
+	NO_ATTK,	SPDF_NONE,	NO_CARY,	0, A_NONE, NON_PM, NON_PM, 10000L ),
+
+/*
  *	Yoichi no Yumi: a lawful yumi (randomly generated, but never a gift);
  *	ya fired from it get +d10 to hit and +d12 damage (dothrow.c, uhitm.c),
  *	and #invoke makes 2d12 ya matching its blessing and enchantment.

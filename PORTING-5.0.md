@@ -630,3 +630,13 @@ Two-weapon combat used to refuse any artifact in the off hand. `can_twoweapon()`
 - New lawful artifact **Yoichi no Yumi**, a yumi (the Samurai's "long bow"). It is not `SPFX_NOGEN`, so it can be generated randomly, but `mk_artifact()` never picks it as a sacrifice or crowning gift. Ya fired from it get +d10 to hit (`thitmonst()` in `dothrow.c`) and +d12 damage (`hmon_hitmon()` in `uhitm.c`); other ammo and melee are unaffected. `#invoke` (new `CREATE_YA` power) makes 2d12 ya with the same blessing and enchantment as the bow, using the normal artifact invoke cooldown.
 - So that it can actually turn up, the yumi's random generation probability went from 0 to 2 (taken from the plain bow, 32 to 30); the yumi's other appearance ("long bow") is unchanged.
 Rebuild the data files; old saves and bones will not load.
+
+## Batch 45: special arrows, Wallet of Perseus, Yoichi gift
+
+- **Yoichi no Yumi** may now be a lawful sacrifice gift (the exclusion added in Batch 44 is gone). It has no role, so it is never the guaranteed first gift. It is still not a crowning gift.
+- **Lucky arrow** ("shimmery green arrow", bright green): d8/d8, rolls to hit twice and keeps the better roll (`thitmonst()`), generation probability 2, stacks of 2d6, cost 40. A Ranger has a 25% chance to start with a stack of them instead of the +2 arrows (`u_init.c`).
+- **Burst arrow** ("shimmery blue arrow", cyan): d4/d4, when it hits it also does 1d4 damage to hostile monsters on the adjacent squares (not tame or peaceful ones, and never you; `arrow_burst()` in `dothrow.c`). Probability 1, stacks of 1d10, cost 30.
+- **Sleep arrow** ("narrow arrow", magenta): d4/d4, 50% chance to put a monster that survives the hit (and does not resist sleep) to sleep for 1d4 more turns. Probability 1, stacks of 1d10, cost 30.
+  The plain arrow's generation probability dropped from 47 to 43 to keep the weapon class at 1000. "Rare" and "very rare" both map to probability 1 as before.
+- **The Wallet of Perseus** (as in SLASH'EM): an unaligned artifact bag of holding, base price 10000. Contents weigh 1/3 (uncursed), 1/6 (blessed) or 4x (cursed), instead of 1/2, 1/4 and 2x (`bag_contents_weight()` in `mkobj.c`, shared with the pickup code). It is never generated at random (only weapons, armor and rings can turn into artifacts); it can come as a sacrifice gift after the first gift, from wishing, or from bones. `makesingular()` learned that "Perseus" is not a plural.
+Rebuild the data files; old saves and bones will not load.

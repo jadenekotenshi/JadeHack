@@ -800,6 +800,8 @@ u_init()
 		 */
 		break;
 	case PM_RANGER:
+		/* one Ranger in four starts with lucky arrows instead */
+		Ranger[RAN_TWO_ARROWS].trotyp = rn2(4) ? ARROW : LUCKY_ARROW;
 		Ranger[RAN_TWO_ARROWS].trquan = rn1(10, 50);
 		Ranger[RAN_ZERO_ARROWS].trquan = rn1(10, 30);
 		ini_inv(Ranger);

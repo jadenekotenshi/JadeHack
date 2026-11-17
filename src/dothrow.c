@@ -10,6 +10,7 @@
 STATIC_DCL int FDECL(throw_obj, (struct obj *,int));
 STATIC_DCL void NDECL(autoquiver);
 STATIC_DCL int FDECL(gem_accept, (struct monst *, struct obj *));
+STATIC_DCL void FDECL(arrow_burst, (int,int,struct monst *));
 STATIC_DCL void FDECL(tmiss, (struct obj *, struct monst *));
 STATIC_DCL int FDECL(throw_gold, (struct obj *));
 STATIC_DCL void FDECL(check_shop_obj, (struct obj *,XCHAR_P,XCHAR_P,BOOLEAN_P));
@@ -1400,6 +1401,12 @@ register struct obj   *obj;
 	}
 
 	dieroll = rnd(20);
+	/* lucky arrows roll to hit twice and keep the better result */
+	if (obj->otyp == LUCKY_ARROW) {
+	    int dieroll2 = rnd(20);
+
+	    if (dieroll2 < dieroll) dieroll = dieroll2;
+	}
 	if (obj->oclass == WEAPON_CLASS || is_weptool(obj) ||
 		obj->oclass == GEM_CLASS) {
 	    if (is_ammo(obj)) {
@@ -1440,8 +1447,19 @@ register struct obj   *obj;
 	    }
 
 	    if (tmp >= dieroll) {
-		if (hmon(mon,obj,1,dieroll)) {	/* mon still alive */
+		int bx = bhitpos.x, by = bhitpos.y;
+		boolean alive = hmon(mon,obj,1,dieroll);
+
+		if (alive) {	/* mon still alive */
 		    cutworm(mon, bhitpos.x, bhitpos.y, obj);
+		}
+		if (otyp == BURST_ARROW) arrow_burst(bx, by, mon);
+		else if (otyp == SLEEP_ARROW && alive && !rn2(2) &&
+			 !resists_sleep(mon)) {
+		    if (canseemon(mon))
+			pline("%s falls asleep!", Monnam(mon));
+		    mon->mcanmove = 0;
+		    mon->mfrozen = min(127, (int)mon->mfrozen + rnd(4));
 		}
 		exercise(A_DEX, TRUE);
 		/* projectiles other than magic stones
@@ -1550,6 +1568,33 @@ register struct obj   *obj;
 	}
 
 	return 0;
+}
+
+/* a burst arrow that hits sends 1d4 damage into the adjacent squares */
+STATIC_OVL void
+arrow_burst(x, y, target)
+int x, y;
+struct monst *target;
+{
+	int dx, dy;
+	boolean first = TRUE;
+	struct monst *m;
+
+	for (dx = -1; dx <= 1; dx++)
+	    for (dy = -1; dy <= 1; dy++) {
+		if (!dx && !dy) continue;
+		if (!isok(x + dx, y + dy)) continue;
+		m = m_at(x + dx, y + dy);
+		if (!m || m == target || m->mhp < 1 || m->mtame ||
+		    m->mpeaceful) continue;
+		if (first) {
+		    pline_The("arrow bursts!");
+		    first = FALSE;
+		}
+		wakeup(m);
+		m->mhp -= rnd(4);
+		if (m->mhp < 1) killed(m);
+	    }
 }
 
 STATIC_OVL int

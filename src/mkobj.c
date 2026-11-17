@@ -457,6 +457,9 @@ boolean artif;
 	if (init) switch (let) {
 	case WEAPON_CLASS:
 		otmp->quan = is_multigen(otmp) ? (long) rn1(6,6) : 1L;
+		if (otmp->otyp == LUCKY_ARROW) otmp->quan = (long) d(2,6);
+		else if (otmp->otyp == BURST_ARROW || otmp->otyp == SLEEP_ARROW)
+		    otmp->quan = (long) rnd(10);
 		if(!rn2(11)) {
 			otmp->spe = rne(3);
 			otmp->blessed = rn2(2);
@@ -887,6 +890,18 @@ register struct obj *otmp;
  *	   of the code messes with a contained object and doesn't update the
  *	   container's weight.
  */
+/* what an amount of contents weighs inside a bag of holding; the Wallet of
+   Perseus is better than an ordinary bag in every state */
+int
+bag_contents_weight(bag, w)
+struct obj *bag;
+int w;
+{
+	if (bag->oartifact == ART_WALLET_OF_PERSEUS)
+	    return bag->cursed ? (w * 4) : (1 + (w / (bag->blessed ? 6 : 3)));
+	return bag->cursed ? (w * 2) : (1 + (w / (bag->blessed ? 4 : 2)));
+}
+
 int
 weight(obj)
 register struct obj *obj;
@@ -925,8 +940,7 @@ register struct obj *obj;
 		 *	   as cursed.
 		 */
 		if (obj->otyp == BAG_OF_HOLDING)
-		    cwt = obj->cursed ? (cwt * 2) :
-					(1 + (cwt / (obj->blessed ? 4 : 2)));
+		    cwt = bag_contents_weight(obj, cwt);
 
 		return wt + cwt;
 	}
