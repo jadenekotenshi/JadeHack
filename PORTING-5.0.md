@@ -712,3 +712,7 @@ Seven new shapeshifters, each a base form that changes into a beast form like th
 - New macros `is_were_base()` and `is_were_beast()` (`mondata.h`) replace the old checks on `S_HUMAN`/`is_human()` in the lycanthrope code (`were.c`, `mhitu.c`, `mhitm.c`, `mon.c`, `potion.c`, `zap.c`), since the weredemon's base form is not human.
 - Wizard mode: "human werebear", "human werewolf" and so on now create the human forms (`name_to_mon()`).
 - Werebane now has real targets at the top end (its +d5 to hit and +d4 damage applies to all of them).
+
+## Batch 54: weresharks in the Pirate quest
+
+Two weresharks (in shark form) now lurk in the water of the flooded filler level and two more in the shoreline of Shipwreck Island, besides that level's six sharks (`dat/Pirate.des`, regenerated with `util/genpir.py`; the layouts are unchanged). Out of the water they take human form; in the water they change into sharks and back as usual. Needs the data files rebuilt.

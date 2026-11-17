@@ -4,6 +4,7 @@ import random, sys
 
 W, H = 76, 18
 random.seed(20261117)
+weresharks = random.Random(53)
 
 
 class Grid:
@@ -216,6 +217,8 @@ STAIR:%s,down''' % (MONGEN, fa.text(), pc(*up), pc(*dn)))
 for n, nm, ch in [(3, "skeletal pirate", 'Z'), (3, "soldier", '@'), (4, "parrot", 'B'),
                   (2, "monkey", 'Y')]:
     out.append('LOOP [%d] {\n  MONSTER:(\'%s\',"%s"),random\n}' % (n, ch, nm))
+for (x, y) in weresharks.sample(fa.cells('}', 2, 2, W - 3, H - 3), 2):
+    out.append('MONSTER:(\';\',"wereshark"),%s' % pc(x, y))
 out.append('MONSTER:(\' \',"ghost"),random')
 out.append('LOOP [4 + 1d4] {\n  OBJECT:random,random\n}')
 out.append('LOOP [3] {\n  TRAP:random,random\n}')
@@ -302,6 +305,8 @@ out.append('NON_DIGGABLE:(26,06,46,11)')
 water = [c for c in sh.cells('}', 0, 0, 51, 17) if 2 <= c[1] <= 15]
 for (x, y) in pick(water, 6, used):
     out.append('MONSTER:(\';\',"shark"),%s' % pc(x, y))
+for (x, y) in weresharks.sample([c for c in water if c not in used], 2):
+    out.append('MONSTER:(\';\',"wereshark"),%s' % pc(x, y))
 for (x, y) in pick([c for c in beach if c != upc], 8, used):
     out.append('MONSTER:(\'Z\',"skeletal pirate"),%s' % pc(x, y))
 out.append('MONSTER:(\' \',"ghost"),%s' % pc(*pick(beach, 1, used)[0]))
