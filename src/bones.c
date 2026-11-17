@@ -290,6 +290,10 @@ struct obj *corpse;
 	}
 
 	/* dispose of your possessions, usually cursed */
+	/* a dead Pirate rises as a skeletal pirate rather than a ghost */
+	if (Role_if(PM_PIRATE) && u.ugrave_arise == NON_PM &&
+	    !(mvitals[PM_SKELETAL_PIRATE].mvflags & G_GENOD))
+	    u.ugrave_arise = PM_SKELETAL_PIRATE;
 	if (u.ugrave_arise == (NON_PM - 1)) {
 		struct obj *otmp;
 

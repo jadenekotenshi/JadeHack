@@ -429,6 +429,13 @@ const char *name;
 	}
 	if (lth) artifact_exists(obj, name, TRUE);
 	if (obj->oartifact) {
+	    /* the Treasury of Proteus is never locked */
+	    if (obj->oartifact == ART_TREASURY_OF_PROTEUS) {
+		obj->olocked = 0;
+		obj->obroken = 0;
+		if (Has_contents(obj)) delete_contents(obj);
+		obj->owt = weight(obj);
+	    }
 	    /* can't dual-wield with artifact as secondary weapon */
 	    if (obj == uswapwep) untwoweapon();
 	    /* activate warning if you've just named your weapon "Sting" */

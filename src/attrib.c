@@ -86,6 +86,11 @@ const struct innate {
 		     {  10, &(HStealth), "stealthy", "" },
 		     {	 0, 0, 0, 0 } },
 
+	pir_abil[] = { {	 1, &(HSwimming), "", "" },
+		     {   7, &(HFast), "quick", "slow" },
+		     {  11, &(HStealth), "stealthy", "" },
+		     {	 0, 0, 0, 0 } },
+
 	val_abil[] = { {	 1, &(HCold_resistance), "", "" },
 		     {	 1, &(HStealth), "", "" },
 		     {   7, &(HFast), "quick", "slow" },
@@ -561,6 +566,7 @@ int oldlevel, newlevel;
 	case PM_TOURIST:        abil = tou_abil;	break;
 #endif
 	case PM_BARD:           abil = brd_abil;	break;
+	case PM_PIRATE:         abil = pir_abil;	break;
 	case PM_VALKYRIE:       abil = val_abil;	break;
 	case PM_WIZARD:         abil = wiz_abil;	break;
 	default:                abil = 0;		break;

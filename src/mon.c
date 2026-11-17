@@ -113,6 +113,7 @@ int mndx, mode;
 /* Quest guardians */
 	case PM_STUDENT:     mndx = mode ? PM_ARCHEOLOGIST  : PM_HUMAN; break;
 	case PM_RHYMER:      mndx = mode ? PM_BARD      : PM_HUMAN; break;
+	case PM_PIRATE_BROTHER: mndx = mode ? PM_PIRATE  : PM_HUMAN; break;
 	case PM_CHIEFTAIN:   mndx = mode ? PM_BARBARIAN : PM_HUMAN; break;
 	case PM_NEANDERTHAL: mndx = mode ? PM_CAVEMAN   : PM_HUMAN; break;
 	case PM_ATTENDANT:   mndx = mode ? PM_HEALER    : PM_HUMAN; break;
@@ -1343,6 +1344,14 @@ struct monst *magr,	/* monster that is currently deciding where to move */
 	/* supposedly purple worms are attracted to shrieking because they
 	   like to eat shriekers, so attack the latter when feasible */
 	if (magr->data == &mons[PM_PURPLE_WORM] && mdef->data == &mons[PM_SHRIEKER])
+	    return ALLOW_M|ALLOW_TM;
+	/* pirates and soldiers hold a grudge against each other */
+	if ((is_king_pirate(magr->data) &&
+		(mdef->data == &mons[PM_SOLDIER] ||
+		 mdef->data == &mons[PM_SERGEANT])) ||
+	    (is_king_pirate(mdef->data) &&
+		(magr->data == &mons[PM_SOLDIER] ||
+		 magr->data == &mons[PM_SERGEANT])))
 	    return ALLOW_M|ALLOW_TM;
 	/* the Wizard of Yendor and Mephistopheles are rivals */
 	if ((magr->data == &mons[PM_WIZARD_OF_YENDOR] &&

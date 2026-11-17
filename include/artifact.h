@@ -85,5 +85,7 @@ struct artifact {
 #define TIMED_COLD_RES	(LAST_PROP+11)
 #define WIND_BLAST	(LAST_PROP+12)
 #define CREATE_YA	(LAST_PROP+13)
+#define DETECT_ARTIFACTS (LAST_PROP+14)
+#define SEA_CHANGE	(LAST_PROP+15)
 
 #endif /* ARTIFACT_H */

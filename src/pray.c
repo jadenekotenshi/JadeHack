@@ -645,6 +645,56 @@ at_your_feet(str)
 }
 
 #ifdef ELBERETH
+/* a Pirate is crowned the Pirate King, and is given Reaver: a curved sword
+   being wielded becomes Reaver, otherwise it appears at your feet */
+STATIC_OVL void
+pirate_crowning()
+{
+    struct obj *obj = uwep;
+
+    u.uevent.uhand_of_elbereth = (u.ualign.type == A_NEUTRAL) ? 2 : 3;
+    verbalize("I crown thee...  The Pirate King!");
+#ifdef LIVELOG
+    livelog_printf("was crowned the Pirate King by %s", u_gname());
+#endif
+    if (obj && obj->oartifact == ART_REAVER) {
+	obj->dknown = TRUE;
+	Your("cutlass gleams like the sea at dawn.");
+    } else if (exist_artifact(SABER, artiname(ART_REAVER))) {
+	/* the only Reaver is somewhere else */
+	obj = (struct obj *)0;
+    } else if (obj && (obj->otyp == SCIMITAR || obj->otyp == FALCHION ||
+		       obj->otyp == MESSER || obj->otyp == SABER ||
+		       obj->otyp == SILVER_SABER ||
+		       obj->otyp == ORCISH_SCIMITAR)) {
+	if (!Blind) Your("%s shines brightly for a moment.", xname(obj));
+	obj->otyp = SABER;
+	obj->owt = weight(obj);
+	obj = oname(obj, artiname(ART_REAVER));
+	if (obj && obj->oartifact == ART_REAVER) u.ugifts++;
+    } else {
+	obj = mksobj(SABER, FALSE, FALSE);
+	obj = oname(obj, artiname(ART_REAVER));
+	if (obj && obj->oartifact == ART_REAVER) {
+	    obj->oeroded = obj->oeroded2 = 0;
+	    at_your_feet("A cutlass");
+	    dropy(obj);
+	    u.ugifts++;
+	}
+    }
+    if (obj && obj->oartifact == ART_REAVER) {
+	bless(obj);
+	set_erodeproof(obj);
+	obj->bknown = obj->rknown = TRUE;
+	if (obj->spe < 1) obj->spe = 1;
+	discover_artifact(ART_REAVER);
+	unrestrict_weapon_skill(P_CURVED_SWORD);
+    } else {
+	You_feel("unworthy.");
+    }
+    update_inventory();
+}
+
 STATIC_OVL void
 gcrownu()
 {
@@ -662,6 +712,11 @@ gcrownu()
     incr_resistance(&HPoison_resistance,100);
 	 monstseesu(M_SEEN_FIRE|M_SEEN_COLD|M_SEEN_ELEC|M_SEEN_SLEEP|M_SEEN_POISON);
     godvoice(u.ualign.type, (char *)0);
+
+    if (Role_if(PM_PIRATE)) {
+	pirate_crowning();
+	return;
+    }
 
     obj = ok_wep(uwep) ? uwep : 0;
     already_exists = in_hand = FALSE;	/* lint suppression */

@@ -3351,6 +3351,291 @@ out your days in %H would seem pretty tame.
 sing it into legend."
 %E
 
+#	Pirate
+#
+%Cc Pir 00001
+You are suddenly in the harbor of %H.  Something is wrong.  The
+docks are silent, and soldiers in the strange uniforms of the Yendorian
+army patrol the waterfront.  Nobody sings, and nobody drinks.  A cold
+wind brings the smell of the grave, and you %x the dead shambling in
+the streets.
+%E
+
+%Cp Pir 00002
+You are back at %H.  The soldiers glare at you from their fort.
+%E
+
+%Cp Pir 00003
+You return to %H.  The tide is going out, and the dead are
+coming in.
+%E
+
+%Cp Pir 00005
+"Those Yendorian soldiers marched in one morning, and nobody has had a
+decent drink since."
+%E
+
+%Cp Pir 00006
+"The dead walk the beach at night.  Skeletons in pirate rags, mostly.
+Somebody should tell them to stay buried."
+%E
+
+%Cp Pir 00007
+"Captain Ketch sank half the fleet before he was wrecked on Shipwreck
+Island.  I say good riddance to him."
+%E
+
+%Cp Pir 00008
+"Ketch's old crew is still out there on that island, guarding the wreck
+for him.  Dead or alive, they take orders."
+%E
+
+%Cp Pir 00009
+"The Mayor will see you, but mind your manners.  He has had a trying
+season."
+%E
+
+%Cp Pir 00010
+"Have ye any booty to show for it, %p?  Tortuga is poorer than it was."
+%E
+
+%Cp Pir 00011
+"The soldiers are gone, and my rum is flowing again.  Fair winds to ye!"
+%E
+
+%Cp Pir 00012
+"Was Ketch fed to the fishes?  I hope the sharks found him tasty."
+%E
+
+%Cp Pir 00013
+"They say that old Blackbeard has not rested since the Treasury sank.
+The sea itself cannot hold him."
+%E
+
+%Cp Pir 00014
+"Come, sit, tell us how a landlubber like you came to be a legend."
+%E
+
+%Cc Pir 00015
+"Is it you at last, %p?  I am %l, mayor of this port, and I have
+been looking for a %s of the coast, one who is not afraid of the sea or
+of the dead.  Let me take your measure."
+%E
+
+%Cp Pir 00016
+"Things are worse, %p.  The Yendorians dig in, and the dead grow
+bolder.  Show me you are ready."
+%E
+
+%Cp Pir 00017
+"I hope that for the sake of %H you have learned something since
+we last spoke, %p."
+%E
+
+%Cc Pir 00018
+"I am sorry, %p, but I cannot trust you any longer.  Leave %H, and
+do not come back."
+%E
+
+%Cc Pir 00019
+"You are not yet ready to face %n.  There is much that you do not
+know about the sea and about the dead.  Return to us as a proven
+%R, and we will speak again.
+
+"Go now, and may %d fill your sails."
+%E
+
+%Cc Pir 00020
+"It would be an insult to %d to send one who is not true to the
+%a path against %n.
+
+"Do not come back until you have mended your ways.  Only by following
+the %a path can you hope to prevail."
+%E
+
+%Cc Pir 00021
+"You have indeed proven yourself a worthy %c, %p.
+
+"Long ago Roberts and I stood against %n, who wanted %o for
+his own.  He did not get it: he fell into the caldera of Shipwreck
+Island, cursing the Treasury as he went, and the Treasury followed him
+into the deep.  Since then his ghost has grown strong, and the dead
+walk at his call.
+
+"You must drive the Yendorian soldiers out of %H, then sail to %i,
+destroy %n and bring %o home.  Beware the sharks, the darkness
+and the dead.  Let us pray that %d will watch over you."
+%E
+
+%Cp Pir 00025
+"Mind the sharks around Shipwreck Island, %p."
+%E
+
+%Cp Pir 00026
+"The way to %i is dark and full of the restless dead."
+%E
+
+%Cp Pir 00027
+"If you do not return with %o, %H is lost."
+%E
+
+%Cp Pir 00028
+"Do not be shy about calling on %d when the tide turns against you."
+%E
+
+%Cp Pir 00029
+"If you do not stop %n, he will be haunting %H next!"
+%E
+
+%Cp Pir 00030
+"Take %o from the caldera and the dead may lose heart."
+%E
+
+%Cp Pir 00031
+"You must hurry, %p!"
+%E
+
+%Cp Pir 00032
+"You are like a %S to me, %p.  Do not let me down."
+%E
+
+%Cp Pir 00033
+"If you are %a at all times you may succeed, %p."
+%E
+
+%Cp Pir 00034
+"Let all who meet you on your journey know that you are on a quest for
+%l and grant you fair winds."
+%E
+
+%Cc Pir 00035
+You cannot shake the feeling that the dead of %i are watching you.
+Everywhere there are the bones of his crew and the wrecks of his
+ships.
+%E
+
+%Cp Pir 00036
+You know that this time you must find and destroy %n.
+%E
+
+%Cc Pir 00040
+You sense the presence of %o, a heavy and uneasy presence,
+somewhere nearby.
+%E
+
+%Cp Pir 00041
+You gain confidence, knowing that you may soon hold
+%o in your hands.
+%E
+
+%Cc Pir 00050
+"So, %p, the mayor sends a mere %r to
+face me!  Did he think a %r could take %o from me?
+
+"I fell into this caldera cursing that chest, and I will be the one to
+keep it when the sea gives up its dead.  You will join my crew
+instead, whether you like it or not."
+%E
+
+%Cp Pir 00051
+"You again?  I let you live the last time, %p, because it amused me.
+This time you will stay."
+%E
+
+%Cc Pir 00052
+"These meetings come to bore me.  Leave %o and leave %i, or I
+will have the sea take you, one bone at a time!"
+%E
+
+%Cc Pir 00053
+"So you hold %o!  Give it to me, %p, and I might spare you the
+worst of what is coming.  You have no idea how heavy it is.  Give it
+to me now, while I am still asking."
+%E
+
+%Cp Pir 00060
+"I was a terror of the seven seas when %l was in swaddling clothes."
+%E
+
+%Cp Pir 00061
+"Where is %d now, %p?  The sea does not hear prayers!"
+%E
+
+%Cp Pir 00062
+"I will make a figurehead of you, %p."
+%E
+
+%Cp Pir 00063
+"If you were not so %a, you might have stood a chance."
+%E
+
+%Cp Pir 00064
+"Dead men tell no tales, and neither will you!"
+%E
+
+%Cp Pir 00065
+"I only wish that %l had sent a more worthy %r against me."
+%E
+
+%Cp Pir 00066
+"With %o in my possession you cannot hope to win."
+%E
+
+%Cp Pir 00067
+"%nC has never lost a fight, and he never will!"
+%E
+
+%Cp Pir 00068
+"Are you truly the best %H has to send against me?  I pity %l."
+%E
+
+%Cp Pir 00069
+"How do you spell %p?  I want your grave marker to be correct."
+%E
+
+%Cc Pir 00070
+As you lift %o, a great weight falls from the caldera, and the
+dead are still.  You can think only of returning to %H and finding %l.
+%E
+
+%Cc Pir 00080
+A crack opens in the floor, and a flaming hand seizes %n.  As the
+ghost is dragged down, he curses you and vows to haunt you forever:
+
+    You shall never be rid of me, %p!
+    The sea gives up its dead, and I will have my revenge!
+%E
+
+%Cc Pir 00081
+%lC examines %o with a satisfied smile.
+
+He says:
+
+    You have recovered %o.  It is yours now, but it
+    carries a curse, and a pirate that holds it has many enemies.  With
+    %d to guide you on the %a path, you may yet
+    recover the Amulet of Yendor.
+%E
+
+%Cc Pir 00082
+"%oC is yours now.  The harbor of %H
+awaits your return through the magic portal that brought you here."
+%E
+
+%Cp Pir 00090
+"I could not be more proud than if you were my own %S, %p!
+Tell me of your adventures in quest of the Amulet of Yendor."
+%E
+
+%Cc Pir 00091
+"Stand back and let me look at you, %p.
+Now that you have recovered the Amulet of Yendor, I fear that a quiet
+life in %H would seem tame to you.
+
+"Sail to the astral sea, and offer the Amulet on the High Altar
+of your deity.  May the winds be fair!"
+%E
+
 #	Wizard
 #
 %Cc Wiz 00001

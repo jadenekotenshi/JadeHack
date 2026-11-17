@@ -1054,7 +1054,7 @@ int *wt_before, *wt_after;
     }
     wt = iw + (int)obj->owt;
     if (adjust_wt)
-	wt -= (container->otyp == BAG_OF_HOLDING) ?
+	wt -= shrinks_contents(container) ?
 		(int)DELTA_CWT(container, obj) : (int)obj->owt;
 #ifndef GOLDOBJ
     if (is_gold)	/* merged gold might affect cumulative weight */
@@ -1100,7 +1100,7 @@ int *wt_before, *wt_after;
 #else
 		ow = (int)GOLD_WT(umoney + qq);
 #endif
-		ow -= (container->otyp == BAG_OF_HOLDING) ?
+		ow -= shrinks_contents(container) ?
 			(int)DELTA_CWT(container, obj) : (int)obj->owt;
 		if (iw + ow >= 0) break;
 		oow = ow;
@@ -1127,7 +1127,7 @@ int *wt_before, *wt_after;
 	    obj->quan = qq;
 	    obj->owt = (unsigned)(ow = weight(obj));
 	    if (adjust_wt)
-		ow -= (container->otyp == BAG_OF_HOLDING) ?
+		ow -= shrinks_contents(container) ?
 			(int)DELTA_CWT(container, obj) : (int)obj->owt;
 	    if (iw + ow >= 0)
 		break;

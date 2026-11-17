@@ -53,6 +53,9 @@ STATIC_OVL xchar artidisco[NROFARTIFACTS];
 
 STATIC_DCL void NDECL(hack_artifacts);
 STATIC_DCL boolean FDECL(attacks, (int,struct obj *));
+STATIC_DCL void FDECL(reaver_steal, (struct monst *));
+STATIC_DCL int FDECL(sea_change, (struct obj *));
+STATIC_DCL void FDECL(detect_artifacts, (struct obj *));
 
 /* Narya and Nenya: find the real ring type that currently has a given
    appearance (the ring appearances are shuffled for each game) */
@@ -252,6 +255,11 @@ aligntyp alignment;	/* target alignment, or A_NONE */
 		    (a->alignment == alignment ||
 			(a->alignment == A_NONE && u.ugifts > 0))) &&
 		(!(a->spfx & SPFX_NOGEN) || unique) && !artiexist[m]) {
+		/* Pirates are only ever given the Marauder's Map, and
+		   nobody else is */
+		if (by_align && (Role_if(PM_PIRATE) ?
+			m != ART_MARAUDER_S_MAP : m == ART_MARAUDER_S_MAP))
+		    continue;
 		if (by_align && a->race != NON_PM && race_hostile(&mons[a->race]))
 		    continue;	/* skip enemies' equipment */
 		else if (by_align && Role_if(a->role))
@@ -1104,6 +1112,7 @@ int tmp;
 		case ART_GUNGNIR:	return 10;
 		case ART_PERNICIMORDAX:	return d(3,6);
 		case ART_KIKU_ICHIMONJI: return d(2,6);
+		case ART_REAVER:	return d(2,8);
 		default: break;
 	    }
 	}
@@ -1518,6 +1527,12 @@ int dieroll; /* needed for Magicbane and vorpal blades */
 		      mon_nam(mdef));
 	}
 
+	/* Reaver snatches an item from the foe: a Pirate does so one hit in
+	   five, anyone else one in ten */
+	if (otmp->oartifact == ART_REAVER && youattack && !youdefend &&
+		mdef->minvent && !rn2(Role_if(PM_PIRATE) ? 5 : 10))
+	    reaver_steal(mdef);
+
 	/* Spineseeker does double damage to fleeing foes */
 	if (otmp->oartifact == ART_SPINESEEKER && !youdefend && mdef->mflee)
 	    *dmgptr *= 2;
@@ -1817,6 +1832,177 @@ static NEARDATA const char recharge_type[] = { ALLOW_COUNT, ALL_CLASSES, 0 };
 static NEARDATA const char invoke_types[] = { ALL_CLASSES, 0 };
 		/* #invoke: an "ugly check" filters out most objects */
 
+/*** The Pirate's artifacts ***/
+
+/* the Treasury of Proteus, if you carry it in your open inventory */
+struct obj *
+carried_treasury()
+{
+	struct obj *otmp;
+
+	for (otmp = invent; otmp; otmp = otmp->nobj)
+	    if (otmp->oartifact == ART_TREASURY_OF_PROTEUS) return otmp;
+	return (struct obj *)0;
+}
+
+/* a Pirate carrying the Marauder's Map makes artifacts likelier */
+boolean
+carrying_marauders_map(pirate_only)
+boolean pirate_only;
+{
+	struct obj *otmp;
+
+	if (pirate_only && !Role_if(PM_PIRATE)) return FALSE;
+	for (otmp = invent; otmp; otmp = otmp->nobj)
+	    if (otmp->oartifact == ART_MARAUDER_S_MAP) return TRUE;
+	return FALSE;
+}
+
+/* odds are 1 in n normally, but four times better for a Pirate who
+   carries the Marauder's Map */
+int
+artifact_chance(n)
+int n;
+{
+	if (carrying_marauders_map(TRUE)) n = max(1, n / 4);
+	return n;
+}
+
+/* The Treasury absorbs curses meant for what you carry.  It always does
+   if it is not itself cursed, and otherwise 19 times in 20; a blessed
+   Treasury becomes uncursed and an uncursed one becomes cursed. */
+boolean
+treasury_blocks_curse(otmp)
+struct obj *otmp;
+{
+	struct obj *tr = carried_treasury();
+	struct obj *top;
+
+	if (!tr || otmp == tr) return FALSE;
+	/* only for things you carry (or that are in what you carry) */
+	for (top = otmp; top->where == OBJ_CONTAINED; top = top->ocontainer)
+	    ;
+	if (top->where != OBJ_INVENT) return FALSE;
+	if (tr->cursed && !rn2(20)) return FALSE;
+	if (tr->blessed) unbless(tr);
+	else if (!tr->cursed) curse(tr);
+	pline("%s has just blocked a curse.", The(xname(tr)));
+	return TRUE;
+}
+
+/* the kind of pirate that comes after a Pirate holding the Treasury */
+int
+king_pirate_type()
+{
+	if (In_hell(&u.uz) || In_endgame(&u.uz)) return PM_DAMNED_PIRATE;
+	return PM_SKELETAL_PIRATE;
+}
+
+/* Reaver snatches a random unworn item from its victim */
+STATIC_OVL void
+reaver_steal(mdef)
+struct monst *mdef;
+{
+	struct obj *otmp, *pick = (struct obj *)0;
+	int n = 0;
+
+	for (otmp = mdef->minvent; otmp; otmp = otmp->nobj) {
+	    if (otmp->owornmask) continue;	/* worn or wielded */
+	    /* don't touch a cockatrice corpse bare-handed */
+	    if (otmp->otyp == CORPSE && touch_petrifies(&mons[otmp->corpsenm])
+		    && !uarmg) continue;
+	    if (otmp->otyp == LEASH && otmp->leashmon) continue;
+	    if (!rn2(++n)) pick = otmp;
+	}
+	if (!pick) return;
+	obj_extract_self(pick);
+	pick->owornmask = 0L;
+	You("snatch %s from %s!", doname(pick), mon_nam(mdef));
+	(void) hold_another_object(pick, "Ye snatched but dropped %s.",
+				   doname(pick), (const char *)0);
+}
+
+/* recursively sense the artifacts on an object list */
+STATIC_OVL void
+sense_artifacts(list, found)
+struct obj *list;
+int *found;
+{
+	struct obj *otmp;
+
+	for (otmp = list; otmp; otmp = otmp->nobj) {
+	    if (otmp->oartifact) {
+		You_feel("the presence of %s.", the(artiname(otmp->oartifact)));
+		(*found)++;
+	    }
+	    if (Has_contents(otmp)) sense_artifacts(otmp->cobj, found);
+	}
+}
+
+/* #invoke the Marauder's Map: detect objects, and reveal the artifacts */
+STATIC_OVL void
+detect_artifacts(map)
+struct obj *map;
+{
+	struct monst *mtmp;
+	int found = 0;
+
+	(void) object_detect(map, 0);
+	sense_artifacts(fobj, &found);
+	sense_artifacts(level.buriedobjlist, &found);
+	for (mtmp = fmon; mtmp; mtmp = mtmp->nmon) {
+	    if (DEADMONSTER(mtmp)) continue;
+	    sense_artifacts(mtmp->minvent, &found);
+	}
+	if (!found) pline("There are no artifacts to be found here.");
+}
+
+/* #invoke the Treasury of Proteus: the sea changes one thing inside it */
+STATIC_OVL int
+sea_change(chest)
+struct obj *chest;
+{
+	struct obj *item, *newobj;
+	winid win;
+	anything any;
+	menu_item *pick = (menu_item *)0;
+	int n, count = 0;
+
+	for (item = chest->cobj; item; item = item->nobj)
+	    if (!item->oartifact && !objects[item->otyp].oc_unique &&
+		    !(Is_container(item) && Has_contents(item)))
+		count++;
+	if (!count) {
+	    pline("There is nothing inside %s that the sea could change.",
+		  the(xname(chest)));
+	    return 0;
+	}
+	win = create_nhwindow(NHW_MENU);
+	start_menu(win);
+	any.a_void = 0;
+	for (item = chest->cobj; item; item = item->nobj) {
+	    if (item->oartifact || objects[item->otyp].oc_unique ||
+		    (Is_container(item) && Has_contents(item)))
+		continue;
+	    any.a_obj = item;
+	    add_menu(win, obj_to_glyph(item), &any, 0, 0, ATR_NONE,
+		     doname(item), MENU_UNSELECTED);
+	}
+	end_menu(win, "Let the sea change which item?");
+	n = select_menu(win, PICK_ONE, &pick);
+	destroy_nhwindow(win);
+	if (n <= 0) return 0;
+	item = pick[0].item.a_obj;
+	free((genericptr_t)pick);
+
+	You_hear("distant waves as the sea changes %s.", doname(item));
+	newobj = poly_obj(item, STRANGE_OBJECT);
+	chest->owt = weight(chest);
+	if (newobj) pline("Now it is %s.", doname(newobj));
+	if (carried(chest)) update_inventory();
+	return 1;
+}
+
 int
 doinvoke()
 {
@@ -1977,6 +2163,15 @@ arti_invoke(obj)
 	case ENLIGHTENING:
 	    enlightenment(0);
 	    break;
+	case DETECT_ARTIFACTS:
+	    detect_artifacts(obj);
+	    break;
+	case SEA_CHANGE:
+	    if (!sea_change(obj)) {
+		obj->age = monstermoves;
+		return 0;
+	    }
+	    break;
 	case CREATE_YA: {
 	    struct obj *otmp = mksobj(YA, FALSE, FALSE);
 
@@ -2136,6 +2331,9 @@ struct obj *pri, *sec;
 	case ART_TROLLSBANE:
 	case ART_OGRESMASHER:
 	    return TRUE;
+	/* only a Pirate can hold Reaver in the off hand */
+	case ART_REAVER:
+	    return (boolean)Role_if(PM_PIRATE);
 	default:
 	    break;
     }

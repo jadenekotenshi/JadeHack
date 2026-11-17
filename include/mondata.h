@@ -153,6 +153,8 @@
 				 (ptr) == &mons[PM_GIANT] || \
 				 (ptr) == &mons[PM_ELF] || \
 				 (ptr) == &mons[PM_HUMAN])
+#define is_king_pirate(ptr)	((ptr) == &mons[PM_SKELETAL_PIRATE] || \
+				 (ptr) == &mons[PM_DAMNED_PIRATE])
 /* return TRUE if the monster tends to revive */
 #define is_reviver(ptr)		(is_rider(ptr) || (ptr)->mlet == S_TROLL)
 

@@ -353,4 +353,8 @@ struct obj {
 #define CONTAINED_TOO	0x1
 #define BURIED_TOO	0x2
 
+/* containers that shrink the weight of their contents */
+#define shrinks_contents(o)	((o)->otyp == BAG_OF_HOLDING || \
+				 (o)->oartifact == ART_TREASURY_OF_PROTEUS)
+
 #endif /* OBJ_H */

@@ -311,6 +311,14 @@ doread()
 		scroll->otyp != SCR_BLANK_PAPER)
 	    u.uconduct.literate++;
 
+	/* the Marauder's Map is read like the clairvoyance spell and never
+	   used up */
+	if (scroll->oartifact == ART_MARAUDER_S_MAP) {
+	    You("study %s.", the(artiname(scroll->oartifact)));
+	    do_vicinity_map();
+	    return 1;
+	}
+
 	confused = (Confusion != 0);
 #ifdef MAIL
 	if (scroll->otyp == SCR_MAIL) confused = FALSE;

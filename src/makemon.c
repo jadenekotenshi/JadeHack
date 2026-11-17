@@ -164,6 +164,35 @@ int otyp,oquan;
 #endif /* OVLB */
 #ifdef OVL2
 
+/* a random curved sword for the pirate quest and pirate monsters:
+   scimitar, falchion, messer, saber or silver saber */
+int
+pirate_blade()
+{
+	switch (rn2(12)) {
+	    case 0: case 1: case 2: case 3: return SCIMITAR;
+	    case 4: case 5: return FALCHION;
+	    case 6: case 7: return MESSER;
+	    case 8: case 9: case 10: return SABER;
+	    default: return SILVER_SABER;
+	}
+}
+
+/* give a pirate monster a cursed, damaged object */
+STATIC_OVL void
+mk_pirate_gear(mtmp, otyp, erosion)
+struct monst *mtmp;
+int otyp, erosion;
+{
+	struct obj *otmp = mksobj(otyp, TRUE, FALSE);
+
+	if (!otmp) return;
+	curse(otmp);
+	if (otmp->spe > 0) otmp->spe = 0;
+	otmp->oeroded = erosion;
+	(void) mpickobj(mtmp, otmp);
+}
+
 STATIC_OVL void
 m_initweap(mtmp)
 register struct monst *mtmp;
@@ -293,6 +322,25 @@ register struct monst *mtmp;
 			    (void)mongets(mtmp, PICK_AXE);
 			if (!rn2(50)) (void)mongets(mtmp, CRYSTAL_BALL);
 		    }
+		} else if (mm == PM_PIRATE_BROTHER) {
+		    otmp = mksobj(pirate_blade(), TRUE, FALSE);
+		    if (otmp) { otmp->cursed = 0; (void) mpickobj(mtmp, otmp); }
+		    if (rn2(2)) (void)mongets(mtmp, KNIFE);
+		    if (!rn2(3)) (void)mongets(mtmp, LEATHER_JACKET);
+		    if (rn2(2)) (void)mongets(mtmp, HIGH_BOOTS);
+		} else if (mm == PM_MAYOR_CUMMERBUND) {
+		    (void)mongets(mtmp, LEATHER_CLOAK);
+		    (void)mongets(mtmp, HIGH_BOOTS);
+		    (void)mongets(mtmp, LEATHER_GLOVES);
+		    if (!rn2(3)) {
+			otmp = mksobj(SABER, FALSE, FALSE);
+			if (otmp) { set_erodeproof(otmp); (void) mpickobj(mtmp, otmp); }
+		    } else (void)mongets(mtmp, pirate_blade());
+		    if (!rn2(3)) (void)mongets(mtmp, LEATHER_JACKET);
+		    if (rn2(3)) (void)mongets(mtmp, SMALL_SHIELD);
+		} else if (mm == PM_BLACKBEARD_S_GHOST) {
+		    (void)mongets(mtmp, pirate_blade());
+		    (void)mongets(mtmp, KNIFE);
 		} else if (ptr->msound == MS_PRIEST ||
 			quest_mon_represents_role(ptr,PM_PRIEST)) {
 		    otmp = mksobj(MACE, FALSE, FALSE);
@@ -456,6 +504,15 @@ register struct monst *mtmp;
 				rn2(2) ? MORNING_STAR : FALCHION));
 		break;
 	    case S_ZOMBIE:
+		if (mm == PM_SKELETAL_PIRATE) {
+		    /* cursed, rusty weapon and cursed, rotted armor */
+		    mk_pirate_gear(mtmp, rn2(2) ? pirate_blade() : KNIFE, 1);
+		    mk_pirate_gear(mtmp, rn2(2) ? HIGH_BOOTS : LEATHER_JACKET, 1);
+		    if (!rn2(4)) mk_pirate_gear(mtmp, LEATHER_ARMOR, 0);
+		    if (!rn2(4))
+			mk_pirate_gear(mtmp, rn2(3) ? KNIFE : SHORT_SWORD, 0);
+		    break;
+		}
 		if (mm == PM_ZUVEMBIE) {
 		    if (rn2(2)) (void)mongets(mtmp,
 				(rn2(3) ? SHORT_SWORD : rn2(2) ? SCIMITAR : SPEAR));
@@ -498,6 +555,10 @@ register struct monst *mtmp;
 		break;
 	    case S_DEMON:
 		switch (mm) {
+		    case PM_DAMNED_PIRATE:
+			mk_pirate_gear(mtmp, SCIMITAR, 0);
+			mk_pirate_gear(mtmp, LEATHER_ARMOR, 1);
+			break;
 		    case PM_MEPHISTOPHELES: {
 			struct obj *rans = mksobj(RANSEUR, FALSE, FALSE);
 			rans->spe = 7;
@@ -1018,6 +1079,13 @@ register int	mmflags;
 	    !(mvitals[PM_KOSHCHEI_THE_DEATHLESS].mvflags & (G_GENOD|G_EXTINCT))) {
 	    ptr = &mons[PM_KOSHCHEI_THE_DEATHLESS];
 	    mndx = PM_KOSHCHEI_THE_DEATHLESS;
+	}
+	/* king of the hill: while you carry the Treasury of Proteus, one random
+	   monster in five is a rival pirate */
+	if (anymon && carried_treasury() && !rn2(5) &&
+	    !(mvitals[king_pirate_type()].mvflags & G_GENOD)) {
+	    mndx = king_pirate_type();
+	    ptr = &mons[mndx];
 	}
 	(void) propagate(mndx, countbirth, FALSE);
 	xlth = ptr->pxlth;

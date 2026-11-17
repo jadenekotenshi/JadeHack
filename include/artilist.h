@@ -263,6 +263,27 @@ A("The Wallet of Perseus",	BAG_OF_HOLDING,
 	NO_ATTK,	SPDF_NONE,	NO_CARY,	0, A_NONE, NON_PM, NON_PM, 10000L ),
 
 /*
+ *	Reaver (after dNetHack): the Pirate's crowning gift, a saber (a
+ *	cutlass in pirate-speak).  +d5 to hit and +2d8 damage against
+ *	everything (see spec_dbon()), and a Pirate who hits sometimes
+ *	snatches an item from the target (see artifact_hit()).
+ */
+A("Reaver",			SABER,
+	(SPFX_NOGEN|SPFX_RESTR), 0, 0,
+	PHYS(5,16),	SPDF_NONE,	NO_CARY,	0, A_CHAOTIC, PM_PIRATE, NON_PM, 4000L ),
+
+/*
+ *	The Marauder's Map (after dNetHack): a scroll of magic mapping that
+ *	is never used up.  Reading it works like the clairvoyance spell;
+ *	#invoke senses the artifacts on the level.  It is the only
+ *	sacrifice gift a Pirate can receive.  While a Pirate carries it,
+ *	objects are four times as likely to be generated as artifacts.
+ */
+A("The Marauder's Map",		SCR_MAGIC_MAPPING,
+	SPFX_RESTR, 0, 0,
+	NO_ATTK,	SPDF_NONE,	NO_CARY,	DETECT_ARTIFACTS, A_CHAOTIC, PM_PIRATE, NON_PM, 2500L ),
+
+/*
  *	Yoichi no Yumi: a lawful yumi (randomly generated, but never a gift);
  *	ya fired from it get +d10 to hit and +d12 damage (dothrow.c, uhitm.c),
  *	and #invoke makes 2d12 ya matching its blessing and enchantment.
@@ -391,6 +412,11 @@ A("The Lyre of Orpheus",	WOODEN_HARP,
 	(SPFX_NOGEN|SPFX_RESTR|SPFX_INTEL), 0, 0,
 	NO_ATTK,	SPDF_NONE,	CARY(AD_MAGM),
 	TAMING,		A_NEUTRAL, PM_BARD, NON_PM, 5000L ),
+
+A("The Treasury of Proteus",	CHEST,
+	(SPFX_NOGEN|SPFX_RESTR|SPFX_INTEL|SPFX_LUCK), 0, 0,
+	NO_ATTK,	SPDF_NONE,	CARY(AD_MAGM),
+	SEA_CHANGE,	A_CHAOTIC, PM_PIRATE, NON_PM, 5000L ),
 
 /*
  *  terminator; otyp must be zero

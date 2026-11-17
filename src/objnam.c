@@ -103,6 +103,8 @@ register int otyp;
 
 	if (Role_if(PM_SAMURAI) && Japanese_item_name(otyp))
 		actualn = Japanese_item_name(otyp);
+	else if (Role_if(PM_PIRATE) && otyp == SABER)
+		actualn = "cutlass";
 	switch(ocl->oc_class) {
 	case COIN_CLASS:
 		Strcpy(buf, "coin");
@@ -292,6 +294,8 @@ boolean ignore_oquan;
 	buf = nextobuf() + PREFIX;	/* leave room for "17 -3 " */
 	if (Role_if(PM_SAMURAI) && Japanese_item_name(typ))
 		actualn = Japanese_item_name(typ);
+	else if (Role_if(PM_PIRATE) && typ == SABER)
+		actualn = "cutlass";
 
 	buf[0] = '\0';
 	/*
@@ -1684,7 +1688,8 @@ const char *oldstr;
 	/* "Claiomh Solais" and "Aegis" are not plurals */
 	if (!BSTRCMPI(bp, eos(bp)-6, "Solais") ||
 	    !BSTRCMPI(bp, eos(bp)-5, "Aegis") ||
-	    !BSTRCMPI(bp, eos(bp)-7, "Perseus")) return bp;
+	    !BSTRCMPI(bp, eos(bp)-7, "Perseus") ||
+	    !BSTRCMPI(bp, eos(bp)-7, "Proteus")) return bp;
 	/* find "cloves of garlic", "worthless pieces of blue glass" */
 	if ((p = strstri(bp, "s of ")) != 0) {
 	    /* but don't singularize "gauntlets", "boots", "Eyes of the.." */
@@ -1850,6 +1855,7 @@ struct alt_spellings {
 	{ "pickax", PICK_AXE },
 	{ "whip", BULLWHIP },
 	{ "sabre", SABER },
+	{ "cutlass", SABER },
 	{ "silver sabre", SILVER_SABER },
 	{ "smooth shield", SHIELD_OF_REFLECTION },
 	{ "grey dragon scale mail", GRAY_DRAGON_SCALE_MAIL },

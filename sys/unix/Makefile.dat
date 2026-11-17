@@ -123,7 +123,7 @@ spec_levs: ../util/lev_comp \
 quest_levs: ../util/lev_comp \
 	Arch.des Barb.des Caveman.des Healer.des Knight.des Monk.des \
 	Priest.des Ranger.des Rogue.des Samurai.des Tourist.des Valkyrie.des Bard.des \
-	Wizard.des
+	Pirate.des Wizard.des
 	../util/lev_comp $(LEVCOMP_FLAGS) Arch.des
 	../util/lev_comp $(LEVCOMP_FLAGS) Barb.des
 	../util/lev_comp $(LEVCOMP_FLAGS) Bard.des
@@ -131,6 +131,7 @@ quest_levs: ../util/lev_comp \
 	../util/lev_comp $(LEVCOMP_FLAGS) Healer.des
 	../util/lev_comp $(LEVCOMP_FLAGS) Knight.des
 	../util/lev_comp $(LEVCOMP_FLAGS) Monk.des
+	../util/lev_comp $(LEVCOMP_FLAGS) Pirate.des
 	../util/lev_comp $(LEVCOMP_FLAGS) Priest.des
 	../util/lev_comp $(LEVCOMP_FLAGS) Ranger.des
 	../util/lev_comp $(LEVCOMP_FLAGS) Rogue.des

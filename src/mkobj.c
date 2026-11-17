@@ -471,7 +471,7 @@ boolean artif;
 			otmp->opoisoned = 1;
 		if (!artif && is_damageable(otmp) && !rn2(10)) otmp->oeroded = rn2(2)+1;
 
-		if (artif && !rn2(20))
+		if (artif && !rn2(artifact_chance(20)))
 		    otmp = mk_artifact(otmp, (aligntyp)A_NONE);
 		else if (artif && !otmp->oartifact &&
 			 rn2(175) < (level_difficulty() / 2))
@@ -646,7 +646,7 @@ boolean artif;
 			otmp->spe = rne(3);
 		} else	blessorcurse(otmp, 10);
 		if (!artif && is_damageable(otmp) && !rn2(10)) otmp->oeroded = rn2(2)+1;
-		if (artif && !rn2(40))                
+		if (artif && !rn2(artifact_chance(40)))                
 		    otmp = mk_artifact(otmp, (aligntyp)A_NONE);
 		else if (artif && !otmp->oartifact && !rn2(150))
 		    otmp = create_oprop(otmp, TRUE);
@@ -686,7 +686,7 @@ boolean artif;
 			curse(otmp);
 		}
 		/* may become Narya or Nenya if the base ring matches */
-		if (artif && !rn2(25))
+		if (artif && !rn2(artifact_chance(25)))
 		    otmp = mk_artifact(otmp, (aligntyp)A_NONE);
 		break;
 	case ROCK_CLASS:
@@ -788,7 +788,7 @@ register struct obj *otmp;
 	otmp->blessed = 1;
 	if (carried(otmp) && confers_luck(otmp))
 	    set_moreluck();
-	else if (otmp->otyp == BAG_OF_HOLDING)
+	else if (shrinks_contents(otmp))
 	    otmp->owt = weight(otmp);
 	else if (otmp->otyp == FIGURINE && otmp->timed)
 		(void) stop_timer(FIG_TRANSFORM, (genericptr_t) otmp);
@@ -802,7 +802,7 @@ register struct obj *otmp;
 	otmp->blessed = 0;
 	if (carried(otmp) && confers_luck(otmp))
 	    set_moreluck();
-	else if (otmp->otyp == BAG_OF_HOLDING)
+	else if (shrinks_contents(otmp))
 	    otmp->owt = weight(otmp);
 }
 
@@ -813,6 +813,7 @@ register struct obj *otmp;
 #ifdef GOLDOBJ
 	if (otmp->oclass == COIN_CLASS) return;
 #endif
+	if (treasury_blocks_curse(otmp)) return;
 	otmp->blessed = 0;
 	otmp->cursed = 1;
 	/* welded two-handed weapon interferes with some armor removal */
@@ -824,7 +825,7 @@ register struct obj *otmp;
 	/* some cursed items need immediate updating */
 	if (carried(otmp) && confers_luck(otmp))
 	    set_moreluck();
-	else if (otmp->otyp == BAG_OF_HOLDING)
+	else if (shrinks_contents(otmp))
 	    otmp->owt = weight(otmp);
 	else if (otmp->otyp == FIGURINE) {
 		if (otmp->corpsenm != NON_PM
@@ -842,7 +843,7 @@ register struct obj *otmp;
 	otmp->cursed = 0;
 	if (carried(otmp) && confers_luck(otmp))
 	    set_moreluck();
-	else if (otmp->otyp == BAG_OF_HOLDING)
+	else if (shrinks_contents(otmp))
 	    otmp->owt = weight(otmp);
 	else if (otmp->otyp == FIGURINE && otmp->timed)
 	    (void) stop_timer(FIG_TRANSFORM, (genericptr_t) otmp);
@@ -897,7 +898,8 @@ bag_contents_weight(bag, w)
 struct obj *bag;
 int w;
 {
-	if (bag->oartifact == ART_WALLET_OF_PERSEUS)
+	if (bag->oartifact == ART_WALLET_OF_PERSEUS ||
+	    bag->oartifact == ART_TREASURY_OF_PROTEUS)
 	    return bag->cursed ? (w * 4) : (1 + (w / (bag->blessed ? 6 : 3)));
 	return bag->cursed ? (w * 2) : (1 + (w / (bag->blessed ? 4 : 2)));
 }
@@ -910,6 +912,7 @@ register struct obj *obj;
 
 	if (obj->otyp == LARGE_BOX && obj->spe == 1) /* Schroedinger's Cat */
 		wt += mons[PM_HOUSECAT].cwt;
+	if (obj->oartifact == ART_TREASURY_OF_PROTEUS) wt = 50;
 	if (Is_container(obj) || obj->otyp == STATUE) {
 		struct obj *contents;
 		register int cwt = 0;
@@ -939,7 +942,7 @@ register struct obj *obj;
 		 *	   cursed (not supposed to happen), it will be treated
 		 *	   as cursed.
 		 */
-		if (obj->otyp == BAG_OF_HOLDING)
+		if (shrinks_contents(obj))
 		    cwt = bag_contents_weight(obj, cwt);
 
 		return wt + cwt;

@@ -112,6 +112,24 @@ static struct trobj Monk[] = {
 	{ FORTUNE_COOKIE, 0, FOOD_CLASS, 3, UNDEF_BLESS },
 	{ 0, 0, 0, 0, 0 }
 };
+static struct trobj Pirate[] = {
+#define PIR_CUTLASS	0
+	{ SABER, 0, WEAPON_CLASS, 1, 0 },
+#define PIR_KNIVES	1
+	{ KNIFE, 0, WEAPON_CLASS, 5, 0 },	/* quan is variable */
+#define PIR_ARMOR	2
+	{ LEATHER_JACKET, 1, ARMOR_CLASS, 1, 0 },
+	{ HIGH_BOOTS, 0, ARMOR_CLASS, 1, 0 },
+#define PIR_CRAM	4
+	{ CRAM_RATION, 0, FOOD_CLASS, 3, 0 },		/* quan is variable */
+#define PIR_SNACK	5
+	{ BANANA, 0, FOOD_CLASS, 5, 0 },		/* type and quan vary */
+	{ POT_BOOZE, 0, POTION_CLASS, 3, 0 },
+	{ UNDEF_TYP, UNDEF_SPE, RING_CLASS, 1, 0 },
+	{ PICK_AXE, 0, TOOL_CLASS, 1, 0 },
+	{ OILSKIN_SACK, 0, TOOL_CLASS, 1, 0 },
+	{ 0, 0, 0, 0, 0 }
+};
 static struct trobj Priest[] = {
 	{ MACE, 1, WEAPON_CLASS, 1, 1 },
 	{ ROBE, 0, ARMOR_CLASS, 1, UNDEF_BLESS },
@@ -253,6 +271,7 @@ static struct inv_sub { short race_pm, item_otyp, subs_otyp; } inv_subs[] = {
  /* { PM_ELF,	SMALL_SHIELD,		ELVEN_SHIELD	      }, */
     { PM_ELF,	CLOAK_OF_DISPLACEMENT,	ELVEN_CLOAK	      },
     { PM_ELF,	CRAM_RATION,		LEMBAS_WAFER	      },
+    { PM_ELF,	KNIFE,			ELVEN_DAGGER	      },
     { PM_ORC,	DAGGER,			ORCISH_DAGGER	      },
     { PM_ORC,	SPEAR,			ORCISH_SPEAR	      },
     { PM_ORC,	SCIMITAR,		ORCISH_SCIMITAR	      },
@@ -401,6 +420,22 @@ static const struct def_skill Skill_Mon[] = {
     { P_MARTIAL_ARTS, P_GRAND_MASTER },
     { P_DART, P_BASIC },
     { P_MUSICAL_SPELL, P_SKILLED },
+    { P_NONE, 0 }
+};
+
+static const struct def_skill Skill_Pir[] = {
+    { P_DAGGER, P_EXPERT },		{ P_KNIFE, P_EXPERT },
+    { P_AXE, P_SKILLED },		{ P_PICK_AXE, P_SKILLED },
+    { P_SHORT_SWORD, P_BASIC },		{ P_LONG_SWORD, P_EXPERT },
+    { P_CURVED_SWORD, P_EXPERT },
+    { P_MACE, P_EXPERT },		{ P_FLAIL, P_EXPERT },
+    { P_SPEAR, P_EXPERT },
+    { P_CROSSBOW, P_EXPERT },		{ P_DART, P_SKILLED },
+    { P_WHIP, P_SKILLED },		{ P_UNICORN_HORN, P_BASIC },
+    { P_ATTACK_SPELL, P_BASIC },	{ P_DIVINATION_SPELL, P_BASIC },
+    { P_ENCHANTMENT_SPELL, P_BASIC },	{ P_ESCAPE_SPELL, P_SKILLED },
+    { P_TWO_WEAPON_COMBAT, P_SKILLED },
+    { P_BARE_HANDED_COMBAT, P_EXPERT },
     { P_NONE, 0 }
 };
 
@@ -695,6 +730,35 @@ u_init()
 		Cave_man[C_AMMO].trquan = rn1(11, 20);	/* 20..30 */
 		ini_inv(Cave_man);
 		skill_init(Skill_C);
+		break;
+	case PM_PIRATE:
+		{
+		    static const short snacks[] = { BANANA, ORANGE, JERKY,
+						    GRAPEFRUIT };
+		    struct obj *otmp;
+
+		    Pirate[PIR_KNIVES].trquan = 4 + rnd(4);		/* 5..8 */
+		    Pirate[PIR_CRAM].trquan = rn1(3, 2);		/* 2..4 */
+		    Pirate[PIR_SNACK].trotyp = snacks[rn2(SIZE(snacks))];
+		    Pirate[PIR_SNACK].trquan = rn1(7, 3);		/* 3..9 */
+		    /* an uncursed +1 leather jacket or +0 oilskin cloak */
+		    if (rn2(2)) {
+			Pirate[PIR_ARMOR].trotyp = OILSKIN_CLOAK;
+			Pirate[PIR_ARMOR].trspe = 0;
+		    }
+		    ini_inv(Pirate);
+		    /* the cutlass, knives and pick-axe are rustproof */
+		    for (otmp = invent; otmp; otmp = otmp->nobj)
+			if (otmp->otyp == SABER || otmp->otyp == KNIFE ||
+			    otmp->otyp == ELVEN_DAGGER ||
+			    otmp->otyp == PICK_AXE) {
+			    otmp->oerodeproof = 1;
+			    otmp->rknown = 1;
+			}
+		    knows_object(OILSKIN_CLOAK);
+		    knows_object(OILSKIN_SACK);
+		    skill_init(Skill_Pir);
+		}
 		break;
 	case PM_BARD:
 		/* silver dagger, short sword or messer (1/3 each) */
@@ -1080,6 +1144,7 @@ int otyp;
      case PM_PRIEST:		skills = Skill_P; break;
      case PM_RANGER:		skills = Skill_Ran; break;
      case PM_BARD:		skills = Skill_Bard; break;
+     case PM_PIRATE:		skills = Skill_Pir; break;
      case PM_ROGUE:		skills = Skill_R; break;
      case PM_SAMURAI:		skills = Skill_S; break;
 #ifdef TOURIST
@@ -1178,6 +1243,10 @@ register struct trobj *trop;
 			/* Don't start with +0 or negative rings */
 			if (objects[otyp].oc_charged && obj->spe <= 0)
 				obj->spe = rne(3);
+			/* Pirates' rings are always +1 to +3 */
+			if (Role_if(PM_PIRATE) && obj->oclass == RING_CLASS &&
+				objects[otyp].oc_charged)
+				obj->spe = rnd(3);
 
 			/* Heavily relies on the fact that 1) we create wands
 			 * before rings, 2) that we create rings before

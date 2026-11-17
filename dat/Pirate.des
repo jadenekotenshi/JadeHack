@@ -1,0 +1,328 @@
+#	Pirate.des
+#	Pirate quest levels for JadeHack, after the Pirate quest of Chris's
+#	patch (also in dNetHack): Tortuga, a flooded filler, the shoreline
+#	of Shipwreck Island, a cavern, and the caldera where Blackbeard's
+#	Ghost sits on the Treasury of Proteus.  Pirates swim, so water is
+#	no obstacle to them.  Scimitars in this file turn into scimitars,
+#	falchions, messers, sabers or silver sabers (see create_object()).
+#
+LEVEL: "Pir-strt"
+FLAGS: noteleport,hardfloor,mazelevel
+INIT_MAP:solidfill,' '
+MON_GENERATION:86%, (96,"skeletal pirate"), (24,'r'), (24,"soldier"), (6,'E')
+GEOMETRY:center,center
+MAP
+}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}
+}}}}...............................               ......................}}}}
+}}}.|-----|.|-----|.|-----|.|----|.     .....     |---------------------|}}}
+}}..|.....|.|.....|.|.....|.|....|.     .....     |.....................|.}}
+}}..|.....|.|.....|.|.....|.|....|.    ......     |.....................|.}}
+}}..|--+--|.|--+--|.|--+--|.|-+--|.    ........   |......|-------|......|.}}
+}}.................................   .........   |......|.......|......|.}}
+}}................................................|......|.......|......|.}}
+}}................................................+......+.......+......|.}}
+}}.|--+--|.|--+--|.|--+--|.|--+--|.  ...........  |......|.......|......|.}}
+}}.|.....|.|.....|.|.....|.|.....|.   .........   |......|.......|......|.}}
+}}.|.....|.|.....|.|.....|.|.....|.    ........   |......|-------|......|.}}
+}}.|.....|.|.....|.|.....|.|.....|.    .......    |.....................|.}}
+}}.|.....|.|.....|.|.....|.|.....|.     ......    |.....................|.}}
+}}.|-----|.|-----|.|-----|.|-----|.     .....     |.....................|.}}
+}}}................................    ......     |---------------------|}}}
+}}}}...............................               ......................}}}}
+}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}
+ENDMAP
+REGION:(00,00,75,17),lit,"ordinary"
+REGION:(36,02,48,15),unlit,"ordinary"
+REGION:(04,10,08,13),lit,"potion shop"
+REGION:(12,10,16,13),lit,"weapon shop"
+REGION:(20,10,24,13),lit,"weapon shop"
+REGION:(28,10,32,13),lit,"tool shop"
+REGION:(29,03,32,04),lit,"ordinary"
+STAIR:(61,08),down
+BRANCH:(05,03,25,04),(0,0,0,0)
+NON_DIGGABLE:(00,00,75,17)
+DOOR:closed,(06,09)
+DOOR:closed,(14,09)
+DOOR:closed,(22,09)
+DOOR:closed,(30,09)
+DOOR:closed,(30,05)
+DOOR:closed,(50,08)
+DOOR:closed,(57,08)
+DOOR:closed,(65,08)
+MONSTER:('@',"Mayor Cummerbund"),(42,08)
+MONSTER:('@',"pirate brother"),(40,09)
+MONSTER:('@',"pirate brother"),(44,07)
+MONSTER:('@',"pirate brother"),(14,08)
+MONSTER:('@',"pirate brother"),(03,08)
+MONSTER:('@',"pirate brother"),(25,07)
+MONSTER:('@',"pirate brother"),(07,06)
+MONSTER:('@',"pirate brother"),(17,06)
+MONSTER:('@',"pirate brother"),(19,08)
+MONSTER:('Z',"skeletal pirate"),(15,08)
+MONSTER:('Z',"skeletal pirate"),(07,07)
+MONSTER:('Z',"skeletal pirate"),(04,07)
+MONSTER:('Z',"skeletal pirate"),(25,06)
+MONSTER:('Z',"skeletal pirate"),(29,08)
+MONSTER:('Z',"skeletal pirate"),(13,08)
+MONSTER:('Z',"skeletal pirate"),(28,06)
+MONSTER:('Z',"skeletal pirate"),(11,07)
+MONSTER:('Z',"skeletal pirate"),(20,06)
+MONSTER:('Z',"skeletal pirate"),(33,07)
+MONSTER:('Z',"skeletal pirate"),(16,06)
+MONSTER:('Z',"skeletal pirate"),(19,06)
+MONSTER:(' ',"ghost"),(08,08)
+MONSTER:(' ',"ghost"),(29,07)
+MONSTER:(' ',"ghost"),(23,08)
+MONSTER:('&',"succubus"),(30,03)
+MONSTER:('&',"incubus"),(31,04)
+MONSTER:('@',"sergeant"),(63,09)
+MONSTER:('@',"soldier"),(59,06)
+MONSTER:('@',"soldier"),(64,07)
+MONSTER:('@',"soldier"),(59,08)
+MONSTER:('@',"soldier"),(70,13)
+MONSTER:('@',"soldier"),(54,05)
+MONSTER:('@',"soldier"),(63,12)
+MONSTER:('@',"soldier"),(61,03)
+MONSTER:('@',"soldier"),(65,04)
+MONSTER:('@',"soldier"),(62,14)
+LOOP [3 + 1d3] {
+  OBJECT:random,random
+}
+LOOP [2] {
+  TRAP:random,random
+}
+WALLIFY
+
+LEVEL: "Pir-fila"
+FLAGS:mazelevel,noflip
+INIT_MAP:solidfill,' '
+MON_GENERATION:86%, (96,"skeletal pirate"), (24,'r'), (24,"soldier"), (6,'E')
+GEOMETRY:center,center
+MAP
+}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}
+}}}}}.....}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}.......}}}}}}}}}}}}}}}}}}}
+}}}.........}}}}}}}.....}}}}}}}}}}}}}}}}}}}...}}...........}}}}}}}}}}}}}}}}}
+}}...........}}}}}.......}}}}}}}.........}..................}}}}}}}}}}}}}}}}
+}}...........}}}}.........}}}}..............................}}}}}}}}}}}}}}}}
+}}...........}}}..........}}}}..............................}}}}}}}}}}}}}}}}
+}}}.........}.............}}}}.................}...........}}}}}}}}}}}}}}}}}
+}}}}}.....}...............}}}}}}...............}}}.......}}}}}}}}}}}}}}}}}}}
+}}}}}}}}}}}...............}}}}}}}}}}}}........}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}
+}}}}}}}}}}}...............}}}}}}...}}}.....}}}}}}.....}}}}}}}}}}}}}}}}}}}}}}
+}}}}}}}}}}}}}............}}}}}}.....}}.....}}}}}.......}}}}}}}}}}}}}...}}}}}
+}}}}}}}}}}}}}}}}..........}}}}.......}.....}}}}.........}}}}}}}}}}}.....}}}}
+}}}}}}}}}}}}}}}}}}.......}}}}}.......}.....}}}}.........}}}}}}}}}}}}...}}}}}
+}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}.......}}...}}............}}}}}}}}}}}}}}}}}}}}
+}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}.....}}}}}}}............}}}}}}}}}}}}}}}}}}}}}
+}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}...}}}}}}}}}..........}}}}}}}}}}}}}}}}}}}}}}
+}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}
+}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}
+ENDMAP
+REGION:(00,00,75,17),lit,"ordinary"
+STAIR:(07,02),up
+STAIR:(59,03),down
+LOOP [3] {
+  MONSTER:('Z',"skeletal pirate"),random
+}
+LOOP [3] {
+  MONSTER:('@',"soldier"),random
+}
+LOOP [4] {
+  MONSTER:('B',"parrot"),random
+}
+LOOP [2] {
+  MONSTER:('Y',"monkey"),random
+}
+MONSTER:(' ',"ghost"),random
+LOOP [4 + 1d4] {
+  OBJECT:random,random
+}
+LOOP [3] {
+  TRAP:random,random
+}
+
+LEVEL: "Pir-loca"
+FLAGS:mazelevel,noteleport
+INIT_MAP:solidfill,' '
+MON_GENERATION:86%, (96,"skeletal pirate"), (24,'r'), (24,"soldier"), (6,'E')
+GEOMETRY:center,center
+MAP
+}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}
+}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}      }}}}}}}}}
+}}}}}}}}}}}}}}}}}}}}}}}}}}}}}...............}}}}}}}}}}}}}     ....   }}}}}}}
+}}.......}}}}}}}}}}}}}}}}}.....................}}}}}}}}}  . ........   }}}}}
+}..........}}}}}}}}}}}}...........................}}}    .............   }}}
+}...........}}}}}}}}}}...|----------+----------|...}} ..................  }}
+}............}}}}}}}}....|..........|..........|...   ................... }}
+}............}}}}}}}.....|..........|..........|      ................... }}
+}........................+..........+..........|......................... }}
+}........................|..........|..........|     .................... }}
+}............}}}}}}}.....|..........|..........|...  .................... }}
+}............}}}}}}}}....|..........|..........|...} ..................   }}
+}............}}}}}}}}}...|----------+----------|...}  ................  }}}}
+}...........}}}}}}}}}}}...........................}}}   .............. }}}}}
+}..........}}}}}}}}}}}}}}}.....................}}}}}}}}  . ..........  }}}}}
+}}}}}}}}}}}}}}}}}}}}}}}}}}}}}...............}}}}}}}}}}}}     ....     }}}}}}
+}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}      }}}}}}}}}}
+}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}
+ENDMAP
+REGION:(00,00,75,17),lit,"ordinary"
+REGION:(52,01,74,16),unlit,"ordinary"
+STAIR:(03,09),up
+STAIR:(66,04),down
+DOOR:secret,(47,08)
+DOOR:closed,(25,08)
+DOOR:closed,(36,08)
+NON_DIGGABLE:(26,06,46,11)
+MONSTER:(';',"shark"),(24,15)
+MONSTER:(';',"shark"),(18,05)
+MONSTER:(';',"shark"),(15,12)
+MONSTER:(';',"shark"),(21,03)
+MONSTER:(';',"shark"),(14,05)
+MONSTER:(';',"shark"),(23,02)
+MONSTER:('Z',"skeletal pirate"),(04,05)
+MONSTER:('Z',"skeletal pirate"),(10,09)
+MONSTER:('Z',"skeletal pirate"),(12,07)
+MONSTER:('Z',"skeletal pirate"),(06,11)
+MONSTER:('Z',"skeletal pirate"),(07,04)
+MONSTER:('Z',"skeletal pirate"),(02,04)
+MONSTER:('Z',"skeletal pirate"),(07,13)
+MONSTER:('Z',"skeletal pirate"),(04,09)
+MONSTER:(' ',"ghost"),(12,06)
+OBJECT:random,(03,11)
+OBJECT:random,(09,11)
+OBJECT:random,(09,06)
+OBJECT:random,(07,09)
+OBJECT:random,(02,10)
+MONSTER:('@',"soldier"),(43,07)
+MONSTER:('@',"soldier"),(34,11)
+MONSTER:('@',"soldier"),(41,09)
+MONSTER:('@',"soldier"),(27,11)
+MONSTER:('@',"soldier"),(30,06)
+MONSTER:('@',"soldier"),(30,09)
+MONSTER:('@',"soldier"),(46,08)
+MONSTER:('@',"soldier"),(35,06)
+MONSTER:('@',"soldier"),(32,08)
+MONSTER:('@',"lieutenant"),(42,08)
+MONSTER:('@',"captain"),(44,09),"Captain Ketch",hostile
+MONSTER:('Z',"skeletal pirate"),(65,13)
+MONSTER:('Z',"skeletal pirate"),(64,07)
+MONSTER:('Z',"skeletal pirate"),(66,03)
+MONSTER:('Z',"skeletal pirate"),(62,03)
+MONSTER:('Z',"skeletal pirate"),(56,13)
+MONSTER:('Z',"skeletal pirate"),(65,12)
+MONSTER:('Z',"skeletal pirate"),(64,05)
+MONSTER:('Z',"skeletal pirate"),(58,04)
+MONSTER:('Z',"skeletal pirate"),(54,07)
+MONSTER:('Z',"skeletal pirate"),(66,12)
+MONSTER:('Z',"skeletal pirate"),(57,07)
+MONSTER:(' ',"ghost"),(63,07)
+MONSTER:(' ',"ghost"),(62,12)
+MONSTER:(' ',"ghost"),(64,09)
+MONSTER:('&',"damned pirate"),(61,11)
+LOOP [9] {
+  OBJECT:(')',"scimitar"),random
+}
+LOOP [15] {
+  OBJECT:random,random
+}
+LOOP [4] {
+  TRAP:random,random
+}
+WALLIFY
+
+LEVEL: "Pir-filb"
+FLAGS:mazelevel,noflip
+INIT_MAP: mines, '.' , ' ', true, true, unlit, true
+MON_GENERATION:86%, (96,"skeletal pirate"), (24,'r'), (24,"soldier"), (6,'E')
+NOMAP
+STAIR: random, up
+STAIR: random, down
+LOOP [7] {
+  OBJECT: random, random
+}
+LOOP [7] {
+  TRAP: random, random
+}
+LOOP [11] {
+  MONSTER: ('Z', "skeletal pirate"), random
+}
+LOOP [3] {
+  MONSTER: (' ', "ghost"), random
+}
+MONSTER: ('&', "damned pirate"), random
+MONSTER: ('@', "sergeant"), random, hostile
+
+LEVEL: "Pir-goal"
+FLAGS:mazelevel,noteleport
+INIT_MAP:solidfill,' '
+MON_GENERATION:86%, (96,"skeletal pirate"), (24,'r'), (24,"soldier"), (6,'E')
+GEOMETRY:center,center
+MAP
+                                                                            
+                                                                     ..     
+          .....                                              ..     ....    
+        .......                 .                           ....   ....     
+       ........                ...                          ....   ..       
+      .........    ...          ...   .                     ....  ..        
+      .........  ......         ...........                .........        
+       .................       ..............            ............       
+       .................      ...............           .............       
+        .................    .................          ..............      
+        ..................   ................ ....     .................    
+        ........... .......  ...................................  ......    
+         .......... ............ ........................  ....    ...      
+         ...  .................   .....    ..............  ...     ..       
+          .   ................    ....     .....   .....   ..      ..       
+               .....              ....     ....     ....                    
+                                   ..       ..       ..                     
+                                                                            
+ENDMAP
+REGION:(00,00,75,17),unlit,"ordinary"
+STAIR:(06,05),up
+NON_DIGGABLE:(00,00,75,17)
+OBJECT:('(',"chest"),(38,09),blessed,0,NAME:"The Treasury of Proteus"
+MONSTER:('@',"Blackbeard's Ghost"),(38,09)
+GOLD:475,(41,10)
+GOLD:245,(36,09)
+GOLD:887,(43,08)
+GOLD:504,(42,09)
+GOLD:528,(34,10)
+GOLD:694,(43,09)
+OBJECT:'*',(39,07)
+OBJECT:'*',(38,12)
+OBJECT:'*',(33,07)
+OBJECT:'*',(43,10)
+OBJECT:('(',"chest"),(34,08)
+OBJECT:('(',"chest"),(32,09)
+OBJECT:('(',"chest"),(33,11)
+OBJECT:('(',"chest"),(38,06)
+OBJECT:('(',"chest"),(32,08)
+LOOP [5] {
+  OBJECT:(')',"scimitar"),random
+}
+LOOP [6] {
+  OBJECT:')',random
+}
+LOOP [6] {
+  OBJECT:'(',random
+}
+LOOP [4] {
+  TRAP:random,random
+}
+LOOP [15] {
+  MONSTER:('Z',"human zombie"),random
+}
+LOOP [2] {
+  MONSTER:'Z',random
+}
+LOOP [8] {
+  MONSTER:('W',"wraith"),random
+}
+MONSTER:'W',random
+LOOP [3] {
+  MONSTER:('&',"damned pirate"),random
+}
+LOOP [9] {
+  MONSTER:('Z',"skeletal pirate"),random
+}

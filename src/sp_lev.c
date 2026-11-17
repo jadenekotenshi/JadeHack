@@ -1732,8 +1732,15 @@ struct mkroom	*croom;
 
 	if (!c)
 	    otmp = mkobj_at(RANDOM_CLASS, x, y, !named);
-	else if (o->id != -1)
-	    otmp = mksobj_at(o->id, x, y, TRUE, !named);
+	else if (o->id != -1) {
+	    int id = o->id;
+
+	    /* the Pirate quest strews its scimitars: a scimitar, falchion,
+	       messer, saber or silver saber */
+	    if (id == SCIMITAR && Role_if(PM_PIRATE) && In_quest(&u.uz))
+		id = pirate_blade();
+	    otmp = mksobj_at(id, x, y, TRUE, !named);
+	}
 	else {
 	    /*
 	     * The special levels are compiled with the default "text" object

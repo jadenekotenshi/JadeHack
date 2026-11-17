@@ -1008,7 +1008,8 @@ int final;	/* 0 => still in progress; 1 => over, survived; 2 => dead */
 				"the Envoy of Balance",
 				"the Glory of Arioch"
 	    };
-	    you_are(hofe_titles[u.uevent.uhand_of_elbereth - 1]);
+	    you_are(Role_if(PM_PIRATE) ? "the Pirate King" :
+		    hofe_titles[u.uevent.uhand_of_elbereth - 1]);
 	}
 #endif
 
@@ -1351,7 +1352,7 @@ int final;
 				"the Envoy of Balance",
 				"the Glory of Arioch"
 	    };
-	    dump(youwere,
+	    dump(youwere, Role_if(PM_PIRATE) ? "the Pirate King" :
 		(char *)hofe_titles[u.uevent.uhand_of_elbereth - 1]);
 	}
 #endif

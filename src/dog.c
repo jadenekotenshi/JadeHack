@@ -37,6 +37,8 @@ pet_type()
 {
 	if (urole.petnum != NON_PM)
 	    return (urole.petnum);
+	else if (Role_if(PM_PIRATE))		/* a parrot or a monkey */
+	    return (rn2(2) ? PM_PARROT : PM_MONKEY);
 	else if (preferred_pet == 'c')
 	    return (PM_KITTEN);
 	else if (preferred_pet == 'd')
