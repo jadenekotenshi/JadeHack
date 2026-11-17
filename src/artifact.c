@@ -1538,11 +1538,12 @@ int dieroll; /* needed for Magicbane and vorpal blades */
 	if (otmp->oartifact == ART_SPINESEEKER && !youdefend && mdef->mflee)
 	    *dmgptr *= 2;
 
-	/* Luck Blade: sometimes strikes deep (1 in 20 - Luck) */
+	/* Luck Blade: sometimes strikes deep (1 in 14 - Luck, so every time
+	   at the maximum Luck of 13) */
 	if (otmp->oartifact == ART_LUCK_BLADE && youattack &&
-		!rn2(max(1, 20 - Luck))) {
+		!rn2(max(1, 14 - Luck))) {
 	    You("strike deep into %s!", mon_nam(mdef));
-	    *dmgptr += d(3,8);
+	    *dmgptr += d(2,8);
 	    return TRUE;
 	}
 

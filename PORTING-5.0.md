@@ -676,3 +676,7 @@ Not done: pirate-speak renames other than the cutlass (rum, sea biscuits, ditty 
 ## Batch 48: Grayswandir nerf
 
 Grayswandir no longer doubles the damage of every hit. It now gives +d5 to hit and +2d8 damage against everything (`spec_dbon()`, `PHYS(5,16)` in `artilist.h`), a mean of 20.5 at +7 against small monsters instead of 23, and 13.5 at +0 instead of 9. The two cross at +4.5; above that the old doubling was stronger. Against small monsters it is now exactly 1.0 per hit above Kiku-Ichimonji at any enchantment. The silver bonus against silver-haters is unchanged. Only the binary changes; saves and bones still load.
+
+## Batch 49: Luck Blade deep strike
+
+The Luck Blade's deep strike now happens with chance 1 in (14 - Luck) per hit (it was 1 in 20 - Luck), so it fires on every hit at the maximum Luck of 13, and it adds 2d8 damage instead of 3d8. Against small monsters at +7 (14.5 before the strike: d6 + 7 + the flat +4) the mean is now 15.1 at Luck 0, 15.3 at Luck 3, 16.0 at Luck 8, 16.8 at Luck 10, 19.0 at Luck 12 and **23.5** at Luck 13; it used to be 15.2, 15.3, 15.6, 15.8, - and 16.4 at Luck 13. Normal-Luck play is therefore unchanged (still the weakest of the named blades), while at maximum Luck it is 3.0 above Grayswandir's +2d8 (20.5), which in turn gets its silver bonus against silver-haters. Only the binary changes; saves and bones still load.
