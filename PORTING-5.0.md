@@ -549,3 +549,5 @@ The spec gave only the mouse and rat damage and called the demighost "slightly s
 ## Batch 36: attribute points
 
 Cave-dwellers start with 80 total attribute points instead of 75 (`init_attr()` call in `u_init.c`). Bard secondary attributes now favor Strength and Dexterity equally: the attribute weights (Str Int Wis Dex Con Cha) are 20/10/10/20/10/30, with Charisma still the top attribute (was 10/10/15/25/10/30, Dexterity second).
+
+Quicksilver: if you are already fast or very fast when you wield it, you get the message "You speed up even more!" (`set_artifact_intrinsic()`).

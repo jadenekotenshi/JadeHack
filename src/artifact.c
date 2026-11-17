@@ -696,6 +696,9 @@ long wp_mask;
 	    else ESearching &= ~wp_mask;
 	}
 	if (spfx & SPFX_FAST) {
+	    /* already fast or very fast: wielding speeds you up further */
+	    if (on && !restoring && !ESuper_fast && Fast)
+		You("speed up even more!");
 	    if (on) ESuper_fast |= wp_mask;
 	    else ESuper_fast &= ~wp_mask;
 	}
