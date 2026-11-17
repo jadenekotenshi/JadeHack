@@ -3334,7 +3334,7 @@ struct permonst _mons2[] = {
 	/* Riders -- the Four Horsemen of the Apocalypse ("War" == player)
 	 */
     MON("Mephistopheles", S_DEMON,
-	LVL(115, 15, -15, 98, A_NONE), (G_HELL|G_NOCORPSE|G_NOGEN|G_UNIQ),
+	LVL(115, 12, -15, 98, A_NONE), (G_HELL|G_NOCORPSE|G_NOGEN|G_UNIQ),
 	A(ATTK(AT_WEAP, AD_PHYS, 6, 8), ATTK(AT_CLAW, AD_PHYS, 4, 8),
 	  ATTK(AT_CLAW, AD_PHYS, 4, 8), ATTK(AT_MAGC, AD_SPEL, 8, 8),
 	  ATTK(AT_MAGC, AD_CLRC, 8, 8), ATTK(AT_MAGC, AD_FIRE, 8, 8)),
