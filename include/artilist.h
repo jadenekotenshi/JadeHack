@@ -128,9 +128,11 @@ A("Werebane",			SILVER_SABER,
 	(SPFX_WARN|SPFX_RESTR|SPFX_DCLAS|SPFX_POLYC), 0, S_WERE,
 	PHYS(5,4),	SPDF_WERE,	NO_CARY,	0, A_NONE, NON_PM, NON_PM, 1500L ),
 
+/* Grayswandir: +d5 to hit and +2d8 damage against everything (it used to
+   double the damage; the flat 2d8 is in spec_dbon()) */
 A("Grayswandir",		SILVER_SABER,
 	(SPFX_RESTR|SPFX_HALRES), 0, 0,
-	PHYS(5,0),	SPDF_NONE,	NO_CARY,	0, A_LAWFUL, NON_PM, NON_PM, 8000L ),
+	PHYS(5,16),	SPDF_NONE,	NO_CARY,	0, A_LAWFUL, NON_PM, NON_PM, 8000L ),
 
 A("Giantslayer",		SLING,
 	(SPFX_WARN|SPFX_RESTR|SPFX_DCLAS|SPFX_STR), 0, S_GIANT,

@@ -1113,6 +1113,7 @@ int tmp;
 		case ART_PERNICIMORDAX:	return d(3,6);
 		case ART_KIKU_ICHIMONJI: return d(2,6);
 		case ART_REAVER:	return d(2,8);
+		case ART_GRAYSWANDIR:	return d(2,8);
 		default: break;
 	    }
 	}
