@@ -457,7 +457,7 @@ Rebuild makedefs and the data files after these changes (struct you grew).
 
 Bard (`src/role.c`, `u_init.c`, `monst.c`, `artilist.h`, `dat/Bard.des`, `dat/quest.txt`):
 human/gnome/orc, neutral or chaotic, SlashTHEM stats, ranks and gods
-(Minerva/Apollo/Linus); sleep resistance at XL5, stealth at XL10.  Starts with a
+(Minerva/Apollo/Fharlanghn); sleep resistance at XL5, stealth at XL10.  Starts with a
 +1 silver dagger, short sword or messer (1/3 each), +1 leather cloak, apples,
 oranges, booze, a harp or flute (orcs: bugle or tooled horn) and a bell or
 whistle; knows all instruments, the five bardic spellbooks and 5-15 random
