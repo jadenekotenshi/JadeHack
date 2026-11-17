@@ -1110,7 +1110,7 @@ int tmp;
 		case ART_QUICKSILVER:
 		case ART_SPINESEEKER:	return 4;
 		case ART_GUNGNIR:	return 10;
-		case ART_PERNICIMORDAX:	return d(3,6);
+		case ART_PERNICIMORDAX:	return d(4,4);
 		case ART_KIKU_ICHIMONJI: return d(2,6);
 		case ART_REAVER:	return d(2,8);
 		case ART_GRAYSWANDIR:	return d(2,8);

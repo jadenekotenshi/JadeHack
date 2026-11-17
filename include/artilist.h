@@ -195,7 +195,7 @@ A("Ravenbrand",			SCIMITAR,
 
 A("Pernicimordax",		CRYSTEEL_FALCHION,
 	(SPFX_RESTR|SPFX_ATTK), 0, 0,
-	COLD(5,6),	SPDF_NONE,	NO_CARY,	TIMED_COLD_RES, A_NEUTRAL, NON_PM, NON_PM, 3500L ),
+	COLD(5,4),	SPDF_NONE,	NO_CARY,	TIMED_COLD_RES, A_NEUTRAL, NON_PM, NON_PM, 3500L ),
 
 /*
  *	Dramborleg (as in EvilHack): warns of demons, but its +d8 to hit and

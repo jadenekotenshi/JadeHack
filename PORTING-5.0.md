@@ -680,3 +680,7 @@ Grayswandir no longer doubles the damage of every hit. It now gives +d5 to hit a
 ## Batch 49: Luck Blade deep strike
 
 The Luck Blade's deep strike now happens with chance 1 in (14 - Luck) per hit (it was 1 in 20 - Luck), so it fires on every hit at the maximum Luck of 13, and it adds 2d8 damage instead of 3d8. Against small monsters at +7 (14.5 before the strike: d6 + 7 + the flat +4) the mean is now 15.1 at Luck 0, 15.3 at Luck 3, 16.0 at Luck 8, 16.8 at Luck 10, 19.0 at Luck 12 and **23.5** at Luck 13; it used to be 15.2, 15.3, 15.6, 15.8, - and 16.4 at Luck 13. Normal-Luck play is therefore unchanged (still the weakest of the named blades), while at maximum Luck it is 3.0 above Grayswandir's +2d8 (20.5), which in turn gets its silver bonus against silver-haters. Only the binary changes; saves and bones still load.
+
+## Batch 50: Pernicimordax
+
+Pernicimordax's cold damage is now 4d4 (mean 10) instead of 3d6 (mean 10.5), against anything that is not cold resistant (`spec_dbon()`, `COLD(5,4)` in `artilist.h`). It is a little more consistent (spread 4 to 16 rather than 3 to 18) and still drops to a plain +1 falchion against cold-resistant monsters. Against small monsters at +7 the mean is 22.5 (was 23.0), or 12.5 against cold-resistant ones. Only the binary changes; saves and bones still load.
