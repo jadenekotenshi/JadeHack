@@ -1433,6 +1433,10 @@ const struct def_skill *class_skill;
 	if (Role_if(PM_KNIGHT) || Role_if(PM_VALKYRIE))
 		P_SKILL(P_SHIELD) = P_BASIC;
 
+	/* Rogues start out able to fight with two weapons */
+	if (Role_if(PM_ROGUE))
+		P_SKILL(P_TWO_WEAPON_COMBAT) = P_BASIC;
+
 	/* High potential fighters already know how to use their hands. */
 	if (P_MAX_SKILL(P_BARE_HANDED_COMBAT) > P_EXPERT)
 	    P_SKILL(P_BARE_HANDED_COMBAT) = P_BASIC;

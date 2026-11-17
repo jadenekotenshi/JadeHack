@@ -553,3 +553,5 @@ Cave-dwellers start with 80 total attribute points instead of 75 (`init_attr()` 
 Quicksilver: if you are already fast or very fast when you wield it, you get the message "You speed up even more!" (`set_artifact_intrinsic()`).
 
 Bards can advance Two-weapon combat to Basic (cap only; they start Unskilled).
+
+Rogues start with Two-weapon combat at Basic (`skill_init()` in `weapon.c`).
