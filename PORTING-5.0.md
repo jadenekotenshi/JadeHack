@@ -594,3 +594,9 @@ Two unaligned artifact rings (`artilist.h`, helpers in `artifact.c`/`spell.c`).
 A third unaligned artifact ring. Base ring: the "sapphire ring", else the "brass ring" (if sapphire is polymorph, conflict, aggravate monster or hunger, or unused), else a ring of protection (`fix_lotr_rings()`).
 
 While worn: shock and disintegration resistance (defn field), warning (spfx), magical breathing (`set_artifact_intrinsic()`, worn only), an AC bonus equal to the D&D 3rd edition Intelligence modifier, (Int - 10) / 2 rounded down and never negative (`vilya_ac_bonus()` in `find_ac()`, refreshed every turn while worn), and one extra HP of regeneration per turn on top of everything else (moveloop in `allmain.c`, also while polymorphed). Wearing it teaches healing if you do not know it (forgotten again when it comes off, bit 4 of `u.uringspells`), and healing, extra healing and superior healing (if you know them) are failure-free with the same restrictions as Narya and Nenya.
+
+## Batch 41: Aegis
+
+New lawful artifact, a dwarvish roundshield named **Aegis** (not self-willed, `SPFX_NOGEN` so it never generates randomly or as a sacrifice gift; wishable). Worn effects: reflection and petrification resistance (`set_artifact_intrinsic()`), shock resistance (defn), magic cancellation 3 on its own (`magic_negation()`), and a 1 in 3 chance for each shield bash to terrify the target (`shield_bash()` in `uhitm.c`; the bash itself still needs Basic shield skill and its usual odds). It is the crowning gift of a lawful Healer (`gcrownu()` in `pray.c`, if it does not already exist; also unrestricts the shield skill). `makesingular()` was taught that "Aegis" is not a plural so it can be wished for.
+
+Heads-up: a Healer wearing a heavy shield still takes the normal spellcasting penalty for shields.

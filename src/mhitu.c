@@ -877,6 +877,9 @@ struct monst *mon;
 	if (armor && armpro < objects[armor->otyp].a_can)
 	    armpro = objects[armor->otyp].a_can;
 #endif
+	/* Aegis gives magic cancellation 3 by itself */
+	if (mon == &youmonst && uarms && uarms->oartifact == ART_AEGIS)
+	    armpro = 3;
 	/* an amulet of guarding adds 2 to magic cancellation, up to 3 */
 	/* wielded Dramborleg adds 1 to magic cancellation */
 	if (mon == &youmonst && uwep && uwep->oartifact == ART_DRAMBORLEG &&

@@ -855,6 +855,16 @@ long wp_mask;
 				else EWarning &= ~wp_mask;
 	    }
 	}
+	if (otmp->oartifact == ART_AEGIS && wp_mask != W_ART) {
+	    /* the Gorgon's head: reflects and cannot turn you to stone */
+	    if (on) {
+		EReflecting |= wp_mask;
+		EStone_resistance |= wp_mask;
+	    } else {
+		EReflecting &= ~wp_mask;
+		EStone_resistance &= ~wp_mask;
+	    }
+	}
 	if (otmp->oartifact == ART_VILYA && wp_mask != W_ART) {
 	    if (on) EMagical_breathing |= wp_mask;
 	    else EMagical_breathing &= ~wp_mask;

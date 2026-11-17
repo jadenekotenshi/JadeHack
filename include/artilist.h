@@ -253,6 +253,17 @@ A("Nenya",			RIN_COLD_RESISTANCE,
 	NO_ATTK,	SPDF_COLD,	NO_CARY,	0, A_NONE, NON_PM, NON_PM, 5000L ),
 
 /*
+ *	Aegis: a lawful dwarvish roundshield, only available as the crowning
+ *	gift of a lawful Healer (gcrownu()) or by wishing.  Reflection and
+ *	stoning resistance (set_artifact_intrinsic()), shock resistance (defn),
+ *	magic cancellation 3 (magic_negation()) and a chance to terrify what
+ *	it bashes (shield_bash()).  Not self-willed.
+ */
+A("Aegis",			DWARVISH_ROUNDSHIELD,
+	(SPFX_NOGEN|SPFX_RESTR), 0, 0,
+	NO_ATTK,	SPDF_ELEC,	NO_CARY,	0, A_LAWFUL, NON_PM, NON_PM, 4000L ),
+
+/*
  *	Vilya: shock and disintegration resistance, warning (spfx) and magical
  *	breathing (set_artifact_intrinsic()); an Intelligence-based AC bonus
  *	(find_ac()), +1 HP regeneration (moveloop) and failure-free healing

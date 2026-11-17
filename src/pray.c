@@ -739,6 +739,23 @@ gcrownu()
 	unrestrict_weapon_skill(P_LONG_SWORD);
 	if (obj && obj->oartifact == ART_EXCALIBUR)
 	    discover_artifact(ART_EXCALIBUR);
+	/* a lawful Healer is given the Aegis */
+	if (Role_if(PM_HEALER) &&
+		!exist_artifact(DWARVISH_ROUNDSHIELD, artiname(ART_AEGIS))) {
+	    struct obj *shld = mksobj(DWARVISH_ROUNDSHIELD, FALSE, FALSE);
+
+	    shld = oname(shld, artiname(ART_AEGIS));
+	    if (shld && shld->oartifact == ART_AEGIS) {
+		shld->oeroded = shld->oeroded2 = 0;
+		shld->spe = 1;
+		at_your_feet("A shield");
+		dropy(shld);
+		u.ugifts++;
+		unrestrict_weapon_skill(P_SHIELD);
+		discover_artifact(ART_AEGIS);
+		pline("Athena's Aegis is yours.");
+	    }
+	}
 	break;
     case A_NEUTRAL:
 	if (class_gift != STRANGE_OBJECT) {

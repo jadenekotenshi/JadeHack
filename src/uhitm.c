@@ -366,6 +366,13 @@ struct monst *mtmp;
 	    mtmp->mstun = 1;
 	    pline("%s is stunned!", Monnam(mtmp));
 	}
+	/* Aegis: the Gorgon's head may terrify what it bashes */
+	if (uarms && uarms->oartifact == ART_AEGIS && mtmp->mhp > 0 &&
+		!rn2(3)) {
+	    if (canseemon(mtmp))
+		pline("%s is terrified by the Gorgon's head!", Monnam(mtmp));
+	    monflee(mtmp, rnd(10) + 5, TRUE, FALSE);
+	}
 }
 
 boolean

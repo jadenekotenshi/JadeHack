@@ -1681,8 +1681,9 @@ const char *oldstr;
 	bp = str;
 
 	while (*bp == ' ') bp++;
-	/* "Claiomh Solais" is not a plural */
-	if (!BSTRCMPI(bp, eos(bp)-6, "Solais")) return bp;
+	/* "Claiomh Solais" and "Aegis" are not plurals */
+	if (!BSTRCMPI(bp, eos(bp)-6, "Solais") ||
+	    !BSTRCMPI(bp, eos(bp)-5, "Aegis")) return bp;
 	/* find "cloves of garlic", "worthless pieces of blue glass" */
 	if ((p = strstri(bp, "s of ")) != 0) {
 	    /* but don't singularize "gauntlets", "boots", "Eyes of the.." */
