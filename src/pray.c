@@ -739,6 +739,22 @@ gcrownu()
 	unrestrict_weapon_skill(P_LONG_SWORD);
 	if (obj && obj->oartifact == ART_EXCALIBUR)
 	    discover_artifact(ART_EXCALIBUR);
+	/* a Samurai is given Kusanagi (a broadsword, i.e. a ninja-to) */
+	if (Role_if(PM_SAMURAI) &&
+		!exist_artifact(BROADSWORD, artiname(ART_KUSANAGI))) {
+	    struct obj *swd = mksobj(BROADSWORD, FALSE, FALSE);
+
+	    swd = oname(swd, artiname(ART_KUSANAGI));
+	    if (swd && swd->oartifact == ART_KUSANAGI) {
+		swd->oeroded = swd->oeroded2 = 0;
+		swd->spe = 1;
+		at_your_feet("A sword");
+		dropy(swd);
+		u.ugifts++;
+		discover_artifact(ART_KUSANAGI);
+		pline("Kusanagi-no-Tsurugi, the grass-cutter, is yours.");
+	    }
+	}
 	/* a lawful Healer is given the Aegis */
 	if (Role_if(PM_HEALER) &&
 		!exist_artifact(DWARVISH_ROUNDSHIELD, artiname(ART_AEGIS))) {

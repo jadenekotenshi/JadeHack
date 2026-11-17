@@ -1053,6 +1053,15 @@ glovecheck:		(void) rust_dmg(uarmg, "gauntlets", 1, TRUE, &youmonst);
 					 : "There is a spider web here.");
 		    break;
 		}
+		/* Kusanagi, the grass-cutter, slices through webs */
+		if (uwep && uwep->oartifact == ART_KUSANAGI) {
+		    if (webmsgok)
+			You("cut through %s spider web with %s!",
+			    a_your[trap->madeby_u], the(xname(uwep)));
+		    deltrap(trap);
+		    newsym(u.ux, u.uy);
+		    break;
+		}
 		if (webmsgok) {
 		    char verbbuf[BUFSZ];
 		    verbbuf[0] = '\0';

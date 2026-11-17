@@ -1411,6 +1411,12 @@ int dieroll; /* needed for Magicbane and vorpal blades */
 	 */
 	*dmgptr += spec_dbon(otmp, mdef, *dmgptr);
 
+	/* Kusanagi does double damage to snakes, dragons and other serpents */
+	if (otmp->oartifact == ART_KUSANAGI && !youdefend &&
+		(mdef->data->mlet == S_SNAKE || mdef->data->mlet == S_NAGA ||
+		 mdef->data->mlet == S_DRAGON || slithy(mdef->data)))
+	    *dmgptr *= 2;
+
 	/* Pernicimordax is deadly to merozalghi, on top of its cold */
 	if (otmp->oartifact == ART_PERNICIMORDAX && !youdefend &&
 		mdef->data == &mons[PM_MEROZALGHU])
@@ -1971,6 +1977,25 @@ arti_invoke(obj)
 	case ENLIGHTENING:
 	    enlightenment(0);
 	    break;
+	case WIND_BLAST: {
+	    struct obj pseudo;
+
+	    if (!getdir((char *)0)) {
+		pline("%s", Never_mind);
+		obj->age = monstermoves;
+		return 0;
+	    }
+	    pseudo = zeroobj;	/* act like a wand of wind */
+	    pseudo.otyp = WAN_WIND;
+	    pseudo.oclass = WAND_CLASS;
+	    pseudo.quan = 1L;
+	    pseudo.spe = 1;
+	    if (!u.dx && !u.dy && !u.dz)
+		(void) zapyourself(&pseudo, TRUE);
+	    else
+		weffects(&pseudo);
+	    break;
+	  }
 	case TIMED_COLD_RES:
 	    if (!u.ucoldres) You_feel("a chill run through you.");
 	    else You_feel("the chill deepen.");

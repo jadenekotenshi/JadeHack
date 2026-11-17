@@ -253,6 +253,17 @@ A("Nenya",			RIN_COLD_RESISTANCE,
 	NO_ATTK,	SPDF_COLD,	NO_CARY,	0, A_NONE, NON_PM, NON_PM, 5000L ),
 
 /*
+ *	Kusanagi: a lawful broadsword (the samurai call it a ninja-to), the
+ *	crowning gift of a Samurai.  +d10 damage against everything and double
+ *	damage against snakes, dragons and other serpentine monsters (see
+ *	artifact_hit()); fire and poison resistance while wielded; it cuts
+ *	through spider webs (dotrap()); #invoke works like a wand of wind.
+ */
+A("Kusanagi",			BROADSWORD,
+	(SPFX_NOGEN|SPFX_RESTR), 0, 0,
+	PHYS(0,10),	(SPDF_FIRE|SPDF_POISON),	NO_CARY,	WIND_BLAST, A_LAWFUL, NON_PM, NON_PM, 4000L ),
+
+/*
  *	Aegis: a lawful dwarvish roundshield, only available as the crowning
  *	gift of a lawful Healer (gcrownu()) or by wishing.  Reflection and
  *	stoning resistance (set_artifact_intrinsic()), shock resistance (defn),

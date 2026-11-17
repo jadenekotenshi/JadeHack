@@ -83,5 +83,6 @@ struct artifact {
 #define CREATE_AMMO	(LAST_PROP+9)
 #define FLING_POISON	(LAST_PROP+10)
 #define TIMED_COLD_RES	(LAST_PROP+11)
+#define WIND_BLAST	(LAST_PROP+12)
 
 #endif /* ARTIFACT_H */

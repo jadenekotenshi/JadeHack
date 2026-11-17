@@ -600,3 +600,13 @@ While worn: shock and disintegration resistance (defn field), warning (spfx), ma
 New lawful artifact, a dwarvish roundshield named **Aegis** (not self-willed, `SPFX_NOGEN` so it never generates randomly or as a sacrifice gift; wishable). Worn effects: reflection and petrification resistance (`set_artifact_intrinsic()`), shock resistance (defn), magic cancellation 3 on its own (`magic_negation()`), and a 1 in 3 chance for each shield bash to terrify the target (`shield_bash()` in `uhitm.c`; the bash itself still needs Basic shield skill and its usual odds). It is the crowning gift of a lawful Healer (`gcrownu()` in `pray.c`, if it does not already exist; also unrestricts the shield skill). `makesingular()` was taught that "Aegis" is not a plural so it can be wished for.
 
 Aegis never causes a spellcasting penalty, like the crystal shield (`percent_success()` skips both the role shield penalty and the heavy-shield halving for it).
+
+## Batch 42: Kusanagi
+
+New lawful artifact **Kusanagi**, a broadsword (Samurai see it as a "ninja-to" through the existing Japanese item names), `SPFX_NOGEN` and not self-willed. It is the crowning gift of a Samurai (`gcrownu()`, if it does not already exist).
+
+- +d10 damage against everything; double damage against snakes, nagas, dragons and anything with the slithy flag (`artifact_hit()`).
+- Fire and poison resistance while wielded.
+- Cuts through spider webs when you walk into one (`dotrap()`).
+- `#invoke` (new `WIND_BLAST` power) acts like zapping a wand of wind, including in the self direction; it uses the normal artifact invoke cooldown.
+Rebuild the data files; old saves and bones will not load.
