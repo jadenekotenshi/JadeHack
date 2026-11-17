@@ -517,6 +517,7 @@ unsigned int *stuckid, *steedid;	/* STEED */
 	ffruit = loadfruitchn(fd);
 
 	restnames(fd);
+	fix_lotr_rings();	/* ring appearances are known now */
 	restore_waterlevel(fd);
 
 #ifdef RECORD_ACHIEVE

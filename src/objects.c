@@ -636,6 +636,7 @@ RING((char *)0, 0, "zirconium",             100, 1, 0, 5, METAL, HI_METAL),
 RING((char *)0, 0, "zircon",                100, 1, 0, 8, MINERAL, CLR_WHITE),
 RING((char *)0, 0, "osmium",                100, 1, 0, 8, METAL, HI_METAL),
 RING((char *)0, 0, "plastic",               100, 1, 0, 5, PLASTIC, CLR_WHITE),
+RING((char *)0, 0, "platinum",              100, 1, 0, 8, PLATINUM, CLR_WHITE),
 #undef RING
 
 /* amulets ... - THE Amulet comes last because it is special */

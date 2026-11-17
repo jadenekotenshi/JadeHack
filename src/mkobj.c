@@ -682,6 +682,9 @@ boolean artif;
 			  otmp->otyp == RIN_HUNGER || !rn2(9))) {
 			curse(otmp);
 		}
+		/* may become Narya or Nenya if the base ring matches */
+		if (artif && !rn2(25))
+		    otmp = mk_artifact(otmp, (aligntyp)A_NONE);
 		break;
 	case ROCK_CLASS:
 		switch (otmp->otyp) {

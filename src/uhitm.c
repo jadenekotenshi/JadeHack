@@ -1054,6 +1054,9 @@ int dieroll;
 		tmp += rnd(6);
 	}
 
+	/* Narya and Nenya: extra damage with any melee, thrown or fired hit */
+	tmp += lotr_ring_damage(mon);
+
 	if (valid_weapon_attack) {
 	    struct obj *wep;
 

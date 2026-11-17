@@ -237,6 +237,22 @@ A("Ichigeki",			DAGGER,
 	PHYS(3,6),	SPDF_NONE,	NO_CARY,	0, A_NEUTRAL, NON_PM, NON_PM, 3500L ),
 
 /*
+ *	Narya and Nenya: unaligned rings whose base ring is chosen after the
+ *	ring appearances are shuffled (fix_lotr_rings() in artifact.c); the
+ *	otyp given here is only the fallback.  Their spell, damage and
+ *	Charisma effects are in spell.c and uhitm.c via ring_spell_free(),
+ *	lotr_ring_damage() and lotr_cha_bonus(); the resistance comes from the
+ *	defn field (skipped when the base ring already confers it).
+ */
+A("Narya",			RIN_FIRE_RESISTANCE,
+	SPFX_RESTR, 0, 0,
+	NO_ATTK,	SPDF_FIRE,	NO_CARY,	0, A_NONE, NON_PM, NON_PM, 5000L ),
+
+A("Nenya",			RIN_COLD_RESISTANCE,
+	SPFX_RESTR, 0, 0,
+	NO_ATTK,	SPDF_COLD,	NO_CARY,	0, A_NONE, NON_PM, NON_PM, 5000L ),
+
+/*
  *	The artifacts for the quest dungeon, all self-willed.
  */
 

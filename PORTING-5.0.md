@@ -576,3 +576,15 @@ Interpretation notes: "Fast" is the speed-boots property (very fast, 5/3 speed),
 - New **Ichigeki**: neutral dagger, +d3 to hit and +d6 damage to everything. Each hit has a 1 in 20 chance to strike a fatal weakness and kill outright ("Ichigeki hits <monster>'s fatal weakness!"); it does not work on shapeless (amorphous), unsolid or incorporeal monsters, puddings, jellies, blobs, the Riders, or while you are swallowed (`artifact_hit()`).
 - `makesingular()` no longer strips the "s" from "Solais", so the artifact can be wished for.
 - Adding artifacts changes the version check, so the dungeon and data files must be rebuilt (`make dungeon`, `dlb`); old saves and bones will not load.
+
+## Batch 39: Narya and Nenya
+
+Two unaligned artifact rings (`artilist.h`, helpers in `artifact.c`/`spell.c`).
+
+- **Base ring.** Ring appearances are shuffled each game, so the base ring is picked after the shuffle by `fix_lotr_rings()` (called from `hack_artifacts()` and again after `restnames()` in `restgamestate()`). Narya: the ring that currently looks like a "ruby ring", unless that is polymorph, conflict, aggravate monster or hunger, then the "gold ring" with the same test, then a ring of fire resistance. Nenya: "diamond ring", then "platinum ring", then a ring of cold resistance. An appearance that no real ring currently has counts as unavailable. A new filler ring appearance, "platinum", was added so a platinum ring can exist (it may be unused in a given game).
+- **Spell.** Wearing Narya teaches fireball if it is not already known; Nenya teaches cone of cold (`lotr_ring_on()`/`lotr_ring_off()` in `spell.c`, tracked in the new `u.uringspells`). The spell is forgotten again when the ring comes off, unless you knew it already. While the ring is worn its spell is always cast successfully (0% fail): `ring_spell_free()` skips hunger, strength, encumbrance, free-hands, confusion, stun, spell-memory and failure-rate checks. Only lack of Pw stops it. (This tree has no polymorph spellcasting restriction, so none is applied.)
+- **Damage.** `lotr_ring_damage()` adds 1d10 to every `hmon_hitmon()` hit (melee, thrown, fired, unarmed) against a foe that is not fire resistant (Narya) or not cold resistant (Nenya).
+- **Resistance.** Fire (Narya) or cold (Nenya) resistance through the artifact's defn field, skipped when the base ring is already fire or cold resistance.
+- **Charisma bonus.** `lotr_cha_bonus()` adds your Charisma to the base spell success chance for all spells, once per ring worn (so +Cha each, +2xCha with both).
+- **Generation.** Rings can become Narya or Nenya at creation with 1/25 odds when the ring type matches the current base ring; they can also be wished for.
+- The artifact count, ring list and `struct u` changed: rebuild the data files (dungeon, special levels, `dlb`); old saves and bones will not load.

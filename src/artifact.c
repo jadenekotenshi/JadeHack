@@ -54,6 +54,83 @@ STATIC_OVL xchar artidisco[NROFARTIFACTS];
 STATIC_DCL void NDECL(hack_artifacts);
 STATIC_DCL boolean FDECL(attacks, (int,struct obj *));
 
+/* Narya and Nenya: find the real ring type that currently has a given
+   appearance (the ring appearances are shuffled for each game) */
+STATIC_OVL int
+ring_with_appearance(desc)
+const char *desc;
+{
+	int i;
+
+	for (i = bases[RING_CLASS];
+	     i < NUM_OBJECTS && objects[i].oc_class == RING_CLASS; i++)
+	    if (OBJ_NAME(objects[i]) && OBJ_DESCR(objects[i]) &&
+		    !strcmp(OBJ_DESCR(objects[i]), desc))
+		return i;
+	return 0;
+}
+
+STATIC_OVL int
+lotr_base_ring(first, second, fallback)
+const char *first, *second;
+int fallback;
+{
+	int i, t;
+	const char *name[2];
+
+	name[0] = first;
+	name[1] = second;
+	for (i = 0; i < 2; i++) {
+	    t = ring_with_appearance(name[i]);
+	    if (t && t != RIN_POLYMORPH && t != RIN_CONFLICT &&
+		    t != RIN_AGGRAVATE_MONSTER && t != RIN_HUNGER)
+		return t;
+	}
+	return fallback;
+}
+
+/* choose the base rings of Narya and Nenya; must be redone after the
+   appearances are restored from a saved game */
+void
+fix_lotr_rings()
+{
+	artilist[ART_NARYA].otyp =
+		lotr_base_ring("ruby", "gold", RIN_FIRE_RESISTANCE);
+	artilist[ART_NENYA].otyp =
+		lotr_base_ring("diamond", "platinum", RIN_COLD_RESISTANCE);
+}
+
+/* extra damage from Narya (non fire resistant foes) and Nenya (non cold
+   resistant foes) while worn; applies to melee, thrown and fired attacks */
+int
+lotr_ring_damage(mon)
+struct monst *mon;
+{
+	int dmg = 0;
+
+	if (!mon) return 0;
+	if (((uleft && uleft->oartifact == ART_NARYA) ||
+	     (uright && uright->oartifact == ART_NARYA)) && !resists_fire(mon))
+	    dmg += rnd(10);
+	if (((uleft && uleft->oartifact == ART_NENYA) ||
+	     (uright && uright->oartifact == ART_NENYA)) && !resists_cold(mon))
+	    dmg += rnd(10);
+	return dmg;
+}
+
+/* Charisma-based spellcasting bonus from each of the two rings worn */
+int
+lotr_cha_bonus()
+{
+	int n = 0;
+
+	if ((uleft && uleft->oartifact == ART_NARYA) ||
+	    (uright && uright->oartifact == ART_NARYA)) n++;
+	if ((uleft && uleft->oartifact == ART_NENYA) ||
+	    (uright && uright->oartifact == ART_NENYA)) n++;
+	return n * ACURR(A_CHA);
+}
+
 /* handle some special cases; must be called after u_init() */
 STATIC_OVL void
 hack_artifacts()
@@ -84,6 +161,7 @@ hack_artifacts()
 	    artilist[urole.questarti].alignment = alignmnt;
 	    artilist[urole.questarti].role = Role_switch;
 	}
+	fix_lotr_rings();
 	/* Bards' first sacrifice gift is the Luck Blade, in their alignment */
 	if (Role_if(PM_BARD)) {
 	    artilist[ART_LUCK_BLADE].alignment = alignmnt;
@@ -628,11 +706,11 @@ long wp_mask;
 		this uses wp_mask directly and you can only have one of 
 		any given thing in the appropriate slot */
 	if (wp_mask & (W_WEP | W_ARMOR | W_AMUL | W_RING | W_TOOL)) {
-		if (oart->defn & SPDF_FIRE) {
+		if ((oart->defn & SPDF_FIRE) && otmp->otyp != RIN_FIRE_RESISTANCE) {
 			if (on) EFire_resistance |= wp_mask;
 			else EFire_resistance &= ~wp_mask;
 		}
-		if (oart->defn & SPDF_COLD) {
+		if ((oart->defn & SPDF_COLD) && otmp->otyp != RIN_COLD_RESISTANCE) {
 			if (on) ECold_resistance |= wp_mask;
 			else ECold_resistance &= ~wp_mask;
 		}

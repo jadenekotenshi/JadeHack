@@ -594,14 +594,79 @@ docast()
 {
 	int spell_no;
 
-	/* NetHack 3.6.0: a stunned hero can't cast */
-	if (Stunned) {
-	    You("are too impaired to cast a spell.");
-	    return 0;
-	}
-	if (getspell(&spell_no))
+	if (getspell(&spell_no)) {
+	    /* NetHack 3.6.0: a stunned hero can't cast (except with Narya's or
+	       Nenya's own spell) */
+	    if (Stunned && !ring_spell_free(spellid(spell_no))) {
+		You("are too impaired to cast a spell.");
+		return 0;
+	    }
 	    return spelleffects(spell_no, FALSE);
+	}
 	return 0;
+}
+
+/* Narya's fireball and Nenya's cone of cold can always be cast by the
+   wearer, whatever else hampers spellcasting (but not lack of energy) */
+boolean
+ring_spell_free(otyp)
+int otyp;
+{
+	int art;
+
+	if (otyp == SPE_FIREBALL) art = ART_NARYA;
+	else if (otyp == SPE_CONE_OF_COLD) art = ART_NENYA;
+	else return FALSE;
+	return (boolean)((uleft && uleft->oartifact == art) ||
+			 (uright && uright->oartifact == art));
+}
+
+/* wearing Narya or Nenya teaches its spell if it is not already known */
+void
+lotr_ring_on(obj)
+struct obj *obj;
+{
+	int i, otyp, bit;
+
+	if (!obj || obj->oclass != RING_CLASS) return;
+	if (obj->oartifact == ART_NARYA) { otyp = SPE_FIREBALL; bit = 1; }
+	else if (obj->oartifact == ART_NENYA) { otyp = SPE_CONE_OF_COLD; bit = 2; }
+	else return;
+	if (spell_known_p(otyp)) return;
+	for (i = 0; i < MAXSPELL; i++)
+	    if (spellid(i) == NO_SPELL) {
+		spl_book[i].sp_id = otyp;
+		spl_book[i].sp_lev = objects[otyp].oc_level;
+		spl_book[i].sp_know = 0;
+		incrnknow(i);
+		u.uringspells |= bit;
+		You("know the %s spell.", OBJ_NAME(objects[otyp]));
+		return;
+	    }
+}
+
+/* ...and the spell is forgotten again when the ring comes off */
+void
+lotr_ring_off(obj)
+struct obj *obj;
+{
+	int i, otyp, bit;
+
+	if (!obj || obj->oclass != RING_CLASS) return;
+	if (obj->oartifact == ART_NARYA) { otyp = SPE_FIREBALL; bit = 1; }
+	else if (obj->oartifact == ART_NENYA) { otyp = SPE_CONE_OF_COLD; bit = 2; }
+	else return;
+	if (!(u.uringspells & bit)) return;
+	u.uringspells &= ~bit;
+	for (i = 0; i < MAXSPELL; i++)
+	    if (spellid(i) == otyp) {
+		for (; i < MAXSPELL - 1; i++)
+		    spl_book[i] = spl_book[i + 1];
+		spl_book[MAXSPELL - 1].sp_id = NO_SPELL;
+		spl_book[MAXSPELL - 1].sp_lev = 0;
+		spl_book[MAXSPELL - 1].sp_know = 0;
+		break;
+	    }
 }
 
 STATIC_OVL const char *
@@ -765,6 +830,7 @@ boolean atme;
 	int energy, damage, chance, n, intell;
 	int skill, role_skill;
 	boolean confused = (Confusion != 0);
+	boolean ringfree = ring_spell_free(spellid(spell));
 	struct obj *pseudo;
 	struct obj* otmp;
 	coord cc;
@@ -773,7 +839,9 @@ boolean atme;
 	 * Spell casting no longer affects knowledge of the spell. A
 	 * decrement of spell knowledge is done every turn.
 	 */
-	if (spellknow(spell) <= 0) {
+	if (ringfree) {
+	    ;	/* Narya/Nenya: nothing but energy matters */
+	} else if (spellknow(spell) <= 0) {
 	    Your("knowledge of this spell is twisted.");
 	    pline("It invokes nightmarish images in your mind...");
 	    spell_backfire(spell);
@@ -786,7 +854,9 @@ boolean atme;
 	energy = (spellev(spell) * 5);    /* 5 <= energy <= 35 */
 
 
-	if (u.uhunger <= 10 && spellid(spell) != SPE_OBTAIN_FOOD) {
+	if (ringfree) {
+	    ;
+	} else if (u.uhunger <= 10 && spellid(spell) != SPE_OBTAIN_FOOD) {
 		You("are too hungry to cast that spell.");
 		return(0);
 	} else if (ACURR(A_STR) < 4)  {
@@ -846,7 +916,7 @@ boolean atme;
 	}
 
 	chance = percent_success(spell);
-	if (confused || (rnd(100) > chance)) {
+	if (!ringfree && (confused || (rnd(100) > chance))) {
 		You("fail to cast the spell correctly.");
 		u.uen -= energy / 2;
 		flags.botl = 1;
@@ -1269,6 +1339,8 @@ int spell;
 	int penalty;
 	boolean paladin_bonus;
 
+	if (ring_spell_free(spellid(spell))) return 100;
+
 	/* Calculate intrinsic ability (splcaster) */
 
 	splcaster = urole.spelbase;
@@ -1315,6 +1387,8 @@ int spell;
 	 * is based of their `magic' statistic. (Int or Wis)
 	 */
 	chance = 11 * statused / 2;
+	/* Narya and Nenya: Charisma bonus to all spellcasting */
+	chance += lotr_cha_bonus();
 
 	/*
 	 * High level spells are harder.  Easier for higher level casters.

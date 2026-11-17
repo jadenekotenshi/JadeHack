@@ -883,6 +883,7 @@ register struct obj *obj;
     if (obj == uswapwep) setuswapwep((struct obj *) 0);
     if (obj == uquiver) setuqwep((struct obj *) 0);
     if (obj == ulauncher) setulauncher((struct obj *) 0);
+    lotr_ring_on(obj);
 
     /* only mask out W_RING when we don't have both
        left and right rings of the same type */
@@ -999,6 +1000,7 @@ boolean gone;
 	impossible("Strange... I didn't know you had that ring.");
     if(gone) setnotworn(obj);
     else setworn((struct obj *)0, obj->owornmask);
+    lotr_ring_off(obj);
 
     switch(obj->otyp) {
 	case RIN_TELEPORTATION:

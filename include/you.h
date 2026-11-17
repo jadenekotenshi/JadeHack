@@ -310,6 +310,7 @@ struct you {
 	struct u_event	uevent;		/* certain events have happened */
 	struct u_have	uhave;		/* you're carrying special objects */
 	struct u_conduct uconduct;	/* KMH, conduct */
+	uchar		uringspells;	/* spells taught by Narya (1) and Nenya (2) */
 	struct attribs	acurr,		/* your current attributes (eg. str)*/
 			aexe,		/* for gain/loss via "exercise" */
 			abon,		/* your bonus attributes (eg. str) */
