@@ -455,7 +455,7 @@ A("The Master Key of Thievery", SKELETON_KEY,
 A("The Katana of Masamune",	KATANA,
 	(SPFX_NOGEN|SPFX_RESTR|SPFX_INTEL|SPFX_BEHEAD|SPFX_LUCK), 0, 0,
 	PHYS(0,8),	SPDF_NONE,	NO_CARY,
-	0,		A_LAWFUL, PM_SAMURAI, NON_PM, 4500L ),
+	0,		A_NONE, PM_SAMURAI, NON_PM, 4500L ),
 
 #ifdef TOURIST
 A("The Platinum Yendorian Express Card", CREDIT_CARD,

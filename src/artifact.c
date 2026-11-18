@@ -162,9 +162,12 @@ hack_artifacts()
 	struct artifact *art;
 	int alignmnt = aligns[flags.initalign].value;
 
-	/* Fix up the alignments of "gift" artifacts */
+	/* Fix up the alignments of "gift" artifacts (but a Samurai keeps
+	   Kiku-Ichimonji for lawful and Kusanagi for neutral characters) */
 	for (art = artilist+1; art->otyp; art++)
-	    if (art->role == Role_switch && art->alignment != A_NONE)
+	    if (art->role == Role_switch && art->alignment != A_NONE &&
+		    art != &artilist[ART_KIKU_ICHIMONJI] &&
+		    art != &artilist[ART_KUSANAGI])
 		art->alignment = alignmnt;
 
 	/* Excalibur can be used by any lawful character, not just knights

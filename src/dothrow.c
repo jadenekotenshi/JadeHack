@@ -657,12 +657,25 @@ mhurtle_step(arg, x, y)
 	 * DONE: pools and lava (DSR 3/2/08)
 	 */
 	if (goodpos(x, y, mon, MM_UNSAFEOK) && m_in_out_region(mon, x, y)) {
+	    struct trap *ttmp = t_at(x, y);
+
+	    /* a monster that falls through a hole or into a level teleporter
+	       leaves the level (its position fields then hold the place it
+	       arrives at), so it must stop short of one: callers go on using
+	       the monster afterwards */
+	    if (ttmp && (ttmp->ttyp == HOLE || ttmp->ttyp == TRAPDOOR ||
+			 ttmp->ttyp == LEVEL_TELEP ||
+			 ttmp->ttyp == MAGIC_PORTAL))
+		return FALSE;
 	    remove_monster(mon->mx, mon->my);
 	    newsym(mon->mx, mon->my);
 	    place_monster(mon, x, y);
 	    newsym(mon->mx, mon->my);
 	    set_apparxy(mon);
 	    (void) mintrap(mon);
+	    /* it may have died in the trap or been teleported away */
+	    if (DEADMONSTER(mon) || mon->mx != x || mon->my != y)
+		return FALSE;
 		 /* TODO: we need to check minliquid here eventually to see
 		  * if monsters can properly die, but for now... */
 	    return TRUE;

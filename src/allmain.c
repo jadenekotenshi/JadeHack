@@ -466,8 +466,12 @@ int n;
 	if (!m->mpeaceful) {
 	    m->mux = u.ux;
 	    m->muy = u.uy;
-	    for (i = 0; i < 2 && !DEADMONSTER(m) && !u.uswallow; i++)
+	    for (i = 0; i < 2 && !DEADMONSTER(m) && !u.uswallow; i++) {
 		(void) mattacku(m);
+		/* a theft that takes time (armor) is finished before the hero
+		   hits back; the hero would be helpless meanwhile */
+		ust_settle();
+	    }
 	}
 	u.dx = 1;
 	u.dy = 0;
@@ -760,6 +764,14 @@ use_stress_test()
     stress_input = 1;
     urole.spelbase = -100;		/* so that casting always works */
     ust_reset(&startlev);
+
+    /* what this hero would be given as a first sacrifice gift (the role
+       artifact for the hero's alignment, if there is one) */
+    o = mk_artifact((struct obj *) 0, u.ualign.type);
+    fprintf(f, "first gift for %s %s: %s\n", urace.noun, urole.name.m,
+	    o ? ONAME(o) : "(none)");
+    if (o) ust_free(o);
+
 
     ust_wishes(f);
 
