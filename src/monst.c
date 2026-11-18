@@ -3683,6 +3683,17 @@ struct permonst _mons2[] = {
 	SIZ(80, 20, 0, MS_SILENT, MZ_SMALL), MR_POISON, MR_POISON,
 	M1_SWIM|M1_AMPHIBIOUS|M1_SLITHY|M1_NOLIMBS|M1_NOTAKE|M1_POIS,
 	M2_HOSTILE, 0, M4_VULNERABLE_ELEC, CLR_BLUE),
+    /* a poisonous relative of the giant crab: weaker, but one claw is
+       poisonous, and its corpse is poisonous to eat (and may give poison
+       resistance) */
+    MON("venomous crab", S_EEL,
+	LVL(4, 12, 3, 0, 0), (G_GENO|G_NOGEN),
+	A(ATTK(AT_CLAW, AD_PHYS, 1, 6), ATTK(AT_CLAW, AD_DRST, 1, 6),
+	  NO_ATTK, NO_ATTK, NO_ATTK, NO_ATTK),
+	SIZ(300, 120, 0, MS_SILENT, MZ_MEDIUM), MR_POISON, MR_POISON,
+	M1_SWIM|M1_AMPHIBIOUS|M1_ANIMAL|M1_NOHANDS|M1_THICK_HIDE|
+	  M1_POIS|M1_CARNIVORE|M1_NOTAKE,
+	M2_HOSTILE, M3_INFRAVISIBLE, 0, CLR_GREEN),
     MON("piranha", S_EEL,
 	LVL(5, 12, 4, 0, 0), (G_GENO|G_NOGEN|G_SGROUP),
 	A(ATTK(AT_BITE, AD_PHYS, 2, 6), NO_ATTK,

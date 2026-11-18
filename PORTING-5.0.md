@@ -930,3 +930,7 @@ Correction to Batch 81: making the Katana of Masamune `A_NONE` changed nothing i
 ## Batch 84: spell failure message
 
 Failing to cast a spell prints "The air around you crackles as you goof up." half the time instead of "You fail to cast the spell correctly." (`spelleffects()` in `spell.c`). The failure itself (half the energy lost, the turn used) is unchanged. Only the binary changes.
+
+## Batch 85: venomous crab
+
+A new sea-monster-class monster (`;`), the green venomous crab, comes right after the jellyfish in `monst.c`. It is a weaker, poisonous relative of the giant crab: level 4 (the giant crab is 5), speed 12, AC 3, one ordinary 1d6 claw and one poisonous 1d6 claw (`AD_DRST`: strength loss, with the usual small chance of instant death for the poison), against the giant crab's two 1d8 claws. It swims, is amphibious, hostile and `M1_NOTAKE` like the other `;` monsters, so it stays in the water. It is poison resistant, and its corpse is poisonous to eat (`M1_POIS`: the usual poisonous-corpse penalty unless you resist) and may give poison resistance. Like the rest of the class it is never made at random (`G_NOGEN`); it is added to swamp rooms in `mkroom.c`, where the water monsters are now 60% giant eels, 20% venomous crabs, 10% piranhas and 10% electric eels (they were 80%, 0%, 10%, 10%). The monster numbers after it move up by one, so old saves are not compatible, and the data files (including the utilities and `nhdat`) must be rebuilt as for Batch 79. Created in wizard mode and run through the corpse stress test (5,965 kills, no crash).

@@ -476,10 +476,13 @@ mkswamp()	/* Michiel Huisjes & Fred de Wilde */
 			levl[sx][sy].typ = POOL;
 			if(!eelct || !rn2(4)) {
 			    /* mkclass() won't do, as we might get kraken */
-			    (void) makemon(rn2(5) ? &mons[PM_GIANT_EEL]
-						  : rn2(2) ? &mons[PM_PIRANHA]
-						  : &mons[PM_ELECTRIC_EEL],
-						sx, sy, NO_MM_FLAGS);
+			    int swr = rn2(10);
+
+			    (void) makemon(swr < 6 ? &mons[PM_GIANT_EEL]
+					   : swr < 8 ? &mons[PM_VENOMOUS_CRAB]
+					   : swr < 9 ? &mons[PM_PIRANHA]
+					   : &mons[PM_ELECTRIC_EEL],
+					   sx, sy, NO_MM_FLAGS);
 			    eelct++;
 			}
 		    } else
