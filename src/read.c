@@ -1524,7 +1524,7 @@ register struct obj	*sobj;
 		    }
 		    /* damage by beatitude: blessed 6d6, uncursed 4d6, cursed 2d6 */
 		    dam = d(4 + 2 * bcsign(sobj), 6);
-		    explode(cc.x, cc.y, 13, dam, SCROLL_CLASS, EXPL_FROSTY);
+		    explode(cc.x, cc.y, 12, dam, SCROLL_CLASS, EXPL_FROSTY);
 		}
 		/* leave ice on the floor in the blast area */
 		for (x = cc.x - 1; x <= cc.x + 1; x++)

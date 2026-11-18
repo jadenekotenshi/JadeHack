@@ -831,3 +831,12 @@ Crystal plate mail is not metallic, so it has no armor spellcasting penalty of i
 ## Batch 69: gloves and helm switch fixes
 
 Wearing gloves of expertise printed "Unknown type of gloves" because `Gloves_on()` and `Gloves_off()` had no case for them; the same was true of the helm of caution in `Helmet_on()` and `Helmet_off()`. Both are now handled (neither needs any effect of its own: expertise works through the skill code, caution through its warning property). The bow to-hit penalty switch in `thitmonst()` (`dothrow.c`) also did not know the newer gloves: gauntlets of protection now count as metal like gauntlets of power (-2 to hit with bows), and gauntlets of haste and gloves of expertise have no penalty. Wishing for, wearing and removing every new glove and helm was checked in wizard mode.
+
+## Batch 70: audit of the new items
+
+Every new wearable (helms, boots, shields, bracers, amulets, gnomish suit, all dragon scales and scale mail, crystal plate mail), every new weapon and staff, the three new wands, the scroll of ice, the new food and potion, the new containers and the new spells were wished for, used and checked against the panic log in wizard mode. Found and fixed:
+- **Scroll of ice** never made its frost blast: it passed explosion type 13 (a sleep ray) instead of 12 (cold) to `explode()`, which logged "explosion base type 13?" and returned (`read.c`).
+- **Wand of stinking fog** (and the spell of stench) zapped at yourself hit "object 490 used?" in `zapyourself()`; it now puts a cloud on your own square (`zap.c`).
+- **Wishing for the wand of stasis** gave a random wand, because the plural-stripping in `makesingular()` turned "stasis" into "stasi" (`objnam.c`). "Kas" and "Tindalos" are also protected from it now.
+- **Wishing for the Sword of Kas, the Hand of Vecna or the Eye of Vecna** by name gave a random sword, glove or lens, because "of Kas"/"of Vecna" was read as "figurine of a Kas". A name that is an artifact's name is no longer split that way (`objnam.c`).
+Not exercised: spellbook casting for the high-level new spells (a first-level Wizard fails them every time; each has its case in `spelleffects()`), and the dwarvish bearded axe's apply and the bag of poo beyond opening them.

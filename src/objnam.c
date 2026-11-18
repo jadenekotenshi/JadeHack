@@ -1689,7 +1689,9 @@ const char *oldstr;
 	if (!BSTRCMPI(bp, eos(bp)-6, "Solais") ||
 	    !BSTRCMPI(bp, eos(bp)-5, "Aegis") ||
 	    !BSTRCMPI(bp, eos(bp)-7, "Perseus") ||
-	    !BSTRCMPI(bp, eos(bp)-7, "Proteus")) return bp;
+	    !BSTRCMPI(bp, eos(bp)-7, "Proteus") ||
+	    !BSTRCMPI(bp, eos(bp)-4, " Kas") ||
+	    !BSTRCMPI(bp, eos(bp)-8, "Tindalos")) return bp;
 	/* find "cloves of garlic", "worthless pieces of blue glass" */
 	if ((p = strstri(bp, "s of ")) != 0) {
 	    /* but don't singularize "gauntlets", "boots", "Eyes of the.." */
@@ -1749,6 +1751,7 @@ const char *oldstr;
 			   !BSTRCMP(bp, p-9, "gauntlets") ||
 			   !BSTRCMP(bp, p-6, "tricks") ||
 			   !BSTRCMP(bp, p-9, "paralysis") ||
+			   !BSTRCMP(bp, p-6, "stasis") ||
 			   !BSTRCMP(bp, p-5, "glass") ||
 			   !BSTRCMP(bp, p-4, "ness") ||
 			   !BSTRCMP(bp, p-14, "shape changers") ||
@@ -2163,12 +2166,17 @@ boolean from_user;
 	 * Don't check if it's a wand or spellbook.
 	 * (avoid "wand/finger of death" confusion).
 	 */
+	{
+	short artyp_;	/* "Sword of Kas", "Hand of Vecna": not a figurine */
+
 	if (!strstri(bp, "wand ")
 	 && !strstri(bp, "spellbook ")
-	 && !strstri(bp, "finger ")) {
+	 && !strstri(bp, "finger ")
+	 && !artifact_name(bp, &artyp_)) {
 	    if ((p = strstri(bp, " of ")) != 0
 		&& (mntmp = name_to_mon(p+4)) >= LOW_PM)
 		*p = 0;
+	}
 	}
 	/* Find corpse type w/o "of" (red dragon scale mail, yeti corpse) */
 	if (strncmpi(bp, "samurai sword", 13)) /* not the "samurai" monster! */

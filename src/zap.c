@@ -2225,6 +2225,13 @@ boolean ordinary;
 		    } while (didmerge);
 		    }
 		    break;
+		case WAN_STINKING_FOG:
+		case SPE_STENCH:
+		    /* zapped at yourself: a cloud on your own square (a line
+		       of them when aimed elsewhere; see weffects()) */
+		    if (obj->otyp == WAN_STINKING_FOG) makeknown(WAN_STINKING_FOG);
+		    (void) create_gas_cloud(u.ux, u.uy, 1, 8);
+		    break;
 		default: impossible("object %d used?",obj->otyp);
 		    break;
 	}
