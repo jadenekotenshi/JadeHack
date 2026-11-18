@@ -1,3 +1,165 @@
+                JadeHack -- General information
+
+JadeHack is a variant of NetHack 3.4.3 built on SporkHack (Derek S. Ray's
+fork of NetHack, 2007 onwards) by way of the "hardfought" SporkHack fork
+(NHTangles), with a large number of additions and ports of its own.  It uses
+the NetHack General Public License; see dat/license.
+
+This file has two parts.  The first part (below) says what is different from
+vanilla NetHack 3.4.3 and where it comes from.  The second part (after the
+line of dashes) is the original NetHack 3.4.3 README, which still describes how
+the source tree is laid out and how to build it.  The build is the standard
+NetHack 3.4.3 build (sys/unix/setup.sh and make); a full rebuild of the data
+files (makedefs, dungeon, quest.dat and the .lev files, and "make dlb") is
+needed whenever objects, monsters, artifacts or special levels change.
+
+Files you may want to read:
+
+    PORTING-5.0.md        a batch-by-batch log of everything added to JadeHack
+                          since SporkHack: what was ported from NetHack 3.6.x
+                          and 5.0, every original addition, and what was tested
+    README.new_lev_comp   the 3.6-style special level compiler (.des files)
+    README.statuscolors   the statuscolors option
+    doc/port-candidates-* and doc/port-features-5.0.txt
+                          the lists of NetHack 3.6 and 5.0 fixes and features
+                          that were considered for porting
+
+Saves and bones files from NetHack 3.4.3 and from SporkHack do not load, and
+saves and bones from different JadeHack builds usually do not load either.  The
+user configuration file is .jadehackrc, falling back to .nethackrc.  Wizard
+mode (-D) was the main way new content was tested.
+
+
+A.  What SporkHack changed relative to NetHack 3.4.3
+-----------------------------------------------------
+
+JadeHack inherits all of SporkHack.  The following is a summary taken from the
+SporkHack and hardfought change logs; it is not complete.
+
+Monsters and combat
+  * Monsters notice and remember your resistances and stop using attacks you
+    resist (breath, wands, thrown potions).  Monsters can also be vulnerable
+    to an element.  Monster hit dice depend on their size, and elementals hit
+    harder on their home plane.
+  * Berserk monsters attack anything between them and you; bigger monsters
+    push past or attack your pets.  Fighting makes noise, and fleeing
+    monsters may scream.  Monsters avoid traps they have seen.
+  * New monsters include snarks and boojums, a giant turtle, a shambling
+    horror (random stats each game), a gnome king and many others.  New
+    monster spells (fly, enrage); demon princes ask for far larger bribes and
+    cast wizard spells.
+  * Quest leaders can be killed to open the portal; quest levels vary more.
+  * Two-handed weapons get a doubled Strength bonus; #twoweapon takes time;
+    backstab bonuses no longer apply to thrown weapons; missiles shot from
+    proper launchers fly farther (crossbows more so).
+  * Resistances from corpses are partial: eating gives a percentage of a
+    resistance, which builds up over several corpses.  Telepathy is a ranged
+    attribute that grows when you eat telepathy corpses.  Invisibility and
+    see invisible from potions, boojum and stalkers are temporary.
+
+Items and magic
+  * Dragon scale mail has extra effects, including passive ones; gold
+    dragons were added.  New items include the shield of light, the helm of
+    discovery and clarity, gauntlets of force and fortune, small sacks, bags
+    of poo, braziers, spell staves (wielding the staff of a school of magic
+    helps spells of that school), salt and salt water, and a wand of wind.
+    Wands of wishing are no longer generated at random in the dungeon.
+  * Spells: fire bolt, ice bolt, a reflection spell, polymorph creature,
+    obtain food, repair armor and more.  Role, race and alignment
+    combinations were opened up.
+  * Artifact sacrifice gifts can be an ordinary good weapon or armor
+    instead; god gifts are +3 to +5.  Excalibur from fountains is for Knights
+    only.  "Hot/cold" Amulet tracking only needs the Amulet carried.
+  * New traps: spear traps, falling rocks, magic beams and claymore mines;
+    anti-magic fields drain Pw.
+
+Dungeon
+  * Orcish Town replaces Frontier Town; Zoo Town and Grotto Town variants;
+    more varied Mines ends; a pool room, a trap room, split rooms, iron bars,
+    random vaults and extra special room types; more shop types, with
+    racial shopkeepers; new big rooms; special levels may be flipped.
+  * Special level compiler: a much extended .des format (see
+    README.new_lev_comp): IF/LOOP/SWITCH, subroutines, RANDLINE,
+    REPLACE_TERRAIN, TERRAIN, MON_GENERATION, level flags, monster
+    inventories.
+
+Interface
+  * statuscolors, menucolors, dungeon names on the status line, the dark room
+    option, a dungeon overview, shop prices shown when you step on items,
+    "while helpless" in death reasons, xlogfile, label reading, showsym, and a
+    friendlier character selection screen.
+
+
+B.  What JadeHack adds
+----------------------
+
+Version: JadeHack 0.7.0, derived from SporkHack 0.7.0 (include/patchlevel.h).
+
+Ported from NetHack 3.6.x and 5.0 (see PORTING-5.0.md for the full list):
+  * Several hundred crash, memory safety and bug fixes (pline and option
+    buffer overflows, shop fixes, mons[-1] indexing and many more).
+  * Interface features: #vanquished and #genocided, monster size and
+    "asleep" in farlook and probing, swimconfirm and trapconfirm options,
+    boolean options as name:true/false and #toggle, and an item-actions menu
+    (press i, then choose an item).
+  * Gameplay: themed rooms (thirteen kinds), extra bare-handed punches at
+    high skill, blessed teleportation giving control, an amulet of flying, an
+    amulet of guarding, a wand of stasis, a helm of caution, a shield of drain
+    resistance, hallucination resistance from gold dragon armor, and the
+    genetic engineer.
+
+Original JadeHack additions
+  * Roles.  The Bard (human, elf, gnome or orc; songs are performed by
+    applying an instrument and use the Musicalize spell skill; quest at the
+    College of Parnassus, artifact the Lyre of Orpheus) and the Pirate
+    (human, elf or orc; swimming, speed and stealth intrinsics; the cutlass,
+    Reaver, the Marauder's Map and the Treasury of Proteus; a quest in Tortuga
+    and on Shipwreck Island).  Role skill and starting-gear changes for
+    Barbarians, Rangers, Archeologists, Healers, Knights and Priests.
+  * Weapons and armor: falchion, kriegsmesser, saber, messer, rapier, orcish
+    scimitar, crysteel falchion, silver knives and crossbow bolts, dwarvish
+    bearded axe, parrying dagger and main gauche, bracers, the crystal
+    shield, crystal plate mail and crystal helmet, gauntlets of protection,
+    gauntlets of haste, gloves of expertise, boots of shielding, and the
+    lucky, burst and sleep arrows.  New wands (stinking fog), scrolls (ice),
+    potions and rings fill the spare appearances.
+  * Skills: spear (now with trident and javelin), mace (with club and
+    morning star), long sword (with broadsword) and dart (with shuriken) were
+    merged; a new Shield skill; roles got new caps.  Object properties
+    (after EvilHack): fire, frost, shock, venom, drain, oilskin, ESP,
+    searching, warning, excellence, fumbling, hunger and thundering on
+    weapons and armor.  Artifacts can be wielded in the off hand only in
+    certain pairs (see artifact_offhand_ok() in src/artifact.c).
+  * Artifacts: Luck Blade, Quicksilver, Ravenbrand, Spineseeker, Gungnir,
+    Mouser's Scalpel, Pernicimordax, Dramborleg, Claiomh Solais, Ichigeki,
+    Kiku-Ichimonji (the old Snickersnee), Kusanagi, Grimtooth (5.0 version),
+    Reaver, Sword of Kas, Hand and Eye of Vecna, Narya, Nenya and Vilya,
+    Aegis, Yoichi no Yumi, Wallet of Perseus, the Marauder's Map, the
+    Treasury of Proteus, Plague, Heartseeker, Frostbite, Mirrorbright,
+    Durandal and Arcanos Guard.  Grayswandir, Sunsword, Werebane,
+    Frost Brand, Fire Brand and others were rebalanced.
+  * Monsters: dozens, among them the lemming and lemming zombie,
+    wire jelly, zuvembie, star and fire vampires, Kuei-jin, the nightgaunt,
+    byakhee and shoggoth families, impede, gug, ghost mice and rats,
+    chickens, the seven new lycanthropes (werebear, weretiger, werepanther,
+    werelynx, wereshark, weredemon and wereraven, plus werespiders),
+    Mephistopheles (a demon prince), deep ones, hounds of Tindalos, rutterkin,
+    redcaps, rabites and silktails, several giants (jotunn, Hrungnir), and
+    six gem dragons: emerald, topaz, sapphire, ruby, crystal and amethyst.
+    The gem dragons breathe wind, slowing time, psychic blasts, hellfire,
+    dazzling light and pure force, and their scales give magical breathing,
+    free action, stoning resistance, regeneration, half physical damage and
+    half spell damage.
+  * Dungeon branches and levels: the Mall (twelve shops) and the Rat Sewers
+    beneath it, Vecna's Domain (three levels, after EvilHack), the Sunless
+    Sea, the Spider Caves and the Giant Caverns (one level each, after
+    SLASH'EM), and the Bard and Pirate quests.
+
+For the stats, the design notes and what has and has not been played, read
+PORTING-5.0.md.
+
+----------------------------------------------------------------------------
+
                 NetHack 3.4.3 -- General information
 
 NetHack 3.4 is an enhancement to the dungeon exploration game NetHack.
