@@ -316,6 +316,16 @@ A("Heartseeker",		ELVEN_BOW,
 	NO_ATTK,	SPDF_NONE,	NO_CARY,	0, A_LAWFUL, NON_PM, NON_PM, 4000L ),
 
 /*
+ *	Mirrorbright: a neutral shield of reflection (so it reflects), with
+ *	hallucination resistance while worn, no spellcasting penalty (spell.c,
+ *	as for Aegis) and a weak light source (radius 1, lit while worn: see
+ *	artifact_light(), Shield_on() and Shield_off()).
+ */
+A("Mirrorbright",		SHIELD_OF_REFLECTION,
+	(SPFX_RESTR|SPFX_HALRES), 0, 0,
+	NO_ATTK,	SPDF_NONE,	NO_CARY,	0, A_NEUTRAL, NON_PM, NON_PM, 3000L ),
+
+/*
  *	Kusanagi: a lawful broadsword (the samurai call it a ninja-to), the
  *	crowning gift of a Samurai.  +d10 damage against everything and double
  *	damage against snakes, dragons and other serpentine monsters (see

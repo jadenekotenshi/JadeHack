@@ -805,3 +805,7 @@ Keolewa's bonus damage goes from d6 to d10 against every monster (`PHYS(5,10)` i
 ## Batch 64: Plague hits harder
 
 Plague's arrows now get +5 to hit (was +d5) and +d8 damage (was +d6), the same as Heartseeker. With the poison (+d6 on 9 hits in 10 against anything that isn't poison resistant) an elven arrow averages 4.0 + 4.5 + 3.15 = 11.65 against small and medium targets, or 8.5 against poison-resistant ones, level with Heartseeker's 8.5 there. Only the binary changes.
+
+## Batch 65: Mirrorbright
+
+**Mirrorbright**: a neutral shield of reflection, randomly generated, never a gift. Being a shield of reflection it reflects; as an artifact it also gives hallucination resistance while worn (the same `SPFX_HALRES` as the Eye of Vecna), does not add the usual spellcasting penalty for wearing a shield (`spell.c`, as for Aegis and crystal shields), and acts as a weak light source: it glows with radius 1 while worn ("begins to glow softly" / "stops glowing"), compared with 2 for Sunsword and 3 for a lamp. The light is `artifact_light()` plus `Shield_on()` and `Shield_off()`. Only the binary changes.

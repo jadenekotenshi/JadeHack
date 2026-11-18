@@ -2382,7 +2382,8 @@ artifact_light(obj)
     struct obj *obj;
 {
     return (get_artifact(obj) && (obj->oartifact == ART_SUNSWORD ||
-				       obj->oartifact == ART_CLAIOMH_SOLAIS));
+				       obj->oartifact == ART_CLAIOMH_SOLAIS ||
+				       obj->oartifact == ART_MIRRORBRIGHT));
 }
 
 /* KMH -- Talking artifacts are finally implemented */

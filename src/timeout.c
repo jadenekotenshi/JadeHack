@@ -1162,7 +1162,7 @@ begin_burn(obj, already_lit)
                 if (artifact_light(obj)) {
 		    obj->lamplit = 1;
 		    do_timer = FALSE;
-		    radius = 2;
+		    radius = (obj->oartifact == ART_MIRRORBRIGHT) ? 1 : 2;
 		} else {
 		    impossible("begin burn: unexpected %s", xname(obj));
 		    turns = obj->age;

@@ -552,6 +552,13 @@ Shield_on()
 				pline("%s to glow.",Tobjnam(uarms,"begin"));
 			break;
 		default:	 /* impossible() here was a bit paranoid */
+			/* Mirrorbright glows softly while worn */
+			if (artifact_light(uarms) && !uarms->lamplit) {
+				begin_burn(uarms, FALSE);
+				if (!Blind)
+					pline("%s to glow softly.",
+					      Tobjnam(uarms, "begin"));
+			}
 			break;
 	}
 	return 0;
@@ -570,6 +577,11 @@ Shield_off()
 			break;
 		break;
 	default: 
+		if (artifact_light(uarms) && uarms->lamplit) {
+			end_burn(uarms, FALSE);
+			if (!Blind)
+				pline("%s glowing.", Tobjnam(uarms, "stop"));
+		}
 		break;
 	}
 
