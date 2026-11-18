@@ -53,6 +53,22 @@ getlin_hook_proc hook;
 	boolean doprev = 0;
 
 	*bufp = '\0';
+#ifdef USE_STRESS_TEST
+	{
+	    extern int stress_input;
+	    if (stress_input) {
+		/* the use stress test answers every prompt itself, rotating
+		   so that prompts which reject escape (class genocide) or an
+		   unknown name still end */
+		static const char *answers[] = { "none", "\033",
+						 "2 blessed +2 magic lamps" };
+		static int next_answer = 0;
+
+		Strcpy(bufp, answers[next_answer++ % 3]);
+		return;
+	    }
+	}
+#endif
 
 	if(ttyDisplay->toplin == 1 && !(cw->flags & WIN_STOP)) more();
 	cw->flags &= ~WIN_STOP;

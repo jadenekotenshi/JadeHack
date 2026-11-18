@@ -19,7 +19,7 @@ STATIC_DCL void NDECL(do_positionbar);
 static long prev_dgl_extrainfo = 0;
 
 
-#if defined(CORPSE_STRESS_TEST) || defined(ITEM_STRESS_TEST)
+#if defined(CORPSE_STRESS_TEST) || defined(ITEM_STRESS_TEST) || defined(USE_STRESS_TEST)
 #include <sys/stat.h>
 /* note in the stress test log when the panic log grew since the last call,
    so that an impossible() message can be tied to the step that caused it */
@@ -36,11 +36,25 @@ FILE *f;
 	last = st.st_size;
     }
 }
+
+/* monsters the stress tests leave alone: uniques and the monsters with
+   special roles, which have side effects when they are made or die */
+STATIC_OVL boolean
+stress_skip_pm(i)
+int i;
+{
+    return (boolean) ((mons[i].geno & G_UNIQ) ||
+	    mons[i].msound == MS_LEADER || mons[i].msound == MS_NEMESIS ||
+	    mons[i].msound == MS_GUARDIAN ||
+	    i == PM_ORACLE || i == PM_PRIEST || i == PM_ALIGNED_PRIEST ||
+	    i == PM_HIGH_PRIEST || i == PM_SHOPKEEPER || i == PM_GUARD ||
+	    i == PM_WATCHMAN || i == PM_WATCH_CAPTAIN);
+}
 #endif
 
 #ifdef CORPSE_STRESS_TEST
 /*
- * Corpse stress test (see util/corpse_stress.py; not compiled normally).
+ * Corpse stress test (see util/stress_test.py; not compiled normally).
  * In wizard mode, if a file named "corpsetest" exists in the playground,
  * create and kill every ordinary monster type many times through
  * mondied() and xkilled(), logging the monster to "ct.log" first, so a
@@ -65,13 +79,7 @@ corpse_stress_test()
 
     if (!f) return;
     for (i = LOW_PM; i < NUMMONS; i++) {
-	/* skip uniques and the monsters with special roles */
-	if ((mons[i].geno & G_UNIQ) || mons[i].msound == MS_LEADER ||
-	    mons[i].msound == MS_NEMESIS || mons[i].msound == MS_GUARDIAN ||
-	    i == PM_ORACLE || i == PM_PRIEST || i == PM_ALIGNED_PRIEST ||
-	    i == PM_HIGH_PRIEST || i == PM_SHOPKEEPER || i == PM_GUARD ||
-	    i == PM_WATCHMAN || i == PM_WATCH_CAPTAIN)
-	    continue;
+	if (stress_skip_pm(i)) continue;
 	for (k = 0; k < CT_MONDIED_REPS; k++) {
 	    fprintf(f, "%d %s %d mondied\n", i, mons[i].mname, k);
 	    fflush(f);
@@ -288,6 +296,536 @@ item_stress_test()
 }
 #endif /* ITEM_STRESS_TEST */
 
+#ifdef USE_STRESS_TEST
+#include <unistd.h>
+/*
+ * Use stress test (see util/stress_test.py; not compiled normally).  In
+ * wizard mode, if a file named "usetest" exists in the playground, use every
+ * kind of object the way a player would, through the real commands (wear,
+ * put on, wield, zap, engrave, break, read, cast, quaff, apply, eat, fire,
+ * throw, invoke), many times in different states (blessed, cursed, confused,
+ * blind and hallucinating); fight a monster while wearing or wielding it;
+ * let the hero's timeouts and the object timers run; eat the corpse, egg and
+ * tin of every monster; and wish for every object and artifact by name.
+ *
+ * Prompts are answered by the game itself: win/tty/wintty.c, getline.c and
+ * termcap.c honour stress_input (every key press is a safe answer, every
+ * line is escaped and nothing waits), and getobj() and getdir() honour
+ * stress_obj and stress_dir.  Each step is logged to "ut.log" first, so a
+ * crash points at the guilty object; a line containing MISMATCH is a wish
+ * that gave the wrong object; the last line is DONE if the whole run
+ * survived.
+ */
+#ifndef UT_REPS
+#define UT_REPS 9
+#endif
+#ifndef UT_RANDOM_REPS
+#define UT_RANDOM_REPS 150
+#endif
+
+int stress_input = 0;		/* 1: answer every prompt; 2: say y once */
+struct obj *stress_obj = (struct obj *) 0;	/* the next getobj() answer */
+int stress_dir = 0;		/* getdir() answer: 1 self, 2 east, 3 up, 4 down */
+
+static const int ust_dirs[] = { 2, 1, 3, 4 };
+
+/* is the object still in the hero's inventory? */
+STATIC_OVL boolean
+ust_held(o)
+struct obj *o;
+{
+    struct obj *i;
+
+    for (i = invent; i; i = i->nobj) if (i == o) return TRUE;
+    return FALSE;
+}
+
+STATIC_OVL void
+ust_free(o)
+struct obj *o;
+{
+    if (Has_contents(o)) delete_contents(o);
+    obfree(o, (struct obj *) 0);
+}
+
+/* let delayed things finish: the delay after wearing something, eating and
+   other occupations, a deferred level change */
+STATIC_OVL void
+ust_settle()
+{
+    int n = 0;
+
+    unmul((char *) 0);
+    while (occupation && n++ < 400)
+	if (!(*occupation)()) occupation = 0;
+    occupation = 0;
+    multi = 0;
+    unmul((char *) 0);
+    if (u.utotype) deferred_goto();
+    multi = 0;
+}
+
+/* run a command that asks for one object, giving it that object, and for a
+   direction, giving it that direction */
+STATIC_OVL void
+ust_cmd(fn, o, dir)
+int NDECL((*fn));
+struct obj *o;
+int dir;
+{
+    stress_obj = o;
+    stress_dir = dir;
+    (void) (*fn)();
+    stress_obj = (struct obj *) 0;
+    ust_settle();
+}
+
+/* a monster of a kind that depends on the step, next to the hero */
+STATIC_OVL struct monst *
+ust_monster(n)
+int n;
+{
+    int i = LOW_PM + (n * 13 + 7) % (NUMMONS - LOW_PM), t = 0;
+
+    while (stress_skip_pm(i) && t++ < NUMMONS)
+	i = (i + 1 < NUMMONS) ? i + 1 : LOW_PM;
+    return makemon(&mons[i], u.ux + 1, u.uy, NO_MM_FLAGS);
+}
+
+/* put the hero, the level and the inventory back as they were */
+STATIC_OVL void
+ust_reset(startlev)
+d_level *startlev;
+{
+    struct obj *o, *nx;
+    struct monst *m, *mn;
+    int i;
+    boolean swallowed = u.uswallow;
+
+    ust_settle();
+    stress_obj = (struct obj *) 0;
+    u.ustuck = (struct monst *) 0;
+    u.uswallow = 0;
+    u.uswldtim = 0;
+    if (Upolyd) rehumanize();
+    if (Punished) unpunish();
+    u.utrap = 0;
+    if (u.ulycn >= LOW_PM) you_unwere(FALSE);
+    for (o = invent; o; o = o->nobj)
+	if (o->owornmask) remove_worn_item(o, TRUE);
+    for (o = invent; o; o = nx) {
+	nx = o->nobj;
+	freeinv(o);
+	ust_free(o);
+    }
+    for (o = fobj; o; o = nx) {
+	nx = o->nobj;
+	obj_extract_self(o);
+	ust_free(o);
+    }
+    for (m = fmon; m; m = mn) {
+	mn = m->nmon;
+	if (!DEADMONSTER(m)) mongone(m);
+    }
+    dmonsfree();
+    if (u.utotype) deferred_goto();
+    if (!on_level(&u.uz, startlev)) goto_level(startlev, FALSE, FALSE, FALSE);
+    else if (swallowed) docrt();
+    del_engr_at(u.ux, u.uy);
+
+    for (i = 1; i <= LAST_PROP; i++) u.uprops[i].intrinsic = 0L;
+    for (i = 0; i < A_MAX; i++) {
+	ABASE(i) = AMAX(i) = 16;
+	ATEMP(i) = ATIME(i) = 0;
+    }
+    u.ulevel = 8;
+    u.uexp = newuexp(7);
+    u.uhpmax = u.uhp = 30000;
+    u.uenmax = u.uen = 500;
+    u.uhunger = 150;
+    u.uluck = u.moreluck = 0;
+    u.ugangr = 0;
+    u.ublesscnt = 0;
+    u.ualign.record = 20;
+    for (i = 0; i < MAXSPELL; i++) spl_book[i].sp_id = NO_SPELL;
+    flags.botl = 1;
+}
+
+/* the hero is wearing or wielding something: fight a monster both ways and
+   let the timeouts run */
+STATIC_OVL void
+ust_exercise(n)
+int n;
+{
+    struct monst *m = ust_monster(n);
+    int i;
+
+    find_ac();
+    enlightenment(0);
+    if (m && !DEADMONSTER(m)) {
+	if (!m->mpeaceful) {
+	    m->mux = u.ux;
+	    m->muy = u.uy;
+	    for (i = 0; i < 2 && !DEADMONSTER(m) && !u.uswallow; i++)
+		(void) mattacku(m);
+	}
+	u.dx = 1;
+	u.dy = 0;
+	u.dz = 0;
+	for (i = 0; i < 3 && !DEADMONSTER(m) && !u.uswallow &&
+		    m->mx == u.ux + 1 && m->my == u.uy; i++)
+	    (void) attack(m);
+    }
+    for (i = 0; i < 8; i++) nh_timeout();
+    u.uhp = u.uhpmax;
+    ust_settle();
+}
+
+/* let the object timers run: burning lamps, rotting corpses, eggs, figurines */
+STATIC_OVL void
+ust_timers()
+{
+    moves += 2000L;
+    run_timers();
+    ust_settle();
+}
+
+/* something to be read, zapped or quaffed at: a wielded sword, some worn
+   armor and a few other things in the pack */
+STATIC_OVL void
+ust_gear(n)
+int n;
+{
+    static const int worn[] = { ELVEN_MITHRIL_COAT, HELMET, LEATHER_GLOVES,
+				LOW_BOOTS };
+    struct obj *g;
+    int i;
+
+    g = addinv(mksobj(LONG_SWORD, TRUE, FALSE));
+    ust_cmd(dowield, g, 0);
+    for (i = 0; i < 4; i++) {
+	g = addinv(mksobj(worn[i], TRUE, FALSE));
+	ust_cmd(dowear, g, 0);
+    }
+    for (i = 0; i < 4; i++) {
+	g = mkobj(RANDOM_CLASS, TRUE);
+	if (g) (void) addinv(g);
+    }
+    (void) n;
+}
+
+/* the hero's condition for this repetition */
+STATIC_OVL void
+ust_condition(rep)
+int rep;
+{
+    switch ((rep / 3) % 3) {
+	case 1: make_confused(500L, FALSE); break;
+	case 2:
+	    make_blinded(500L, FALSE);
+	    (void) make_hallucinated(500L, FALSE, 0L);
+	    break;
+	default: break;
+    }
+}
+
+/* use one freshly made object; it is not in the inventory yet */
+STATIC_OVL void
+ust_item(o, n, rep)
+struct obj *o;
+int n, rep;
+{
+    int d, otyp = o->otyp, oclass = o->oclass, i, spell;
+    struct obj *a;
+
+    switch (rep % 3) {
+	case 0: o->blessed = o->cursed = 0; break;
+	case 1: o->blessed = 1; o->cursed = 0; break;
+	default: o->cursed = 1; o->blessed = 0; break;
+    }
+    o->dknown = o->bknown = o->known = (rep & 1);
+    if (oclass != ARMOR_CLASS && oclass != WEAPON_CLASS &&
+	oclass != RING_CLASS && oclass != AMULET_CLASS)
+	ust_gear(n);
+    o = addinv(o);
+    ust_condition(rep);
+    (void) ust_monster(n + 1);
+
+    if (o->oartifact)
+	for (d = 0; d < 4 && ust_held(o); d++)
+	    ust_cmd(doinvoke, o, ust_dirs[d]);
+
+    switch (oclass) {
+    case ARMOR_CLASS:
+	ust_cmd(dowear, o, 0);
+	if (ust_held(o) && o->owornmask) {
+	    ust_exercise(n);
+	    ust_cmd(dotakeoff, o, 0);
+	}
+	break;
+    case RING_CLASS:
+    case AMULET_CLASS:
+	ust_cmd(doputon, o, 0);
+	if (ust_held(o) && o->owornmask) {
+	    ust_exercise(n);
+	    ust_cmd(doremring, o, 0);
+	}
+	break;
+    case WEAPON_CLASS:
+	ust_cmd(dowield, o, 0);
+	if (ust_held(o) && o->owornmask) ust_exercise(n);
+	if (ust_held(o) && is_launcher(o) && o->owornmask) {
+	    /* fire every kind of ammunition that goes with it */
+	    for (i = 1; i < NUM_OBJECTS; i++) {
+		if (objects[i].oc_class != WEAPON_CLASS ||
+		    objects[i].oc_skill != -objects[otyp].oc_skill)
+		    continue;
+		a = mksobj(i, TRUE, FALSE);
+		a->quan = 12;
+		a->owt = weight(a);
+		a = addinv(a);
+		ust_cmd(dowieldquiver, a, 0);
+		(void) ust_monster(n + i);
+		stress_dir = 2;
+		for (d = 0; d < 2; d++) {
+		    (void) dofire();
+		    ust_settle();
+		}
+	    }
+	}
+	for (d = 0; d < 4 && ust_held(o); d++)
+	    ust_cmd(doapply, o, ust_dirs[d]);
+	if (ust_held(o)) ust_cmd(dothrow, o, 2);
+	break;
+    case WAND_CLASS:
+	for (d = 0; d < 4 && ust_held(o); d++) {
+	    o->spe = 6;
+	    ust_cmd(dozap, o, ust_dirs[d]);
+	}
+	if (ust_held(o)) ust_cmd(doengrave, o, 0);
+	if (ust_held(o)) {		/* break it, answering yes */
+	    o->spe = 3;
+	    stress_input = 2;
+	    ust_cmd(doapply, o, 0);
+	    stress_input = 1;
+	}
+	break;
+    case SCROLL_CLASS:
+	ust_cmd(doread, o, 0);
+	ust_exercise(n);
+	break;
+    case POTION_CLASS:
+	ust_cmd(dodrink, o, 0);
+	ust_exercise(n);
+	a = mksobj(otyp, TRUE, FALSE);
+	a->blessed = (rep % 3 == 1);
+	a->cursed = (rep % 3 == 2);
+	a = addinv(a);
+	ust_cmd(dothrow, a, 2);
+	break;
+    case SPBOOK_CLASS:
+	ust_cmd(doread, o, 0);
+	spell = -1;
+	for (i = 0; i < MAXSPELL; i++)
+	    if (spellid(i) == otyp) spell = i;
+	if (spell < 0) {
+	    a = mksobj(otyp, FALSE, FALSE);
+	    initialspell(a);
+	    ust_free(a);
+	    for (i = 0; i < MAXSPELL; i++)
+		if (spellid(i) == otyp) spell = i;
+	}
+	if (spell >= 0 && otyp != SPE_BLANK_PAPER &&
+	    otyp != SPE_BOOK_OF_THE_DEAD) {	/* nothing to cast */
+	    for (d = 0; d < 5; d++) {
+		u.uen = u.uenmax = 500;
+		u.uhunger = 900;
+		stress_dir = ust_dirs[d % 4];
+		(void) spelleffects(spell, d == 4);
+		ust_settle();
+	    }
+	    ust_exercise(n);
+	}
+	break;
+    case FOOD_CLASS:
+	if (rep & 1) o->age = moves - 700L;
+	ust_cmd(doeat, o, 0);
+	ust_exercise(n);
+	break;
+    default:		/* tools, gems, rocks, venom */
+	if (oclass == TOOL_CLASS && (otyp == BLINDFOLD || otyp == TOWEL ||
+				     otyp == LENSES)) {
+	    ust_cmd(doputon, o, 0);
+	    if (ust_held(o) && o->owornmask) {
+		ust_exercise(n);
+		ust_cmd(doremring, o, 0);
+	    }
+	}
+	for (d = 0; d < 4 && ust_held(o); d++)
+	    ust_cmd(doapply, o, ust_dirs[d]);
+	if (ust_held(o) && oclass != TOOL_CLASS) ust_cmd(dothrow, o, 2);
+	break;
+    }
+    ust_timers();
+}
+
+/* wish for every object and artifact by name, in four ways */
+STATIC_OVL void
+ust_wishes(f)
+FILE *f;
+{
+    static const char *pre[] = { "", "blessed +2 ", "cursed -1 " };
+    char buf[BUFSZ], orig[BUFSZ], name[BUFSZ];
+    const char *cls, *an_;
+    struct obj *o, nothing;
+    short at;
+    int otyp, v, i;
+
+    nothing = zeroobj;		/* only its address matters */
+
+    for (otyp = 1; otyp < NUM_OBJECTS; otyp++) {
+	if (!OBJ_NAME(objects[otyp])) continue;
+	switch (objects[otyp].oc_class) {
+	    case COIN_CLASS: case ILLOBJ_CLASS: continue;
+	    case WAND_CLASS: cls = "wand of "; break;
+	    case RING_CLASS: cls = "ring of "; break;
+	    case POTION_CLASS: cls = "potion of "; break;
+	    case SCROLL_CLASS: cls = "scroll of "; break;
+	    case SPBOOK_CLASS: cls = "spellbook of "; break;
+	    default: cls = ""; break;
+	}
+	Sprintf(name, "%s%s", cls, OBJ_NAME(objects[otyp]));
+	for (v = 0; v < 4; v++) {
+	    /* names that are already plural (boots, gloves) have no plural */
+	    if (v == 3) {
+		const char *of = strstri(name, " of ");
+		int ln = of ? (int) (of - name) : (int) strlen(name);
+
+		if (name[ln - 1] == 's') continue;
+	    }
+	    if (v == 3) Sprintf(buf, "3 %s", makeplural(name));
+	    else Sprintf(buf, "%s%s", pre[v], name);
+	    Strcpy(orig, buf);		/* readobjnam alters its argument */
+	    fprintf(f, "wish %d \"%s\"\n", otyp, buf);
+	    fflush(f);
+	    o = readobjnam(buf, &nothing, TRUE);
+	    if (!o || o == &nothing || o == &zeroobj) {
+		fprintf(f, "MISMATCH wish \"%s\" gave nothing\n", orig);
+	    } else {
+		if (o->otyp != otyp)
+		    fprintf(f, "MISMATCH wish \"%s\" gave %s\n", orig,
+			    OBJ_NAME(objects[o->otyp]) ?
+				OBJ_NAME(objects[o->otyp]) : "?");
+		ust_free(o);
+	    }
+	    stress_note_panic(f);
+	}
+    }
+    for (i = 1; i <= NROFARTIFACTS; i++) {
+	an_ = artiname(i);
+	if (!an_ || !*an_ || !artifact_name(an_, &at)) continue;
+	Sprintf(buf, "%s", an_);
+	fprintf(f, "wish artifact %d \"%s\"\n", i, buf);
+	fflush(f);
+	o = readobjnam(buf, &nothing, TRUE);
+	if (o == &zeroobj) {
+	    /* an artifact that already exists is denied */
+	} else if (!o || o == &nothing) {
+	    fprintf(f, "MISMATCH wish \"%s\" gave nothing\n", an_);
+	} else {
+	    if (o->otyp != (int) at)
+		fprintf(f, "MISMATCH wish \"%s\" gave %s\n", an_,
+			OBJ_NAME(objects[o->otyp]) ?
+			    OBJ_NAME(objects[o->otyp]) : "?");
+	    ust_free(o);
+	}
+	stress_note_panic(f);
+    }
+}
+
+STATIC_OVL void
+use_stress_test()
+{
+    FILE *f = fopen("ut.log", "w");
+    static const int classes[] = { ARMOR_CLASS, WEAPON_CLASS, RING_CLASS,
+	AMULET_CLASS, WAND_CLASS, SCROLL_CLASS, POTION_CLASS, SPBOOK_CLASS,
+	FOOD_CLASS, TOOL_CLASS, GEM_CLASS };
+    static const int eggs[] = { CORPSE, EGG, TIN };
+    d_level startlev;
+    struct obj *o;
+    int otyp, rep, i, k, t;
+
+    if (!f) return;
+    startlev = u.uz;
+    stress_input = 1;
+    urole.spelbase = -100;		/* so that casting always works */
+    ust_reset(&startlev);
+
+    ust_wishes(f);
+
+    /* every kind of object, in several states */
+    for (otyp = 1; otyp < NUM_OBJECTS; otyp++) {
+	if (!OBJ_NAME(objects[otyp])) continue;
+	switch (objects[otyp].oc_class) {
+	    case COIN_CLASS: case ILLOBJ_CLASS: case BALL_CLASS:
+	    case CHAIN_CLASS: continue;
+	    default: break;
+	}
+	if (otyp == BOULDER || otyp == STATUE || otyp == CORPSE ||
+	    otyp == EGG || otyp == TIN)
+	    continue;			/* done below, for every monster */
+	for (rep = 0; rep < UT_REPS; rep++) {
+	    fprintf(f, "use %d %s %d\n", otyp, OBJ_NAME(objects[otyp]), rep);
+	    fflush(f);
+	    ust_reset(&startlev);
+	    o = mksobj(otyp, TRUE, (rep & 1) ? TRUE : FALSE);
+	    if (o) ust_item(o, otyp * UT_REPS + rep, rep);
+	    stress_note_panic(f);
+	}
+    }
+
+    /* random objects of the classes one can use */
+    for (k = 0; k < (int) SIZE(classes); k++)
+	for (rep = 0; rep < UT_RANDOM_REPS; rep++) {
+	    fprintf(f, "use random class %d %d\n", classes[k], rep);
+	    fflush(f);
+	    ust_reset(&startlev);
+	    o = mkobj(classes[k], TRUE);
+	    if (o) ust_item(o, 100000 + k * UT_RANDOM_REPS + rep, rep);
+	    stress_note_panic(f);
+	}
+
+    /* eat the corpse, egg and tin of every monster */
+    for (i = LOW_PM; i < NUMMONS; i++)
+	for (t = 0; t < 3; t++)
+	    for (rep = 0; rep < 3; rep++) {
+		fprintf(f, "eat %d %s kind %d %d\n", i, mons[i].mname,
+			eggs[t], rep);
+		fflush(f);
+		ust_reset(&startlev);
+		o = mksobj(eggs[t], FALSE, FALSE);
+		if (!o) continue;
+		o->corpsenm = i;
+		o->quan = 1;
+		if (eggs[t] == TIN) o->spe = (rep == 1) ? -1 : (rep == 2) ? 1 : 0;
+		if (eggs[t] == CORPSE && rep) o->age = moves - 100L * rep;
+		o->owt = weight(o);
+		if (rep == 2) o->cursed = 1;
+		o = addinv(o);
+		ust_cmd(doeat, o, 0);
+		for (k = 0; k < 10; k++) nh_timeout();
+		u.uhp = u.uhpmax;
+		ust_timers();
+		stress_note_panic(f);
+	    }
+
+    ust_reset(&startlev);
+    stress_input = 0;
+    fprintf(f, "DONE\n");
+    fclose(f);
+}
+#endif /* USE_STRESS_TEST */
+
 void
 moveloop()
 {
@@ -296,7 +834,7 @@ moveloop()
     int abort_lev;
 #endif
     int moveamt = 0, wtcap = 0, change = 0;
-#if defined(CORPSE_STRESS_TEST) || defined(ITEM_STRESS_TEST)
+#if defined(CORPSE_STRESS_TEST) || defined(ITEM_STRESS_TEST) || defined(USE_STRESS_TEST)
     static int stress_ran = 0;
 #endif
 	 int regen_frequency;
@@ -316,6 +854,12 @@ moveloop()
     if (!stress_ran && wizard && access("itemtest", 0) == 0) {
 	stress_ran = 1;
 	item_stress_test();
+    }
+#endif
+#ifdef USE_STRESS_TEST
+    if (!stress_ran && wizard && access("usetest", 0) == 0) {
+	stress_ran = 1;
+	use_stress_test();
     }
 #endif
 

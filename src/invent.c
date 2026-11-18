@@ -851,6 +851,18 @@ register const char *let,*word;
 	boolean prezero = FALSE;
 	long dummymask;
 
+#ifdef USE_STRESS_TEST
+	/* the use stress test (see allmain.c) chooses the object */
+	{
+	    extern struct obj *stress_obj;
+
+	    if (stress_obj) {
+		otmp = stress_obj;
+		stress_obj = (struct obj *) 0;
+		return otmp;
+	    }
+	}
+#endif
 	/* the item-actions menu (itemactions) has already chosen the object */
 	if (itemaction_obj) {
 	    struct obj *pre = itemaction_obj;

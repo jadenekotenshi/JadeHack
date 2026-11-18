@@ -2297,6 +2297,25 @@ tty_nhgetch()
     char nestbuf;
 #endif
 
+#ifdef USE_STRESS_TEST
+    /* the use stress test (see allmain.c) answers every prompt itself:
+       space, escape, return, n and q are safe answers to anything, and
+       r and l answer the ring-finger question (never y: "Die?") */
+    {
+	extern int stress_input;
+	static const char answers[] = " \033\nnqrl";
+	static int next_answer = 0;
+
+	if (stress_input == 2) {
+	    stress_input = 1;
+	    return 'y';		/* once: for the first question */
+	}
+	if (stress_input) {
+	    if (next_answer >= (int) sizeof answers - 1) next_answer = 0;
+	    return answers[next_answer++];
+	}
+    }
+#endif
     (void) fflush(stdout);
     /* Note: if raw_print() and wait_synch() get called to report terminal
      * initialization problems, then wins[] and ttyDisplay might not be

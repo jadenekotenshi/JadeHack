@@ -2757,6 +2757,23 @@ const char *s;
 	char dirsym;
 	boolean validselection = FALSE;
 
+#ifdef USE_STRESS_TEST
+	/* the use stress test (see allmain.c) chooses the direction */
+	{
+	    extern int stress_input, stress_dir;
+
+	    if (stress_input) {
+		u.dx = u.dy = u.dz = 0;
+		switch (stress_dir) {
+		    case 2: u.dx = 1; break;
+		    case 3: u.dz = -1; break;
+		    case 4: u.dz = 1; break;
+		    default: break;
+		}
+		return 1;
+	    }
+	}
+#endif
 	while (!validselection) {
 #ifdef REDO
 		if(in_doagain || *readchar_queue)

@@ -1484,8 +1484,8 @@ const char *oldstr;
 		goto bottom;
 	}
 
-	/* knife/knives, etc... */
-	if (!strcmp(spot-1, "fe")) {
+	/* knife/knives, etc... but not safe */
+	if (!strcmp(spot-1, "fe") && (len < 4 || strcmp(spot-3, "safe"))) {
 		Strcpy(spot-1, "ves");
 		goto bottom;
 	} else if (*spot == 'f') {
@@ -1690,8 +1690,23 @@ const char *oldstr;
 	    !BSTRCMPI(bp, eos(bp)-5, "Aegis") ||
 	    !BSTRCMPI(bp, eos(bp)-7, "Perseus") ||
 	    !BSTRCMPI(bp, eos(bp)-7, "Proteus") ||
+	    !BSTRCMPI(bp, eos(bp)-7, "Orpheus") ||
 	    !BSTRCMPI(bp, eos(bp)-4, " Kas") ||
 	    !BSTRCMPI(bp, eos(bp)-8, "Tindalos")) return bp;
+	/* "staves of divination" are staffs, not "stave"s */
+	if ((p = strstri(bp, "staves of ")) != 0 && p == bp) {
+	    char rest[BUFSZ];
+
+	    Strcpy(rest, p + 6);
+	    Sprintf(bp, "staff%s", rest);
+	    return bp;
+	}
+	/* "becs de corbin": the "de" or "versus" marks the end of the noun */
+	if ((p = strstri(bp, "s de ")) != 0 ||
+	    (p = strstri(bp, "s versus ")) != 0) {	/* amulets versus poison */
+	    while ((*p = *(p+1)) != 0) p++;
+	    return bp;
+	}
 	/* find "cloves of garlic", "worthless pieces of blue glass" */
 	if ((p = strstri(bp, "s of ")) != 0) {
 	    /* but don't singularize "gauntlets", "boots", "Eyes of the.." */
@@ -1734,8 +1749,14 @@ const char *oldstr;
 			}
 
 			/* note: nurses, axes but boxes */
+			/* but the "che" of a "main gauche" or "bardiche" stays */
+			if (!BSTRCMP(bp, p-7, "gauches") ||
+			    !BSTRCMP(bp, p-9, "bardiches"))
+				goto mins;
 			if (!BSTRCMP(bp, p-5, "boxes") ||
-			    !BSTRCMP(bp, p-4, "ches")) {
+			    !BSTRCMP(bp, p-4, "ches") ||
+			    !BSTRCMP(bp, p-4, "shes") ||	/* leashes */
+			    !BSTRCMP(bp, p-3, "zes")) {	/* topazes */
 				p[-2] = '\0';
 				return bp;
 			}
@@ -2169,8 +2190,8 @@ boolean from_user;
 	{
 	short artyp_;	/* "Sword of Kas", "Hand of Vecna": not a figurine */
 
-	if (!strstri(bp, "wand ")
-	 && !strstri(bp, "spellbook ")
+	if (!strstri(bp, "wand ") && !strstri(bp, "wands ")
+	 && !strstri(bp, "spellbook ") && !strstri(bp, "spellbooks ")
 	 && !strstri(bp, "finger ")
 	 && !artifact_name(bp, &artyp_)) {
 	    if ((p = strstri(bp, " of ")) != 0
@@ -2181,6 +2202,8 @@ boolean from_user;
 	/* Find corpse type w/o "of" (red dragon scale mail, yeti corpse) */
 	if (strncmpi(bp, "samurai sword", 13)) /* not the "samurai" monster! */
 	if (strncmpi(bp, "wizard lock", 11)) /* not the "wizard" monster! */
+	if (strncmpi(bp, "bardiche", 8)) /* not the "bard" rank */
+	if (strncmpi(bp, "uruk-hai shield", 15)) /* not the "Uruk-hai" monster */
 	if (strncmpi(bp, "ninja-to", 8)) /* not the "ninja" rank */
 	if (strncmpi(bp, "master key", 10)) /* not the "master" rank */
 	if (strncmpi(bp, "magenta", 7)) /* not the "mage" rank */

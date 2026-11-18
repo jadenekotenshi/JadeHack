@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
-"""Stress tests for JadeHack: monster death and corpses, and item creation.
+"""Stress tests for JadeHack: monster death, item creation and item use.
 
-Two tests run inside the game in wizard mode, each driven by code in
+Three tests run inside the game in wizard mode, each driven by code in
 src/allmain.c that is compiled only when its macro is defined:
 
   corpse  (CORPSE_STRESS_TEST, trigger file "corpsetest", log ct.log)
@@ -18,6 +18,19 @@ src/allmain.c that is compiled only when its macro is defined:
           every monster; makes every artifact; and generates random objects of
           every class.
 
+  use     (USE_STRESS_TEST, trigger file "usetest", log ut.log)
+          uses every kind of object through the real commands: wears and
+          wields it, zaps, engraves with and breaks wands, reads scrolls and
+          spellbooks and casts the spells, quaffs and throws potions, applies
+          tools, fires launchers with every matching ammunition, eats, and
+          invokes artifacts; each in several states (blessed, cursed,
+          confused, blind and hallucinating), then fights a monster while
+          wearing or wielding it and lets timeouts and object timers run.
+          Also eats the corpse, egg and tin of every monster, and wishes for
+          every object and artifact by name in four forms (plain, blessed
+          and enchanted, cursed, plural), reporting any wish that gives the
+          wrong object as a MISMATCH.  The game answers its own prompts.
+
 Each step is written to the log *before* it is done, so if the game dies the
 last line names the monster, object or artifact responsible; the last line is
 DONE when the whole test survived.  This script builds a throwaway copy of
@@ -26,7 +39,7 @@ pseudo-terminal while dismissing every --More--, and reports the culprit and
 anything written to the panic log (the game's impossible() messages).
 
 Usage:
-    util/stress_test.py BUILD_DIR [--test corpse|items|all]
+    util/stress_test.py BUILD_DIR [--test corpse|items|use|all]
                                   [--keys k,H,M,L,.] [--timeout SECONDS]
                                   [--keep]
 
@@ -54,8 +67,9 @@ import time
 TESTS = {
     "corpse": ("corpsetest", "ct.log"),
     "items": ("itemtest", "it.log"),
+    "use": ("usetest", "ut.log"),
 }
-MACROS = ("CORPSE_STRESS_TEST", "ITEM_STRESS_TEST")
+MACROS = ("CORPSE_STRESS_TEST", "ITEM_STRESS_TEST", "USE_STRESS_TEST")
 DATA = ("nhdat", "dungeon", "quest.dat", "data", "rumors", "oracles", "options")
 
 
@@ -155,7 +169,7 @@ def run(play, home, keys, timeout, logname):
 def main():
     ap = argparse.ArgumentParser(description=__doc__.split("\n\n")[0])
     ap.add_argument("build_dir")
-    ap.add_argument("--test", choices=("corpse", "items", "all"),
+    ap.add_argument("--test", choices=("corpse", "items", "use", "all"),
                     default="all")
     ap.add_argument("--keys", default="k,H,M,L,.")
     ap.add_argument("--timeout", type=int, default=1800,
@@ -170,7 +184,7 @@ def main():
         shutil.copytree(args.build_dir, tree, symlinks=True)
         print("building with the stress test macros ...")
         build(tree)
-        names = ["corpse", "items"] if args.test == "all" else [args.test]
+        names = ["corpse", "items", "use"] if args.test == "all" else [args.test]
         all_ok = True
         for name in names:
             trigger, logname = TESTS[name]
@@ -197,6 +211,13 @@ def main():
                 ok = False
             else:
                 print("  survived (%d log lines)" % len(lines))
+            bad = [l for l in lines if "MISMATCH" in l]
+            if bad:
+                print("  wishes that gave the wrong object (%d, first 20):"
+                      % len(bad))
+                for line in bad[:20]:
+                    print("    " + line)
+                ok = False
             if panic:
                 culprits = []
                 for i, line in enumerate(lines):

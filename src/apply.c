@@ -2917,6 +2917,11 @@ do_break_wand(obj)
     affects_objects = FALSE;
 
     switch (obj->otyp) {
+    case WAN_STASIS:
+	/* the same as zapping it (NetHack 5.0) */
+	zapnodir(obj);
+	pline(nothing_else_happens);
+	goto discard_broken_wand;
     case WAN_WISHING:
     case WAN_NOTHING:
     case WAN_LOCKING:

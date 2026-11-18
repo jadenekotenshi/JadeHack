@@ -732,6 +732,12 @@ static const short tmspc10[] = {		/* from termcap */
 void
 tty_delay_output()
 {
+#ifdef USE_STRESS_TEST
+	{
+	    extern int stress_input;
+	    if (stress_input) return;
+	}
+#endif
 #if defined(MICRO)
 	register int i;
 #endif
