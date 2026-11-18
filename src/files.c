@@ -2267,21 +2267,20 @@ fopen_wizkit_file()
 	if (!wizkit[0]) return (FILE *)0;
 
 #ifdef UNIX
-	if (access(wizkit, 4) == -1) {
+	/* a plain name is looked for in the home directory only; the current
+	   directory is tried only for "./name" (or a full path) */
+	if (wizkit[0] != '/' && strncmp(wizkit, "./", 2) != 0) {
+	    /* fall through to the home directory */
+	} else if (access(wizkit, 4) == -1) {
 		/* 4 is R_OK on newer systems */
 		/* nasty sneaky attempt to read file through
 		 * NetHack's setuid permissions -- this is a
 		 * place a file name may be wholly under the player's
 		 * control
 		 */
-		/* a file that is simply not in the current directory (a plain
-		   name such as wizkit.txt is looked for there first and then
-		   in the home directory) is not worth a complaint */
-		if (errno != ENOENT) {
-		    raw_printf("Access to %s denied (%d).",
+		raw_printf("Access to %s denied (%d).",
 				wizkit, errno);
-		    wait_synch();
-		}
+		wait_synch();
 		/* fall through to standard names */
 	} else
 #endif
