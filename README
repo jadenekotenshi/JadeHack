@@ -20,6 +20,8 @@ Files you may want to read:
                           and 5.0, every original addition, and what was tested
     README.new_lev_comp   the 3.6-style special level compiler (.des files)
     README.statuscolors   the statuscolors option
+    util/corpse_stress.py a stress test that creates and kills every monster type
+                          in wizard mode to catch crashes in death handling
     doc/port-candidates-* and doc/port-features-5.0.txt
                           the lists of NetHack 3.6 and 5.0 fixes and features
                           that were considered for porting

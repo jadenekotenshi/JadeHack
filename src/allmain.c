@@ -18,6 +18,74 @@ STATIC_DCL void NDECL(do_positionbar);
 
 static long prev_dgl_extrainfo = 0;
 
+
+#ifdef CORPSE_STRESS_TEST
+/*
+ * Corpse stress test (see util/corpse_stress.py; not compiled normally).
+ * In wizard mode, if a file named "corpsetest" exists in the playground,
+ * create and kill every ordinary monster type many times through
+ * mondied() and xkilled(), logging the monster to "ct.log" first, so a
+ * crash in death handling or make_corpse() points at the guilty monster.
+ * The last line of ct.log is DONE when the whole run completed.
+ */
+#include <unistd.h>
+#ifndef CT_MONDIED_REPS
+#define CT_MONDIED_REPS 12
+#endif
+#ifndef CT_XKILLED_REPS
+#define CT_XKILLED_REPS 2
+#endif
+
+STATIC_OVL void
+corpse_stress_test()
+{
+    int i, k;
+    FILE *f = fopen("ct.log", "w");
+    struct monst *m, *nx;
+    struct obj *o;
+
+    if (!f) return;
+    for (i = LOW_PM; i < NUMMONS; i++) {
+	/* skip uniques and the monsters with special roles */
+	if ((mons[i].geno & G_UNIQ) || mons[i].msound == MS_LEADER ||
+	    mons[i].msound == MS_NEMESIS || mons[i].msound == MS_GUARDIAN ||
+	    i == PM_ORACLE || i == PM_PRIEST || i == PM_ALIGNED_PRIEST ||
+	    i == PM_HIGH_PRIEST || i == PM_SHOPKEEPER || i == PM_GUARD ||
+	    i == PM_WATCHMAN || i == PM_WATCH_CAPTAIN)
+	    continue;
+	for (k = 0; k < CT_MONDIED_REPS; k++) {
+	    fprintf(f, "%d %s %d mondied\n", i, mons[i].mname, k);
+	    fflush(f);
+	    m = makemon(&mons[i], u.ux, u.uy, NO_MM_FLAGS);
+	    if (!m) continue;
+	    m->mrevived = (k % 5 == 0);	/* also try revived monsters */
+	    mondied(m);
+	    while ((o = level.objects[u.ux][u.uy]) != 0) delobj(o);
+	    for (m = fmon; m; m = m->nmon)	/* leftovers from groups */
+		if (!DEADMONSTER(m) && m != u.usteed && !m->mtame) {
+		    mongone(m);
+		    break;
+		}
+	}
+	for (k = 0; k < CT_XKILLED_REPS; k++) {
+	    fprintf(f, "%d %s %d xkilled\n", i, mons[i].mname, k);
+	    fflush(f);
+	    m = makemon(&mons[i], u.ux, u.uy, NO_MM_FLAGS);
+	    if (!m || (m->mx == u.ux && m->my == u.uy)) continue;
+	    xkilled(m, 1);
+	    while ((o = level.objects[m->mx][m->my]) != 0) delobj(o);
+	}
+	for (m = fmon; m; m = nx) {
+	    nx = m->nmon;
+	    if (!DEADMONSTER(m) && !m->mtame) mongone(m);
+	}
+	dmonsfree();
+    }
+    fprintf(f, "DONE\n");
+    fclose(f);
+}
+#endif /* CORPSE_STRESS_TEST */
+
 void
 moveloop()
 {
@@ -26,6 +94,9 @@ moveloop()
     int abort_lev;
 #endif
     int moveamt = 0, wtcap = 0, change = 0;
+#ifdef CORPSE_STRESS_TEST
+    static int stress_ran = 0;
+#endif
 	 int regen_frequency;
     boolean didmove = FALSE, monscanmove = FALSE;
 	 /* don't make it obvious when monsters will start speeding up */
@@ -33,6 +104,12 @@ moveloop()
 	 int timeout_start = rnd(10000)+15000;
 	 int clock_base = 70000L-timeout_start;
 	 int past_clock;
+#ifdef CORPSE_STRESS_TEST
+    if (!stress_ran && wizard && access("corpsetest", 0) == 0) {
+	stress_ran = 1;
+	corpse_stress_test();
+    }
+#endif
 
     flags.moonphase = phase_of_the_moon();
     if(flags.moonphase == FULL_MOON) {
