@@ -341,6 +341,7 @@ Helmet_on()
 	case GNOMISH_HELM:
 	case ORCISH_HELM:
 	case HELM_OF_DISCOVERY:
+	case HELM_OF_CAUTION:
 	case HELM_OF_TELEPATHY:
 		break;
 	case HELM_OF_BRILLIANCE:
@@ -406,6 +407,7 @@ Helmet_off()
 	case GNOMISH_HELM:
 	case ORCISH_HELM:
 	case HELM_OF_DISCOVERY:
+	case HELM_OF_CAUTION:
 	    break;
 	case DUNCE_CAP:
 	    flags.botl = 1;
@@ -452,6 +454,7 @@ Gloves_on()
 		case GAUNTLETS_OF_FORCE:
 		case GAUNTLETS_OF_FORTUNE:
 		case GAUNTLETS_OF_PROTECTION:
+		case GLOVES_OF_EXPERTISE:
 			break;
 		case GAUNTLETS_OF_HASTE:
 			if (!oldprop && !(HFast & TIMEOUT)) {
@@ -489,6 +492,7 @@ Gloves_off()
 		case GAUNTLETS_OF_FORCE:
 		case GAUNTLETS_OF_FORTUNE:
 		case GAUNTLETS_OF_PROTECTION:
+		case GLOVES_OF_EXPERTISE:
 			break;
 		case GAUNTLETS_OF_HASTE:
 			was_haste = TRUE;	/* message after they come off */

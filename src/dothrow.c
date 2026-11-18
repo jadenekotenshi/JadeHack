@@ -1353,6 +1353,7 @@ register struct obj   *obj;
 	if (uarmg && uwep && objects[uwep->otyp].oc_skill == P_BOW) {
 	    switch (uarmg->otyp) {
 	    case GAUNTLETS_OF_POWER:    /* metal */
+	    case GAUNTLETS_OF_PROTECTION:	/* metal */
 		tmp -= 2;
 		break;
 	    case GAUNTLETS_OF_FUMBLING:
@@ -1362,6 +1363,8 @@ register struct obj   *obj;
 	    case GAUNTLETS_OF_DEXTERITY:
 		 case GAUNTLETS_OF_FORTUNE:
 		 case GAUNTLETS_OF_FORCE:
+		 case GAUNTLETS_OF_HASTE:	/* leather */
+		 case GLOVES_OF_EXPERTISE:
 		break;
 	    default:
 		impossible("Unknown type of gloves (%d)", uarmg->otyp);
