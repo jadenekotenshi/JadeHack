@@ -885,3 +885,7 @@ It found, and this batch fixes:
 - **Plurals**: "3 staves of divination" (and healing, holiness, matter, escape, battle) was read as "stave"; "3 main gauches" and "3 bardiches" lost their "e"; "3 leashes" and "3 topazes" lost an "s" too many; "3 iron safes" was made "iron saves" by `makeplural()` and could not be read back; "3 becs de corbin" and "3 amulets versus poison" were not understood (the French "de" and "versus" were only handled when making plurals, not reading them). All fixed in `makeplural()` and `makesingular()`.
 
 Things the test does not do: it passes no game turns except the hero's timeouts and the object timers, so monsters never act on their own; it uses one hero (a human Knight, always as strong as 16 in everything) so role-specific restrictions are not covered; and "nothing happened" is not a failure, only a crash, an `impossible()` message, a hang, or a wrong wish. A full run takes about five minutes (about 12,700 log lines) and passes on the current tree; a deliberately planted crash in the wand of stasis zap was reported as "GAME DIED (signal 11) at: use 489 stasis 0". The normal build is unaffected.
+
+## Batch 77: new hallucinatory glow color
+
+"donut seeds" is added to the list of colors you see while hallucinating (`hcolors[]` in `do_name.c`), used for the glow of a blessed or cursed weapon, the color of a potion's vapors, a wand's light and so on. Only the binary changes.
