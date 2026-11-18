@@ -893,3 +893,7 @@ Things the test does not do: it passes no game turns except the hero's timeouts 
 ## Batch 78: new hallucinatory monsters
 
 Twenty-four names are added to the list of monsters you see while hallucinating (`bogusmons[]` in `do_name.c`): bunnit, crabulum, crabulus, grabitty rabbit, gravity squirrel, skwerl, freppit, reek fly, flying fart cloud of Farklur, bnuuy, monstrous frog, glop puddle, Master Belch, colossal terrorpede, giant funnel-web spider, green widow, hideous abomination, beaked lobster, walky-walk, turkey, giant swan, moldy pudding, mold soldier and fungus knight. Only the binary changes.
+
+## Batch 79: phytosaur
+
+A new lizard-class monster (`:`), the phytosaur, comes right after the crocodile in `monst.c`. It is a magenta, larger relative of the crocodile: level 8 (the crocodile is 6), speed 9, AC 4, a bite of 2d8 and a claw of 1d12 (the crocodile's are 4d2 and 1d12, about 11.5 a turn against about 15.5), weight 1200, and the crocodile's flags (swims, amphibious, thick hide, oviparous, carnivorous, strong, hostile). It is rare (frequency 1, like the crocodile) and is made in small groups (`G_SGROUP`). It has no baby form. The monster numbers after it all move up by one, so old save files and bones are not compatible; the data files must be rebuilt, including the utilities (`util/dgn_comp` has to be rebuilt too, or the game reports "Dungeon description not valid") and `nhdat` (`make dlb`). Created in wizard mode and run through the corpse stress test (5,951 kills, no crash).

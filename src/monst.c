@@ -3785,6 +3785,16 @@ struct permonst _mons2[] = {
 	M1_SWIM|M1_AMPHIBIOUS|M1_ANIMAL|M1_THICK_HIDE|M1_NOHANDS|
 	  M1_OVIPAROUS|M1_CARNIVORE,
 	M2_STRONG|M2_HOSTILE, 0, 0, CLR_BROWN),
+    /* a bigger, stronger relative of the crocodile that comes in small
+       groups (JadeHack addition) */
+    MON("phytosaur", S_LIZARD,
+	LVL(8, 9, 4, 0, 0), (G_GENO|G_SGROUP|1),
+	A(ATTK(AT_BITE, AD_PHYS, 2, 8), ATTK(AT_CLAW, AD_PHYS, 1,12),
+	  NO_ATTK, NO_ATTK, NO_ATTK, NO_ATTK),
+	SIZ(1200, 500, 0, MS_SILENT, MZ_LARGE), 0, 0,
+	M1_SWIM|M1_AMPHIBIOUS|M1_ANIMAL|M1_THICK_HIDE|M1_NOHANDS|
+	  M1_OVIPAROUS|M1_CARNIVORE,
+	M2_STRONG|M2_HOSTILE, 0, 0, CLR_MAGENTA),
     MON("salamander", S_LIZARD,
 	LVL(8, 12, -1, 0, -9), (G_HELL|1),
 	A(ATTK(AT_WEAP, AD_PHYS, 2, 8), ATTK(AT_TUCH, AD_FIRE, 1, 6),
