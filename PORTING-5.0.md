@@ -848,3 +848,7 @@ The merozalghu now has `M4_VULNERABLE_COLD`: cold damage against it is multiplie
 ## Batch 72: Mephistopheles is no longer covetous
 
 `M3_COVETOUS` is removed from Mephistopheles (`monst.c`), so he no longer teleports to you, steals the Amulet or the other covetous targets, or teleports away to heal (`tactics()` is never used for him). He still waits in the Sanctum until you take the Amulet, follows you between levels and walks up to you like any other stalker, is still a demon prince who gates in demons and fights the Wizard of Yendor, and still cannot be tamed (he is a demon). Together with his speed of 12 this makes him a monster you must outfight or outrun on foot. Data files must be rebuilt.
+
+## Batch 73: glue golem crash
+
+Destroying a glue golem crashed the game two times in three. `make_corpse()` (`mon.c`) only makes the tainted horse corpse one time in three; the other times it fell out of the switch with no object and went on to use the null pointer (`bypass_obj()`, the invisibility and blindness code, `stackobj()`). It now returns at once when there is nothing to leave (`mon.c`), which also covers any other special case that leaves nothing. Eight glue golems were destroyed in a row with Luck Blade wielded in wizard mode with no crash; the weapon has nothing to do with it.
