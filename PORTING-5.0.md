@@ -926,3 +926,7 @@ Crowning (`gcrownu()` in `pray.c`) changes:
 Checked in wizard mode with a test hook (`stress_crown()` in `pray.c`, compiled only with `USE_STRESS_TEST`, run by setting `STRESS_CROWN=1` in the environment of `util/stress_test.py --test use --keys ...`, which then crowns the hero six times with different things wielded and logs the artifacts made): a lawful Knight got Excalibur then Kiku-Ichimonji, then nothing once both existed; a lawful Priest the same; a chaotic Knight got Dirge from a wielded long sword; a neutral and a chaotic Tourist each got the Luck Blade at their feet; a lawful Samurai got Kiku-Ichimonji and then Excalibur at their feet. The ordinary use test still passes.
 
 Correction to Batch 81: making the Katana of Masamune `A_NONE` changed nothing in play, because `hack_artifacts()` already sets the quest artifact's alignment to the hero's own at the start of every game, so a neutral Samurai was never blasted by it.
+
+## Batch 84: spell failure message
+
+Failing to cast a spell prints "The air around you crackles as you goof up." half the time instead of "You fail to cast the spell correctly." (`spelleffects()` in `spell.c`). The failure itself (half the energy lost, the turn used) is unchanged. Only the binary changes.

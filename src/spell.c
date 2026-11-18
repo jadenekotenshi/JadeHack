@@ -926,7 +926,10 @@ boolean atme;
 
 	chance = percent_success(spell);
 	if (!ringfree && (confused || (rnd(100) > chance))) {
-		You("fail to cast the spell correctly.");
+		if (rn2(2))
+		    You("fail to cast the spell correctly.");
+		else
+		    pline_The("air around you crackles as you goof up.");
 		u.uen -= energy / 2;
 		flags.botl = 1;
 		return(1);
