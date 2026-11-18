@@ -801,3 +801,7 @@ Keolewa's bonus damage goes from d6 to d10 against every monster (`PHYS(5,10)` i
 ## Batch 63: Heartseeker
 
 **Heartseeker**: a lawful elven bow that is not self-willed, randomly generated, never a gift. Arrows fired from it get +5 to hit (`dothrow.c`) and +d8 damage (`uhitm.c`). They also count as **blessed and silver** against whatever they hit, while staying the kind of arrow they are: they do their own damage, and on top of it the blessed bonus (d4 against undead and demons, +2 to hit them) and the silver bonus (d20 against silver-haters, with the "sears" message; shades can be hurt by them). This is `heartseeker_shot()` in `weapon.c`, consulted by `hitval()` and `dmgval()`; it only applies to arrows the hero has just fired from the bow, not to arrows monsters shoot. **Actual silver arrows** fired from it also have an even chance of one extra shot, on top of the normal volley and skill bonuses. I took "when firing silver arrows" to mean real silver arrows, since every arrow it fires already counts as silver for damage; if you meant every arrow, it is a one-line change in `dothrow.c`. Only the binary changes.
+
+## Batch 64: Plague hits harder
+
+Plague's arrows now get +5 to hit (was +d5) and +d8 damage (was +d6), the same as Heartseeker. With the poison (+d6 on 9 hits in 10 against anything that isn't poison resistant) an elven arrow averages 4.0 + 4.5 + 3.15 = 11.65 against small and medium targets, or 8.5 against poison-resistant ones, level with Heartseeker's 8.5 there. Only the binary changes.

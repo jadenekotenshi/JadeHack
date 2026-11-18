@@ -1433,10 +1433,10 @@ register struct obj   *obj;
 		    if (uwep->oartifact == ART_HEARTSEEKER &&
 			    objects[obj->otyp].oc_skill == -P_BOW)
 			tmp += 5;
-		    /* Plague: +d5 to hit with arrows */
+		    /* Plague: +5 to hit with arrows */
 		    if (uwep->oartifact == ART_PLAGUE &&
 			    objects[obj->otyp].oc_skill == -P_BOW)
-			tmp += rnd(5);
+			tmp += 5;
 		    /* Yoichi no Yumi: +d10 to hit with ya */
 		    if (uwep->oartifact == ART_YOICHI_NO_YUMI && obj->otyp == YA)
 			tmp += rnd(10);

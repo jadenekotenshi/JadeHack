@@ -296,7 +296,7 @@ A("Yoichi no Yumi",		YUMI,
 
 /*
  *	Plague (after SLASH'EM): a chaotic orcish bow.  Arrows fired from it get
- *	+d5 to hit (dothrow.c) and +d6 damage (uhitm.c), and are poisoned as
+ *	+5 to hit (dothrow.c) and +d8 damage (uhitm.c), and are poisoned as
  *	they leave the string (dothrow.c).  Wielding it confers sickness
  *	resistance (defends(AD_DISE) in youprop.h).
  */
