@@ -151,7 +151,7 @@ struct monst *mon;
 /*	Put weapon vs. monster type "to hit" bonuses in below:	*/
 
 	/* Blessed weapons used against undead or demons */
-	if (Is_weapon && otmp->blessed &&
+	if (Is_weapon && (otmp->blessed || heartseeker_shot(otmp)) &&
 	   (is_demon(ptr) || is_undead(ptr))) tmp += 2;
 
 	if (is_spear(otmp) &&
@@ -204,6 +204,18 @@ struct monst *mon;
  *	dmgval returns an integer representing the damage bonuses
  *	of "otmp" against the monster.
  */
+/* is this an arrow you fired from Heartseeker?  Those count as blessed and
+   silver against what they hit, whatever they really are */
+boolean
+heartseeker_shot(otmp)
+struct obj *otmp;
+{
+	return (boolean)(otmp && otmp->oclass == WEAPON_CLASS &&
+			 otmp->was_thrown && is_ammo(otmp) &&
+			 uwep && uwep->oartifact == ART_HEARTSEEKER &&
+			 ammo_and_launcher(otmp, uwep));
+}
+
 int
 dmgval(otmp, mon)
 struct obj *otmp;
@@ -286,7 +298,8 @@ struct monst *mon;
 	if (objects[otyp].oc_material <= LEATHER && thick_skinned(ptr))
 		/* thick skinned/scaled creatures don't feel it */
 		tmp = 0;
-	if (ptr == &mons[PM_SHADE] && objects[otyp].oc_material != SILVER)
+	if (ptr == &mons[PM_SHADE] && objects[otyp].oc_material != SILVER &&
+		!heartseeker_shot(otmp))
 		tmp = 0;
 
 	/* "very heavy iron ball"; weight increase is in increments of 160 */
@@ -305,11 +318,12 @@ struct monst *mon;
 		otmp->oclass == BALL_CLASS || otmp->oclass == CHAIN_CLASS) {
 	    int bonus = 0;
 
-	    if (otmp->blessed && hates_blessed(ptr))
+	    if ((otmp->blessed || heartseeker_shot(otmp)) && hates_blessed(ptr))
 		bonus += rnd(4);
 	    if (is_axe(otmp) && is_wooden(ptr))
 		bonus += rnd(4);
-	    if (objects[otyp].oc_material == SILVER && hates_silver(ptr))
+	    if ((objects[otyp].oc_material == SILVER || heartseeker_shot(otmp)) &&
+		    hates_silver(ptr))
 		bonus += rnd(20);
 
 	    /* if the weapon is going to get a double damage bonus, adjust

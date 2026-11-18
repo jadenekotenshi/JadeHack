@@ -201,6 +201,13 @@ int shotlimit;
 
 	if ((long)multishot > obj->quan) multishot = (int)obj->quan;
 	multishot = rnd(multishot);
+	/* Heartseeker: silver arrows have an even chance of an extra shot */
+	if (uwep && uwep->oartifact == ART_HEARTSEEKER &&
+		obj->otyp == SILVER_ARROW && ammo_and_launcher(obj, uwep) &&
+		!(Confusion || Stunned) && !rn2(2)) {
+	    multishot++;
+	    if ((long)multishot > obj->quan) multishot = (int)obj->quan;
+	}
 	if (shotlimit > 0 && multishot > shotlimit) multishot = shotlimit;
 
 	m_shot.s = ammo_and_launcher(obj,uwep) ? TRUE : FALSE;
@@ -1422,6 +1429,10 @@ register struct obj   *obj;
 		    tmp += uwep->spe - greatest_erosion(uwep);
 		    tmp += weapon_hit_bonus(uwep);
 		    if (uwep->oartifact) tmp += spec_abon(uwep, mon);
+		    /* Heartseeker: +5 to hit with arrows */
+		    if (uwep->oartifact == ART_HEARTSEEKER &&
+			    objects[obj->otyp].oc_skill == -P_BOW)
+			tmp += 5;
 		    /* Plague: +d5 to hit with arrows */
 		    if (uwep->oartifact == ART_PLAGUE &&
 			    objects[obj->otyp].oc_skill == -P_BOW)

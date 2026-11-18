@@ -305,6 +305,17 @@ A("Plague",			ORCISH_BOW,
 	NO_ATTK,	SPDF_SICK,	NO_CARY,	0, A_CHAOTIC, NON_PM, NON_PM, 3500L ),
 
 /*
+ *	Heartseeker: a lawful elven bow that is not self-willed.  Arrows fired
+ *	from it get +5 to hit (dothrow.c) and +d8 damage (uhitm.c), and count as
+ *	blessed and silver against what they hit while remaining whatever they
+ *	really are (heartseeker_shot() in weapon.c).  Silver arrows fired from
+ *	it have an even chance of one extra shot (dothrow.c).
+ */
+A("Heartseeker",		ELVEN_BOW,
+	SPFX_RESTR, 0, 0,
+	NO_ATTK,	SPDF_NONE,	NO_CARY,	0, A_LAWFUL, NON_PM, NON_PM, 4000L ),
+
+/*
  *	Kusanagi: a lawful broadsword (the samurai call it a ninja-to), the
  *	crowning gift of a Samurai.  +d10 damage against everything and double
  *	damage against snakes, dragons and other serpentine monsters (see

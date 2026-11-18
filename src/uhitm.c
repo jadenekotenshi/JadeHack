@@ -791,7 +791,8 @@ int dieroll;
 			hittxt = TRUE;
 		    }
 		    if (obj->oprops) oprop_hit(&youmonst, mon, obj, &tmp);
-		    if (objects[obj->otyp].oc_material == SILVER
+		    if ((objects[obj->otyp].oc_material == SILVER ||
+				heartseeker_shot(obj))
 				&& hates_silver(mdat)) {
 			silvermsg = TRUE; silverobj = TRUE;
 		    }
@@ -1066,6 +1067,10 @@ int dieroll;
 		uwep->oartifact == ART_YOICHI_NO_YUMI &&
 		ammo_and_launcher(obj, uwep))
 	    tmp += rnd(12);
+
+	/* Heartseeker: arrows fired from it do +d8 damage */
+	if (thrown && obj && heartseeker_shot(obj))
+	    tmp += rnd(8);
 
 	/* Plague: arrows fired from it do +d6 damage */
 	if (thrown && obj && uwep && uwep->oartifact == ART_PLAGUE &&
