@@ -840,3 +840,7 @@ Every new wearable (helms, boots, shields, bracers, amulets, gnomish suit, all d
 - **Wishing for the wand of stasis** gave a random wand, because the plural-stripping in `makesingular()` turned "stasis" into "stasi" (`objnam.c`). "Kas" and "Tindalos" are also protected from it now.
 - **Wishing for the Sword of Kas, the Hand of Vecna or the Eye of Vecna** by name gave a random sword, glove or lens, because "of Kas"/"of Vecna" was read as "figurine of a Kas". A name that is an artifact's name is no longer split that way (`objnam.c`).
 Not exercised: spellbook casting for the high-level new spells (a first-level Wizard fails them every time; each has its case in `spelleffects()`), and the dwarvish bearded axe's apply and the bag of poo beyond opening them.
+
+## Batch 71: merozalghi are vulnerable to cold
+
+The merozalghu now has `M4_VULNERABLE_COLD`: cold damage against it is multiplied by 1.5 through `damage_mon()`, the same as for the other cold-vulnerable monsters (Pernicimordax's d(3,6) cold and double damage against merozalghi already existed and now stack with it). Data files must be rebuilt (`monst.c` changed).
