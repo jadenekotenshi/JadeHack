@@ -172,6 +172,9 @@ moveloop()
 					/* average movement noticeably slower */
 					if (rn2(3) != 0) moveamt -= NORMAL_SPEED / 2;
 				}
+				/* a topaz dragon's breath cuts even into fast heroes */
+				if (Slow && (Fast || Very_fast || Super_fast))
+					moveamt -= moveamt / 3;
 			 }
 
 		    switch (wtcap) {

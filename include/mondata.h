@@ -119,6 +119,11 @@
 #define extra_nasty(ptr)	(((ptr)->mflags2 & M2_NASTY) != 0L)
 #define strongmonst(ptr)	(((ptr)->mflags2 & M2_STRONG) != 0L)
 #define can_breathe(ptr)	attacktype(ptr, AT_BREA)
+/* gem dragons (emerald .. amethyst), adults and babies */
+#define is_gem_dragon(ptr)	(((ptr) >= &mons[PM_EMERALD_DRAGON] && \
+				  (ptr) <= &mons[PM_AMETHYST_DRAGON]) || \
+				 ((ptr) >= &mons[PM_BABY_EMERALD_DRAGON] && \
+				  (ptr) <= &mons[PM_BABY_AMETHYST_DRAGON]))
 #define cantwield(ptr)		(nohands(ptr) || verysmall(ptr))
 #define could_twoweap(ptr)	((ptr)->mattk[1].aatyp == AT_WEAP)
 #define cantweararm(ptr)	(breakarm(ptr) || sliparm(ptr))

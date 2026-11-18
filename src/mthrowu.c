@@ -692,6 +692,280 @@ register struct attack *mattk;
 #endif /* OVLB */
 #ifdef OVL1
 
+/*
+ * Gem dragon breath weapons.  These are straight beams that do not bounce
+ * and are not buzz() rays, so they can have effects of their own.
+ */
+STATIC_OVL const struct gem_beam_info {
+	const char *name;	/* what hits you, and what you die of */
+	const char *breathes;	/* "<dragon> breathes ..." */
+	int vis;		/* zap glyph (0..7) used to draw the beam */
+	boolean reflect;	/* can a reflector turn it back? */
+} gem_beams[] = {
+	{ "blast of wind",	"a howling gale",		7, FALSE },
+	{ "slowing ray",	"a ray of stilled time",	6, TRUE },
+	{ "psychic blast",	"a psychic blast",		3, FALSE },
+	{ "wave of hellfire",	"hellfire",			1, TRUE },
+	{ "burst of dazzling light", "dazzling light",		5, TRUE },
+	{ "blast of force",	"a blast of pure force",	0, FALSE }
+};
+
+/* does a beam score a hit against armor class `ac'? (as zap_hit()) */
+STATIC_OVL boolean
+gem_beam_hits(ac)
+int ac;
+{
+	int chance = rn2(20);
+
+	if (!chance) return (boolean)(rnd(10) < ac);
+	ac = AC_VALUE(ac);
+	return (boolean)(-(chance) < ac);
+}
+
+/* gem breath hits a monster; returns the damage done */
+STATIC_OVL int
+gem_hitm(mon, typ, nd)
+struct monst *mon;
+int typ, nd;
+{
+	int dam = d(nd,6);
+
+	switch (typ) {
+	case AD_WIND:
+	    if (!mon->mstun) mon->mstun = 1;
+	    break;
+	case AD_TIME:
+	    mon_adjust_speed(mon, -1, (struct obj *)0);
+	    break;
+	case AD_PSYC:
+	    if (mindless(mon->data) || resists_magm(mon)) {
+		shieldeff(mon->mx, mon->my);
+		dam = 0;
+	    } else {
+		mon->mconf = 1;
+		mon->mstun = 1;
+	    }
+	    break;
+	case AD_HELL:
+	    if (resists_fire(mon)) {
+		shieldeff(mon->mx, mon->my);
+		dam /= 2;
+	    }
+	    (void) burnarmor(mon);
+	    break;
+	case AD_PRSM:
+	    if (is_undead(mon->data) || mon->data->mlet == S_GREMLIN ||
+		    mon->data->mlet == S_VAMPIRE)
+		dam *= 2;
+	    else
+		dam /= 2;
+	    if (haseyes(mon->data) && !resists_blnd(mon) && mon->mcansee) {
+		mon->mcansee = 0;
+		mon->mblinded = (mon->mblinded + d(nd,12) > 127) ? 127 :
+				mon->mblinded + d(nd,12);
+	    }
+	    break;
+	case AD_FORC:
+	    if (resists_magm(mon)) {
+		shieldeff(mon->mx, mon->my);
+		dam /= 2;
+	    }
+	    break;
+	}
+	if (dam > 0) damage_mon(mon, dam, (typ == AD_HELL) ? AD_FIRE : AD_PHYS);
+	return dam;
+}
+
+/* gem breath hits you */
+STATIC_OVL void
+gem_hitu(typ, nd, sx, sy, dx, dy)
+int typ, nd;
+xchar sx, sy;
+int dx, dy;
+{
+	const char *fltxt = gem_beams[typ - AD_WIND].name;
+	int dam = d(nd,6);
+
+	switch (typ) {
+	case AD_WIND:
+	    if (Half_physical_damage) dam = (dam + 1) / 2;
+	    if (Stun_resistance) {
+		You("brace yourself against the wind.");
+	    } else {
+		make_stunned(HStun + (long)rnd(4), FALSE);
+	    }
+	    break;
+	case AD_TIME:
+	    if (Free_action) {
+		shieldeff(sx, sy);
+		You("are unaffected by the stilled time.");
+	    } else {
+		incr_itimeout(&HSlow, rn1(15,15));
+		You_feel("time thicken around you!");
+		flags.botl = 1;
+	    }
+	    break;
+	case AD_PSYC:
+	    if (Antimagic) {
+		shieldeff(sx, sy);
+		monstseesu(M_SEEN_MAGR);
+		Your("mind is shielded; the blast is much weaker.");
+		dam /= 2;
+	    } else {
+		if (!Stun_resistance)
+		    make_stunned(HStun + (long)rnd(5), FALSE);
+		if (!Confusion_resistance)
+		    make_confused(HConfusion + (long)rnd(10), FALSE);
+		You("reel under the psychic assault!");
+	    }
+	    if (Half_spell_damage) dam = (dam + 1) / 2;
+	    break;
+	case AD_HELL:
+	    if (how_resistant(FIRE_RES) == 100) {
+		shieldeff(sx, sy);
+		You("are scorched, but not consumed, by the hellfire!");
+		dam = resist_reduce(dam, FIRE_RES);
+		if (dam < d(nd,6) / 2) dam = d(nd,6) / 2;
+	    } else {
+		dam = resist_reduce(dam, FIRE_RES);
+	    }
+	    burn_away_slime();
+	    if (burnarmor(&youmonst)) {
+		if (!rn2(3)) destroy_item(POTION_CLASS, AD_FIRE);
+		if (!rn2(3)) destroy_item(SCROLL_CLASS, AD_FIRE);
+		if (!rn2(5)) destroy_item(SPBOOK_CLASS, AD_FIRE);
+	    }
+	    break;
+	case AD_PRSM:
+	    if (is_undead(youmonst.data) || youmonst.data->mlet == S_GREMLIN) {
+		dam *= 2;
+		You("shrivel in the light!");
+	    } else {
+		dam /= 2;
+	    }
+	    if (!resists_blnd(&youmonst)) {
+		You("are blinded by the dazzling light!");
+		make_blinded((long)d(nd,12), FALSE);
+		if (!Blind) Your("%s", vision_clears);
+	    }
+	    break;
+	case AD_FORC:
+	    if (Antimagic) {
+		shieldeff(sx, sy);
+		monstseesu(M_SEEN_MAGR);
+		pline_The("force of the blast is dampened!");
+		dam /= 2;
+	    }
+	    if (Half_spell_damage) dam = (dam + 1) / 2;
+	    break;
+	}
+	if (dam < 1) dam = 1;
+	losehp(dam, fltxt, KILLED_BY_AN);
+
+	/* the wind also throws you back */
+	if (typ == AD_WIND && (Upolyd ? (u.mh > 0) : (u.uhp > 0))) {
+	    if (!u.ustuck && !In_sokoban(&u.uz) && !Levitation && !Flying
+#ifdef STEED
+		&& !u.usteed
+#endif
+		&& !Punished)
+		hurtle(dx, dy, rnd(2) + 1, TRUE);
+	}
+}
+
+/*
+ * mtmp breathes a gem-dragon beam from (sx,sy) in direction dx,dy;
+ * mtmp == 0 means that you are breathing (polymorphed into a gem dragon).
+ */
+void
+gem_beam(mtmp, typ, nd, sx, sy, dx, dy)
+struct monst *mtmp;
+int typ, nd;
+xchar sx, sy;
+int dx, dy;
+{
+	const struct gem_beam_info *gb = &gem_beams[typ - AD_WIND];
+	struct monst *mon;
+	int range = rn1(7,7);
+	xchar lsx, lsy;
+
+	if (u.uswallow) {
+	    if (!mtmp && u.ustuck) {
+		int tmp = gem_hitm(u.ustuck, typ, nd);
+		pline("The %s hits %s%s", gb->name, mon_nam(u.ustuck), exclam(tmp));
+		if (u.ustuck->mhp < 1) killed(u.ustuck);
+	    }
+	    return;
+	}
+	if (!dx && !dy) return;
+	if (mtmp) newsym(u.ux, u.uy);
+
+	tmp_at(DISP_BEAM, zapdir_to_glyph(dx, dy, gb->vis));
+	while (range-- > 0) {
+	    lsx = sx; lsy = sy;
+	    sx += dx; sy += dy;
+	    if (!isok(sx,sy) || !ZAP_POS(levl[sx][sy].typ) ||
+		    closed_door(sx,sy))
+		break;
+	    mon = m_at(sx, sy);
+	    if (cansee(sx,sy)) {
+		if (mon && !canspotmon(mon))
+		    map_invisible(sx, sy);
+		tmp_at(sx, sy);
+		delay_output();
+	    }
+	    bhitpos.x = sx; bhitpos.y = sy;
+
+	    if (mon && mon != mtmp) {
+		if (!mtmp) mon->mstrategy &= ~STRAT_WAITMASK;
+		if (gem_beam_hits(find_mac(mon))) {
+		    if (gb->reflect && mon_reflects(mon, (char *)0)) {
+			if (cansee(mon->mx, mon->my)) {
+			    hit(gb->name, mon, exclam(0));
+			    shieldeff(mon->mx, mon->my);
+			    (void) mon_reflects(mon, "But it reflects from %s %s!");
+			}
+			dx = -dx; dy = -dy;
+		    } else {
+			int tmp = gem_hitm(mon, typ, nd);
+			if (mon->mhp < 1) {
+			    if (mtmp) monkilled(mon, gb->name, AD_RBRE);
+			    else killed(mon);
+			} else {
+			    hit(gb->name, mon, exclam(tmp));
+			}
+		    }
+		    range -= 2;
+		} else {
+		    miss(gb->name, mon);
+		}
+	    } else if (mtmp && sx == u.ux && sy == u.uy && range >= 0) {
+		nomul(0, 0);
+		if (gem_beam_hits((int) u.uac)) {
+		    range -= 2;
+		    pline("The %s hits you!", gb->name);
+		    if (gb->reflect && Reflecting) {
+			if (!Blind)
+			    (void) ureflects("But %s reflects from your %s!", "it");
+			else
+			    pline("It reflects from you.");
+			dx = -dx; dy = -dy;
+			shieldeff(sx, sy);
+			monstseesu(M_SEEN_REFL);
+		    } else {
+			gem_hitu(typ, nd, sx, sy, dx, dy);
+			if (typ == AD_WIND) break;	/* thrown back */
+		    }
+		} else {
+		    pline("The %s whizzes by you!", gb->name);
+		}
+		stop_occupation();
+		nomul(0, 0);
+	    }
+	}
+	tmp_at(DISP_END, 0);
+}
+
 int
 breamu(mtmp, mattk)			/* monster breathes at you (ranged) */
 	register struct monst *mtmp;
@@ -714,6 +988,26 @@ breamu(mtmp, mattk)			/* monster breathes at you (ranged) */
 
 		/* if we've seen the actual resistance, don't bother, or
 		 * if we're close by and they reflect, just jump the player */
+		if (typ >= AD_WIND && typ <= AD_FORC) {
+			/* gem dragon breath: not a buzz() ray, no seen-resistance
+			   bookkeeping, and reflection only matters to some types */
+			if (gem_beams[typ - AD_WIND].reflect &&
+			    m_seenres(mtmp,M_SEEN_REFL) &&
+			    monnear(mtmp,mtmp->mux,mtmp->muy))
+				return 1;
+			if (!mtmp->mspec_used && rn2(3)) {
+				if (canseemon(mtmp))
+					pline("%s breathes %s!", Monnam(mtmp),
+					      gem_beams[typ - AD_WIND].breathes);
+				gem_beam(mtmp, typ,
+				     (int)(mattk->damn * max((int)mattk->damd, 6) / 6),
+				     mtmp->mx, mtmp->my, sgn(tbx), sgn(tby));
+				nomul(0, 0);
+				if (!rn2(3))
+					mtmp->mspec_used = 10+rn2(20);
+			}
+			return(1);
+		}
 		player_resists = (m_seenres(mtmp,1 << (typ-1)) > 0);
 		if (player_resists || 
 				(m_seenres(mtmp,M_SEEN_REFL) && monnear(mtmp,mtmp->mux,mtmp->muy))) { 

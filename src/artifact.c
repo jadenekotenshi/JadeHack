@@ -310,7 +310,7 @@ boolean allow_detrimental;
 	return otmp;
     /* dragon scales and scale mail are fine as they are */
     if (otmp->otyp >= GRAY_DRAGON_SCALE_MAIL &&
-	otmp->otyp <= YELLOW_DRAGON_SCALES)
+	otmp->otyp <= AMETHYST_DRAGON_SCALES)
 	return otmp;
 
     while (!otmp->oprops && tries++ < 200) {

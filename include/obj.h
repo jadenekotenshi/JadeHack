@@ -272,9 +272,9 @@ struct obj {
 
 /* dragon gear */
 #define Is_dragon_scales(obj)	((obj)->otyp >= GRAY_DRAGON_SCALES && \
-				 (obj)->otyp <= YELLOW_DRAGON_SCALES)
+				 (obj)->otyp <= AMETHYST_DRAGON_SCALES)
 #define Is_dragon_mail(obj)	((obj)->otyp >= GRAY_DRAGON_SCALE_MAIL && \
-				 (obj)->otyp <= YELLOW_DRAGON_SCALE_MAIL)
+				 (obj)->otyp <= AMETHYST_DRAGON_SCALE_MAIL)
 #define Is_dragon_armor(obj)	(Is_dragon_scales(obj) || Is_dragon_mail(obj))
 #define Dragon_scales_to_pm(obj) &mons[PM_GRAY_DRAGON + (obj)->otyp \
 				       - GRAY_DRAGON_SCALES]

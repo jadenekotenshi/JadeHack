@@ -351,7 +351,7 @@ boolean ignore_oquan;
 		break;
 	    case ARMOR_CLASS:
 		/* depends on order of the dragon scales objects */
-		if (typ >= GRAY_DRAGON_SCALES && typ <= YELLOW_DRAGON_SCALES) {
+		if (typ >= GRAY_DRAGON_SCALES && typ <= AMETHYST_DRAGON_SCALES) {
 			Sprintf(buf, "set of %s", actualn);
 			break;
 		}
@@ -1648,9 +1648,9 @@ STATIC_OVL NEARDATA const struct o_range o_ranges[] = {
 	{ "shirt",	ARMOR_CLASS,  HAWAIIAN_SHIRT, T_SHIRT },
 #endif
 	{ "dragon scales",
-			ARMOR_CLASS,  GRAY_DRAGON_SCALES, YELLOW_DRAGON_SCALES },
+			ARMOR_CLASS,  GRAY_DRAGON_SCALES, AMETHYST_DRAGON_SCALES },
 	{ "dragon scale mail",
-			ARMOR_CLASS,  GRAY_DRAGON_SCALE_MAIL, YELLOW_DRAGON_SCALE_MAIL },
+			ARMOR_CLASS,  GRAY_DRAGON_SCALE_MAIL, AMETHYST_DRAGON_SCALE_MAIL },
 	{ "sword",	WEAPON_CLASS, SHORT_SWORD,    KATANA },
 #ifdef WIZARD
 	{ "venom",	VENOM_CLASS,  BLINDING_VENOM, ACID_VENOM },
@@ -2219,7 +2219,7 @@ boolean from_user;
 
 	/* dragon scales - assumes order of dragons */
 	if(!strcmpi(bp, "scales") &&
-			mntmp >= PM_GRAY_DRAGON && mntmp <= PM_YELLOW_DRAGON) {
+			mntmp >= PM_GRAY_DRAGON && mntmp <= PM_AMETHYST_DRAGON) {
 		typ = GRAY_DRAGON_SCALES + mntmp - PM_GRAY_DRAGON;
 		mntmp = NON_PM;	/* no monster */
 		goto typfnd;
@@ -2748,7 +2748,7 @@ typfnd:
 			/* Dragon mail - depends on the order of objects */
 			/*		 & dragons.			 */
 			if (mntmp >= PM_GRAY_DRAGON &&
-						mntmp <= PM_YELLOW_DRAGON)
+						mntmp <= PM_AMETHYST_DRAGON)
 			    otmp->otyp = GRAY_DRAGON_SCALE_MAIL +
 						    mntmp - PM_GRAY_DRAGON;
 			break;

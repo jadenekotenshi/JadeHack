@@ -400,6 +400,13 @@ DRGN_ARMR("blue dragon scale mail",   1, SHOCK_RES,   900, 1, CLR_BLUE),
 DRGN_ARMR("green dragon scale mail",  1, POISON_RES,  900, 1, CLR_GREEN),
 DRGN_ARMR("gold dragon scale mail",   1, HALLUC_RES,  900, 1, HI_GOLD),	/* NetHack 5.0: hallucination resistance */
 DRGN_ARMR("yellow dragon scale mail", 1, ACID_RES,    900, 1, CLR_YELLOW),
+/* gem dragons: properties not otherwise available from dragon scales */
+DRGN_ARMR("emerald dragon scale mail", 1, MAGICAL_BREATHING, 1000, 1, CLR_BRIGHT_GREEN),
+DRGN_ARMR("topaz dragon scale mail",   1, FREE_ACTION,       1000, 1, CLR_BROWN),
+DRGN_ARMR("sapphire dragon scale mail", 1, STONE_RES,        1000, 1, CLR_BRIGHT_BLUE),
+DRGN_ARMR("ruby dragon scale mail",    1, REGENERATION,      1100, 1, CLR_BRIGHT_MAGENTA),
+DRGN_ARMR("crystal dragon scale mail", 1, HALF_PHDAM,        1100, 1, CLR_CYAN),
+DRGN_ARMR("amethyst dragon scale mail", 1, HALF_SPDAM,       1100, 1, CLR_MAGENTA),
 
 /* For now, only dragons leave these. */
 /* 3.4.1: dragon scales left classified as "non-magic"; they confer
@@ -417,6 +424,12 @@ DRGN_ARMR("blue dragon scales",   0, SHOCK_RES,  500, 7, CLR_BLUE),
 DRGN_ARMR("green dragon scales",  0, POISON_RES, 500, 7, CLR_GREEN),
 DRGN_ARMR("gold dragon scales",   0, HALLUC_RES, 500, 7, HI_GOLD),
 DRGN_ARMR("yellow dragon scales", 0, ACID_RES,   500, 7, CLR_YELLOW),
+DRGN_ARMR("emerald dragon scales",  0, MAGICAL_BREATHING, 600, 7, CLR_BRIGHT_GREEN),
+DRGN_ARMR("topaz dragon scales",    0, FREE_ACTION,       600, 7, CLR_BROWN),
+DRGN_ARMR("sapphire dragon scales", 0, STONE_RES,         600, 7, CLR_BRIGHT_BLUE),
+DRGN_ARMR("ruby dragon scales",     0, REGENERATION,      700, 7, CLR_BRIGHT_MAGENTA),
+DRGN_ARMR("crystal dragon scales",  0, HALF_PHDAM,        700, 7, CLR_CYAN),
+DRGN_ARMR("amethyst dragon scales", 0, HALF_SPDAM,        700, 7, CLR_MAGENTA),
 #undef DRGN_ARMR
 
 ARMOR("plate mail", (char *)0,

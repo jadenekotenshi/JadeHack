@@ -808,6 +808,31 @@ register struct	monst	*mtmp;
 		if(!rn2(2)) (void) mongets(mtmp, MIRROR);
 		if(!rn2(2)) (void) mongets(mtmp, POT_OBJECT_DETECTION);
 		break;
+	    case S_DRAGON:
+		/* gem dragons sit on a hoard of their own kind of stone */
+		if (is_gem_dragon(ptr)) {
+		    int gem, adult = (ptr >= &mons[PM_EMERALD_DRAGON]);
+
+		    switch (adult ? monsndx(ptr) : monsndx(ptr) + 
+			    (PM_EMERALD_DRAGON - PM_BABY_EMERALD_DRAGON)) {
+			case PM_EMERALD_DRAGON:  gem = EMERALD; break;
+			case PM_TOPAZ_DRAGON:    gem = TOPAZ; break;
+			case PM_SAPPHIRE_DRAGON: gem = SAPPHIRE; break;
+			case PM_RUBY_DRAGON:     gem = RUBY; break;
+			case PM_CRYSTAL_DRAGON:  gem = DIAMOND; break;
+			default:                 gem = AMETHYST; break;
+		    }
+		    otmp = mksobj(gem, FALSE, FALSE);
+		    otmp->quan = adult ? (long) rn1(4, 3) : (long) rnd(2);
+		    otmp->owt = weight(otmp);
+		    (void) mpickobj(mtmp, otmp);
+		    for (cnt = adult ? rn1(3, 2) : rn2(2); cnt > 0; cnt--) {
+			otmp = mksobj(rnd_class(DILITHIUM_CRYSTAL, JADE),
+				      FALSE, FALSE);
+			(void) mpickobj(mtmp, otmp);
+		    }
+		}
+		break;
 	    case S_GIANT:
 		if (ptr == &mons[PM_MINOTAUR]) {
 		    if (!rn2(3) || (in_mklev && Is_earthlevel(&u.uz)))
@@ -1615,9 +1640,17 @@ rndmonst()
 /*
  *	Now, select a monster at random.
  */
-	ct = rnd(rndmonst_state.choice_count);
-	for (mndx = LOW_PM; mndx < SPECIAL_PM; mndx++)
-	    if ((ct -= (int)rndmonst_state.mchoices[mndx]) <= 0) break;
+	{
+	    int gem_rerolls = 0;
+ reroll:
+	    ct = rnd(rndmonst_state.choice_count);
+	    for (mndx = LOW_PM; mndx < SPECIAL_PM; mndx++)
+		if ((ct -= (int)rndmonst_state.mchoices[mndx]) <= 0) break;
+	    /* gem dragons are rarer than the chromatic ones */
+	    if (mndx < SPECIAL_PM && is_gem_dragon(&mons[mndx]) &&
+		    gem_rerolls++ < 8 && rn2(3))
+		goto reroll;
+	}
 
 	if (mndx == SPECIAL_PM || uncommon(mndx)) {	/* shouldn't happen */
 	    impossible("rndmonst: bad `mndx' [#%d]", mndx);

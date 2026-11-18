@@ -206,6 +206,12 @@ register struct monst *mtmp;
 	    case PM_GREEN_DRAGON:
 	    case PM_GOLD_DRAGON:
 	    case PM_YELLOW_DRAGON:
+	    case PM_EMERALD_DRAGON:
+	    case PM_TOPAZ_DRAGON:
+	    case PM_SAPPHIRE_DRAGON:
+	    case PM_RUBY_DRAGON:
+	    case PM_CRYSTAL_DRAGON:
+	    case PM_AMETHYST_DRAGON:
 		/* Make dragon scales.  This assumes that the order of the */
 		/* dragons is the same as the order of the scales.	   */
 		if (!rn2(mtmp->mrevived ? 20 : 3)) {

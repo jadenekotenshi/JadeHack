@@ -80,6 +80,13 @@
 #define AD_ENCH		41	/* remove enchantment (disenchanter) */
 #define AD_CORR		42	/* corrode armor (black pudding) */
 #define AD_POLY		43	/* polymorph target (genetic engineer) */
+/* gem dragon breath weapons (not buzz() rays; see gem_beam() in mthrowu.c) */
+#define AD_WIND		44	/* emerald: wind blast, knocks back and stuns */
+#define AD_TIME		45	/* topaz: slowing ray */
+#define AD_PSYC		46	/* sapphire: psychic blast, ignores reflection */
+#define AD_HELL		47	/* ruby: hellfire, burns even fire-resistant */
+#define AD_PRSM		48	/* crystal: blinding light */
+#define AD_FORC		49	/* amethyst: force ray, ignores reflection */
 
 #define AD_CLRC		240	/* random clerical spell */
 #define AD_SPEL		241	/* random magic spell */

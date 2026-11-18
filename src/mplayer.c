@@ -157,7 +157,7 @@ register boolean special;
 
 	if ((mtmp = makemon(ptr, x, y, NO_MM_FLAGS)) != 0) {
 	    short weapon = rn2(2) ? LONG_SWORD : rnd_class(SPEAR, BULLWHIP);
-	    short armor = rnd_class(GRAY_DRAGON_SCALE_MAIL, YELLOW_DRAGON_SCALE_MAIL);
+	    short armor = rnd_class(GRAY_DRAGON_SCALE_MAIL, AMETHYST_DRAGON_SCALE_MAIL);
 	    short cloak = !rn2(8) ? STRANGE_OBJECT :
 	    		rnd_class(OILSKIN_CLOAK, CLOAK_OF_DISPLACEMENT);
 	    short helm = !rn2(8) ? STRANGE_OBJECT :

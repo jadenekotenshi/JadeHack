@@ -763,3 +763,29 @@ Four new branches (`dat/dungeon.def`) and their levels (`dat/vecna.des`, `dat/ca
 - **Rutterkin** (i, after Hack'EM): level 5, speed 12, AC 2, MR 20, chaotic; one 1d4 claw whose poison drains Strength; regenerates, wanders, follows you between levels, hates silver (like every imp-class monster here). Frequency 1.
 - **Redcap** (i, after Hack'EM): level 10, speed 15, AC 2, MR 30, lawful (so lawful heroes may find them peaceful); bite 1d2, weapon 2d4, claw 1d4; poison resistant (the corpse conveys it), amphibious, tunnels with a pick-axe, goes berserk when hurt. Frequency 1. There is no scythe in this game, so redcaps carry a voulge (three in four) and a pick-axe (half the time) instead.
 - **Rabite** and **silktail** (r, Hack'EM's rabbit and rabid rabbit under other names): the rabite is level 0, speed 15, AC 7, bite 1d3, herbivorous, frequency 2; the silktail is level 3, speed 18, AC 7, bite 2d6 that drains Constitution, poisonous to eat, frequency 1. Neither is generated in Gehennom, and neither breeds. Only the binary and data files change; old saves and bones do not load.
+
+## Batch 60: the gem dragons
+
+Six new dragons after the chromatic ones, each with a baby, scales and scale mail. All adults are level 17 (the chromatic ones are 15), speed 9, AC -2, MR 25, fly, see invisible, lay eggs and hoard jewels; bite 3d8 and two 1d4 claws like the others. They are generated about a third as often as a chromatic dragon, and (being deeper) not before the difficulty reaches their level. Each adult carries a hoard of its own stone (3 to 6 of them) plus 2 to 4 random gems; a baby carries one or two. The hoard drops when it dies. Scales drop 1 time in 3, as for other dragons; enchanting scales turns them into scale mail, and a polymorph while wearing either makes you the dragon.
+
+| Dragon | Colour | Breath | Scales / scale mail | Resists |
+|---|---|---|---|---|
+| Emerald | bright green | howling gale, 4d6 | magical breathing | poison, swims |
+| Topaz | brown | ray of stilled time, 4d6 | free action | sleep |
+| Sapphire | bright blue | psychic blast, 4d6 | stoning resistance | stoning |
+| Ruby | bright magenta | hellfire, 6d6 | regeneration | fire (corpse conveys it), hurt by cold, infravisible |
+| Crystal | cyan | dazzling light, 4d6 | half physical damage | shock |
+| Amethyst | magenta | blast of pure force, 6d6 | half spell damage | sleep |
+
+The shimmering dragon is still switched off, so the crystal dragon takes cyan; if shimmering dragons are ever enabled they will need another colour. Topaz is brown because every bright yellow is taken. Ruby and amethyst differ only in brightness.
+
+**The breaths** are not `buzz()` rays: they are straight beams drawn with the existing zap glyphs, and they do not bounce off walls. All new code is `gem_beam()` in `mthrowu.c`, driven by new attack types `AD_WIND`, `AD_TIME`, `AD_PSYC`, `AD_HELL`, `AD_PRSM` and `AD_FORC`. The random-breath Chromatic Dragon is unchanged, and the chromatic dragons still use `buzz()`.
+- **Wind** (emerald): stuns you for 1 to 4 turns and hurls you one or two squares back (not in Sokoban, not when levitating, flying, riding, stuck or chained). Half physical damage halves the damage. Cannot be reflected.
+- **Slowing** (topaz): you are slowed for 15 to 29 turns; a fast hero loses a third of their movement instead of nothing (new rule in `allmain.c`); free action turns it away. Slows monsters. Reflectable.
+- **Psychic** (sapphire): stuns and confuses; magic resistance halves the damage and blocks both; half spell damage halves it again. Mindless monsters are immune. Cannot be reflected.
+- **Hellfire** (ruby): fire damage that still does half to the fire resistant (it cannot be resisted completely); burns armor, scrolls, potions and spellbooks like fire. Reflectable.
+- **Light** (crystal): half damage, but double to undead, gremlins, vampires and so on, and it blinds for 1d12 per die unless you resist blindness. Reflectable.
+- **Force** (amethyst): magic resistance halves it, half spell damage halves it again (so amethyst scale mail protects against amethyst breath). Cannot be reflected.
+If you polymorph into a gem dragon you breathe the same beams with #monster.
+
+New in the code: `is_gem_dragon()` in `mondata.h`, the six `AD_` codes in `monattk.h`, the dragon, scale and scale-mail entries (kept in the same order as before, after yellow, so every range check was widened to end at amethyst), the egg mappings, the hoard in `m_initinv`, and the one-in-three reroll in `rndmonst`. Old saves and bones do not load.

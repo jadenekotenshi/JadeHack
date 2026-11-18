@@ -226,7 +226,7 @@ boolean forcecontrol;
 	int tries=0;
 	boolean draconian = (uarm &&
 				uarm->otyp >= GRAY_DRAGON_SCALE_MAIL &&
-				uarm->otyp <= YELLOW_DRAGON_SCALES);
+				uarm->otyp <= AMETHYST_DRAGON_SCALES);
 	boolean iswere = (u.ulycn >= LOW_PM || is_were(youmonst.data));
 	boolean isvamp = (youmonst.data->mlet == S_VAMPIRE || u.umonnum == PM_VAMPIRE_BAT);
 	boolean was_floating = (Levitation || Flying);
@@ -763,6 +763,10 @@ dobreathe()
 	mattk = attacktype_fordmg(youmonst.data, AT_BREA, AD_ANY);
 	if (!mattk)
 	    impossible("bad breath attack?");	/* mouthwash needed... */
+	else if (mattk->adtyp >= AD_WIND && mattk->adtyp <= AD_FORC)
+	    gem_beam((struct monst *)0, (int) mattk->adtyp,
+		     (int)(mattk->damn * max((int)mattk->damd, 6) / 6),
+		     u.ux, u.uy, u.dx, u.dy);
 	else
 	    buzz((int) (20 + mattk->adtyp-1),
 		     (int)(mattk->damn * max((int)mattk->damd, 6) / 6),
@@ -1339,6 +1343,24 @@ int atyp;
 	    case YELLOW_DRAGON_SCALE_MAIL:
 	    case YELLOW_DRAGON_SCALES:
 		return PM_YELLOW_DRAGON;
+	    case EMERALD_DRAGON_SCALE_MAIL:
+	    case EMERALD_DRAGON_SCALES:
+		return PM_EMERALD_DRAGON;
+	    case TOPAZ_DRAGON_SCALE_MAIL:
+	    case TOPAZ_DRAGON_SCALES:
+		return PM_TOPAZ_DRAGON;
+	    case SAPPHIRE_DRAGON_SCALE_MAIL:
+	    case SAPPHIRE_DRAGON_SCALES:
+		return PM_SAPPHIRE_DRAGON;
+	    case RUBY_DRAGON_SCALE_MAIL:
+	    case RUBY_DRAGON_SCALES:
+		return PM_RUBY_DRAGON;
+	    case CRYSTAL_DRAGON_SCALE_MAIL:
+	    case CRYSTAL_DRAGON_SCALES:
+		return PM_CRYSTAL_DRAGON;
+	    case AMETHYST_DRAGON_SCALE_MAIL:
+	    case AMETHYST_DRAGON_SCALES:
+		return PM_AMETHYST_DRAGON;
 	    default:
 		return -1;
 	}
