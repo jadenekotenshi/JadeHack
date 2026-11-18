@@ -2274,9 +2274,14 @@ fopen_wizkit_file()
 		 * place a file name may be wholly under the player's
 		 * control
 		 */
-		raw_printf("Access to %s denied (%d).",
+		/* a file that is simply not in the current directory (a plain
+		   name such as wizkit.txt is looked for there first and then
+		   in the home directory) is not worth a complaint */
+		if (errno != ENOENT) {
+		    raw_printf("Access to %s denied (%d).",
 				wizkit, errno);
-		wait_synch();
+		    wait_synch();
+		}
 		/* fall through to standard names */
 	} else
 #endif
