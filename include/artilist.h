@@ -318,7 +318,7 @@ A("Heartseeker",		ELVEN_BOW,
 /*
  *	Mirrorbright: a neutral shield of reflection (so it reflects), with
  *	hallucination resistance while worn, no spellcasting penalty (spell.c,
- *	as for Aegis) and a weak light source (radius 1, lit while worn: see
+ *	as for Aegis), one point better base AC (ARM_BONUS in hack.h) and a weak light source (radius 1, lit while worn: see
  *	artifact_light(), Shield_on() and Shield_off()).
  */
 A("Mirrorbright",		SHIELD_OF_REFLECTION,

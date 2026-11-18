@@ -285,7 +285,9 @@ NEARDATA extern coord bhitpos;	/* place where throw or zap hits or stops */
 #endif
 #define plur(x) (((x) == 1) ? "" : "s")
 
+/* Mirrorbright is a point better than the shield of reflection it is */
 #define ARM_BONUS(obj)	(objects[(obj)->otyp].a_ac + (obj)->spe \
+			 + ((obj)->oartifact == ART_MIRRORBRIGHT) \
 			 - min((int)greatest_erosion(obj),objects[(obj)->otyp].a_ac))
 
 #define makeknown(x)	discover_object((x),TRUE,TRUE)

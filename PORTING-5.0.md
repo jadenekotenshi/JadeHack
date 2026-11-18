@@ -809,3 +809,5 @@ Plague's arrows now get +5 to hit (was +d5) and +d8 damage (was +d6), the same a
 ## Batch 65: Mirrorbright
 
 **Mirrorbright**: a neutral shield of reflection, randomly generated, never a gift. Being a shield of reflection it reflects; as an artifact it also gives hallucination resistance while worn (the same `SPFX_HALRES` as the Eye of Vecna), does not add the usual spellcasting penalty for wearing a shield (`spell.c`, as for Aegis and crystal shields), and acts as a weak light source: it glows with radius 1 while worn ("begins to glow softly" / "stops glowing"), compared with 2 for Sunsword and 3 for a lamp. The light is `artifact_light()` plus `Shield_on()` and `Shield_off()`. Only the binary changes.
+
+Mirrorbright also has one point better base armor class than a normal shield of reflection (base AC 3 instead of 2, before enchantment), through `ARM_BONUS` in `hack.h`.
