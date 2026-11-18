@@ -313,7 +313,7 @@ TERRAIN:$place[0],'.'
 # Non diggable walls
 NON_DIGGABLE:(00,00,44,19)
 # Objects
-OBJECT:(')',"tsurugi"),(22,10),blessed,0,NAME:"The Tsurugi of Muramasa"
+OBJECT:(')',"katana"),(22,10),blessed,0,NAME:"The Katana of Masamune"
 LOOP [9 + 1d6] {
   OBJECT:random,random
 }

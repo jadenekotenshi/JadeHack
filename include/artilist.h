@@ -359,15 +359,17 @@ A("Arcanos Guard",		CRYSTAL_PLATE_MAIL,
 	NO_ATTK,	SPDF_NONE,	NO_CARY,	ARCANE_BURST, A_NEUTRAL, PM_HEALER, NON_PM, 4000L ),
 
 /*
- *	Kusanagi: a lawful broadsword (the samurai call it a ninja-to), the
- *	crowning gift of a Samurai.  +d10 damage against everything and double
+ *	Kusanagi: a neutral broadsword (the samurai call it a ninja-to), the
+ *	first sacrifice gift of a neutral Samurai (a lawful one gets
+ *	Kiku-Ichimonji); it may also turn up at random.  +d10 damage against
+ *	everything and double
  *	damage against snakes, dragons and other serpentine monsters (see
  *	artifact_hit()); fire and poison resistance while wielded; it cuts
  *	through spider webs (dotrap()); #invoke works like a wand of wind.
  */
 A("Kusanagi",			BROADSWORD,
-	(SPFX_NOGEN|SPFX_RESTR), 0, 0,
-	PHYS(0,10),	(SPDF_FIRE|SPDF_POISON),	NO_CARY,	WIND_BLAST, A_LAWFUL, NON_PM, NON_PM, 4000L ),
+	SPFX_RESTR, 0, 0,
+	PHYS(0,10),	(SPDF_FIRE|SPDF_POISON),	NO_CARY,	WIND_BLAST, A_NEUTRAL, PM_SAMURAI, NON_PM, 4000L ),
 
 /*
  *	Aegis: a lawful dwarvish roundshield, only available as the crowning
@@ -450,7 +452,7 @@ A("The Master Key of Thievery", SKELETON_KEY,
 	NO_ATTK,	SPDF_NONE,	NO_CARY,
 	UNTRAP,		A_CHAOTIC, PM_ROGUE, NON_PM, 3500L ),
 
-A("The Tsurugi of Muramasa",	TSURUGI,
+A("The Katana of Masamune",	KATANA,
 	(SPFX_NOGEN|SPFX_RESTR|SPFX_INTEL|SPFX_BEHEAD|SPFX_LUCK), 0, 0,
 	PHYS(0,8),	SPDF_NONE,	NO_CARY,
 	0,		A_LAWFUL, PM_SAMURAI, NON_PM, 4500L ),

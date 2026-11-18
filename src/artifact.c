@@ -1712,7 +1712,7 @@ int dieroll; /* needed for Magicbane and vorpal blades */
 	/* We really want "on a natural 20" but Nethack does it in */
 	/* reverse from AD&D. */
 	if (spec_ability(otmp, SPFX_BEHEAD)) {
-	    if (otmp->oartifact == ART_TSURUGI_OF_MURAMASA && dieroll == 1) {
+	    if (otmp->oartifact == ART_KATANA_OF_MASAMUNE && dieroll == 1) {
 		wepdesc = "The razor-sharp blade";
 		/* not really beheading, but so close, why add another SPFX */
 		if (youattack && u.uswallow && mdef == u.ustuck) {
@@ -2400,12 +2400,19 @@ struct obj *pri, *sec;
 	/* Durandal is accepted in the off hand only beside Excalibur */
 	case ART_DURANDAL:
 	    return (boolean)(p == ART_EXCALIBUR);
+	/* the Samurai's four swords go together, the quest artifact too */
 	case ART_KUSANAGI:
-	    return (boolean)(p == ART_KIKU_ICHIMONJI || p == ART_ICHIGEKI);
+	    return (boolean)(p == ART_KIKU_ICHIMONJI || p == ART_ICHIGEKI ||
+			     p == ART_KATANA_OF_MASAMUNE);
 	case ART_ICHIGEKI:
-	    return (boolean)(p == ART_KIKU_ICHIMONJI || p == ART_KUSANAGI);
+	    return (boolean)(p == ART_KIKU_ICHIMONJI || p == ART_KUSANAGI ||
+			     p == ART_KATANA_OF_MASAMUNE);
 	case ART_KIKU_ICHIMONJI:
-	    return (boolean)(p == ART_ICHIGEKI || p == ART_KUSANAGI);
+	    return (boolean)(p == ART_ICHIGEKI || p == ART_KUSANAGI ||
+			     p == ART_KATANA_OF_MASAMUNE);
+	case ART_KATANA_OF_MASAMUNE:
+	    return (boolean)(p == ART_KIKU_ICHIMONJI || p == ART_KUSANAGI ||
+			     p == ART_ICHIGEKI);
 	/* Spineseeker and the Banes (but not Sunsword) go with anything */
 	case ART_SPINESEEKER:
 	case ART_DRAGONBANE:

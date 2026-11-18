@@ -331,7 +331,7 @@ const struct Role roles[] = {
 	"Sam", "the Castle of the Taro Clan", "the Shogun's Castle",
 	PM_SAMURAI, NON_PM, PM_LITTLE_DOG,
 	PM_LORD_SATO, PM_ROSHI, PM_ASHIKAGA_TAKAUJI,
-	ART_TSURUGI_OF_MURAMASA,
+	ART_KATANA_OF_MASAMUNE,
 	MH_HUMAN|MH_ELF|MH_DWARF|MH_GNOME|MH_ORC | ROLE_MALE|ROLE_FEMALE | 
 		ROLE_LAWFUL | ROLE_NEUTRAL,
 	/* Str Int Wis Dex Con Cha */
