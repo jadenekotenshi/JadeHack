@@ -2348,6 +2348,9 @@ struct obj *pri, *sec;
 	case ART_STING:
 	case ART_ORCRIST:
 	    return (boolean)(p != ART_GRIMTOOTH);
+	/* Durandal is accepted in the off hand only beside Excalibur */
+	case ART_DURANDAL:
+	    return (boolean)(p == ART_EXCALIBUR);
 	case ART_KUSANAGI:
 	    return (boolean)(p == ART_KIKU_ICHIMONJI || p == ART_ICHIGEKI);
 	case ART_ICHIGEKI:

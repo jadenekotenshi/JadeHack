@@ -336,6 +336,18 @@ A("Frostbite",			CROSSBOW,
 	NO_ATTK,	SPDF_COLD,	NO_CARY,	0, A_NEUTRAL, NON_PM, NON_PM, 3500L ),
 
 /*
+ *	Durandal: a lawful broadsword, the first sacrifice gift of a lawful
+ *	Knight (the role field makes mk_artifact() pick it for them).  +d5 to
+ *	hit and +d10 damage against anything that is not lawful.  In the off hand
+ *	it is accepted only beside Excalibur (artifact_offhand_ok()).  Weaker
+ *	than Kiku-Ichimonji on purpose: Excalibur is easy for a Knight to get,
+ *	and the two together are strong.
+ */
+A("Durandal",			BROADSWORD,
+	(SPFX_RESTR|SPFX_DALIGN), 0, 0,
+	PHYS(5,10),	SPDF_NONE,	NO_CARY,	0, A_LAWFUL, PM_KNIGHT, NON_PM, 3000L ),
+
+/*
  *	Kusanagi: a lawful broadsword (the samurai call it a ninja-to), the
  *	crowning gift of a Samurai.  +d10 damage against everything and double
  *	damage against snakes, dragons and other serpentine monsters (see
