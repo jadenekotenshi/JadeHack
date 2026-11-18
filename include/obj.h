@@ -163,6 +163,10 @@ struct obj {
 #define ammo_and_launcher(otmp,ltmp) \
 			 (is_ammo(otmp) && (ltmp) && \
 			 objects[(otmp)->otyp].oc_skill == -objects[(ltmp)->otyp].oc_skill)
+/* a bolt fired from Frostbite */
+#define frostbite_shot(otmp) (uwep && uwep->oartifact == ART_FROSTBITE && \
+			      (otmp)->oclass == WEAPON_CLASS && \
+			      ammo_and_launcher(otmp, uwep))
 #define is_missile(otmp)	((otmp->oclass == WEAPON_CLASS || \
 			 otmp->oclass == TOOL_CLASS) && \
 			 objects[otmp->otyp].oc_skill >= -P_BOOMERANG && \

@@ -1068,6 +1068,13 @@ int dieroll;
 		ammo_and_launcher(obj, uwep))
 	    tmp += rnd(12);
 
+	/* Frostbite: bolts fired from it do +d8 damage, and 2d6 of cold */
+	if (thrown && obj && frostbite_shot(obj)) {
+	    tmp += rnd(8);
+	    if (!resists_cold(mon))
+		tmp += d(2,6);
+	}
+
 	/* Heartseeker: arrows fired from it do +d8 damage */
 	if (thrown && obj && heartseeker_shot(obj))
 	    tmp += rnd(8);

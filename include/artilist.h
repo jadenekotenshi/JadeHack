@@ -326,6 +326,16 @@ A("Mirrorbright",		SHIELD_OF_REFLECTION,
 	NO_ATTK,	SPDF_NONE,	NO_CARY,	0, A_NEUTRAL, NON_PM, NON_PM, 3000L ),
 
 /*
+ *	Frostbite: a neutral crossbow.  Cold resistance while wielded; bolts
+ *	fired from it get +5 to hit (dothrow.c) and +d8 damage (uhitm.c), and
+ *	a bolt that hits adds 2d6 cold damage to its target and sends 2d6 into
+ *	each hostile monster next to the target (frost_burst() in dothrow.c).
+ */
+A("Frostbite",			CROSSBOW,
+	SPFX_RESTR, 0, 0,
+	NO_ATTK,	SPDF_COLD,	NO_CARY,	0, A_NEUTRAL, NON_PM, NON_PM, 3500L ),
+
+/*
  *	Kusanagi: a lawful broadsword (the samurai call it a ninja-to), the
  *	crowning gift of a Samurai.  +d10 damage against everything and double
  *	damage against snakes, dragons and other serpentine monsters (see

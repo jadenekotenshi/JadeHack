@@ -11,6 +11,7 @@ STATIC_DCL int FDECL(throw_obj, (struct obj *,int));
 STATIC_DCL void NDECL(autoquiver);
 STATIC_DCL int FDECL(gem_accept, (struct monst *, struct obj *));
 STATIC_DCL void FDECL(arrow_burst, (int,int,struct monst *));
+STATIC_DCL void FDECL(frost_burst, (int,int,struct monst *));
 STATIC_DCL void FDECL(tmiss, (struct obj *, struct monst *));
 STATIC_DCL int FDECL(throw_gold, (struct obj *));
 STATIC_DCL void FDECL(check_shop_obj, (struct obj *,XCHAR_P,XCHAR_P,BOOLEAN_P));
@@ -1429,6 +1430,9 @@ register struct obj   *obj;
 		    tmp += uwep->spe - greatest_erosion(uwep);
 		    tmp += weapon_hit_bonus(uwep);
 		    if (uwep->oartifact) tmp += spec_abon(uwep, mon);
+		    /* Frostbite: +5 to hit with bolts */
+		    if (frostbite_shot(obj))
+			tmp += 5;
 		    /* Heartseeker: +5 to hit with arrows */
 		    if (uwep->oartifact == ART_HEARTSEEKER &&
 			    objects[obj->otyp].oc_skill == -P_BOW)
@@ -1474,6 +1478,7 @@ register struct obj   *obj;
 		if (alive) {	/* mon still alive */
 		    cutworm(mon, bhitpos.x, bhitpos.y, obj);
 		}
+		if (frostbite_shot(obj)) frost_burst(bx, by, mon);
 		if (otyp == BURST_ARROW) arrow_burst(bx, by, mon);
 		else if (otyp == SLEEP_ARROW && alive && !rn2(2) &&
 			 !resists_sleep(mon)) {
@@ -1589,6 +1594,37 @@ register struct obj   *obj;
 	}
 
 	return 0;
+}
+
+/* a bolt from Frostbite that hits sends 2d6 cold into the adjacent squares
+   (its target takes its own 2d6 in hmon()); you are not harmed, since
+   wielding Frostbite makes you cold resistant */
+STATIC_OVL void
+frost_burst(x, y, target)
+int x, y;
+struct monst *target;
+{
+	int dx, dy;
+	struct monst *m;
+
+	pline_The("bolt bursts with frost!");
+	for (dx = -1; dx <= 1; dx++)
+	    for (dy = -1; dy <= 1; dy++) {
+		if (!dx && !dy) continue;
+		if (!isok(x + dx, y + dy)) continue;
+		m = m_at(x + dx, y + dy);
+		if (!m || m == target || m->mhp < 1 || m->mtame ||
+		    m->mpeaceful) continue;
+		wakeup(m);
+		if (resists_cold(m)) {
+		    shieldeff(m->mx, m->my);
+		    continue;
+		}
+		if (canseemon(m))
+		    pline("%s is chilled!", Monnam(m));
+		damage_mon(m, d(2,6), AD_COLD);
+		if (m->mhp < 1) killed(m);
+	    }
 }
 
 /* a burst arrow that hits sends 1d4 damage into the adjacent squares */
