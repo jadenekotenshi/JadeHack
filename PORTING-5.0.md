@@ -793,3 +793,7 @@ New in the code: `is_gem_dragon()` in `mondata.h`, the six `AD_` codes in `monat
 ## Batch 61: Keolewa hits harder
 
 Keolewa's bonus damage goes from d6 to d10 against every monster (`PHYS(5,10)` in `artilist.h`; the to-hit bonus stays d5). Against small and medium monsters it now averages 3.5 + 5.5 = 9.0 before the Caveman's own bonuses (large: 2.0 + 5.5 = 7.5), level with Grayswandir's 2d8. Only the binary changes.
+
+## Batch 62: Plague
+
+**Plague** (after SLASH'EM): a chaotic orcish bow, randomly generated, never a gift. Arrows fired from it get +d5 to hit (`dothrow.c`) and +d6 damage (`uhitm.c`), and become poisoned as they leave the string if they are not already (`dothrow.c`; only the arrows you fire, not the rest of the stack). Wielding it confers sickness resistance, through a new `SPDF_SICK` flag that `defends(AD_DISE, ...)` reports (`Sick_resistance` already asked it). The usual rules for poisoned weapons apply: Samurai and lawful heroes are penalised for using it, and the poison wears off now and then. A hero who is not chaotic risks being blasted when handling it, like any cross-aligned restricted artifact. Only the binary changes.

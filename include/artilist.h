@@ -295,6 +295,16 @@ A("Yoichi no Yumi",		YUMI,
 	NO_ATTK,	SPDF_NONE,	NO_CARY,	CREATE_YA, A_LAWFUL, NON_PM, NON_PM, 4000L ),
 
 /*
+ *	Plague (after SLASH'EM): a chaotic orcish bow.  Arrows fired from it get
+ *	+d5 to hit (dothrow.c) and +d6 damage (uhitm.c), and are poisoned as
+ *	they leave the string (dothrow.c).  Wielding it confers sickness
+ *	resistance (defends(AD_DISE) in youprop.h).
+ */
+A("Plague",			ORCISH_BOW,
+	SPFX_RESTR, 0, 0,
+	NO_ATTK,	SPDF_SICK,	NO_CARY,	0, A_CHAOTIC, NON_PM, NON_PM, 3500L ),
+
+/*
  *	Kusanagi: a lawful broadsword (the samurai call it a ninja-to), the
  *	crowning gift of a Samurai.  +d10 damage against everything and double
  *	damage against snakes, dragons and other serpentine monsters (see

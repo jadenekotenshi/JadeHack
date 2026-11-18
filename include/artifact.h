@@ -53,6 +53,7 @@
 #define SPDF_DRAIN	  0x00000400L /* Drain level defense */
 #define SPDF_CONFUSE	  0x00000800L /* Confusion */
 #define SPDF_STUN		  0x00001000L /* Stunning */
+#define SPDF_SICK		  0x00002000L /* Sickness resistance (Plague) */
 #define SPDF_ELEMENTAL 0x000000FEL	/* All elemental resistances (Dragonbane) */
 
 struct artifact {

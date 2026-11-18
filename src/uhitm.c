@@ -1067,6 +1067,12 @@ int dieroll;
 		ammo_and_launcher(obj, uwep))
 	    tmp += rnd(12);
 
+	/* Plague: arrows fired from it do +d6 damage */
+	if (thrown && obj && uwep && uwep->oartifact == ART_PLAGUE &&
+		objects[obj->otyp].oc_skill == -P_BOW &&
+		ammo_and_launcher(obj, uwep))
+	    tmp += rnd(6);
+
 	/* Narya and Nenya: extra damage with any melee, thrown or fired hit */
 	tmp += lotr_ring_damage(mon);
 

@@ -954,6 +954,12 @@ boolean twoweap; /* used to restore twoweapon mode if wielded weapon returns */
 	
 	obj->was_thrown = 1;
 
+	/* arrows fired from Plague are poisoned */
+	if (uwep && uwep->oartifact == ART_PLAGUE &&
+		ammo_and_launcher(obj, uwep) && is_poisonable(obj) &&
+		!obj->opoisoned)
+	    obj->opoisoned = 1;
+
 	if ((obj->cursed || obj->greased) && (u.dx || u.dy) && !rn2(7)) {
 	    boolean slipok = TRUE;
 	    if (ammo_and_launcher(obj, uwep))
@@ -1416,6 +1422,10 @@ register struct obj   *obj;
 		    tmp += uwep->spe - greatest_erosion(uwep);
 		    tmp += weapon_hit_bonus(uwep);
 		    if (uwep->oartifact) tmp += spec_abon(uwep, mon);
+		    /* Plague: +d5 to hit with arrows */
+		    if (uwep->oartifact == ART_PLAGUE &&
+			    objects[obj->otyp].oc_skill == -P_BOW)
+			tmp += rnd(5);
 		    /* Yoichi no Yumi: +d10 to hit with ya */
 		    if (uwep->oartifact == ART_YOICHI_NO_YUMI && obj->otyp == YA)
 			tmp += rnd(10);

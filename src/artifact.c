@@ -650,6 +650,8 @@ register struct obj *otmp;
 				mask = (weap->defn & SPDF_CONFUSE);
 				break;
 			case AD_DISE:
+				mask = (weap->defn & SPDF_SICK);
+				break;
 			case AD_DRIN:
 				mask = 0;	/* none yet */
 				break;
