@@ -889,3 +889,7 @@ Things the test does not do: it passes no game turns except the hero's timeouts 
 ## Batch 77: new hallucinatory glow color
 
 "donut seeds", "yellow spiders" and "purplish-blue pickle color" are added to the list of colors you see while hallucinating (`hcolors[]` in `do_name.c`), used for the glow of a blessed or cursed weapon, the color of a potion's vapors, a wand's light and so on. Only the binary changes.
+
+## Batch 78: new hallucinatory monsters
+
+Twenty-four names are added to the list of monsters you see while hallucinating (`bogusmons[]` in `do_name.c`): bunnit, crabulum, crabulus, grabitty rabbit, gravity squirrel, skwerl, freppit, reek fly, flying fart cloud of Farklur, bnuuy, monstrous frog, glop puddle, Master Belch, colossal terrorpede, giant funnel-web spider, green widow, hideous abomination, beaked lobster, walky-walk, turkey, giant swan, moldy pudding, mold soldier and fungus knight. Only the binary changes.
