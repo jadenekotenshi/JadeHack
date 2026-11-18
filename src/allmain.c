@@ -19,6 +19,25 @@ STATIC_DCL void NDECL(do_positionbar);
 static long prev_dgl_extrainfo = 0;
 
 
+#if defined(CORPSE_STRESS_TEST) || defined(ITEM_STRESS_TEST)
+#include <sys/stat.h>
+/* note in the stress test log when the panic log grew since the last call,
+   so that an impossible() message can be tied to the step that caused it */
+STATIC_OVL void
+stress_note_panic(f)
+FILE *f;
+{
+    static long last = 0;
+    struct stat st;
+
+    if (stat("paniclog", &st) == 0 && st.st_size != last) {
+	fprintf(f, "  ^ panic log grew here\n");
+	fflush(f);
+	last = st.st_size;
+    }
+}
+#endif
+
 #ifdef CORPSE_STRESS_TEST
 /*
  * Corpse stress test (see util/corpse_stress.py; not compiled normally).
@@ -60,6 +79,7 @@ corpse_stress_test()
 	    if (!m) continue;
 	    m->mrevived = (k % 5 == 0);	/* also try revived monsters */
 	    mondied(m);
+	    stress_note_panic(f);
 	    while ((o = level.objects[u.ux][u.uy]) != 0) delobj(o);
 	    for (m = fmon; m; m = m->nmon)	/* leftovers from groups */
 		if (!DEADMONSTER(m) && m != u.usteed && !m->mtame) {
@@ -73,6 +93,7 @@ corpse_stress_test()
 	    m = makemon(&mons[i], u.ux, u.uy, NO_MM_FLAGS);
 	    if (!m || (m->mx == u.ux && m->my == u.uy)) continue;
 	    xkilled(m, 1);
+	    stress_note_panic(f);
 	    while ((o = level.objects[m->mx][m->my]) != 0) delobj(o);
 	}
 	for (m = fmon; m; m = nx) {
@@ -86,6 +107,187 @@ corpse_stress_test()
 }
 #endif /* CORPSE_STRESS_TEST */
 
+#ifdef ITEM_STRESS_TEST
+/*
+ * Item stress test (see util/stress_test.py; not compiled normally).  In
+ * wizard mode, if a file named "itemtest" exists in the playground, create
+ * every kind of object many times in many states (blessed, cursed, eroded,
+ * greased, identified, stacked, with contents), then name it, weigh it,
+ * place it on the floor, pick it up and throw it away; make corpses,
+ * statues, figurines, eggs and tins of every monster; make every artifact;
+ * and generate random objects of every class.  Each step is logged to
+ * "it.log" first, so a crash points at the guilty object; the last line is
+ * DONE if the whole run survived.
+ */
+#ifndef CORPSE_STRESS_TEST
+#include <unistd.h>
+#endif
+#ifndef IT_REPS
+#define IT_REPS 16
+#endif
+#ifndef IT_RANDOM_REPS
+#define IT_RANDOM_REPS 1500
+#endif
+
+/* name, weigh and handle an object in several ways, then dispose of it */
+STATIC_OVL void
+item_exercise(o, k)
+struct obj *o;
+int k;
+{
+    struct obj *inv, *c;
+    int j;
+    const char *nm;
+
+    nm = xname(o);
+    nm = doname(o);
+    nm = distant_name(o, xname);
+    nm = makeplural(xname(o));
+    nm = makesingular(nm);
+    nm = an(simple_typename(o->otyp));
+    (void) weight(o);
+    (void) obj_resists(o, 5, 50);
+    (void) nm;
+
+    if (Is_container(o) && o->otyp != BAG_OF_TRICKS) {
+	for (j = 0; j < 3; j++) {
+	    c = mkobj(RANDOM_CLASS, TRUE);
+	    if (c && !Is_container(c)) (void) add_to_container(o, c);
+	    else if (c) obfree(c, (struct obj *)0);
+	}
+	o->owt = weight(o);
+	nm = doname(o);
+	(void) nm;
+    }
+    if (k % 2) {
+	place_object(o, u.ux, u.uy);
+	stackobj(o);
+	obj_extract_self(o);
+    }
+    if (k % 3 == 0) {
+	inv = addinv(o);
+	nm = doname(inv);
+	(void) nm;
+	freeinv(inv);
+	o = inv;
+    }
+    if (Has_contents(o)) delete_contents(o);
+    obfree(o, (struct obj *)0);
+}
+
+STATIC_OVL void
+item_stress_test()
+{
+    FILE *f = fopen("it.log", "w");
+    int otyp, k, i, cls;
+    short at;
+    struct obj *o;
+    const char *an_;
+
+    if (!f) return;
+
+    /* every kind of object, many states */
+    for (otyp = 1; otyp < NUM_OBJECTS; otyp++) {
+	if (!OBJ_NAME(objects[otyp])) continue;
+	for (k = 0; k < IT_REPS; k++) {
+	    fprintf(f, "object %d %s %d\n", otyp, OBJ_NAME(objects[otyp]), k);
+	    fflush(f);
+	    o = mksobj(otyp, TRUE, (k & 1) ? TRUE : FALSE);
+	    if (!o) continue;
+	    switch (k % 4) {
+		case 1: o->blessed = 1; o->cursed = 0; break;
+		case 2: o->cursed = 1; o->blessed = 0; break;
+		case 3: o->blessed = o->cursed = 0; break;
+		default: break;
+	    }
+	    o->dknown = o->bknown = o->known = o->rknown = (k & 2) ? 1 : 0;
+	    if (objects[otyp].oc_class == WEAPON_CLASS ||
+		objects[otyp].oc_class == ARMOR_CLASS ||
+		objects[otyp].oc_class == RING_CLASS)
+		o->spe = (k % 7) - 2;
+	    if (is_damageable(o)) {
+		o->oeroded = k % 4;
+		o->oeroded2 = (k / 2) % 4;
+		o->oerodeproof = (k % 5 == 0);
+	    }
+	    o->greased = (k % 6 == 0);
+	    if (objects[otyp].oc_merge) o->quan = 1 + k % 3;
+	    if ((k % 4) == 3 && (objects[otyp].oc_class == WEAPON_CLASS ||
+				 objects[otyp].oc_class == ARMOR_CLASS))
+		(void) create_oprop(o, TRUE);
+	    o->owt = weight(o);
+	    item_exercise(o, k);
+	    stress_note_panic(f);
+	}
+    }
+
+    /* corpses, statues, figurines, eggs and tins of every monster */
+    for (i = LOW_PM; i < NUMMONS; i++) {
+	static const int mk[] = { CORPSE, STATUE, FIGURINE, EGG, TIN };
+	int t;
+
+	for (t = 0; t < 5; t++)
+	    for (k = 0; k < 4; k++) {
+		fprintf(f, "monster object %d %s kind %d %d\n", i,
+			mons[i].mname, mk[t], k);
+		fflush(f);
+		o = mksobj(mk[t], FALSE, FALSE);
+		if (!o) continue;
+		o->corpsenm = i;
+		if (mk[t] == TIN) o->spe = (k == 1) ? -1 : (k == 2) ? 1 : 0;
+		o->dknown = o->known = (k & 1);
+		o->quan = 1;
+		o->owt = weight(o);
+		item_exercise(o, k);
+		stress_note_panic(f);
+	    }
+	fprintf(f, "make corpse %d %s\n", i, mons[i].mname);
+	fflush(f);
+	o = mkcorpstat(CORPSE, (struct monst *)0, &mons[i], u.ux, u.uy, TRUE);
+	if (o) {
+	    (void) doname(o);
+	    delobj(o);
+	}
+    }
+
+    /* every artifact */
+    for (i = 1; i <= NROFARTIFACTS; i++) {
+	an_ = artiname(i);
+	if (!an_ || !*an_) continue;
+	if (!artifact_name(an_, &at)) continue;
+	for (k = 0; k < 4; k++) {
+	    fprintf(f, "artifact %d %s %d\n", i, an_, k);
+	    fflush(f);
+	    o = mksobj((int) at, TRUE, FALSE);
+	    if (!o) continue;
+	    o = oname(o, an_);
+	    if (k & 1) o->blessed = 1, o->cursed = 0;
+	    o->dknown = o->bknown = o->known = (k >= 2);
+	    o->owt = weight(o);
+	    item_exercise(o, k);
+	    stress_note_panic(f);
+	}
+    }
+
+    /* random objects of every class */
+    for (cls = RANDOM_CLASS; cls < MAXOCLASSES; cls++) {
+	if (cls == ILLOBJ_CLASS) continue;
+	for (k = 0; k < IT_RANDOM_REPS; k++) {
+	    if (k % 25 == 0) {
+		fprintf(f, "random class %d %d\n", cls, k);
+		fflush(f);
+	    }
+	    o = mkobj(cls, (k & 1) ? TRUE : FALSE);
+	    if (o) item_exercise(o, k);
+	    stress_note_panic(f);
+	}
+    }
+
+    fprintf(f, "DONE\n");
+    fclose(f);
+}
+#endif /* ITEM_STRESS_TEST */
+
 void
 moveloop()
 {
@@ -94,7 +296,7 @@ moveloop()
     int abort_lev;
 #endif
     int moveamt = 0, wtcap = 0, change = 0;
-#ifdef CORPSE_STRESS_TEST
+#if defined(CORPSE_STRESS_TEST) || defined(ITEM_STRESS_TEST)
     static int stress_ran = 0;
 #endif
 	 int regen_frequency;
@@ -108,6 +310,12 @@ moveloop()
     if (!stress_ran && wizard && access("corpsetest", 0) == 0) {
 	stress_ran = 1;
 	corpse_stress_test();
+    }
+#endif
+#ifdef ITEM_STRESS_TEST
+    if (!stress_ran && wizard && access("itemtest", 0) == 0) {
+	stress_ran = 1;
+	item_stress_test();
     }
 #endif
 
