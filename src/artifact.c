@@ -177,6 +177,10 @@ hack_artifacts()
 		 artilist[ART_DIRGE].role = NON_PM;
 	 }
 
+	/* the Luck Blade is a Tourist's crowning gift, whatever the alignment */
+	if (Role_if(PM_TOURIST))
+		artilist[ART_LUCK_BLADE].alignment = alignmnt;
+
 	/* Demonbane should always be in the Priest's list of available toys
 	 * even though this might look a little odd when it comes out Chaotic */
 	if (Role_if(PM_PRIEST)) {

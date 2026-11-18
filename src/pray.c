@@ -695,6 +695,39 @@ pirate_crowning()
     update_inventory();
 }
 
+/* a crowning gift of a named weapon (Excalibur, Kiku-Ichimonji, Dirge, the
+   Luck Blade): a wielded unnamed weapon of that kind becomes it, otherwise a
+   new one appears at your feet; nothing happens if it already exists.
+   Returns the artifact if it was given, or the object passed in. */
+STATIC_OVL struct obj *
+crowning_weapon(obj, otyp, anum)
+struct obj *obj;
+int otyp, anum;
+{
+    struct obj *gift;
+
+    if (exist_artifact(otyp, artiname(anum))) return obj;
+    if (obj && obj->otyp == otyp && !obj->oartifact) {
+	if (!Blind) Your("%s shines brightly for a moment.", xname(obj));
+	gift = oname(obj, artiname(anum));
+    } else {
+	gift = mksobj(otyp, FALSE, FALSE);
+	gift = oname(gift, artiname(anum));
+	if (gift && gift->oartifact == anum) {
+	    gift->oeroded = gift->oeroded2 = 0;
+	    gift->spe = 1;
+	    at_your_feet("A weapon");
+	    dropy(gift);
+	}
+    }
+    if (gift && gift->oartifact == anum) {
+	u.ugifts++;
+	discover_artifact(anum);
+	return gift;
+    }
+    return obj;
+}
+
 STATIC_OVL void
 gcrownu()
 {
@@ -739,8 +772,13 @@ gcrownu()
 	break;
     case A_CHAOTIC:
 	u.uevent.uhand_of_elbereth = 3;
-	in_hand = (uwep && uwep->oartifact == ART_STORMBRINGER);
-	already_exists = exist_artifact(RUNESWORD, artiname(ART_STORMBRINGER));
+	if (Role_if(PM_KNIGHT)) {
+	    in_hand = (uwep && uwep->oartifact == ART_DIRGE);
+	    already_exists = exist_artifact(LONG_SWORD, artiname(ART_DIRGE));
+	} else {
+	    in_hand = (uwep && uwep->oartifact == ART_STORMBRINGER);
+	    already_exists = exist_artifact(RUNESWORD, artiname(ART_STORMBRINGER));
+	}
 	verbalize("Thou art chosen to %s for My Glory!",
 		  already_exists && !in_hand ? "take lives" : "steal souls");
         #ifdef LIVELOG
@@ -781,19 +819,33 @@ gcrownu()
 	goto make_splbk;
     }
 
+    if (class_gift == STRANGE_OBJECT && Role_if(PM_TOURIST)) {
+	/* a Tourist is given the Luck Blade, whatever the alignment */
+	obj = crowning_weapon(obj, SHORT_SWORD, ART_LUCK_BLADE);
+	unrestrict_weapon_skill(P_SHORT_SWORD);
+    } else
     switch (u.ualign.type) {
     case A_LAWFUL:
 	if (class_gift != STRANGE_OBJECT) {
 	    ;		/* already got bonus above */
-	} else if (obj && obj->otyp == LONG_SWORD && !obj->oartifact) {
-	    if (!Blind) Your("sword shines brightly for a moment.");
-	    obj = oname(obj, artiname(ART_EXCALIBUR));
-	    if (obj && obj->oartifact == ART_EXCALIBUR) u.ugifts++;
+	} else {
+	    /* Excalibur or Kiku-Ichimonji, an even chance of each whatever
+	       you are wielding; if the one chosen already exists you get the
+	       other */
+	    boolean exc_first = (boolean) rn2(2);
+	    int first = exc_first ? ART_EXCALIBUR : ART_KIKU_ICHIMONJI;
+	    int second = exc_first ? ART_KIKU_ICHIMONJI : ART_EXCALIBUR;
+	    struct obj *gift;
+
+	    gift = crowning_weapon(obj, (first == ART_EXCALIBUR) ?
+				   LONG_SWORD : KATANA, first);
+	    if (!gift || gift->oartifact != first)
+		gift = crowning_weapon(obj, (second == ART_EXCALIBUR) ?
+				       LONG_SWORD : KATANA, second);
+	    obj = gift;
 	}
-	/* acquire Excalibur's skill regardless of weapon or gift */
+	/* acquire the long sword skill regardless of weapon or gift */
 	unrestrict_weapon_skill(P_LONG_SWORD);
-	if (obj && obj->oartifact == ART_EXCALIBUR)
-	    discover_artifact(ART_EXCALIBUR);
 	/* a lawful Healer is given the Aegis */
 	if (Role_if(PM_HEALER) &&
 		!exist_artifact(DWARVISH_ROUNDSHIELD, artiname(ART_AEGIS))) {
@@ -839,6 +891,13 @@ gcrownu()
 	Sprintf(swordbuf, "%s sword", hcolor(NH_BLACK));
 	if (class_gift != STRANGE_OBJECT) {
 	    ;		/* already got bonus above */
+	} else if (Role_if(PM_KNIGHT)) {
+	    /* a chaotic Knight is given Dirge, not Stormbringer */
+	    if (in_hand) {
+		Your("sword hums ominously!");
+		obj->dknown = TRUE;
+	    } else
+		obj = crowning_weapon(obj, LONG_SWORD, ART_DIRGE);
 	} else if (in_hand) {
 	    Your("%s hums ominously!", swordbuf);
 	    obj->dknown = TRUE;
@@ -878,6 +937,16 @@ gcrownu()
     return;
 }
 #endif	/*ELBERETH*/
+
+#ifdef USE_STRESS_TEST
+/* let the use stress test (allmain.c) crown the hero */
+void
+stress_crown()
+{
+    u.uevent.uhand_of_elbereth = 0;
+    gcrownu();
+}
+#endif
 
 STATIC_OVL void
 pleased(g_align)

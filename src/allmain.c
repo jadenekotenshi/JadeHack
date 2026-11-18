@@ -765,6 +765,40 @@ use_stress_test()
     urole.spelbase = -100;		/* so that casting always works */
     ust_reset(&startlev);
 
+    if (getenv("STRESS_CROWN")) {
+	/* crown the hero several times, in different situations, and log
+	   the artifacts that come of it (set by hand, not by the script) */
+	extern void stress_crown();
+	static const int wield[] = { LONG_SWORD, KATANA, SHORT_SWORD, DAGGER,
+				     0, LONG_SWORD };
+	int w;
+	struct obj *g;
+
+	for (w = 0; w < (int) SIZE(wield); w++) {
+	    ust_reset(&startlev);
+	    if (wield[w]) {
+		g = addinv(mksobj(wield[w], FALSE, FALSE));
+		ust_cmd(dowield, g, 0);
+	    }
+	    stress_crown();
+	    ust_settle();
+	    fprintf(f, "crowned %s %s (%s) wielding %s:", urace.noun,
+		    urole.name.m, u.ualign.type == A_LAWFUL ? "lawful" :
+		    u.ualign.type == A_NEUTRAL ? "neutral" : "chaotic",
+		    wield[w] ? OBJ_NAME(objects[wield[w]]) : "nothing");
+	    for (g = invent; g; g = g->nobj)
+		if (g->oartifact) fprintf(f, " [inv: %s]", ONAME(g));
+	    for (g = fobj; g; g = g->nobj)
+		if (g->oartifact) fprintf(f, " [floor: %s]", ONAME(g));
+	    fprintf(f, "\n");
+	    fflush(f);
+	    /* the artifacts that exist stay created: try again */
+	}
+	fprintf(f, "DONE\n");
+	fclose(f);
+	return;
+    }
+
     /* what this hero would be given as a first sacrifice gift (the role
        artifact for the hero's alignment, if there is one) */
     o = mk_artifact((struct obj *) 0, u.ualign.type);
