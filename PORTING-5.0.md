@@ -789,3 +789,7 @@ The shimmering dragon is still switched off, so the crystal dragon takes cyan; i
 If you polymorph into a gem dragon you breathe the same beams with #monster.
 
 New in the code: `is_gem_dragon()` in `mondata.h`, the six `AD_` codes in `monattk.h`, the dragon, scale and scale-mail entries (kept in the same order as before, after yellow, so every range check was widened to end at amethyst), the egg mappings, the hoard in `m_initinv`, and the one-in-three reroll in `rndmonst`. Old saves and bones do not load.
+
+## Batch 61: Keolewa hits harder
+
+Keolewa's bonus damage goes from d6 to d10 against every monster (`PHYS(5,10)` in `artilist.h`; the to-hit bonus stays d5). Against small and medium monsters it now averages 3.5 + 5.5 = 9.0 before the Caveman's own bonuses (large: 2.0 + 5.5 = 7.5), level with Grayswandir's 2d8. Only the binary changes.

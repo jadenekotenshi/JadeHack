@@ -172,7 +172,7 @@ A("Sunsword",			SILVER_LONG_SWORD,
 
 A("Keolewa",CLUB,
 	SPFX_RESTR, 0, 0,
-	PHYS(5,6), SPDF_NONE, NO_CARY, 0, A_NEUTRAL, PM_CAVEMAN, NON_PM, 1000L ),
+	PHYS(5,10), SPDF_NONE, NO_CARY, 0, A_NEUTRAL, PM_CAVEMAN, NON_PM, 1000L ),
 
 /*
  *	JadeHack originals.  The flat damage bonuses (+4, +10) and Gungnir's
