@@ -496,7 +496,7 @@ Bard row (accelerator `B`).
 | Nightgaunt / byakhee | z; nightgaunt (L12, bite 1d10, claw 1d8, tickle 1d4, wing 1d4) and byakhee (L22, bite 2d8, claw 2d6 x2, poison sting 1d10); both fly, frequency 1 |
 | Vlad's Tower | Vlad now carries each of sleep / wind / stinking fog 30% of the time and has a random weapon in his room; two 50% Kuei-jin in the tower, always with katanas there; monsters can now zap wands of stinking fog |
 | Object properties | after EvilHack: `oprops`/`oprops_known` on weapons and armor (fire, frost, shock, venom, drain, oilskin, ESP, searching, warning, excellence, fumbling, hunger) plus the new weapon-only Thundering (50% stun for 1d4 turns, monsters get `mstuntime`). Weapons add 4-8 elemental damage (venom d6), armor grants the resistance when worn; properties show in names once noticed or identified, stack only with matching properties, and wizard-mode wishes accept "thundering", "flaming", "freezing", "shocking", "venomous". Spawn: weapons at 1 in 175 scaled by depth/2, armor 1 in 150 |
-| Mephistopheles | unaligned devil lord (level 115, AC -15, speed 15), weapon, claw, claw, mage, cleric and fire spell attacks; fire, cold, shock, poison and disintegration resistant; flies, sees invisible; covetous; +7 ranseur; lives asleep in the Sanctum beside the temple until you hold the Amulet; rival of the Wizard of Yendor (they fight each other); gates in demons of any alignment (unaligned) |
+| Mephistopheles | unaligned devil lord (level 115, AC -15, speed 15), weapon, claw, claw, mage, cleric and fire spell attacks; fire, cold, shock, poison and disintegration resistant; flies, sees invisible; (covetous until Batch 72); +7 ranseur; lives asleep in the Sanctum beside the temple until you hold the Amulet; rival of the Wizard of Yendor (they fight each other); gates in demons of any alignment (unaligned) |
 | Unicorn horn | no change needed: this tree's unicorn horn no longer cured attribute loss (that code was already disabled) |
 | The Mall | branch with two levels (the Mall and the Rat Sewers); entrance stairs down on a level from 7 to 14. The Mall is a lit concourse with twelve shops and a fountain; the Rat Sewers is a dark cavern full of every kind of r plus lemming zombies, with 3 scrolls, 2 armors, 2 weapons and a wand guaranteed. `botl.c` knows the branch name; `mall.des` is in the makefiles |
 
@@ -723,7 +723,7 @@ Mephistopheles is now an `M2_PRINCE` instead of an `M2_LORD`, so `is_dprince()` 
 
 ## Batch 56: Mephistopheles slows down
 
-Mephistopheles's speed goes from 15 to 12 (`monst.c`), the same as an unhurried hero, so a hero with intrinsic speed, speed boots or Quicksilver can outrun him and fight hit-and-run. He is still covetous, so he teleports to a hero who carries the Amulet. Only the binary changes; saves and bones still load. (Batch 26's "speed 15" line is out of date.)
+Mephistopheles's speed goes from 15 to 12 (`monst.c`), the same as an unhurried hero, so a hero with intrinsic speed, speed boots or Quicksilver can outrun him and fight hit-and-run. (He was still covetous then; see Batch 72.) Only the binary changes; saves and bones still load. (Batch 26's "speed 15" line is out of date.)
 
 ## Batch 57: Quicksilver and the Luck Blade pair up
 
@@ -844,3 +844,7 @@ Not exercised: spellbook casting for the high-level new spells (a first-level Wi
 ## Batch 71: merozalghi are vulnerable to cold
 
 The merozalghu now has `M4_VULNERABLE_COLD`: cold damage against it is multiplied by 1.5 through `damage_mon()`, the same as for the other cold-vulnerable monsters (Pernicimordax's d(3,6) cold and double damage against merozalghi already existed and now stack with it). Data files must be rebuilt (`monst.c` changed).
+
+## Batch 72: Mephistopheles is no longer covetous
+
+`M3_COVETOUS` is removed from Mephistopheles (`monst.c`), so he no longer teleports to you, steals the Amulet or the other covetous targets, or teleports away to heal (`tactics()` is never used for him). He still waits in the Sanctum until you take the Amulet, follows you between levels and walks up to you like any other stalker, is still a demon prince who gates in demons and fights the Wizard of Yendor, and still cannot be tamed (he is a demon). Together with his speed of 12 this makes him a monster you must outfight or outrun on foot. Data files must be rebuilt.
