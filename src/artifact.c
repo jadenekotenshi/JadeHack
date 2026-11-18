@@ -56,6 +56,7 @@ STATIC_DCL boolean FDECL(attacks, (int,struct obj *));
 STATIC_DCL void FDECL(reaver_steal, (struct monst *));
 STATIC_DCL int FDECL(sea_change, (struct obj *));
 STATIC_DCL void FDECL(detect_artifacts, (struct obj *));
+STATIC_DCL int NDECL(arcane_burst);
 
 /* Narya and Nenya: find the real ring type that currently has a given
    appearance (the ring appearances are shuffled for each game) */
@@ -2043,6 +2044,47 @@ doinvoke()
     return arti_invoke(obj);
 }
 
+/* Arcanos Guard: a burst of arcane force around you.  Every hostile monster
+   next to you takes 4d8 force damage (half if it resists magic), is stunned
+   unless it resists, and runs away for a few turns.  Pets and peaceful
+   monsters are left alone.  Returns the number of monsters caught. */
+STATIC_OVL int
+arcane_burst()
+{
+    struct monst *mtmp;
+    int dx, dy, hit = 0;
+
+    for (dx = -1; dx <= 1; dx++)
+	for (dy = -1; dy <= 1; dy++) {
+	    boolean resisted;
+	    int dam;
+
+	    if (!dx && !dy) continue;
+	    if (!isok(u.ux + dx, u.uy + dy)) continue;
+	    mtmp = m_at(u.ux + dx, u.uy + dy);
+	    if (!mtmp || mtmp->mhp < 1 || mtmp->mtame || mtmp->mpeaceful)
+		continue;
+	    if (!hit)
+		pline("A burst of arcane force erupts around you!");
+	    hit++;
+	    wakeup(mtmp);
+	    dam = d(4,8);
+	    resisted = (resists_magm(mtmp) || resist(mtmp, '\0', 0, NOTELL));
+	    if (resisted) {
+		shieldeff(mtmp->mx, mtmp->my);
+		dam = (dam + 1) / 2;
+	    } else {
+		mtmp->mstun = 1;
+		monflee(mtmp, rnd(6) + 2, FALSE, TRUE);
+	    }
+	    mtmp->mhp -= dam;
+	    if (mtmp->mhp < 1) killed(mtmp);
+	    else if (canseemon(mtmp))
+		pline("%s reels from the blast!", Monnam(mtmp));
+	}
+    return hit;
+}
+
 STATIC_OVL int
 arti_invoke(obj)
     register struct obj *obj;
@@ -2197,6 +2239,13 @@ arti_invoke(obj)
 	    break;
 	case SEA_CHANGE:
 	    if (!sea_change(obj)) {
+		obj->age = monstermoves;
+		return 0;
+	    }
+	    break;
+	case ARCANE_BURST:
+	    if (!arcane_burst()) {
+		pline("There is nothing next to you to harm.");
 		obj->age = monstermoves;
 		return 0;
 	    }

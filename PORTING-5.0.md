@@ -819,3 +819,11 @@ Mirrorbright also has one point better base armor class than a normal shield of 
 ## Batch 67: Durandal
 
 **Durandal**: a lawful broadsword. +d5 to hit and +d10 damage against anything that is not lawful (the same `SPFX_DALIGN` test as the other cross-aligned artifacts: neutral, chaotic and unaligned monsters). It is the **first sacrifice gift of a lawful Knight**: Excalibur and the Magic Mirror of Merlin are never gifts, and `mk_artifact()` hands a hero their role's artifact first, so Durandal is the first gift as long as it does not exist yet. Other lawful heroes can be given it too, like any other role artifact, and it can turn up as a random broadsword. In the off hand it is accepted **only beside Excalibur** (`artifact_offhand_ok()`); Excalibur itself still refuses the off hand, so the pair works only as Excalibur first and Durandal second. It is deliberately weaker than Kiku-Ichimonji: against a non-lawful target it averages the broadsword's 2d4 (5.0 against small and medium monsters; d6+1, 4.5, against large ones) plus 5.5, so 10.5 or 10.0, and nothing extra against lawful ones. Only the binary changes.
+
+## Batch 68: Arcanos Guard
+
+**Arcanos Guard**: a neutral crystal plate mail and the **first sacrifice gift of a Healer** (the Staff of Aesculapius is never a gift, so the role-first rule in `mk_artifact()` picks this); it can also be a random find, and other neutral heroes can be given it later like any role artifact. While worn:
+- **Energy regeneration** (`SPFX_EREGEN`).
+- **Easier spellcasting**: four points off the caster's spellcasting penalty (`spell.c`). In a Healer's spell menu extra healing went from 62% to 50% failure and stone to flesh from 71% to 59%.
+- **#invoke**: a burst of arcane force around you (`arcane_burst()` in `artifact.c`). Every hostile monster next to you takes 4d8 force damage (half if it resists magic) and, unless it resists, is stunned and flees for a few turns. Pets and peaceful monsters are left alone, and nothing happens (and the cooldown is not used) if no hostile monster is adjacent. It uses the usual artifact cooldown (a random wait with a median of about 70 turns). In a test four jackals around the hero all died.
+Crystal plate mail is not metallic, so it has no armor spellcasting penalty of its own. Only the binary changes.

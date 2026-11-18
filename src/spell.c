@@ -1372,6 +1372,10 @@ int spell;
 	    uarms->oartifact != ART_MIRRORBRIGHT)
 	    splcaster += urole.spelshld;
 
+	/* Arcanos Guard makes every spell easier */
+	if (uarm && uarm->oartifact == ART_ARCANOS_GUARD)
+	    splcaster -= 4;
+
 	if (uarmh && is_metallic(uarmh) && !paladin_bonus)
 		splcaster += uarmhbon;
 	if (uarmg && is_metallic(uarmg) && !paladin_bonus) splcaster += uarmgbon;

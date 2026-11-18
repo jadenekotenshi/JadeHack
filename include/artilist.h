@@ -348,6 +348,17 @@ A("Durandal",			BROADSWORD,
 	PHYS(5,10),	SPDF_NONE,	NO_CARY,	0, A_LAWFUL, PM_KNIGHT, NON_PM, 3000L ),
 
 /*
+ *	Arcanos Guard: a neutral crystal plate mail, the first sacrifice gift of
+ *	a Healer (and also a random find).  Energy regeneration while worn, four
+ *	points off the spellcasting penalty (spell.c), and #invoke sends a burst
+ *	of arcane force into every hostile monster next to you (arcane_burst()
+ *	in artifact.c).
+ */
+A("Arcanos Guard",		CRYSTAL_PLATE_MAIL,
+	(SPFX_RESTR|SPFX_EREGEN), 0, 0,
+	NO_ATTK,	SPDF_NONE,	NO_CARY,	ARCANE_BURST, A_NEUTRAL, PM_HEALER, NON_PM, 4000L ),
+
+/*
  *	Kusanagi: a lawful broadsword (the samurai call it a ninja-to), the
  *	crowning gift of a Samurai.  +d10 damage against everything and double
  *	damage against snakes, dragons and other serpentine monsters (see
