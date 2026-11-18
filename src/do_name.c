@@ -1055,7 +1055,7 @@ static NEARDATA const char * const hcolors[] = {
 	"square", "round", "triangular",
 	"cabernet", "sangria", "fuchsia", "wisteria",
 	"lemon-lime", "strawberry-banana", "peppermint",
-	"romantic", "incandescent", "donut seeds"
+	"romantic", "incandescent", "donut seeds", "yellow spiders"
 };
 
 const char *

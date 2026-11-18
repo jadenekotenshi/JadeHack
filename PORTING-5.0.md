@@ -888,4 +888,4 @@ Things the test does not do: it passes no game turns except the hero's timeouts 
 
 ## Batch 77: new hallucinatory glow color
 
-"donut seeds" is added to the list of colors you see while hallucinating (`hcolors[]` in `do_name.c`), used for the glow of a blessed or cursed weapon, the color of a potion's vapors, a wand's light and so on. Only the binary changes.
+"donut seeds" and "yellow spiders" are added to the list of colors you see while hallucinating (`hcolors[]` in `do_name.c`), used for the glow of a blessed or cursed weapon, the color of a potion's vapors, a wand's light and so on. Only the binary changes.
