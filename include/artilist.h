@@ -509,6 +509,20 @@ A("The Eye of Vecna",		LENSES,
 	NO_ATTK,	SPDF_BLIND,	NO_CARY,	0, A_CHAOTIC, NON_PM, NON_PM, 8000L ),
 
 /*
+ *	Lancea Longini, the Spear of Destiny: a lawful silver spear.  Like the
+ *	Sword of Kas (but lawful) it gets +d5 to hit and +d12 damage against
+ *	anything that is not lawful; see also artifact_hit() (a 50% chance of
+ *	destroying an angelic being outright, as the Lance does in Evangelion),
+ *	find_ac() (half of its enchantment counts as armor class), dmgval()
+ *	(a blessed one hurts demons and imps more) and makemon.c/minion.c
+ *	(like Excalibur it enrages demon lords and princes).  Drain resistance
+ *	while wielded.
+ */
+A("Lancea Longini",		SILVER_SPEAR,
+	(SPFX_RESTR|SPFX_DALIGN), 0, 0,
+	PHYS(5,12),	SPDF_DRAIN,	NO_CARY,	0, A_LAWFUL, NON_PM, NON_PM, 4000L ),
+
+/*
  *  terminator; otyp must be zero
  */
 A(0, 0, 0, 0, 0, NO_ATTK, SPDF_NONE, NO_CARY, 0, A_NONE, NON_PM, NON_PM, 0L )

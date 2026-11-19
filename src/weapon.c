@@ -320,6 +320,10 @@ struct monst *mon;
 
 	    if ((otmp->blessed || heartseeker_shot(otmp)) && hates_blessed(ptr))
 		bonus += rnd(4);
+	    /* a blessed Lancea Longini is extra hard on demons and imps */
+	    if (otmp->oartifact == ART_LANCEA_LONGINI && otmp->blessed &&
+		    (ptr->mlet == S_DEMON || ptr->mlet == S_IMP))
+		bonus += rnd(6);
 	    if (is_axe(otmp) && is_wooden(ptr))
 		bonus += rnd(4);
 	    if ((objects[otyp].oc_material == SILVER || heartseeker_shot(otmp)) &&

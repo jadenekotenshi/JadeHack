@@ -1378,7 +1378,8 @@ register int	mmflags;
 	   mndx != PM_MEPHISTOPHELES) {
 	    mtmp->mpeaceful = mtmp->minvis = mtmp->perminvis = 1;
 	    mtmp->mavenge = 0;
-	    if (uwep && uwep->oartifact == ART_EXCALIBUR)
+	    if (uwep && (uwep->oartifact == ART_EXCALIBUR ||
+			 uwep->oartifact == ART_LANCEA_LONGINI))
 		mtmp->mpeaceful = mtmp->mtame = FALSE;
 	}
 #ifndef DCC30_BUG

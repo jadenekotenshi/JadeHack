@@ -1625,6 +1625,20 @@ int dieroll; /* needed for Magicbane and vorpal blades */
 	    }
 	}
 
+	/* the Lancea Longini destroys angelic beings half the time, whatever
+	   their alignment (taken from Evangelion) */
+	if (otmp->oartifact == ART_LANCEA_LONGINI && !youdefend &&
+		mdef->data->mlet == S_ANGEL && !rn2(2)) {
+	    if (youattack)
+		pline("The Lance of Longinus pierces %s, destroying %s!",
+		      mon_nam(mdef), mhim(mdef));
+	    else if (vis)
+		pline("%s drives the Lance of Longinus through %s!",
+		      Monnam(magr), mon_nam(mdef));
+	    *dmgptr = (2 * mdef->mhp + FATAL_DAMAGE_MODIFIER);
+	    return TRUE;
+	}
+
 	if (!spec_dbon_applies) {
 	    /* since damage bonus didn't apply, nothing more to do;  
 	       no further attacks have side-effects on inventory */

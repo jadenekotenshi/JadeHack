@@ -1013,6 +1013,7 @@ register int amount;
 		makeknown(otyp);
 	}
 	uwep->spe += amount;
+	if (uwep->oartifact == ART_LANCEA_LONGINI) find_ac();	/* half of spe counts */
 	if(amount > 0) uwep->cursed = 0;
 
 	/*

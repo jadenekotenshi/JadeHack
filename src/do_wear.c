@@ -1904,6 +1904,9 @@ find_ac()
 	    }
 	    if (pb > bb) uac -= (pb - bb);
 	}
+	/* the Lancea Longini adds half its enchantment to your armor class */
+	if (uwep && uwep->oartifact == ART_LANCEA_LONGINI && uwep->spe > 1)
+	    uac -= uwep->spe / 2;
 	if(uarmg) uac -= ARM_BONUS(uarmg);
 #ifdef TOURIST
 	if(uarmu) uac -= ARM_BONUS(uarmu);

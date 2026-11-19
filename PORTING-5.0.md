@@ -938,3 +938,14 @@ A new sea-monster-class monster (`;`), the green venomous crab, comes right afte
 ## Batch 86: Dirge can be generated at random
 
 Dirge (`artilist.h`) lost its `SPFX_NOGEN` flag, so it is an ordinary chaotic artifact: a randomly made long sword can now be Dirge, and any chaotic character can be given it as a sacrifice gift (before it only came from a chaotic Knight's crowning or from sacrificing at an altar with a long sword in hand, so a chaotic non-Knight practically never saw it). Excalibur stays `NOGEN`. A chaotic Knight's first sacrifice gift is now a random chaotic artifact, which can be Dirge, in which case the crowning code just does nothing about it (`crowning_weapon()` is a no-op when the artifact already exists). Checked with the item stress test (every artifact is made, 20,026 log lines) and the use test as a chaotic Knight (12,738 log lines), both clean. Only the binary changes; no data files.
+
+## Batch 87: Lancea Longini
+
+A new lawful artifact, **Lancea Longini** (the Lance of Longinus), a silver spear (`artilist.h`, last before the terminator, so no existing artifact number moves). It is restricted (a non-lawful hero who touches it is blasted, like Grayswandir) and not `NOGEN`, so it can be generated at random and given as a lawful sacrifice gift. While wielded:
+- **+d5 to hit and +d12 damage against anything that is not lawful** (`SPFX_DALIGN`, the same mechanism as the Sword of Kas).
+- **Half its enchantment counts as armor class** (`find_ac()` in `do_wear.c`: a +6 spear gives 3 points; nothing for +1 or less). Enchanting it while wielded refreshes the AC (`chwepon()` in `wield.c`).
+- **A 50% chance to destroy an angelic being (`A`) outright** on a hit, whatever its alignment ("The Lance of Longinus pierces the couatl, destroying it!", `artifact_hit()`; the check comes before the "damage bonus applies" test so lawful angels are covered too).
+- **Drain resistance** (`SPDF_DRAIN`).
+- **Enrages demon lords and princes as Excalibur does** (they are not made peaceful, and `demon_talk()` makes a bribable one hostile).
+- **If blessed, +d6 against `&` and `i` monsters**, on top of the usual blessed d4 against undead and demons (`dmgval()` in `weapon.c`).
+It has a data.base entry. The artifact count changes, so the data files and utilities must be rebuilt as for Batch 79 and old saves are not compatible. Checked in wizard mode: a blessed +6 spear took AC from -1 to -4 when wielded, and destroyed couatls with the message above (and missed others); the item and use stress tests were clean (20,030 and 12,739 log lines). Not checked in play: the demon-lord anger, the blessed bonus against `&`/`i` and the random-generation/gift paths.
