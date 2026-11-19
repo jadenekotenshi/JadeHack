@@ -967,3 +967,7 @@ It has a data.base entry. `readobjnam()` (`objnam.c`) took the "vampire" in a wi
 ## Batch 90: curses `curses_rtrim()` read before the string
 
 A bus error when starting a new game (reported for a neutral male orcish Tourist, with `windowtype:curses`; the crash report points at `curses_rtrim()` called from `curses_add_nhmenu_item()` while the opening legend is shown). `curses_rtrim()` (`win/curses/cursmisc.c`) started at the last character with `--s` before testing it, so an empty string, such as the blank lines of the legend, made it read the byte in front of the string, and when the string happened to be the first block on a page of memory that byte is unmapped. Which game crashes therefore depends on where memory happens to be allocated, not on the role or race. It also cut a one-character line down to nothing. It now takes the length first and never looks before the start. Checked with a small program that puts an empty string at the start of a page with the page before it unmapped: the old function died with SIGBUS, the new one leaves "a" alone, trims "hi  \t" to "hi" and "   " to "". The tty port was never affected.
+
+## Batch 91: Pirates start with a skeleton key
+
+The Pirate's starting inventory (`u_init.c`) gains a skeleton key, after the oilskin sack (so the other items keep their letters). Checked in wizard mode: a human Pirate starts with "k - an uncursed skeleton key". Only the binary changes.
