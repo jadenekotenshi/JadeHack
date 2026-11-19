@@ -1270,8 +1270,14 @@ int dieroll;
 		if (!already_killed) xkilled(mon, 0);
 		return FALSE;
 	} else if (destroyed) {
-		if (!already_killed)
+		if (!already_killed) {
+		    /* flaming and lightning weapons cook chickens */
+		    roast_kill = (obj && (obj->oartifact == ART_FIRE_BRAND ||
+				obj->oartifact == ART_SUNSWORD ||
+				obj->oartifact == ART_MJOLLNIR));
 		    killed(mon);	/* takes care of most messages */
+		    roast_kill = FALSE;
+		}
 	} else if(u.umconf && !thrown) {
 		nohandglow(mon);
 		if (!mon->mconf && !resist(mon, SPBOOK_CLASS, 0, NOTELL)) {

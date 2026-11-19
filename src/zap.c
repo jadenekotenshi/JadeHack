@@ -3615,10 +3615,13 @@ register int dx,dy;
 			else
 			    xkilled(mon, 2);
 		    } else if(mon->mhp < 1) {
+			roast_kill = (abstype == ZT_FIRE ||
+				      abstype == ZT_LIGHTNING);
 			if(type < 0)
 			    monkilled(mon, fltxt, AD_RBRE);
 			else
 			    killed(mon);
+			roast_kill = FALSE;
 		    } else {
 			if (!otmp) {
 			    /* normal non-fatal hit */
@@ -3964,6 +3967,9 @@ boolean moncast;
 		    You("%s of smoke.",
 			!Blind ? "see a puff" : "smell a whiff");
 		}
+	/* fire and lightning cook chicken corpses */
+	if (OBJ_AT(x, y) && (abstype == ZT_FIRE || abstype == ZT_LIGHTNING))
+		roast_chickens_at(x, y);
 	if ((mon = m_at(x,y)) != 0) {
 		/* Cannot use wakeup() which also angers the monster */
 		mon->msleeping = 0;

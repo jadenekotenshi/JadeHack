@@ -336,6 +336,10 @@ register struct monst *mtmp;
 	/* some cases (the glue golem) may leave nothing behind */
 	if (!obj) return (struct obj *)0;
 
+	/* a chicken killed by fire or lightning is cooked */
+	if (roast_kill && obj->otyp == CORPSE && obj->corpsenm == PM_CHICKEN)
+	    obj = roast_chicken(obj);
+
 	/* if polymorph or undead turning has killed this monster,
 	   prevent the same attack beam from hitting its corpse */
 	if (flags.bypasses) bypass_obj(obj);

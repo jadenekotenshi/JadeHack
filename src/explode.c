@@ -306,6 +306,7 @@ int expltype;
 				damage_mon(mtmp,idamres + idamnonres,adtyp);
 			}
 			if (mtmp->mhp <= 0) {
+				roast_kill = (adtyp == AD_FIRE || adtyp == AD_ELEC);
 				/* KMH -- Don't blame the player for pets killing gas spores
 				 * DSR -- And don't blame the player for monsters fireballing things */
 				if (!flags.mon_moving && olet != MON_CASTBALL) {
@@ -313,6 +314,7 @@ int expltype;
 				} else {
 					monkilled(mtmp, "", (int)adtyp);
 				}
+				roast_kill = FALSE;
 			} else if (!flags.mon_moving && olet != MON_CASTBALL) setmangry(mtmp);
 		}
 	 }

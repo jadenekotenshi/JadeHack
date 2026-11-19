@@ -1587,6 +1587,48 @@ struct obj *otmp;
 	}
 }
 
+/* a chicken corpse lying on the floor that is hit by fire or lightning is
+   cooked into a roast chicken; returns the roast chicken, or obj if it was
+   not a chicken corpse on the floor */
+struct obj *
+roast_chicken(obj)
+struct obj *obj;
+{
+	struct obj *roast;
+	xchar x, y;
+
+	if (obj->otyp != CORPSE || obj->corpsenm != PM_CHICKEN ||
+	    obj->where != OBJ_FLOOR)
+	    return obj;
+	x = obj->ox;
+	y = obj->oy;
+	roast = mksobj(ROAST_CHICKEN, TRUE, FALSE);
+	roast->bypass = obj->bypass;	/* the same beam must not hit it again */
+	if (obj->onamelth) roast = oname(roast, ONAME(obj));
+	obj_extract_self(obj);
+	obfree(obj, (struct obj *) 0);
+	place_object(roast, x, y);
+	stackobj(roast);
+	if (cansee(x, y)) {
+	    pline_The("chicken corpse is roasted to a golden brown!");
+	}
+	newsym(x, y);
+	return roast;
+}
+
+/* roast every chicken corpse on a square hit by fire or lightning */
+void
+roast_chickens_at(x, y)
+xchar x, y;
+{
+	struct obj *otmp, *next;
+
+	for (otmp = level.objects[x][y]; otmp; otmp = next) {
+	    next = otmp->nexthere;
+	    (void) roast_chicken(otmp);
+	}
+}
+
 STATIC_OVL void
 accessory_has_effect(otmp)
 struct obj *otmp;

@@ -814,6 +814,8 @@ FOOD("meatball",             0, 1,  1, 0, FLESH,   5, CLR_BROWN),
 FOOD("meat stick",           0, 1,  1, 0, FLESH,   5, CLR_BROWN),
 FOOD("jerky",               20, 1,  1, 0, FLESH,  50, CLR_BROWN),
 FOOD("huge chunk of meat",   0,20,400, 0, FLESH,2000, CLR_BROWN),
+/* a chicken corpse cooked by fire or lightning; weighs what the corpse did */
+FOOD("roast chicken",        0, 3, 40, 0, FLESH, 500, CLR_BROWN),
 /* special case because it's not mergable */
 OBJECT(OBJ("meat ring", (char *)0),
     BITS(1,0,0,0,0,0,0,0,0,0,0,0,FLESH),
