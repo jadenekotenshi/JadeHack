@@ -523,6 +523,18 @@ A("Lancea Longini",		SILVER_SPEAR,
 	PHYS(5,12),	SPDF_DRAIN,	NO_CARY,	0, A_LAWFUL, NON_PM, NON_PM, 4000L ),
 
 /*
+ *	Vampire Killer (after Castlevania), a lawful bullwhip.  +d5 to hit and
+ *	+d8 damage against everything; against the undead, demons (& and i),
+ *	werecreatures and vampires (even any that are not undead) another +d10
+ *	to hit and +2d10 damage (see spec_abon() and spec_dbon()).  Drain and
+ *	lycanthropy resistance while wielded; #invoke reads an uncursed scroll
+ *	of remove curse.  It is accepted in the off hand beside anything.
+ */
+A("Vampire Killer",		BULLWHIP,
+	(SPFX_RESTR), 0, 0,
+	PHYS(5,8),	(SPDF_DRAIN|SPDF_WERE),	NO_CARY,	UNCURSE_ALL, A_LAWFUL, NON_PM, NON_PM, 3500L ),
+
+/*
  *  terminator; otyp must be zero
  */
 A(0, 0, 0, 0, 0, NO_ATTK, SPDF_NONE, NO_CARY, 0, A_NONE, NON_PM, NON_PM, 0L )

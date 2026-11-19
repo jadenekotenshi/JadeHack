@@ -2207,6 +2207,7 @@ boolean from_user;
 	if (strncmpi(bp, "ninja-to", 8)) /* not the "ninja" rank */
 	if (strncmpi(bp, "master key", 10)) /* not the "master" rank */
 	if (strncmpi(bp, "magenta", 7)) /* not the "mage" rank */
+	if (strncmpi(bp, "vampire killer", 14)) /* not the "vampire" monster */
 	if (mntmp < LOW_PM && strlen(bp) > 2 &&
 	    (mntmp = name_to_mon(bp)) >= LOW_PM) {
 		int mntmptoo, mntmplen;	/* double check for rank title */

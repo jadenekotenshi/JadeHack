@@ -949,3 +949,17 @@ A new lawful artifact, **Lancea Longini** (the Lance of Longinus), a silver spea
 - **Enrages demon lords and princes as Excalibur does** (they are not made peaceful, and `demon_talk()` makes a bribable one hostile).
 - **If blessed, +d6 against `&` and `i` monsters**, on top of the usual blessed d4 against undead and demons (`dmgval()` in `weapon.c`).
 It has a data.base entry. The artifact count changes, so the data files and utilities must be rebuilt as for Batch 79 and old saves are not compatible. Checked in wizard mode: a blessed +6 spear took AC from -1 to -4 when wielded, and destroyed couatls with the message above (and missed others); the item and use stress tests were clean (20,030 and 12,739 log lines). Not checked in play: the demon-lord anger, the blessed bonus against `&`/`i` and the random-generation/gift paths.
+
+## Batch 88: Vorpal Blade damage
+
+The Vorpal Blade's damage bonus was a flat +1 (its `PHYS(5,1)` rolled `d1`). It is now **2d4 with exploding dice** (`exploding_dice()` and the flat-bonus switch in `spec_dbon()`, `artifact.c`): each die that comes up 4 is rolled again and added, repeating as long as it keeps coming up 4 (capped at 20 rerolls per die, a safety net the chance of reaching is about 4^-20). The average bonus is about 6.7 (2d4 alone averages 5), the range 2 and up with no ceiling. Like the old +1 it applies to every target, and a monster wielding the blade gets it too. The +d5 to hit and the beheading on a natural 20 (or any hit on a jabberwock) are unchanged. Only the binary changes.
+
+## Batch 89: Vampire Killer
+
+A new lawful artifact bullwhip, **Vampire Killer** (`artilist.h`, after Lancea Longini so no artifact number moves; restricted like the other lawful artifacts, not `NOGEN`, so it can also be generated or given as a sacrifice gift). While wielded:
+- **+d5 to hit and +d8 damage against everything.**
+- **Another +d10 to hit and +2d10 damage against the undead, demons (both `&` and `i`), werecreatures and vampires**, including any `V` that is not flagged undead (`vampire_killer_foe()`, `spec_abon()` and `spec_dbon()` in `artifact.c`; a lycanthrope hero counts as a foe when something with the whip hits you).
+- **Drain and lycanthropy resistance** (`SPDF_DRAIN|SPDF_WERE`).
+- **`#invoke` acts as an uncursed scroll of remove curse** (new invoked property `UNCURSE_ALL`, `artifact.h`; the usual invoke delay applies).
+- **It may be held in the off hand beside any weapon**, like the Banes (`artifact_offhand_ok()`).
+It has a data.base entry. `readobjnam()` (`objnam.c`) took the "vampire" in a wish for it for the monster and failed with "Nothing fitting that description exists"; it is now exempt like "samurai sword". The artifact count changes, so the data files and utilities must be rebuilt as for Batch 79 and old saves are not compatible. Checked in wizard mode: the wish works, `#invoke` says "You feel like someone is helping you.", and the item stress test is clean (20,034 log lines; it wishes for every artifact by name). Not checked in play: the damage figures against vampires (a level 1 Knight died to three of them), the off-hand rule and the whip's resistances.

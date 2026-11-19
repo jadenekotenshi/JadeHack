@@ -89,5 +89,6 @@ struct artifact {
 #define DETECT_ARTIFACTS (LAST_PROP+14)
 #define SEA_CHANGE	(LAST_PROP+15)
 #define ARCANE_BURST	(LAST_PROP+16)
+#define UNCURSE_ALL	(LAST_PROP+17)
 
 #endif /* ARTIFACT_H */

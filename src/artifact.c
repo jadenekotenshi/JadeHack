@@ -1078,6 +1078,18 @@ struct obj *otmp;
 	return 0L;
 }
 
+/* is mon the sort of creature the Vampire Killer is made to destroy? */
+STATIC_OVL boolean
+vampire_killer_foe(mon)
+struct monst *mon;
+{
+	struct permonst *ptr = mon->data;
+
+	return (boolean)(is_undead(ptr) || is_demon(ptr) || is_were(ptr) ||
+			 ptr->mlet == S_IMP || ptr->mlet == S_VAMPIRE ||
+			 (mon == &youmonst && u.ulycn >= LOW_PM));
+}
+
 /* special attack bonus */
 int
 spec_abon(otmp, mon)
@@ -1095,9 +1107,29 @@ struct monst *mon;
 	    return rnd(8);		/* +d8 to hit against everything */
 	if (weap && otmp->oartifact == ART_GUNGNIR)
 	    return 5;			/* flat +5 to hit against everything */
+	if (weap && otmp->oartifact == ART_VAMPIRE_KILLER)
+	    return rnd(5) + (vampire_killer_foe(mon) ? rnd(10) : 0);
 	if (weap && weap->attk.damn && spec_applies(weap, mon))
 	    return rnd((int)weap->attk.damn);
 	return 0;
+}
+
+/* roll n dice of the given size; a die that comes up its maximum is rolled
+   again and added, and so on for as long as it keeps coming up maximum */
+STATIC_OVL int
+exploding_dice(n, sides)
+int n, sides;
+{
+	int total = 0, roll, guard;
+
+	while (n-- > 0) {
+	    guard = 0;
+	    do {
+		roll = rnd(sides);
+		total += roll;
+	    } while (roll == sides && ++guard < 20);
+	}
+	return total;
 }
 
 /* special damage bonus */
@@ -1133,6 +1165,9 @@ int tmp;
 		case ART_GUNGNIR:	return 10;
 		case ART_PERNICIMORDAX:	return d(4,4);
 		case ART_KIKU_ICHIMONJI: return d(2,6);
+		case ART_VAMPIRE_KILLER:
+		    return rnd(8) + (vampire_killer_foe(mon) ? d(2,10) : 0);
+		case ART_VORPAL_BLADE:	return exploding_dice(2,4);
 		case ART_REAVER:	return d(2,8);
 		case ART_GRAYSWANDIR:	return d(2,8);
 		default: break;
@@ -2255,6 +2290,14 @@ arti_invoke(obj)
 	case ENLIGHTENING:
 	    enlightenment(0);
 	    break;
+	case UNCURSE_ALL: {
+	    struct obj pseudo;
+
+	    pseudo = zeroobj;	/* an uncursed scroll of remove curse */
+	    pseudo.otyp = SCR_REMOVE_CURSE;
+	    (void) seffects(&pseudo);
+	    break;
+	  }
 	case DETECT_ARTIFACTS:
 	    detect_artifacts(obj);
 	    break;
@@ -2441,6 +2484,7 @@ struct obj *pri, *sec;
 	case ART_WEREBANE:
 	case ART_TROLLSBANE:
 	case ART_OGRESMASHER:
+	case ART_VAMPIRE_KILLER:
 	    return TRUE;
 	/* Quicksilver and the Luck Blade are a pair */
 	case ART_LUCK_BLADE:
