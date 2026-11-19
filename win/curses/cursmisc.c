@@ -573,14 +573,15 @@ curses_view_file(const char *filename, boolean must_exist)
 void
 curses_rtrim(char *str)
 {
-    char *s;
+    size_t len = strlen(str);
 
-    for (s = str; *s != '\0'; ++s);
-    for (--s; isspace(*s) && s > str; --s);
-    if (s == str)
-        *s = '\0';
-    else
-        *(++s) = '\0';
+    /* drop trailing white space; never look before the start of the string
+       (an empty line used to read the byte in front of it, which faults when
+       the string is the first thing on a page), and keep a one-character
+       string as it is */
+    while (len > 0 && isspace((unsigned char) str[len - 1]))
+        --len;
+    str[len] = '\0';
 }
 
 
