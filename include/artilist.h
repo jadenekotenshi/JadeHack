@@ -45,10 +45,11 @@ A("Excalibur",			LONG_SWORD,
 	PHYS(5,10),	SPDF_DRAIN,	NO_CARY,	0, A_LAWFUL, PM_KNIGHT, NON_PM, 4000L ),
 /* 
  * The Knight needed a chaotic longsword to obtain, since Excalibur
- * will be restricted from him... 
+ * will be restricted from him...  It is also an ordinary random artifact
+ * (no SPFX_NOGEN), so any chaotic character can find or be given it.
 */
 A("Dirge",			LONG_SWORD,
-	(SPFX_ATTK|SPFX_NOGEN|SPFX_RESTR|SPFX_DEFN|SPFX_INTEL),0,0,
+	(SPFX_ATTK|SPFX_RESTR|SPFX_DEFN|SPFX_INTEL),0,0,
 	DRST(5,0),	SPDF_DRAIN,	NO_CARY,	0, A_CHAOTIC, NON_PM, NON_PM, 3000L ),
 /*
  *	Stormbringer only has a 2 because it can drain a level,
