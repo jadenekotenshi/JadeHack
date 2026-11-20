@@ -664,7 +664,8 @@ pirate_crowning()
 	/* the only Reaver is somewhere else */
 	obj = (struct obj *)0;
     } else if (obj && (obj->otyp == SCIMITAR || obj->otyp == FALCHION ||
-		       obj->otyp == MESSER || obj->otyp == SABER ||
+		       obj->otyp == MESSER || obj->otyp == DAO ||
+		       obj->otyp == SABER ||
 		       obj->otyp == SILVER_SABER ||
 		       obj->otyp == ORCISH_SCIMITAR)) {
 	if (!Blind) Your("%s shines brightly for a moment.", xname(obj));

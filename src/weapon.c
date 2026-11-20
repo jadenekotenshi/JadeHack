@@ -257,6 +257,7 @@ struct monst *mon;
 		case TWO_HANDED_SWORD:	tmp += d(2,6); break;
 
 		case KRIEGSMESSER:	tmp += rnd(6); break;	/* 2d6 */
+		case DAO:		tmp += rnd(4); break;	/* d6+d4 */
 		case CRYSTEEL_FALCHION:	tmp++; break;
 	    }
 	} else {
@@ -282,7 +283,8 @@ struct monst *mon;
 		case BROADSWORD:
 		case ELVEN_BROADSWORD:
 		case RUNESWORD:
-		case VOULGE:		tmp += rnd(4); break;
+		case VOULGE:
+		case DAO:		tmp += rnd(4); break;
 
 		case CRYSTEEL_FALCHION:	tmp++; break;
 		case KRIEGSMESSER:
@@ -505,7 +507,7 @@ register struct monst *mtmp;
 static const NEARDATA short hwep[] = {
 	  CORPSE,  /* cockatrice corpse */
 	  TSURUGI, RUNESWORD, DWARVISH_MATTOCK, TWO_HANDED_SWORD, BATTLE_AXE,
-	  KATANA, UNICORN_HORN, CRYSKNIFE, TRIDENT, LONG_SWORD, RAPIER,
+	  KATANA, UNICORN_HORN, CRYSKNIFE, TRIDENT, LONG_SWORD, RAPIER, DAO,
 	  ELVEN_BROADSWORD, BROADSWORD, SCIMITAR, SILVER_SABER,
 	  MORNING_STAR, ELVEN_SHORT_SWORD, DWARVISH_SHORT_SWORD, SHORT_SWORD,
 	  ORCISH_SHORT_SWORD, MACE, AXE, DWARVISH_SPEAR, SILVER_SPEAR,

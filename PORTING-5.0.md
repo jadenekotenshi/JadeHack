@@ -1107,3 +1107,7 @@ Checked in wizard mode: a neutral and a chaotic Ninja start with the inventory a
 **Parrots** are now orange (they were red), so they no longer look like giant bats. Colour only. The item, use and corpse stress tests ran clean with the keese (20,438, 12,937 and 6,161 log lines). Checked in wizard mode: a Valkyrie swinging a boomerang killed a keese in one blow.
 
 **Ninja sword skills swapped:** the ninja-to's long sword skill now goes up to **Expert** and curved sword to **Skilled** (they were Skilled and Expert), in `Skill_N[]` (`u_init.c`). Everything else in the Ninja's skill list is as in Batch 103.
+
+## Batch 106: the dao
+
+A new curved sword, the **dao** (`objects.c`, after the messer; `P_CURVED_SWORD`, iron, always identified): damage **d6+d4** against small and large (`oc_wsdam` and `oc_wldam` are 6 and the +d4 comes from `dmgval()` in `weapon.c`, as for the kriegsmesser's +d6), weight 50 (the falchion is 45), cost 80 (the katana's), generation probability 8. The class must still add up to 1000, so the scimitar goes from 14 to 11, the falchion from 15 to 12 and the messer from 10 to 8. Monsters that pick a weapon rank it just below the rapier (`hwep[]`), and a Pirate's sacrificed curved sword can turn into Reaver from a dao as from a scimitar (`pray.c`). Every object number after it moves up by one, so old saves and bones are not compatible; the data files and utilities must be rebuilt as in Batch 79 (a game must not be running when the installed data files are replaced).
