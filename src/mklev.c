@@ -1897,6 +1897,7 @@ struct mkroom *croom;
 	register int tryct = 0;
 	register struct obj *otmp;
 	boolean dobell = !rn2(10);
+	boolean dodeluge = !dobell && !rn2(12);
 
 
 	if(croom->rtype != OROOM) return;
@@ -1905,7 +1906,8 @@ struct mkroom *croom;
 		return;
 
 	/* Put a grave at m.x, m.y */
-	make_grave(m.x, m.y, dobell ? "Saved by the bell!" : (char *) 0);
+	make_grave(m.x, m.y, dobell ? "Saved by the bell!" :
+		   dodeluge ? "Apres moi, le deluge" : (char *) 0);
 
 	/* Possibly fill it with objects */
 	if (!rn2(3)) (void) mkgold(0L, m.x, m.y);
@@ -1920,6 +1922,9 @@ struct mkroom *croom;
 
 	/* Leave a bell, in case we accidentally buried someone alive */
 	if (dobell) (void) mksobj_at(BELL, m.x, m.y, TRUE, FALSE);
+
+	/* "After me, the flood": a scroll of flood lies on the grave */
+	if (dodeluge) (void) mksobj_at(SCR_FLOOD, m.x, m.y, TRUE, FALSE);
 	return;
 }
 

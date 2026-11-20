@@ -50,6 +50,8 @@ register struct obj *otmp;
 /*		break; */
 	case SCR_SCARE_MONSTER:
 	case SCR_STINKING_CLOUD:
+	case SCR_FLOOD:
+	case SCR_ICE:
 	case SCR_TAMING:
 	case SCR_TELEPORTATION:
 		return(20);

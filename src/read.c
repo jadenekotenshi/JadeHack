@@ -34,6 +34,7 @@ static void FDECL(forget, (int));
 static void FDECL(maybe_tame, (struct monst *,struct obj *));
 
 STATIC_PTR void FDECL(set_lit, (int,int,genericptr_t));
+STATIC_PTR void FDECL(flood_square, (int,int,genericptr_t));
 
 int
 doread()
@@ -850,6 +851,72 @@ struct obj *sobj;
 	}
 }
 
+/* scroll of flood: argument block for flood_square() */
+struct floodarg {
+	boolean drain;		/* confused: remove water instead of making it */
+	int bc;			/* bcsign of the scroll */
+	int count;		/* squares changed */
+	boolean herepool;	/* the hero's own square was flooded */
+};
+
+/* do_clear_area() callback for the scroll of flood */
+STATIC_PTR void
+flood_square(x, y, arg)
+int x, y;
+genericptr_t arg;
+{
+	struct floodarg *fa = (struct floodarg *)arg;
+	int dist = distmin(u.ux, u.uy, x, y);
+	boolean here = (x == u.ux && y == u.uy);
+	struct monst *mtmp;
+	struct trap *ttmp;
+
+	if (fa->drain) {
+	    /* confused: the pools in a circle around you dry up */
+	    int r = 3 + fa->bc * 2;		/* 1 (cursed), 3 or 5 */
+	    if (r < 1) r = 1;
+	    if (distu(x, y) > r * r + 1 || levl[x][y].typ != POOL) return;
+	    levl[x][y].typ = ROOM;
+	    levl[x][y].icedpool = 0;
+	    fa->count++;
+	    if (here) u.uinwater = 0;
+	    if ((mtmp = m_at(x, y)) != 0) mtmp->mundetected = 0;
+	    newsym(x, y);
+	    return;
+	}
+
+	if (here) {
+	    /* only an uncursed scroll may flood your own square, and only
+	       sometimes; a cursed one floods nothing else, a blessed one
+	       never floods yours */
+	    if (fa->bc > 0) return;
+	    if (fa->bc == 0 && rn2(4)) return;
+	    if (levl[x][y].typ != ROOM && levl[x][y].typ != CORR) return;
+	} else {
+	    if (fa->bc < 0) return;
+	    if (rn2(1 + dist / 2)) return;
+	    if (levl[x][y].typ != ROOM || sobj_at(BOULDER, x, y) ||
+		nexttodoor(x, y))
+		return;
+	}
+	if (dist > 4) return;
+
+	if ((ttmp = t_at(x, y)) != 0 && !delfloortrap(ttmp))
+	    return;
+
+	levl[x][y].typ = POOL;
+	levl[x][y].looted = 0;
+	del_engr_at(x, y);
+	water_damage(level.objects[x][y], FALSE, TRUE);
+	fa->count++;
+	if (here) fa->herepool = TRUE;
+
+	if ((mtmp = m_at(x, y)) != 0)
+	    (void) minliquid(mtmp);
+	else
+	    newsym(x, y);
+}
+
 int
 seffects(sobj)
 register struct obj	*sobj;
@@ -1565,6 +1632,41 @@ register struct obj	*sobj;
 			    newsym(x, y);
 			}
 		    }
+		break;
+	}
+	case SCR_FLOOD: {
+		struct floodarg fa;
+
+		fa.drain = confused;
+		fa.bc = bcsign(sobj);
+		fa.count = 0;
+		fa.herepool = FALSE;
+		if (Is_waterlevel(&u.uz) || Is_airlevel(&u.uz) ||
+		    In_sokoban(&u.uz)) {
+		    pline("A little water drips from the scroll.");
+		    break;
+		}
+		do_clear_area(u.ux, u.uy, confused ? 6 : 4, flood_square,
+			      (genericptr_t)&fa);
+		if (confused) {
+		    if (fa.count) {
+			known = TRUE;
+			pline("The water around you drains away!");
+		    } else
+			You_hear("a faint gurgling.");
+		} else if (fa.count) {
+		    known = TRUE;
+		    if (sobj->cursed)
+			pline("Water wells up from the floor beneath you!");
+		    else
+			pline("Water gushes forth around you!");
+		    if (fa.herepool) {
+			/* the floor under you is now water */
+			vision_full_recalc = 1;
+			spoteffects(TRUE);
+		    }
+		} else
+		    pline("A little water drips from the scroll.");
 		break;
 	}
 	case SCR_STINKING_CLOUD: {
