@@ -950,6 +950,7 @@ struct monst *mtmp;
 #define MUSE_WAN_DEATH 1
 #define MUSE_WAN_SLEEP 2
 #define MUSE_WAN_STINKING_FOG 40
+#define MUSE_WAN_ACID 41
 #define MUSE_WAN_FIRE 3
 #define MUSE_WAN_COLD 4
 #define MUSE_WAN_LIGHTNING 5
@@ -1043,6 +1044,11 @@ struct monst *mtmp;
 		    if(obj->otyp == WAN_LIGHTNING && obj->spe > 0 && !m_seenres(mtmp,M_SEEN_ELEC)) {
 			m.offensive = obj;
 			m.has_offense = MUSE_WAN_LIGHTNING;
+		    }
+		    nomore(MUSE_WAN_ACID);
+		    if(obj->otyp == WAN_ACID && obj->spe > 0 && !m_seenres(mtmp,M_SEEN_ACID)) {
+			m.offensive = obj;
+			m.has_offense = MUSE_WAN_ACID;
 		    }
 		    nomore(MUSE_WAN_MAGIC_MISSILE);
 		    if(obj->otyp == WAN_MAGIC_MISSILE && obj->spe > 0 && !m_seenres(mtmp,M_SEEN_MAGR)) {
@@ -1353,6 +1359,15 @@ struct monst *mtmp;
 			sgn(mtmp->mux-mtmp->mx), sgn(mtmp->muy-mtmp->my));
 		m_using = FALSE;
 		return (mtmp->mhp <= 0) ? 1 : 2;
+	case MUSE_WAN_ACID:
+		mzapmsg(mtmp, otmp, FALSE);
+		otmp->spe--;
+		if (oseen) makeknown(otmp->otyp);
+		m_using = TRUE;
+		buzz(-30 - (AD_ACID-1), 6, mtmp->mx, mtmp->my,
+			sgn(mtmp->mux-mtmp->mx), sgn(mtmp->muy-mtmp->my));
+		m_using = FALSE;
+		return (mtmp->mhp <= 0) ? 1 : 2;
 	case MUSE_FIRE_HORN:
 	case MUSE_FROST_HORN:
 		if (oseen) {
@@ -1589,7 +1604,7 @@ struct monst *mtmp;
 # endif
 		) return 0;
 	if (difficulty > 7 && !rn2(35)) return WAN_DEATH;
-	switch (rn2(9 - (difficulty < 4) + 4 * (difficulty > 6))) {
+	switch (rn2(9 - (difficulty < 4) + 5 * (difficulty > 6))) {
 		case 0: {
 		    struct obj *helmet = which_armor(mtmp, W_ARMH);
 
@@ -1608,6 +1623,7 @@ struct monst *mtmp;
 		case 10: return WAN_FIRE;
 		case 11: return WAN_COLD;
 		case 12: return WAN_LIGHTNING;
+		case 13: return WAN_ACID;
 	}
 	/*NOTREACHED*/
 	return 0;

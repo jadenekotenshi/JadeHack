@@ -2964,6 +2964,12 @@ do_break_wand(obj)
 		(obj->otyp - WAN_MAGIC_MISSILE), dmg, WAND_CLASS, expltype);
 	makeknown(obj->otyp);	/* explode described the effect */
 	goto discard_broken_wand;
+    case WAN_ACID:
+	/* a splash of acid: like a wand of fire or cold, doubled */
+	dmg *= 2;
+	explode(u.ux, u.uy, AD_ACID - 1, dmg, WAND_CLASS, EXPL_NOXIOUS);
+	makeknown(obj->otyp);
+	goto discard_broken_wand;
     case WAN_STRIKING:
 	/* we want this before the explosion instead of at the very end */
 	pline("A wall of force smashes down around you!");

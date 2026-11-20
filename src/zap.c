@@ -71,7 +71,7 @@ const char * const flash_types[] = {	/* also used in buzzmu(mcastu.c) */
 	"death ray",
 	"bolt of lightning",
 	"",
-	"",
+	"bolt of acid",
 	"",
 	"",
 
@@ -1370,7 +1370,7 @@ poly_obj(obj, id)
 
 	case WAND_CLASS:
 	    while (otmp->otyp == WAN_WISHING || otmp->otyp == WAN_POLYMORPH)
-		otmp->otyp = rnd_class(WAN_LIGHT, WAN_LIGHTNING);
+		otmp->otyp = rnd_class(WAN_LIGHT, WAN_ACID);
 	    /* altering the object tends to degrade its quality
 	       (analogous to spellbook `read count' handling) */
 	    if ((int)otmp->recharged < rn2(7))	/* recharge_limit */
@@ -2225,6 +2225,21 @@ boolean ordinary;
 		    } while (didmerge);
 		    }
 		    break;
+		case WAN_ACID:
+		    makeknown(WAN_ACID);
+		    if (Acid_resistance) {
+			shieldeff(u.ux, u.uy);
+			pline_The("acid doesn't seem to hurt!");
+			monstseesu(M_SEEN_ACID);
+		    } else {
+			pline_The("acid burns!");
+			damage = d(12,6);
+			exercise(A_STR, FALSE);
+		    }
+		    if (!rn2(u.twoweap ? 3 : 6)) _erode_obj(uwep, AD_ACID);
+		    if (!rn2(6)) erode_armor(&youmonst, TRUE);
+		    break;
+
 		case WAN_STINKING_FOG:
 		case SPE_STENCH:
 		    /* zapped at yourself: a cloud on your own square (a line
@@ -2607,6 +2622,8 @@ register struct	obj	*obj;
 			buzz(AD_MAGM + 9, u.ulevel / sp_skill + 1, u.ux, u.uy, u.dx, u.dy);
 		 } else if (otyp >= SPE_FIREBALL && otyp <= SPE_FINGER_OF_DEATH) {
 			buzz(otyp - SPE_MAGIC_MISSILE + 10, u.ulevel / 2 + 1, u.ux, u.uy, u.dx, u.dy);
+		 } else if (otyp == WAN_ACID) {
+			buzz(ZT_WAND(ZT_ACID), 6, u.ux, u.uy, u.dx, u.dy);
 		 } else if (otyp >= WAN_MAGIC_MISSILE && otyp <= WAN_LIGHTNING) {
 			buzz(otyp - WAN_MAGIC_MISSILE, (otyp == WAN_MAGIC_MISSILE) ? 2 : 6,
 				u.ux, u.uy, u.dx, u.dy);

@@ -215,7 +215,7 @@ struct obj *box;
 				otmp->spe = 0;
 				otmp->owt = weight(otmp);
 				} else while (otmp->otyp == WAN_CANCELLATION)
-					otmp->otyp = rnd_class(WAN_LIGHT, WAN_LIGHTNING);
+					otmp->otyp = rnd_class(WAN_LIGHT, WAN_ACID);
 			}
 
 			/* now that we know the weight, only add it if it fits */

@@ -1000,18 +1000,18 @@ OBJECT(OBJ("Book of the Dead", "papyrus"), BITS(0,0,1,0,1,0,1,1,0,0,0,P_NONE,PAP
 #define WAND(name,typ,prob,cost,mgc,dir,metal,color) OBJECT( \
 		OBJ(name,typ), BITS(0,0,1,0,mgc,1,0,0,0,0,dir,P_NONE,metal), 0, \
 		WAND_CLASS, prob, 0, 7, cost, 0, 0, 0, 0, 30, color )
-WAND("light",          "glass",    72, 100, 1, NODIR,     GLASS,    HI_GLASS),
+WAND("light",          "glass",    66, 100, 1, NODIR,     GLASS,    HI_GLASS),
 WAND("secret door detection", "balsa",
 				   50, 150, 1, NODIR,	  WOOD,     HI_WOOD),
 WAND("enlightenment",  "crystal",  15, 150, 1, NODIR,     GLASS,    HI_GLASS),
 WAND("create monster", "maple",    30, 200, 1, NODIR,     WOOD,     HI_WOOD),
 WAND("wishing",        "pine",      0, 500, 1, NODIR,     WOOD,     HI_WOOD),
-WAND("nothing",        "oak",      25, 100, 0, IMMEDIATE, WOOD,     HI_WOOD),
-WAND("striking",       "ebony",    58, 150, 1, IMMEDIATE, WOOD,     HI_WOOD),
-WAND("make invisible", "marble",   44, 150, 1, IMMEDIATE, MINERAL,  HI_MINERAL),
-WAND("slow monster",   "tin",      45, 150, 1, IMMEDIATE, METAL,    HI_METAL),
-WAND("speed monster",  "brass",    45, 150, 1, IMMEDIATE, COPPER,   HI_COPPER),
-WAND("undead turning", "copper",   45, 150, 1, IMMEDIATE, COPPER,   HI_COPPER),
+WAND("nothing",        "oak",      23, 100, 0, IMMEDIATE, WOOD,     HI_WOOD),
+WAND("striking",       "ebony",    52, 150, 1, IMMEDIATE, WOOD,     HI_WOOD),
+WAND("make invisible", "marble",   40, 150, 1, IMMEDIATE, MINERAL,  HI_MINERAL),
+WAND("slow monster",   "tin",      41, 150, 1, IMMEDIATE, METAL,    HI_METAL),
+WAND("speed monster",  "brass",    41, 150, 1, IMMEDIATE, COPPER,   HI_COPPER),
+WAND("undead turning", "copper",   41, 150, 1, IMMEDIATE, COPPER,   HI_COPPER),
 WAND("polymorph",      "silver",   45, 200, 1, IMMEDIATE, SILVER,   HI_SILVER),
 WAND("cancellation",   "platinum", 45, 200, 1, IMMEDIATE, PLATINUM, CLR_WHITE),
 WAND("teleportation",  "iridium",  40, 200, 1, IMMEDIATE, METAL,    CLR_BRIGHT_CYAN),
@@ -1025,9 +1025,10 @@ WAND("cold",           "short",    35, 175, 1, RAY,       IRON,     HI_METAL),
 WAND("sleep",          "runed",    41, 175, 1, RAY,       IRON,     HI_METAL),
 WAND("death",          "long",      5, 500, 1, RAY,       IRON,     HI_METAL),
 WAND("lightning",      "curved",   35, 175, 1, RAY,       IRON,     HI_METAL),
+WAND("acid",           "zirconium",30, 175, 1, RAY,       METAL,    CLR_YELLOW),	/* JadeHack */
 WAND("wind",           "forked",   30, 150, 1, IMMEDIATE, WOOD,     HI_WOOD),
 WAND("stasis",        "spiked",   45, 150, 1, NODIR,     IRON,     CLR_RED),	/* NetHack 5.0 */
-WAND("stinking fog",   "zirconium",40, 150, 1, IMMEDIATE, METAL,    CLR_GREEN),
+WAND("stinking fog",   "jeweled",  40, 150, 1, IMMEDIATE, METAL,    CLR_GREEN),
 #undef WAND
 
 /* coins ... - so far, gold is all there is */

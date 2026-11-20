@@ -775,6 +775,25 @@ doengrave()
 			    Strcpy(post_engr_text, "You hear drilling!");
 			break;
 
+		    case WAN_ACID:
+			/* engraves like digging, and identifies itself */
+			ptext = TRUE;
+			type  = ENGRAVE;
+			if(!objects[otmp->otyp].oc_name_known) {
+			    if (flags.verbose)
+				pline("This %s is a wand of acid!",
+				xname(otmp));
+			    doknown = TRUE;
+			}
+			if (!Blind)
+			    Strcpy(post_engr_text,
+				IS_GRAVE(levl[u.ux][u.uy].typ) ?
+				"Acid eats into the headstone." :
+				"The floor sizzles and smokes as acid eats into it.");
+			else
+			    Strcpy(post_engr_text, "You hear sizzling!");
+			break;
+
 		    /* type = BURN wands */
 		    case WAN_FIRE:
 			ptext = TRUE;
