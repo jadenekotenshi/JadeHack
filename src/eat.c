@@ -966,6 +966,7 @@ register int pm;
 			/* fall into next case */
 	    case PM_YELLOW_LIGHT:
 		/* fall into next case */
+	    case PM_KEESE:
 	    case PM_GIANT_BAT:
 		make_stunned(HStun + 30,FALSE);
 		/* fall into next case */

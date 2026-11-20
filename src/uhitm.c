@@ -1142,6 +1142,11 @@ int dieroll;
 	    }
 	}
 
+	/* a boomerang, thrown or swung, kills a keese outright */
+	if (obj && obj->otyp == BOOMERANG && mdat == &mons[PM_KEESE] &&
+		mon->mhp > tmp)
+	    tmp = mon->mhp;
+
 #ifdef STEED
 	if (jousting) {
 		/*

@@ -440,8 +440,8 @@ static const struct def_skill Skill_Mon[] = {
 
 static const struct def_skill Skill_N[] = {
     { P_DAGGER, P_EXPERT },		{ P_KNIFE,  P_EXPERT },
-    { P_SHORT_SWORD, P_EXPERT },	{ P_LONG_SWORD, P_SKILLED },
-    { P_TWO_HANDED_SWORD, P_BASIC },	{ P_CURVED_SWORD, P_EXPERT },
+    { P_SHORT_SWORD, P_EXPERT },	{ P_LONG_SWORD, P_EXPERT },
+    { P_TWO_HANDED_SWORD, P_BASIC },	{ P_CURVED_SWORD, P_SKILLED },
     { P_MACE, P_SKILLED },		{ P_FLAIL, P_EXPERT },
     { P_HAMMER, P_BASIC },		{ P_POLEARMS, P_SKILLED },
     { P_SPEAR, P_BASIC },
