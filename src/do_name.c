@@ -1008,7 +1008,8 @@ static const char * const bogusmons[] = {
 	"glop puddle", "Master Belch", "colossal terrorpede",
 	"giant funnel-web spider", "green widow", "hideous abomination",
 	"beaked lobster", "walky-walk", "turkey", "giant swan",
-	"moldy pudding", "mold soldier", "fungus knight"
+	"moldy pudding", "mold soldier", "fungus knight",
+	"rabtail", "silkbite"
 };
 
 

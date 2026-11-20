@@ -1020,3 +1020,7 @@ Checked in wizard mode: reading it gives the message and `Z` is refused; the fie
 ## Batch 97: rabite and silktail orange
 
 Rabites and silktails change from bright yellow to **orange** (`CLR_ORANGE`, `monst.c`), still clear of the rock mole's colour. Colour only: no change to monster numbering, so saves and data files are unaffected. (Many terminals draw orange as bright red; the interface's own colour table decides.)
+
+## Batch 98: hallucinatory "rabtail" and "silkbite"
+
+Two more names join the hallucination monster list (`bogusmons[]`, `do_name.c`): "rabtail" and "silkbite". Names only: no monster numbering or data-file change, so saves are unaffected.
