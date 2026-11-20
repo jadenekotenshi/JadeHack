@@ -71,7 +71,7 @@ const struct Role roles[] = {
 	{  16,  7,  7, 15, 16,  6 },
 	{  30,  6,  7, 20, 30,  7 },
 	/* Init   Lower  Higher */
-	{ 14, 0,  0,10,  2, 0 },	/* Hit points */
+	{ 14, 0,  0,12,  2, 0 },	/* Hit points */
 	{  1, 0,  0, 1,  0, 1 },10,	/* Energy */
 	10, 14, 0, 0,  8, A_INT, SPE_CAUSE_FEAR,      -8	/* this isn't accidental */
 },
@@ -121,7 +121,7 @@ const struct Role roles[] = {
 	{  10,  7,  7,  7,  8,  6 },
 	{  30,  6,  7, 20, 30,  7 },
 	/* Init   Lower  Higher */
-	{ 14, 0,  0, 8,  2, 0 },	/* Hit points */
+	{ 14, 0,  0,12,  2, 0 },	/* Hit points */
 	{  1, 0,  0, 1,  0, 1 },10,	/* Energy */
 	0, 12, 0, 1,  8, A_INT, SPE_DIG,   -4
 },
@@ -146,7 +146,7 @@ const struct Role roles[] = {
 	{   7,  7, 13,  7, 11, 16 },
 	{  15, 20, 20, 15, 25, 5 },
 	/* Init   Lower  Higher */
-	{ 11, 0,  0, 8,  1, 0 },	/* Hit points */
+	{ 11, 0,  0, 6,  1, 0 },	/* Hit points */
 	{  1, 4,  0, 1,  0, 2 },20,	/* Energy */
 	10, 3,-3, 2, 10, A_WIS, SPE_CURE_SICKNESS,   -4
 },
@@ -171,7 +171,7 @@ const struct Role roles[] = {
 	{  13,  7, 14,  8, 10, 17 },
 	{  30, 15, 15, 10, 20, 10 },
 	/* Init   Lower  Higher */
-	{ 14, 0,  0, 8,  2, 0 },	/* Hit points */
+	{ 14, 0,  0,10,  2, 0 },	/* Hit points */
 	{  1, 4,  0, 1,  0, 2 },10,	/* Energy */
 	10, 8,-2, 0,  9, A_WIS, SPE_EXTRA_HEALING,     -4
 },
@@ -338,7 +338,7 @@ const struct Role roles[] = {
 	{  10,  8,  7, 10, 17,  6 },
 	{  30, 10,  8, 30, 14,  8 },
 	/* Init   Lower  Higher */
-	{ 13, 0,  0, 8,  1, 0 },	/* Hit points */
+	{ 13, 0,  0,10,  1, 0 },	/* Hit points */
 	{  1, 0,  0, 1,  0, 1 },11,	/* Energy */
 	10, 10, 0, 0,  8, A_INT, SPE_CLAIRVOYANCE,    -4
 },
@@ -389,7 +389,7 @@ const struct Role roles[] = {
 	{  10,  7,  7,  7, 10,  7 },
 	{  30,  6,  7, 20, 30,  7 },
 	/* Init   Lower  Higher */
-	{ 14, 0,  0, 8,  2, 0 },	/* Hit points */
+	{ 14, 0,  0,10,  2, 0 },	/* Hit points */
 	{  1, 0,  0, 1,  0, 1 },10,	/* Energy */
 	0, 10,-2, 0,  9, A_WIS, SPE_REPAIR_ARMOR,    -4
 },
@@ -451,7 +451,7 @@ const struct Role align_roles[] = {
 	{  13,  7, 14,  8, 10, 17 },
 	{  30, 15, 15, 10, 20, 10 },
 	/* Init   Lower  Higher */
-	{ 14, 0,  0, 8,  2, 0 },	/* Hit points */
+	{ 14, 0,  0,10,  2, 0 },	/* Hit points */
 	{  1, 4,  0, 1,  0, 2 },10,	/* Energy */
 	10, 8,-2, 0,  9, A_WIS, SPE_TURN_UNDEAD,     -4
 },

@@ -1024,3 +1024,16 @@ Rabites and silktails change from bright yellow to **orange** (`CLR_ORANGE`, `mo
 ## Batch 98: hallucinatory "rabtail" and "silkbite"
 
 Two more names join the hallucination monster list (`bogusmons[]`, `do_name.c`): "rabtail" and "silkbite". Names only: no monster numbering or data-file change, so saves are unaffected.
+
+## Batch 99: role hit dice; healers may learn attack spells
+
+Per-level hit point dice (`hpadv.lornd` in `role.c`, used by `newhp()` below the role's cutoff level; starting HP, the flat gain after the cutoff and the race and Constitution bonuses are unchanged):
+
+| Role | Die before | Die now |
+|---|---|---|
+| Barbarian | d10 | d12 |
+| Caveman | d8 | d12 |
+| Knight, Dark Knight, Valkyrie, Samurai | d8 | d10 |
+| Healer | d8 | d6 |
+
+Healers can now advance **attack spells** to Basic (`Skill_H` in `u_init.c`; it was restricted before). Checked in wizard mode with a human Healer: `#enhance` lists attack spells (Unskilled, trainable). No change to object or monster numbering, so saves still load.
