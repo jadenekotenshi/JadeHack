@@ -60,6 +60,7 @@ static struct trobj Bard[] = {
 	{ WOODEN_HARP, 0, TOOL_CLASS, 1, UNDEF_BLESS },
 #define BARD_MINOR	6
 	{ TIN_WHISTLE, 0, TOOL_CLASS, 1, UNDEF_BLESS },
+	{ SPE_SLEEP, 0, SPBOOK_CLASS, 1, 1 },
 	{ 0, 0, 0, 0, 0 }
 };
 static struct trobj Cave_man[] = {
@@ -809,12 +810,7 @@ u_init()
 				rn2(2) ? WOODEN_HARP : WOODEN_FLUTE;
 		if (rn2(20) < 3) Bard[BARD_MINOR].trotyp = BELL;
 		ini_inv(Bard);
-		{
-		    /* Bards begin knowing the sleep spell, which Lullaby needs */
-		    struct obj *sleepbook = mksobj(SPE_SLEEP, FALSE, FALSE);
-		    initialspell(sleepbook);
-		    obfree(sleepbook, (struct obj *)0);
-		}
+		/* the starting spellbook of sleep teaches the spell Lullaby needs */
 		/* bards know their instruments and a bardic repertoire */
 		knows_object(WOODEN_FLUTE);
 		knows_object(MAGIC_FLUTE);
