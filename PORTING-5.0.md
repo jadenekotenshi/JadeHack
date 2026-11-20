@@ -1016,3 +1016,7 @@ A new scroll, **scroll of antimagic** (after the scroll of flood in `objects.c`;
 - Can be written (ink 18, so 9 to 17 per scroll). Monsters never use it.
 Nine more scroll labels join the random pool ("SUU KOL WUF GORGLE", "JAM BUK ORKO", "FALUMPHA", "CACKLE CACKLE", "YUMBLE YOTZ", "PELL MELL", "ZI ZEEBLE ZUMBLE ZO", "SNOO SNUNK SKO", "ANVIL BONK"), so there are now spare labels that no scroll uses in a given game.
 Checked in wizard mode: reading it gives the message and `Z` is refused; the field lapses after 400 turns with both messages; a cursed scroll took Pw from 3 to 0; confused and cursed refilled Pw from 0 to 6; confused and uncursed, with no field, gave the faint tingle. A new object shifts every later object number, so old saves are not compatible and the data files and utilities must be rebuilt as for Batch 79.
+
+## Batch 97: rabite and silktail orange
+
+Rabites and silktails change from bright yellow to **orange** (`CLR_ORANGE`, `monst.c`), still clear of the rock mole's colour. Colour only: no change to monster numbering, so saves and data files are unaffected. (Many terminals draw orange as bright red; the interface's own colour table decides.)
