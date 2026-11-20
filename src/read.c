@@ -1634,6 +1634,45 @@ register struct obj	*sobj;
 		    }
 		break;
 	}
+	case SCR_ANTIMAGIC:
+		if (confused) {
+		    if (sobj->cursed) {
+			/* confused and cursed: a surge of magical energy */
+			if (u.uen < u.uenmax) {
+			    known = TRUE;
+			    You_feel("full of magical energy!");
+			    u.uen += 400;
+			    if (u.uen > u.uenmax) u.uen = u.uenmax;
+			    flags.botl = 1;
+			} else
+			    You_feel("a brief surge of magic.");
+		    } else if ((HAntimagic & TIMEOUT) || u.uspellblock > 0) {
+			/* confused: any antimagic field you have goes away */
+			known = TRUE;
+			HAntimagic &= ~TIMEOUT;
+			u.uspellblock = 0;
+			Your("antimagic field dissipates.");
+		    } else
+			You_feel("a faint tingle.");
+		} else if (sobj->cursed) {
+		    if (u.uen > 0) {
+			known = TRUE;
+			You_feel("drained of magical energy!");
+			u.uen -= 400;
+			if (u.uen < 0) u.uen = 0;
+			flags.botl = 1;
+		    } else
+			You_feel("a faint tingle.");
+		} else {
+		    /* 400 turns of magic resistance, and no spellcasting */
+		    known = TRUE;
+		    pline("An antimagic field surrounds you!");
+		    incr_itimeout(&HAntimagic, 400);
+		    u.uspellblock += 400;
+		    if (spellid(0) != NO_SPELL)
+			You("will not be able to cast spells while it lasts.");
+		}
+		break;
 	case SCR_FLOOD: {
 		struct floodarg fa;
 

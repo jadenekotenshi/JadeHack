@@ -88,9 +88,10 @@
 				 defends(AD_DISE,uwep))
 #define Invulnerable		u.uprops[INVULNERABLE].intrinsic    /* [Tom] */
 
-/* Extrinsics only */
+/* Extrinsic, plus a timed intrinsic from the scroll of antimagic */
+#define HAntimagic		u.uprops[ANTIMAGIC].intrinsic
 #define EAntimagic		u.uprops[ANTIMAGIC].extrinsic
-#define Antimagic		(EAntimagic || \
+#define Antimagic		(HAntimagic || EAntimagic || \
 				 (Upolyd && resists_magm(&youmonst)))
 
 #define EAcid_resistance	u.uprops[ACID_RES].extrinsic

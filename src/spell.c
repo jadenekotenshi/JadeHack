@@ -599,6 +599,10 @@ docast()
 	    You("are too impaired to cast a spell.");
 	    return 0;
 	}
+	if (u.uspellblock > 0) {
+	    pline_The("antimagic field around you stops you casting spells.");
+	    return 0;
+	}
 	if (getspell(&spell_no))
 	    return spelleffects(spell_no, FALSE);
 	return 0;

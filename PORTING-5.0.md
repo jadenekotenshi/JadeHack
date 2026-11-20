@@ -1005,3 +1005,14 @@ A new scroll, **scroll of flood** (after the scroll of ice in `objects.c`; label
 - A grave reading "Apres moi, le deluge" ("After me, the flood") with a scroll of flood on it now turns up now and then (1 in 12 of the graves that are not "Saved by the bell!"), in `mkgrave()` (`mklev.c`).
 - Also fixed: the scroll of ice had no ink cost in `write.c` (writing one would have hit `impossible()`); it now costs 20 too.
 Checked in wizard mode: blessed and uncursed scrolls made pools (and one drowned my pony); a cursed one dropped me in the water; a blessed scroll read while confused dried up the pools around me; on the stairs a cursed scroll floods nothing. The item and use stress tests were clean. A new object shifts every later object number, so old saves are not compatible and the data files and utilities must be rebuilt as for Batch 79.
+
+## Batch 96: scroll of antimagic and nine more scroll labels
+
+A new scroll, **scroll of antimagic** (after the scroll of flood in `objects.c`; label "HY DIDILY GINKY WINKS", probability 18, cost 250; identify 160→150, enchant weapon 75→70 and light 80→77 pay for it), after dNetHack:
+- **Uncursed or blessed:** "An antimagic field surrounds you!": 400 turns (added to any time left) of magic resistance and, for the same 400 turns, no spellcasting at all ("The antimagic field around you stops you casting spells."; `u.uspellblock`, a new counter in `struct you` run down each move in `allmain.c`, checked in `docast()`; ^X says "unable to cast spells"). Magic resistance is a timed intrinsic: `youprop.h` now has `HAntimagic` and `Antimagic` includes it, with the expiry message "Your antimagic field fades away." in `timeout.c` and "You feel able to cast spells again." when the block ends.
+- **Cursed:** you lose 400 energy (Pw goes to 0): "You feel drained of magical energy!"
+- **Confused, not cursed:** any antimagic field you have goes away (magic resistance from this scroll and the casting block); otherwise "a faint tingle".
+- **Confused and cursed:** your energy is refilled ("You feel full of magical energy!"), up to your maximum (not beyond).
+- Can be written (ink 18, so 9 to 17 per scroll). Monsters never use it.
+Nine more scroll labels join the random pool ("SUU KOL WUF GORGLE", "JAM BUK ORKO", "FALUMPHA", "CACKLE CACKLE", "YUMBLE YOTZ", "PELL MELL", "ZI ZEEBLE ZUMBLE ZO", "SNOO SNUNK SKO", "ANVIL BONK"), so there are now spare labels that no scroll uses in a given game.
+Checked in wizard mode: reading it gives the message and `Z` is refused; the field lapses after 400 turns with both messages; a cursed scroll took Pw from 3 to 0; confused and cursed refilled Pw from 0 to 6; confused and uncursed, with no field, gave the faint tingle. A new object shifts every later object number, so old saves are not compatible and the data files and utilities must be rebuilt as for Batch 79.

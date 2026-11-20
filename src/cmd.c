@@ -1048,6 +1048,7 @@ int final;	/* 0 => still in progress; 1 => over, survived; 2 => dead */
 	if (Drain_resistance) you_are("level-drain resistant");
 	if (Sick_resistance) you_are("immune to sickness");
 	if (Antimagic) you_are("magic-protected");
+	if (u.uspellblock > 0) you_are("unable to cast spells");
 	if (Acid_resistance) you_are("acid resistant");
 	if (Stone_resistance) you_are("petrification resistant");
 	if (Confusion_resistance) you_are("confusion resistant");

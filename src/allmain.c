@@ -1071,6 +1071,8 @@ moveloop()
 		    monstermoves++;
 		    moves++;
 		    if (u.uinspire > 0) u.uinspire--;
+		    if (u.uspellblock > 0 && --u.uspellblock == 0)
+			You_feel("able to cast spells again.");
 		    if (u.ucoldres > 0 && --u.ucoldres == 0) {
 			ECold_resistance &= ~W_ARTI;
 			You_feel("less resistant to cold.");

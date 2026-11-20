@@ -277,6 +277,10 @@ nh_timeout()
 		case SLOW:
 			You_feel("less sluggish.");
 			break;
+		case ANTIMAGIC:
+			if (!Antimagic)
+			    Your("antimagic field fades away.");
+			break;
 		case REFLECTING:
 			if (!Blind)
 				pline("The shimmering globe around you flickers and vanishes.");

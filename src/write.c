@@ -56,6 +56,9 @@ register struct obj *otmp;
 	case SCR_TELEPORTATION:
 		return(20);
 /*		break; */
+	case SCR_ANTIMAGIC:
+		return(18);
+/*		break; */
 	case SCR_GENOCIDE:
 		return(30);
 /*		break; */
