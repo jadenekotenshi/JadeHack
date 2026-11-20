@@ -435,7 +435,14 @@ int shp_indx;
 		/* and scrolls and books fall to spellcasters */
 		case SCROLL_CLASS:
 		case SPBOOK_CLASS:
-			srace = PM_LICH + rn2(4);
+			/* not PM_LICH + rn2(4): Vecna (a unique) sits between
+			   the master lich and the arch-lich */
+			switch (rn2(4)) {
+			    case 0: srace = PM_LICH; break;
+			    case 1: srace = PM_DEMILICH; break;
+			    case 2: srace = PM_MASTER_LICH; break;
+			    default: srace = PM_ARCH_LICH; break;
+			}
 			break;
 		default:
 			break;
