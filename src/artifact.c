@@ -720,6 +720,8 @@ long wp_mask;
 	    mask = &EDisint_resistance;
 	else if (dtyp == AD_DRST)
 	    mask = &EPoison_resistance;
+	else if (dtyp == AD_DRLI)
+	    mask = &EDrain_resistance;
 
 	if (mask && wp_mask == W_ART && !on) {
 	    /* find out if some other artifact also confers this intrinsic */
@@ -1107,6 +1109,8 @@ struct monst *mon;
 	    return rnd(8);		/* +d8 to hit against everything */
 	if (weap && otmp->oartifact == ART_GUNGNIR)
 	    return 5;			/* flat +5 to hit against everything */
+	if (weap && otmp->oartifact == ART_FUMA_ITTO_NO_KEN)
+	    return 5;			/* flat +5 to hit against everything */
 	if (weap && otmp->oartifact == ART_VAMPIRE_KILLER)
 	    return rnd(5) + (vampire_killer_foe(mon) ? rnd(10) : 0);
 	if (weap && weap->attk.damn && spec_applies(weap, mon))
@@ -1170,6 +1174,7 @@ int tmp;
 		case ART_VORPAL_BLADE:	return exploding_dice(2,4);
 		case ART_REAVER:	return d(2,8);
 		case ART_GRAYSWANDIR:	return d(2,8);
+		case ART_FUMA_ITTO_NO_KEN:	return d(2,8);
 		default: break;
 	    }
 	}
@@ -2314,6 +2319,20 @@ arti_invoke(obj)
 		return 0;
 	    }
 	    break;
+	case CREATE_SHURIKEN: {
+	    struct obj *otmp = mksobj(SHURIKEN, FALSE, FALSE);
+
+	    if (!otmp) goto nothing_special;
+	    otmp->quan = (long) d(2,12);
+	    otmp->blessed = obj->blessed;
+	    otmp->cursed = obj->cursed;
+	    otmp->bknown = obj->bknown;
+	    otmp->spe = obj->spe;
+	    otmp->owt = weight(otmp);
+	    otmp = hold_another_object(otmp, "Suddenly %s out.",
+				       aobjnam(otmp, "fall"), (const char *)0);
+	    break;
+	  }
 	case CREATE_YA: {
 	    struct obj *otmp = mksobj(YA, FALSE, FALSE);
 
@@ -2467,10 +2486,12 @@ struct obj *pri, *sec;
 	/* the Samurai's four swords go together, the quest artifact too */
 	case ART_KUSANAGI:
 	    return (boolean)(p == ART_KIKU_ICHIMONJI || p == ART_ICHIGEKI ||
-			     p == ART_KATANA_OF_MASAMUNE);
+			     p == ART_KATANA_OF_MASAMUNE ||
+			     p == ART_FUMA_ITTO_NO_KEN);
 	case ART_ICHIGEKI:
 	    return (boolean)(p == ART_KIKU_ICHIMONJI || p == ART_KUSANAGI ||
-			     p == ART_KATANA_OF_MASAMUNE);
+			     p == ART_KATANA_OF_MASAMUNE ||
+			     p == ART_FUMA_ITTO_NO_KEN);
 	case ART_KIKU_ICHIMONJI:
 	    return (boolean)(p == ART_ICHIGEKI || p == ART_KUSANAGI ||
 			     p == ART_KATANA_OF_MASAMUNE);

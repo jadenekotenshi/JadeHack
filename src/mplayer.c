@@ -217,6 +217,9 @@ register boolean special;
 		    cloak = ROBE;
 		    if (rn2(2)) shield = STRANGE_OBJECT;
 		    break;
+		case PM_NINJA:
+		    if (rn2(2)) weapon = BROADSWORD;
+		    break;
 		case PM_PIRATE:
 		    weapon = rn2(3) ? SABER : pirate_blade();
 		    cloak = rn2(2) ? OILSKIN_CLOAK : STRANGE_OBJECT;

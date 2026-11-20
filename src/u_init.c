@@ -153,6 +153,18 @@ static struct trobj Ranger[] = {
 	{ CRAM_RATION, 0, FOOD_CLASS, 4, 0 },
 	{ 0, 0, 0, 0, 0 }
 };
+static struct trobj Ninja[] = {
+#define N_SHURIKEN	1
+	{ BROADSWORD, 0, WEAPON_CLASS, 1, UNDEF_BLESS },	/* ninja-to */
+	{ SHURIKEN, 0, WEAPON_CLASS, 10, UNDEF_BLESS },	/* quan is variable */
+	{ POT_SICKNESS, 0, POTION_CLASS, 1, 0 },
+	{ POT_INVISIBILITY, 0, POTION_CLASS, 1, 1 },
+	{ LOCK_PICK, 0, TOOL_CLASS, 1, 0 },	/* osaku; enchantment is meaningless */
+	{ LEATHER_CLOAK, 1, ARMOR_CLASS, 1, UNDEF_BLESS },
+	{ LOW_BOOTS, 1, ARMOR_CLASS, 1, UNDEF_BLESS },
+	{ GRAPPLING_HOOK, 1, TOOL_CLASS, 1, UNDEF_BLESS },	/* kaginawa */
+	{ 0, 0, 0, 0, 0 }
+};
 static struct trobj Rogue[] = {
 #define R_DAGGERS	1
 	{ STILETTO, 1, WEAPON_CLASS, 1, UNDEF_BLESS },
@@ -422,6 +434,24 @@ static const struct def_skill Skill_Mon[] = {
     { P_MARTIAL_ARTS, P_GRAND_MASTER },
     { P_DART, P_BASIC },
     { P_MUSICAL_SPELL, P_SKILLED },
+    { P_NONE, 0 }
+};
+
+static const struct def_skill Skill_N[] = {
+    { P_DAGGER, P_EXPERT },		{ P_KNIFE,  P_EXPERT },
+    { P_SHORT_SWORD, P_EXPERT },	{ P_LONG_SWORD, P_SKILLED },
+    { P_TWO_HANDED_SWORD, P_BASIC },	{ P_CURVED_SWORD, P_EXPERT },
+    { P_MACE, P_SKILLED },		{ P_FLAIL, P_EXPERT },
+    { P_HAMMER, P_BASIC },		{ P_POLEARMS, P_SKILLED },
+    { P_SPEAR, P_BASIC },
+    { P_BOW, P_SKILLED },		{ P_DART, P_EXPERT },
+    { P_ESCAPE_SPELL, P_EXPERT },	{ P_MATTER_SPELL, P_SKILLED },
+    { P_ENCHANTMENT_SPELL, P_SKILLED },
+#ifdef STEED
+    { P_RIDING, P_BASIC },
+#endif
+    { P_TWO_WEAPON_COMBAT, P_EXPERT },
+    { P_MARTIAL_ARTS, P_MASTER },
     { P_NONE, 0 }
 };
 
@@ -889,6 +919,11 @@ u_init()
 		knows_object(SACK);
 		skill_init(Skill_R);
 		break;
+	case PM_NINJA:
+		Ninja[N_SHURIKEN].trquan = 10 + d(2,6);	/* 12..22 */
+		ini_inv(Ninja);
+		skill_init(Skill_N);
+		break;
 	case PM_SAMURAI:
 		Samurai[S_ARROWS].trquan = rn1(20, 26);
 		ini_inv(Samurai);
@@ -1143,6 +1178,7 @@ int otyp;
      case PM_HEALER:		skills = Skill_H; break;
      case PM_KNIGHT:		skills = Skill_K; break;
      case PM_MONK:		skills = Skill_Mon; break;
+     case PM_NINJA:		skills = Skill_N; break;
      case PM_PRIEST:		skills = Skill_P; break;
      case PM_RANGER:		skills = Skill_Ran; break;
      case PM_BARD:		skills = Skill_Bard; break;
@@ -1340,7 +1376,8 @@ register struct trobj *trop;
 			/* don't put ammo in weapon slots */
 			else if (!is_ammo(obj) && !is_missile(obj)) {
 				if (!uwep) setuwep(obj);
-				else if (!uswapwep) setuswapwep(obj);
+				/* the Ninja's kaginawa is not a second weapon */
+				else if (!uswapwep && otyp != GRAPPLING_HOOK) setuswapwep(obj);
 			}
 		}
 		if (obj->oclass == SPBOOK_CLASS &&

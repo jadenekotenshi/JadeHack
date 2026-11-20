@@ -44,6 +44,7 @@ STATIC_OVL struct Jitem Japanese_items[] = {
 	{ FLAIL, "nunchaku" },
 	{ GLAIVE, "naginata" },
 	{ LOCK_PICK, "osaku" },
+	{ GRAPPLING_HOOK, "kaginawa" },
 	{ WOODEN_HARP, "koto" },
 	{ KNIFE, "shito" },
 	{ PLATE_MAIL, "tanko" },
@@ -101,7 +102,8 @@ register int otyp;
 	register const char *un = ocl->oc_uname;
 	register int nn = ocl->oc_name_known;
 
-	if (Role_if(PM_SAMURAI) && Japanese_item_name(otyp))
+	if ((Role_if(PM_SAMURAI) || Role_if(PM_NINJA)) &&
+		Japanese_item_name(otyp))
 		actualn = Japanese_item_name(otyp);
 	else if (Role_if(PM_PIRATE) && otyp == SABER)
 		actualn = "cutlass";
@@ -292,7 +294,8 @@ boolean ignore_oquan;
 	register const char *un = ocl->oc_uname;
 
 	buf = nextobuf() + PREFIX;	/* leave room for "17 -3 " */
-	if (Role_if(PM_SAMURAI) && Japanese_item_name(typ))
+	if ((Role_if(PM_SAMURAI) || Role_if(PM_NINJA)) &&
+		Japanese_item_name(typ))
 		actualn = Japanese_item_name(typ);
 	else if (Role_if(PM_PIRATE) && typ == SABER)
 		actualn = "cutlass";

@@ -139,6 +139,20 @@ int xlev;
 	return (xlev <= 2) ? 0 : (xlev <= 30) ? ((xlev + 2) / 4) : 8;
 }
 
+/* the Ninja has ten titles, at XL 1-2, 3-4, 5-7, 8-10, 11-13, 14-17,
+   18-23, 24-27, 28-29 and 30 */
+int
+ninja_rank(xlev)
+int xlev;
+{
+	static const xchar first_xl[10] = { 1, 3, 5, 8, 11, 14, 18, 24, 28, 30 };
+	int i;
+
+	for (i = 9; i > 0; i--)
+	    if (xlev >= first_xl[i]) break;
+	return i;
+}
+
 #if 0	/* not currently needed */
 /* convert rank index (0..8) to experience level (1..30) */
 int
@@ -171,7 +185,8 @@ rank_of(lev, monnum, female)
 	}
 
 	/* Find the rank */
-	for (i = xlev_to_rank((int)lev); i >= 0; i--) {
+	for (i = (role->malenum == PM_NINJA) ? ninja_rank((int)lev) :
+		 xlev_to_rank((int)lev); i >= 0; i--) {
 	    if (female && role->rank[i].f) return (role->rank[i].f);
 	    if (role->rank[i].m) return (role->rank[i].m);
 	}
@@ -199,7 +214,7 @@ int *rank_indx, *title_length;
 
 	/* Loop through each of the roles */
 	for (i = 0; roles[i].name.m; i++)
-	    for (j = 0; j < 9; j++) {
+	    for (j = 0; j < 10; j++) {
 	    	if (roles[i].rank[j].m && !strncmpi(str,
 	    			roles[i].rank[j].m, strlen(roles[i].rank[j].m))) {
 	    	    if (rank_indx) *rank_indx = j;
@@ -224,7 +239,7 @@ void
 max_rank_sz()
 {
 	register int i, r, maxr = 0;
-	for (i = 0; i < 9; i++) {
+	for (i = 0; i < 10; i++) {
 	    if (urole.rank[i].m && (r = strlen(urole.rank[i].m)) > maxr) maxr = r;
 	    if (urole.rank[i].f && (r = strlen(urole.rank[i].f)) > maxr) maxr = r;
 	}

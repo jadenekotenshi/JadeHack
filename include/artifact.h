@@ -90,5 +90,6 @@ struct artifact {
 #define SEA_CHANGE	(LAST_PROP+15)
 #define ARCANE_BURST	(LAST_PROP+16)
 #define UNCURSE_ALL	(LAST_PROP+17)
+#define CREATE_SHURIKEN	(LAST_PROP+18)
 
 #endif /* ARTIFACT_H */

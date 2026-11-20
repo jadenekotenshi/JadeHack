@@ -233,11 +233,13 @@ A("Claiomh Solais",		FALCHION,
 
 /*
  *	Ichigeki: +d3 to hit, +d6 damage against everything, and a 1 in 20
- *	chance per hit to strike a fatal weakness (see artifact_hit()).
+ *	chance per hit to strike a fatal weakness (see artifact_hit()).  It is
+ *	the first sacrifice gift of a Ninja (in the Ninja's alignment, see
+ *	hack_artifacts()); otherwise neutral.
  */
 A("Ichigeki",			DAGGER,
 	SPFX_RESTR, 0, 0,
-	PHYS(3,6),	SPDF_NONE,	NO_CARY,	0, A_NEUTRAL, NON_PM, NON_PM, 3500L ),
+	PHYS(3,6),	SPDF_NONE,	NO_CARY,	0, A_NEUTRAL, PM_NINJA, NON_PM, 3500L ),
 
 /*
  *	Narya and Nenya: unaligned rings whose base ring is chosen after the
@@ -486,6 +488,18 @@ A("The Treasury of Proteus",	CHEST,
 	(SPFX_NOGEN|SPFX_RESTR|SPFX_INTEL|SPFX_LUCK), 0, 0,
 	NO_ATTK,	SPDF_NONE,	CARY(AD_MAGM),
 	SEA_CHANGE,	A_CHAOTIC, PM_PIRATE, NON_PM, 5000L ),
+
+/*
+ *	Fuma-itto no Ken, the Ninja's quest artifact: a broadsword (ninja-to).
+ *	A flat +5 to hit and +2d8 damage against everything (spec_abon() and
+ *	spec_dbon()), drain resistance while carried, and #invoke makes
+ *	shuriken.  Self-willed.  It may be wielded in the main hand with
+ *	Kusanagi or Ichigeki in the off hand (artifact_offhand_ok()).
+ */
+A("Fuma-itto no Ken",		BROADSWORD,
+	(SPFX_NOGEN|SPFX_RESTR|SPFX_INTEL), 0, 0,
+	PHYS(5,16),	SPDF_NONE,	CARY(AD_DRLI),
+	CREATE_SHURIKEN,	A_CHAOTIC, PM_NINJA, NON_PM, 4000L ),
 
 /*
  *	Vecna's Domain (after EvilHack).  The Sword of Kas, a chaotic

@@ -201,6 +201,32 @@ const struct Role roles[] = {
 	{  2, 2,  0, 2,  0, 2 },10,	/* Energy */
 	10, 8,-2, 2, 20, A_WIS, SPE_RESTORE_ABILITY, -4
 },
+{	{"Ninja", 0}, {
+	{"Kukkyu",      0},	/* 9th kyu */
+	{"Hachikyu",    0},	/* 8th kyu */
+	{"Shichikyu",   0},	/* 7th kyu */
+	{"Rokkyu",      0},	/* 6th kyu */
+	{"Gokyu",       0},	/* 5th kyu */
+	{"Yonkyu",      0},	/* 4th kyu */
+	{"Sankyu",      0},	/* 3rd kyu */
+	{"Nikyu",       0},	/* 2nd kyu */
+	{"Ikkyu",       0},	/* 1st kyu */
+	{"Shodan",      0} },	/* 1st dan (see ninja_rank() in botl.c) */
+	"Jiraiya", "Tsunade", "Orochimaru", /* the three legendary ninja */
+	"Nin", "the Green Plains", "the Demon Orb Lair",
+	PM_NINJA, NON_PM, PM_KITTEN,
+	PM_KEN_HAYABUSA, PM_ROSHI, PM_JAQUIO,
+	ART_FUMA_ITTO_NO_KEN,
+	MH_HUMAN|MH_ELF|MH_GNOME|MH_ORC | ROLE_MALE|ROLE_FEMALE |
+	  ROLE_NEUTRAL|ROLE_CHAOTIC,
+	/* Str Int Wis Dex Con Cha */
+	{  10, 10,  7, 12, 10,  7 },
+	{  25, 12,  8, 28, 19,  8 },
+	/* Init   Lower  Higher */
+	{ 11, 0,  0, 8,  1, 0 },	/* Hit points */
+	{  1, 0,  0, 1,  0, 1 },12,	/* Energy */
+	10, 8, 0, 2,  9, A_INT, SPE_TELEPORT_AWAY,   -4
+},
 {	{"Priest", "Priestess"}, {
 	{"Aspirant",    0},
 	{"Acolyte",     0},
@@ -1535,6 +1561,7 @@ struct monst *mtmp;
 	case PM_KNIGHT:
 	    return ("Salutations"); /* Olde English */
 	case PM_SAMURAI:
+	case PM_NINJA:
 	    return (mtmp && mtmp->data == &mons[PM_SHOPKEEPER] ?
 	    		"Irasshaimase" : "Konnichi wa"); /* Japanese */
 	case PM_PIRATE:
@@ -1561,6 +1588,7 @@ Goodbye()
 	case PM_KNIGHT:
 	    return ("Fare thee well");  /* Olde English */
 	case PM_SAMURAI:
+	case PM_NINJA:
 	    return ("Sayonara");        /* Japanese */
 	case PM_PIRATE:
 	    return ("Fair winds");      /* Pirate */

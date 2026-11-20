@@ -21,14 +21,15 @@ struct player_selection_menu_option {
         { 2, 8, 'h', "Healer",       &flags.initrole, str2role, ok_role },
         { 2, 9, 'k', "Knight",       &flags.initrole, str2role, ok_role },
         { 2,10, 'm', "Monk",         &flags.initrole, str2role, ok_role },
-        { 2,11, 'P', "Pirate",       &flags.initrole, str2role, ok_role },
-        { 2,12, 'p', "Priest",       &flags.initrole, str2role, ok_role },
-        { 2,13, 'R', "Ranger",       &flags.initrole, str2role, ok_role },
-        { 2,14, 'r', "Rogue",        &flags.initrole, str2role, ok_role },
-        { 2,15, 's', "Samurai",      &flags.initrole, str2role, ok_role },
-        { 2,16, 't', "Tourist",      &flags.initrole, str2role, ok_role },
-        { 2,17, 'v', "Valkyrie",     &flags.initrole, str2role, ok_role },
-        { 2,18, 'w', "Wizard",       &flags.initrole, str2role, ok_role },
+        { 2,11, 'n', "Ninja",        &flags.initrole, str2role, ok_role },
+        { 2,12, 'P', "Pirate",       &flags.initrole, str2role, ok_role },
+        { 2,13, 'p', "Priest",       &flags.initrole, str2role, ok_role },
+        { 2,14, 'R', "Ranger",       &flags.initrole, str2role, ok_role },
+        { 2,15, 'r', "Rogue",        &flags.initrole, str2role, ok_role },
+        { 2,16, 's', "Samurai",      &flags.initrole, str2role, ok_role },
+        { 2,17, 't', "Tourist",      &flags.initrole, str2role, ok_role },
+        { 2,18, 'v', "Valkyrie",     &flags.initrole, str2role, ok_role },
+        { 2,19, 'w', "Wizard",       &flags.initrole, str2role, ok_role },
 
         {21, 4, 'H', "Human",        &flags.initrace, str2race, ok_race },
         {21, 5, 'D', "Dwarf",        &flags.initrace, str2race, ok_race },
@@ -43,9 +44,9 @@ struct player_selection_menu_option {
         {21,16, 'N', "Neutral",      &flags.initalign,str2align,ok_align},
         {21,17, 'C', "Chaotic",      &flags.initalign,str2align,ok_align},
 
-        { 2,20, 'q', "quit",         0,               0,        0},
-        {13,20, '*', "reroll",       0,               0,        0},
-        {26,20, '.', "play!",        0,               0,        0},
+        { 2,21, 'q', "quit",         0,               0,        0},
+        {13,21, '*', "reroll",       0,               0,        0},
+        {26,21, '.', "play!",        0,               0,        0},
         {0,0,0,0,0,0} /* fencepost */
 };
 

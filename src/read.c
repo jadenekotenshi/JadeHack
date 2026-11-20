@@ -2006,7 +2006,7 @@ do_class_genocide()
 			       quest_info(MS_GUARDIAN) == i)
 			/* non-leader/nemesis/guardian role-specific monster */
 			   && (i != PM_NINJA ||		/* nuisance */
-			       Role_if(PM_SAMURAI))) {
+			       Role_if(PM_SAMURAI) || Role_if(PM_NINJA))) {
 					boolean named, uniq;
 
 					named = type_is_pname(&mons[i]) ? TRUE : FALSE;

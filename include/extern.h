@@ -141,6 +141,7 @@ E int NDECL(getbones);
 /* ### botl.c ### */
 
 E int FDECL(xlev_to_rank, (int));
+E int FDECL(ninja_rank, (int));
 E int FDECL(title_to_mon, (const char *,int *,int *));
 E void NDECL(max_rank_sz);
 #ifdef SCORE_ON_BOTL
