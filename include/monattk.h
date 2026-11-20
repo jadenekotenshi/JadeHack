@@ -25,6 +25,7 @@
 #define AT_GAZE		15	/* gaze - ranged */
 #define AT_TENT		16	/* tentacles */
 #define AT_SCRE	   17 /* scream - sonic attack */
+#define AT_TAIL		18	/* tail slam */
 
 #define AT_WEAP		254	/* uses weapon */
 #define AT_MAGC		255	/* uses magic spell(s) */
@@ -87,6 +88,7 @@
 #define AD_HELL		47	/* ruby: hellfire, burns even fire-resistant */
 #define AD_PRSM		48	/* crystal: blinding light */
 #define AD_FORC		49	/* amethyst: force ray, ignores reflection */
+#define AD_METL		50	/* ferroloth: molten metal, half damage even when fire resistant */
 
 #define AD_CLRC		240	/* random clerical spell */
 #define AD_SPEL		241	/* random magic spell */

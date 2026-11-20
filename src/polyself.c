@@ -763,7 +763,7 @@ dobreathe()
 	mattk = attacktype_fordmg(youmonst.data, AT_BREA, AD_ANY);
 	if (!mattk)
 	    impossible("bad breath attack?");	/* mouthwash needed... */
-	else if (mattk->adtyp >= AD_WIND && mattk->adtyp <= AD_FORC)
+	else if (mattk->adtyp >= AD_WIND && mattk->adtyp <= AD_METL)
 	    gem_beam((struct monst *)0, (int) mattk->adtyp,
 		     (int)(mattk->damn * max((int)mattk->damd, 6) / 6),
 		     u.ux, u.uy, u.dx, u.dy);

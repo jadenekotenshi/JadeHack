@@ -1037,3 +1037,36 @@ Per-level hit point dice (`hpadv.lornd` in `role.c`, used by `newhp()` below the
 | Healer | d8 | d6 |
 
 Healers can now advance **attack spells** to Basic (`Skill_H` in `u_init.c`; it was restricted before). Checked in wizard mode with a human Healer: `#enhance` lists attack spells (Unskilled, trainable). No change to object or monster numbering, so saves still load.
+
+## Batch 100: thirteen new monsters
+
+All thirteen are in `monst.c`. Every monster after the insertion points moves up in the numbering, so old saves and bones are not compatible and the data files and utilities must be rebuilt as for Batch 79. "Rare" means frequency 1 and "uncommon" frequency 2.
+
+| Monster | Class, colour | Level / speed / AC | Attacks | Notes |
+|---|---|---|---|---|
+| acid ant | `a`, bright green | 3 / 18 / 3 | bite 2d4, acid sting 2d4 | small groups, rare; acid resistant, acidic corpse (like the fire and snow ants otherwise) |
+| thunder ant | `a`, bright yellow | 5 / 18 / 3 | bite 2d4, shock sting 3d4 | alone, rare; shock resistant |
+| giant wasp | `a`, orange | 4 / 20 / -1 | poison sting 1d6 | large groups, uncommon; flies, poison resistant (a stronger killer bee) |
+| orc warrior | `o`, orange | 4 / 6 / 8 | weapon 1d8 | small groups, uncommon; three times in four carries a sword (orcish short sword, orcish scimitar, scimitar, short sword, long sword or broadsword), usually orcish chain or ring mail, a shield half the time, iron shoes a third of the time; grows up into an orc-captain |
+| orc warlock | `o`, bright green | 4 / 7 / 8 | weapon 1d6, spell (mage spells: psi bolt, cure self, haste self, stun) | alone, rare; three times in four carries a quarterstaff |
+| acrocanthasaurus | `:`, bright green | 12 / 12 / 3 | bite 5d12, two claws 2d6 | alone, rare; huge |
+| tyrannosaurus | `:`, orange | 16 / 12 / 2 | bite 6d12, tail slam 2d12 | alone, rare, Gehennom only; huge |
+| frost gator | `:`, bright white | 7 / 9 / 4 | cold bite 3d6, breath of frost 2d6 | alone, uncommon, not in Gehennom; swims, cold resistant, vulnerable to fire |
+| ogre devourer | `O`, magenta | 8 / 14 / 3 | weapon 3d6, bite 2d6 | small groups, rare; a mace, war hammer or club five times in six |
+| gibbering mouther | `P`, orange | 9 / 6 / 9 | four bites 1d4, spits blinding venom | alone, rare; the poor AC, slow speed and level give it plenty of hit points; not vegetarian food like the other puddings |
+| gargoyle knight | `g`, gray | 13 / 15 / -4 | claw 3d6, claw 3d6, bite 3d4, weapon 2d8 | alone, rare, Gehennom only; flies, stone resistant; five times in six carries a two-handed sword, tsurugi, long sword, katana, broadsword or runesword |
+| ferroloth | `&`, cyan (iron) | 12 / 12 / -6 | claws 2d8 x2, bite 2d6, breath of molten metal 4d6 | neutral, alone, rare, Gehennom only, no corpse; magic resistance 55, fire and poison resistant |
+| tar demodand | `&`, black | 10 / 12 / 2 | sticky claw 3d4 (grabs you, like a glue golem), two claws 2d8 | neutral, alone, rare, Gehennom only, no corpse; magic resistance 40, fire and poison resistant |
+
+The colours for the gargoyle knight, the ferroloth and the tar demodand were not specified; I chose gray (stone), cyan (iron, like the iron ant) and black (tar).
+
+New code:
+- **Tail slam.** A new attack type `AT_TAIL` (`monattk.h`), handled like a butt or tentacle attack in `mhitu.c` ("The tyrannosaurus slams you with its tail!"), `mhitm.c` and `uhitm.c` (a polymorphed hero's tail attack).
+- **Molten metal.** A new breath type `AD_METL`, a seventh gem-dragon-style beam in `gem_beams[]` (`mthrowu.c`): a straight beam that does not bounce, drawn as a fire beam, which a reflector can turn back. It burns armour, scrolls, potions and spellbooks like fire. Fire resistance only **halves** the damage (`gem_hitu()` scales with partial resistances: nothing at 0%, half at 100%; monsters that resist fire take half in `gem_hitm()`). A hero polymorphed into a ferroloth can breathe it with `#monster` (`polyself.c`).
+- **Gear** (`m_initweap()`, `makemon.c`) for the orc warrior, orc warlock, ogre devourer and gargoyle knight as in the table; the orc warrior is added to the grow-up table (`mondata.c`) and the gibbering mouther is excluded from `vegetarian()` (`mondata.h`).
+
+Checked in wizard mode: all thirteen can be created (the corpse stress test, which kills every monster, ran clean: 6,147 log lines); a ferroloth hit a hero wearing a ring of fire resistance with "The ferroloth breathes a gout of molten metal! The blast of molten metal hits you! You are scalded, but your resistance takes the worst of it!"; a tyrannosaurus bit and slammed ("slams you with its tail!"); a frost gator bit ("You're covered in frost!"). Not seen in play: the gator's frost breath, the mouther's venom, the warlock's spells, and the ants' and wasp's stings (all use existing code).
+
+## Batch 101: silver damage is 2d6
+
+The extra damage silver does to silver-haters (vampires, demons, werecreatures, shades and so on) was d20, so a silver weapon almost always beat any other weapon of its kind. It is now **2d6** (mean 7 instead of 10.5, and a much narrower spread). Every place that used the d20 changed (`weapon.c` `dmgval()` for silver weapons, silver arrows from Heartseeker and silver ammunition; `uhitm.c` for silver rings on bare hands, silver shield bashes, other silver objects and silver ammo, where ammo fired without a launcher gets d6 instead of the old d10 reduced bonus; `mthrowu.c` for silver objects thrown at a silver-hating hero). The Heartseeker entry in Batch 52 says d20; it is 2d6 now. Only the binary changes; saves and bones still load.

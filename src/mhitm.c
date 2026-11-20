@@ -299,6 +299,7 @@ mattackm(magr, mdef)
 	    case AT_TUCH:
 	    case AT_BUTT:
 	    case AT_TENT:
+	    case AT_TAIL:
 		/* Nymph that teleported away on first attack? */
 		if (distmin(magr->mx,magr->my,mdef->mx,mdef->my) > 1)
 		    return MM_MISS;
@@ -441,6 +442,9 @@ hitmm(magr, mdef, mattk)
 				break;
 			case AT_TUCH:
 				Sprintf(buf,"%s touches", magr_name);
+				break;
+			case AT_TAIL:
+				Sprintf(buf,"%s slams", magr_name);
 				break;
 			case AT_TENT:
 				Sprintf(buf, "%s tentacles suck",

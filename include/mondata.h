@@ -217,7 +217,8 @@
 				 noncorporeal(ptr))
 #define vegetarian(ptr)		(vegan(ptr) || \
 				((ptr)->mlet == S_PUDDING &&         \
-				 (ptr) != &mons[PM_BLACK_PUDDING]))
+				 (ptr) != &mons[PM_BLACK_PUDDING] &&  \
+				 (ptr) != &mons[PM_GIBBERING_MOUTHER]))
 
 #define befriend_with_obj(ptr, obj) ((obj)->oclass == FOOD_CLASS && \
 				(is_domestic(ptr) || (Role_if(PM_CAVEMAN) && (ptr) == &mons[PM_MASTODON]) || \

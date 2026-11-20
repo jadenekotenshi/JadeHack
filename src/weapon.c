@@ -328,7 +328,7 @@ struct monst *mon;
 		bonus += rnd(4);
 	    if ((objects[otyp].oc_material == SILVER || heartseeker_shot(otmp)) &&
 		    hates_silver(ptr))
-		bonus += rnd(20);
+		bonus += d(2,6);
 
 	    /* if the weapon is going to get a double damage bonus, adjust
 	       this bonus so that effectively it's added after the doubling */

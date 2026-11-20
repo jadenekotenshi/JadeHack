@@ -70,6 +70,10 @@ register struct attack *mattk;
 		case AT_TUCH:
 			pline("%s touches you!", Monnam(mtmp));
 			break;
+		case AT_TAIL:
+			pline("%s slams you with %s tail!", Monnam(mtmp),
+				mhis(mtmp));
+			break;
 		case AT_TENT:
 			pline("%s tentacles suck you!",
 				        s_suffix(Monnam(mtmp)));
@@ -578,6 +582,7 @@ mattacku(mtmp)
 		case AT_TUCH:
 		case AT_BUTT:
 		case AT_TENT:
+		case AT_TAIL:
 			if(!range2 && (!MON_WEP(mtmp) || mtmp->mconf || Conflict ||
 					!touch_petrifies(youmonst.data))) {
 			    if (foundyou) {

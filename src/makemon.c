@@ -495,6 +495,25 @@ register struct monst *mtmp;
 			}
 			if(!rn2(3)) (void)mongets(mtmp, URUK_HAI_SHIELD);
 			break;
+		    case PM_ORC_WARRIOR:
+			/* swords of various kinds, and armor to match */
+			if (rn2(4)) switch (rn2(6)) {
+			    case 0: (void)mongets(mtmp, ORCISH_SHORT_SWORD); break;
+			    case 1: (void)mongets(mtmp, ORCISH_SCIMITAR); break;
+			    case 2: (void)mongets(mtmp, SCIMITAR); break;
+			    case 3: (void)mongets(mtmp, SHORT_SWORD); break;
+			    case 4: (void)mongets(mtmp, LONG_SWORD); break;
+			    case 5: (void)mongets(mtmp, BROADSWORD); break;
+			}
+			if (rn2(3))
+			    (void)mongets(mtmp, rn2(2) ? ORCISH_CHAIN_MAIL
+						       : ORCISH_RING_MAIL);
+			if (!rn2(2)) (void)mongets(mtmp, ORCISH_SHIELD);
+			if (!rn2(3)) (void)mongets(mtmp, IRON_SHOES);
+			break;
+		    case PM_ORC_WARLOCK:
+			if (rn2(4)) (void)mongets(mtmp, QUARTERSTAFF);
+			break;
 		    default:
 			if (mm != PM_ORC_SHAMAN && rn2(2))
 			  (void)mongets(mtmp, (mm == PM_GOBLIN || rn2(2) == 0)
@@ -502,10 +521,30 @@ register struct monst *mtmp;
 		}
 		break;
 	    case S_OGRE:
+		if (mm == PM_OGRE_DEVOURER) {
+		    /* maces, hammers and clubs */
+		    if (rn2(6)) switch (rn2(3)) {
+			case 0: (void) mongets(mtmp, MACE); break;
+			case 1: (void) mongets(mtmp, WAR_HAMMER); break;
+			case 2: (void) mongets(mtmp, CLUB); break;
+		    }
+		    break;
+		}
 		if (!rn2(mm == PM_OGRE_KING ? 3 : mm == PM_OGRE_LORD ? 6 : 12))
 		    (void) mongets(mtmp, BATTLE_AXE);
 		else
 		    (void) mongets(mtmp, CLUB);
+		break;
+	    case S_GREMLIN:
+		/* only the gargoyle knight is armed */
+		if (mm == PM_GARGOYLE_KNIGHT && rn2(6)) switch (rn2(6)) {
+		    case 0: (void) mongets(mtmp, TWO_HANDED_SWORD); break;
+		    case 1: (void) mongets(mtmp, TSURUGI); break;
+		    case 2: (void) mongets(mtmp, LONG_SWORD); break;
+		    case 3: (void) mongets(mtmp, KATANA); break;
+		    case 4: (void) mongets(mtmp, BROADSWORD); break;
+		    case 5: (void) mongets(mtmp, RUNESWORD); break;
+		}
 		break;
 	    case S_TROLL:
 		if (!rn2(2)) switch (rn2(4)) {

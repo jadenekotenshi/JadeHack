@@ -336,7 +336,7 @@ struct monst *mtmp;
 	if (uarms->spe > 0) dmg += uarms->spe;
 	You("bash %s with your %s!", mon_nam(mtmp), xname(uarms));
 	if (objects[uarms->otyp].oc_material == SILVER && hates_silver(mtmp->data)) {
-	    dmg += rnd(20);
+	    dmg += d(2,6);
 	    pline("%s %s on %s!", The(xname(uarms)), "sears", mon_nam(mtmp));
 	}
 	if (uarms->blessed && hates_blessed(mtmp->data))
@@ -690,7 +690,7 @@ int dieroll;
 		if (uright && objects[uright->otyp].oc_material == SILVER)
 		    barehand_silver_rings++;
 		if (barehand_silver_rings && hates_silver(mdat)) {
-		    tmp += rnd(20);
+		    tmp += d(2,6);
 		    silvermsg = TRUE;
 		}
 	    }
@@ -722,7 +722,7 @@ int dieroll;
 		    if (objects[obj->otyp].oc_material == SILVER &&
 			    hates_silver(mdat)) {
 			silvermsg = silverobj = TRUE;
-			tmp += rnd(tmp ? 20 : 10);
+			tmp += tmp ? d(2,6) : rnd(6);
 		    }
 		    if (!thrown && obj == uwep && obj->otyp == BOOMERANG &&
 			    rnl(4) == 4-1) {
@@ -1030,7 +1030,7 @@ int dieroll;
 			 */
 			if (objects[obj->otyp].oc_material == SILVER
 						&& hates_silver(mdat)) {
-				tmp += rnd(20);
+				tmp += d(2,6);
 				silvermsg = TRUE; silverobj = TRUE;
 			}
 		    }
@@ -2278,6 +2278,7 @@ use_weapon:
 		case AT_TUCH:
 		case AT_BUTT:
 		case AT_TENT:
+		case AT_TAIL:
 			if (i==0 && uwep && (youmonst.data->mlet==S_LICH)) goto use_weapon;
 			if ((dhit = (tmp > (dieroll = rnd(20)) || u.uswallow)) != 0) {
 			    int compat;
@@ -2314,6 +2315,8 @@ use_weapon:
 				    You("touch %s.", mon_nam(mon));
 			    else if (mattk->aatyp == AT_TENT)
 				    Your("tentacles suck %s.", mon_nam(mon));
+			    else if (mattk->aatyp == AT_TAIL)
+				    Your("tail slams %s.", mon_nam(mon));
 			    else You("hit %s.", mon_nam(mon));
 			    sum[i] = damageum(mon, mattk);
 			} else

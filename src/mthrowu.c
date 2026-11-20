@@ -73,7 +73,7 @@ const char *name;	/* if null, then format `obj' */
 
 		if (obj && objects[obj->otyp].oc_material == SILVER
 				&& hates_silver(youmonst.data)) {
-			dam += rnd(20);
+			dam += d(2,6);
 			pline_The("silver sears your flesh!");
 			exercise(A_CON, FALSE);
 		}
@@ -707,7 +707,8 @@ STATIC_OVL const struct gem_beam_info {
 	{ "psychic blast",	"a psychic blast",		3, FALSE },
 	{ "wave of hellfire",	"hellfire",			1, TRUE },
 	{ "burst of dazzling light", "dazzling light",		5, TRUE },
-	{ "blast of force",	"a blast of pure force",	0, FALSE }
+	{ "blast of force",	"a blast of pure force",	0, FALSE },
+	{ "blast of molten metal", "a gout of molten metal",	1, TRUE }
 };
 
 /* does a beam score a hit against armor class `ac'? (as zap_hit()) */
@@ -771,8 +772,17 @@ int typ, nd;
 		dam /= 2;
 	    }
 	    break;
+	case AD_METL:
+	    /* fire resistance only halves molten metal */
+	    if (resists_fire(mon)) {
+		shieldeff(mon->mx, mon->my);
+		dam /= 2;
+	    }
+	    (void) burnarmor(mon);
+	    break;
 	}
-	if (dam > 0) damage_mon(mon, dam, (typ == AD_HELL) ? AD_FIRE : AD_PHYS);
+	if (dam > 0) damage_mon(mon, dam,
+			(typ == AD_HELL || typ == AD_METL) ? AD_FIRE : AD_PHYS);
 	return dam;
 }
 
@@ -857,6 +867,20 @@ int dx, dy;
 		dam /= 2;
 	    }
 	    if (Half_spell_damage) dam = (dam + 1) / 2;
+	    break;
+	case AD_METL:
+	    /* fire resistance only halves molten metal */
+	    if (how_resistant(FIRE_RES) > 0) {
+		shieldeff(sx, sy);
+		You("are scalded, but your resistance takes the worst of it!");
+		dam -= (dam * how_resistant(FIRE_RES)) / 200;
+	    }
+	    burn_away_slime();
+	    if (burnarmor(&youmonst)) {
+		if (!rn2(3)) destroy_item(POTION_CLASS, AD_FIRE);
+		if (!rn2(3)) destroy_item(SCROLL_CLASS, AD_FIRE);
+		if (!rn2(5)) destroy_item(SPBOOK_CLASS, AD_FIRE);
+	    }
 	    break;
 	}
 	if (dam < 1) dam = 1;
@@ -988,7 +1012,7 @@ breamu(mtmp, mattk)			/* monster breathes at you (ranged) */
 
 		/* if we've seen the actual resistance, don't bother, or
 		 * if we're close by and they reflect, just jump the player */
-		if (typ >= AD_WIND && typ <= AD_FORC) {
+		if (typ >= AD_WIND && typ <= AD_METL) {
 			/* gem dragon breath: not a buzz() ray, no seen-resistance
 			   bookkeeping, and reflection only matters to some types */
 			if (gem_beams[typ - AD_WIND].reflect &&
