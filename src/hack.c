@@ -1606,6 +1606,20 @@ acid_pool_burn()
 	if (!is_acid_pool(u.ux, u.uy) || Levitation || Flying || u.uinwater ||
 	    u.uswallow || u.uinvulnerable)
 	    return;
+	/* the splashing eats at a shield and at body armor (or at the cloak
+	   covering it), resistant or not */
+	{
+	    struct obj *pieces[2];
+	    int i;
+
+	    pieces[0] = uarms;
+	    pieces[1] = uarmc ? uarmc : uarm;
+	    for (i = 0; i < 2; i++)
+		if (pieces[i] && (is_corrodeable(pieces[i]) ||
+			is_rottable(pieces[i])) && !pieces[i]->oerodeproof &&
+			!rn2(6))
+		    (void) _erode_obj(pieces[i], AD_ACID);
+	}
 	if (Acid_resistance) return;
 	dmg = rnd(10);
 	if (uarmf) dmg = (dmg + 1) / 2;		/* boots help a little */
