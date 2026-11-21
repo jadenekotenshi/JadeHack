@@ -1504,7 +1504,9 @@ int dieroll; /* needed for Magicbane and vorpal blades */
 
 	/* Pernicimordax is deadly to merozalghi, on top of its cold */
 	if (otmp->oartifact == ART_PERNICIMORDAX && !youdefend &&
-		mdef->data == &mons[PM_MEROZALGHU])
+		(mdef->data == &mons[PM_MEROZALGHU] ||
+		 mdef->data == &mons[PM_LESSER_MEROZALGHU] ||
+		 mdef->data == &mons[PM_ACCURSED_MEROZALGHU]))
 	    *dmgptr *= 2;
 
 	if (youattack && youdefend) {

@@ -493,7 +493,7 @@ Bard row (accelerator `B`).
 | Change | Notes |
 |---|---|
 | Shoggoth | SLASH'EM stats (P, level 18, claw 4d8, corrosive touch, 4d8 acid engulf, passive corrosion; acid, regenerates, eats metal) |
-| Nightgaunt / byakhee | z; nightgaunt (L12, bite 1d10, claw 1d8, tickle 1d4, wing 1d4) and byakhee (L22, bite 2d8, claw 2d6 x2, poison sting 1d10); both fly, frequency 1 |
+| Nightgaunt / byakhee | z; nightgaunt (L12, bite 1d10, claw 1d8, tickle 1d4, wing 1d4) and byakhee (L22 then, L13 since Batch 110, bite 2d8, claw 2d6 x2, poison sting 1d10); both fly, frequency 1 |
 | Vlad's Tower | Vlad now carries each of sleep / wind / stinking fog 30% of the time and has a random weapon in his room; two 50% Kuei-jin in the tower, always with katanas there; monsters can now zap wands of stinking fog |
 | Object properties | after EvilHack: `oprops`/`oprops_known` on weapons and armor (fire, frost, shock, venom, drain, oilskin, ESP, searching, warning, excellence, fumbling, hunger) plus the new weapon-only Thundering (50% stun for 1d4 turns, monsters get `mstuntime`). Weapons add 4-8 elemental damage (venom d6), armor grants the resistance when worn; properties show in names once noticed or identified, stack only with matching properties, and wizard-mode wishes accept "thundering", "flaming", "freezing", "shocking", "venomous". Spawn: weapons at 1 in 175 scaled by depth/2, armor 1 in 150 |
 | Mephistopheles | unaligned devil lord (level 115, AC -15, speed 15), weapon, claw, claw, mage, cleric and fire spell attacks; fire, cold, shock, poison and disintegration resistant; flies, sees invisible; (covetous until Batch 72); +7 ranseur; lives asleep in the Sanctum beside the temple until you hold the Amulet; rival of the Wizard of Yendor (they fight each other); gates in demons of any alignment (unaligned) |
@@ -1130,3 +1130,13 @@ Reading a **scroll** of create monster (the spell is unchanged) while both **con
 ## Batch 109: ghast
 
 A new monster (`z`, the "weird monsters" class with the zruty, right after the zruty in `monst.c`, **orange**): level 3, speed 12 (the ghoul is 6), AC 8, alignment -2, a single bite of 1d6; resists cold, sleep and poison, vulnerable to fire, breathless, mindless, wanders and is hostile like the ghoul, but it is **not undead** (it cannot be turned). It is generated in small groups (`G_SGROUP`) at frequency 3 ("moderately common"; the ghoul is 1), genocidable, and leaves a corpse (poisonous to eat). It is modelled on the ghoul but does not have its special cases (paralysis, eating only old corpses, rising from your grave, disease immunity). Monster numbers after it move up by one; old saves and bones are not compatible and the data files and utilities must be rebuilt as in Batch 79.
+
+## Batch 110: two more merozalghi, a weaker byakhee
+
+- **Byakhee** is level **13** (was 22), a little above the nightgaunt's 12. Its speed, armour class and attacks are unchanged (bite 2d8, claws 2d6 x2, poison sting 1d10), so its damage is what it was but it is easier to kill and has fewer hit points.
+- **Lesser merozalghu** (`z`, magenta, before the merozalghu in `monst.c`): level 8, speed 12, AC 4, alignment -6, bite 1d10, weapon 1d10, acid breath 2d12. Small groups, frequency 2; humanoid, strong and a collector of items like the merozalghu, and it is given a mace, morning star or falchion three times in four (`makemon.c`, as the merozalghu is).
+- **Accursed merozalghu** (`z`, red, after the merozalghu): level 20, speed 14, AC -5, alignment -10, bite 3d10, tail 2d10 (the `AT_TAIL` attack of the tyrannosaurus), acid breath 4d12. Alone, frequency 1, nasty and strong; it carries no weapon.
+- All three merozalghi are vulnerable to cold (`M4_VULNERABLE_COLD`, as Batch 71 gave the merozalghu) and **Pernicimordax now does double damage to all three** (`artifact.c`). The colours of the two new ones are my choice, as are the alignments, the monster weights and the lack of a weapon on the accursed one.
+- Monster numbers after the lesser merozalghu move up by two; old saves and bones are not compatible and the data files and utilities must be rebuilt as in Batch 79.
+
+Checked in wizard mode: all three were created and attacked (the lesser one picked up a mace); the three stress tests ran clean.

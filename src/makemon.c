@@ -595,7 +595,7 @@ register struct monst *mtmp;
 		if (mm == PM_KUEI_JIN && (In_V_tower(&u.uz) || rn2(2))) (void)mongets(mtmp, KATANA);
 		break;
 	    case S_ZRUTY:
-		if (mm == PM_MEROZALGHU && rn2(4))
+		if ((mm == PM_MEROZALGHU || mm == PM_LESSER_MEROZALGHU) && rn2(4))
 		    (void)mongets(mtmp, (rn2(3) ? MACE :
 				rn2(2) ? MORNING_STAR : FALCHION));
 		break;
