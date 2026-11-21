@@ -66,6 +66,8 @@ enum {
     DRAWBRIDGE_DOWN,
     AIR,
     CLOUD,
+    SHALLOW_WATER,	/* wadeable water: no drowning, wets things */
+    ACID_POOL,		/* wadeable, but the acid burns */
     MAX_TYPE
 };
 #define INVALID_TYPE	127
@@ -93,6 +95,8 @@ enum {
 #define IS_DRAWBRIDGE(typ) ((typ) == DRAWBRIDGE_UP || (typ) == DRAWBRIDGE_DOWN)
 #define IS_FURNITURE(typ) ((typ) >= STAIRS && (typ) <= ALTAR)
 #define IS_AIR(typ)	((typ) == AIR || (typ) == CLOUD)
+#define IS_SHALLOW(typ)	((typ) == SHALLOW_WATER)
+#define IS_ACIDPOOL(typ) ((typ) == ACID_POOL)
 #define IS_SOFT(typ)	((typ) == AIR || (typ) == CLOUD || IS_POOL(typ))
 
 /*
@@ -144,6 +148,8 @@ enum {
     S_air,
     S_cloud,
     S_water,
+    S_shallow,
+    S_acidpool,
 
 /* end dungeon characters, begin traps */
 

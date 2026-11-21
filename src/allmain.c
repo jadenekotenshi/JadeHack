@@ -1088,6 +1088,7 @@ moveloop()
 		    run_regions();
 
 		    if (u.ublesscnt)  u.ublesscnt--;
+		    acid_pool_burn();
 		    if(flags.time && !flags.run)
 			flags.botl = 1;
 

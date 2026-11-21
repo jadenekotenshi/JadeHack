@@ -66,6 +66,16 @@ unsigned gpflags;
 				return !!(HLevitation || Flying || Wwalking || Swimming || Amphibious);
 			else	
 				return (is_flyer(mdat) || is_swimmer(mdat) || is_clinger(mdat) || is_flying(mtmp));
+	    } else if (is_acid_pool(x,y)) {
+			if (unsafe) {
+				return TRUE;
+			}
+			if (mtmp == &youmonst)
+				return !!(HLevitation || Flying || Acid_resistance);
+			else
+				return (is_flyer(mdat) || is_floater(mdat) ||
+					is_clinger(mdat) || is_flying(mtmp) ||
+					resists_acid(mtmp) || acidic(mdat));
 	    } else if (mdat->mlet == S_EEL && rn2(13) && !ignorewater) {
 			return FALSE;
 	    } else if (is_lava(x,y)) {

@@ -676,7 +676,8 @@ int mode;
 	if ((t && t->tseen) ||
 	    (!Levitation && !Flying &&
 	     !is_clinger(youmonst.data) &&
-	     (is_pool(x, y) || is_lava(x, y)) && levl[x][y].seenv))
+	     (is_pool(x, y) || is_lava(x, y) ||
+	      (is_acid_pool(x, y) && !Acid_resistance)) && levl[x][y].seenv))
 	    return FALSE;
     }
 
@@ -891,7 +892,8 @@ xchar x, y;
 	boolean lev_or_fly = (Levitation || Flying);
 
 	if (flags.swimconfirm && glyph_is_cmap(levl[x][y].glyph) &&
-		!is_pool(u.ux, u.uy) && !is_lava(u.ux, u.uy)) {
+		!is_pool(u.ux, u.uy) && !is_lava(u.ux, u.uy) &&
+		!is_acid_pool(u.ux, u.uy)) {
 	    cmap = glyph_to_cmap(levl[x][y].glyph);
 	    if (!lev_or_fly &&
 		    (((cmap == S_pool || cmap == S_water) && is_pool(x, y) &&
@@ -900,6 +902,12 @@ xchar x, y;
 		Sprintf(qbuf, "Really step into that %s?",
 			cmap == S_lava ? "lava" : "water");
 		if (yn(qbuf) != 'y') return TRUE;
+	    }
+	    /* acid burns even if you are not (quite) hurt by it, so only the
+	       acid resistant skip the question */
+	    if (!lev_or_fly && !Acid_resistance && cmap == S_acidpool &&
+		    is_acid_pool(x, y)) {
+		if (yn("Really step into that acid?") != 'y') return TRUE;
 	    }
 	}
 	if (flags.trapconfirm && (t = t_at(x, y)) != 0 && t->tseen) {
@@ -1570,6 +1578,42 @@ invocation_message()
 #endif /* OVL3 */
 #ifdef OVL2
 
+/* wading through shallow water or acid wets or corrodes your boots */
+STATIC_OVL void
+wading_effects()
+{
+	if (Levitation || Flying || u.uinwater) return;
+	if (is_shallow(u.ux, u.uy)) {
+	    if (!Wwalking && flags.verbose && !is_shallow(u.ux0, u.uy0) &&
+		    (u.ux != u.ux0 || u.uy != u.uy0))
+		You("wade into the shallow water.");
+	    if (!Wwalking && uarmf && is_rustprone(uarmf) &&
+		    !uarmf->oerodeproof && !rn2(8))
+		(void) _erode_obj(uarmf, AD_RUST);
+	} else if (is_acid_pool(u.ux, u.uy)) {
+	    if (!Wwalking && uarmf && (is_corrodeable(uarmf) ||
+		    is_rottable(uarmf)) && !uarmf->oerodeproof && !rn2(3))
+		(void) _erode_obj(uarmf, AD_ACID);
+	}
+}
+
+/* once per turn: standing in an acid pool burns you */
+void
+acid_pool_burn()
+{
+	int dmg;
+
+	if (!is_acid_pool(u.ux, u.uy) || Levitation || Flying || u.uinwater ||
+	    u.uswallow || u.uinvulnerable)
+	    return;
+	if (Acid_resistance) return;
+	dmg = rnd(10);
+	if (uarmf) dmg = (dmg + 1) / 2;		/* boots help a little */
+	pline("The acid burns you!");
+	losehp(dmg, "wading in acid", KILLED_BY);
+	exercise(A_CON, FALSE);
+}
+
 void
 spoteffects(pick)
 boolean pick;
@@ -1626,6 +1670,7 @@ stillinwater:;
 		    return;
 		}
 	}
+	wading_effects();
 	check_special_room(FALSE);
 #ifdef SINKS
 	if(IS_SINK(levl[u.ux][u.uy].typ) && Levitation)
@@ -2096,7 +2141,8 @@ bcorr:
 	    if(flags.run == 1) goto bcorr;	/* if you must */
 	    if(x == u.ux+u.dx && y == u.uy+u.dy) goto stop;
 	    continue;
-	} else if (is_pool(x,y) || is_lava(x,y)) {
+	} else if (is_pool(x,y) || is_lava(x,y) ||
+		   (is_acid_pool(x,y) && !Acid_resistance)) {
 	    /* water and lava only stop you if directly in front, and stop
 	     * you even if you are running
 	     */

@@ -2522,6 +2522,10 @@ char *buf;
 	    cmap = S_ice;				/* "ice" */
 	else if (is_pool(x,y))
 	    dfeature = "pool of water";
+	else if (is_shallow(x,y))
+	    dfeature = "shallow water";
+	else if (is_acid_pool(x,y))
+	    dfeature = "pool of acid";
 #ifdef SINKS
 	else if (IS_SINK(ltyp))
 	    cmap = S_sink;				/* "sink" */

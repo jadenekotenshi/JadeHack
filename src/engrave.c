@@ -176,6 +176,10 @@ register int x, y;
 	    return "air";
 	else if (is_pool(x,y))
 	    return (Underwater && !Is_waterlevel(&u.uz)) ? "bottom" : "water";
+	else if (is_shallow(x,y))
+	    return "water";
+	else if (is_acid_pool(x,y))
+	    return "acid";
 	else if (is_ice(x,y))
 	    return "ice";
 	else if (is_lava(x,y))
@@ -533,8 +537,12 @@ doengrave()
 	} else if (is_lava(u.ux, u.uy)) {
 		You_cant("write on the lava!");
 		return(0);
-	} else if (is_pool(u.ux,u.uy) || IS_FOUNTAIN(levl[u.ux][u.uy].typ)) {
+	} else if (is_pool(u.ux,u.uy) || is_shallow(u.ux,u.uy) ||
+		   IS_FOUNTAIN(levl[u.ux][u.uy].typ)) {
 		You_cant("write on the water!");
+		return(0);
+	} else if (is_acid_pool(u.ux,u.uy)) {
+		You_cant("write on the acid!");
 		return(0);
 	}
 	if(Is_airlevel(&u.uz) || Is_waterlevel(&u.uz)/* in bubble */) {

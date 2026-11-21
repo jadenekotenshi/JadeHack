@@ -655,6 +655,7 @@ Armor_on()
 			case YELLOW_DRAGON_SCALES:
 				EConfusion_resistance |= W_ARM;
 				EStun_resistance |= W_ARM;
+				EStone_resistance |= W_ARM;
 				break;
 			case WHITE_DRAGON_SCALE_MAIL:
 			case WHITE_DRAGON_SCALES:
@@ -688,6 +689,7 @@ Armor_off()
 			case YELLOW_DRAGON_SCALES:
 				EConfusion_resistance &= ~W_ARM;
 				EStun_resistance &= ~W_ARM;
+				EStone_resistance &= ~W_ARM;
 				break;
 			case WHITE_DRAGON_SCALE_MAIL:
 			case WHITE_DRAGON_SCALES:
@@ -725,6 +727,7 @@ Armor_gone()
 			case YELLOW_DRAGON_SCALES:
 				EConfusion_resistance &= ~W_ARM;
 				EStun_resistance &= ~W_ARM;
+				EStone_resistance &= ~W_ARM;
 				break;
 			case WHITE_DRAGON_SCALE_MAIL:
 			case WHITE_DRAGON_SCALES:

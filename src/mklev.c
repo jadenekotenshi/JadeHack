@@ -1219,11 +1219,80 @@ mkpoolroom()
     if (sroom->hx - sroom->lx < 3 || sroom->hy - sroom->ly < 3) return;
 
     sroom->rtype = POOLROOM;
-    typ = !rn2(5) ? POOL : LAVAPOOL;
+    {
+	int r = rn2(10);
+	/* mostly lava; the rest is water (a third of it shallow, see
+	   mkshallows()) or acid */
+	typ = (r < 6) ? LAVAPOOL : (r < 8) ? POOL : ACID_POOL;
+    }
 
     wallwalk_right(sroom->lx, sroom->ly, typ, sroom->rlit, ROOM, 96);
 }
 
+
+/*
+ * Make some of the water on a new level shallow (wadeable, see rm.h).
+ * In the main dungeon every pond, pool or stream has a one in three chance of
+ * being shallow all through.  On the quest levels with a river (Barbarian,
+ * Bard, Tourist) the river is shallow in a third of its squares instead, so
+ * it has fords.  The Castle's moat and Medusa's lake are left alone, and so
+ * are bodies of water with something that swims in them.
+ */
+STATIC_OVL void
+mkshallows()
+{
+	static xchar qx[COLNO*ROWNO], qy[COLNO*ROWNO];
+	static char seen[COLNO][ROWNO];
+	boolean main_dungeon, river;
+	int x, y, i, nx, ny, head, tail;
+	struct monst *mtmp;
+
+	main_dungeon = (u.uz.dnum == medusa_level.dnum &&
+			!Is_medusa_level(&u.uz) && !Is_stronghold(&u.uz));
+	river = (In_quest(&u.uz) && (Role_if(PM_BARBARIAN) ||
+			Role_if(PM_BARD) || Role_if(PM_TOURIST)));
+	if (!main_dungeon && !river) return;
+
+	for (x = 0; x < COLNO; x++)
+	    for (y = 0; y < ROWNO; y++) seen[x][y] = 0;
+
+	for (x = 1; x < COLNO; x++)
+	    for (y = 0; y < ROWNO; y++) {
+		boolean swimmers = FALSE;
+
+		if (seen[x][y] ||
+		    (levl[x][y].typ != POOL && levl[x][y].typ != MOAT))
+		    continue;
+		/* collect the connected body of water */
+		head = tail = 0;
+		qx[tail] = x; qy[tail++] = y; seen[x][y] = 1;
+		while (head < tail) {
+		    int cx = qx[head], cy = qy[head++];
+		    for (nx = cx - 1; nx <= cx + 1; nx++)
+			for (ny = cy - 1; ny <= cy + 1; ny++) {
+			    if (!isok(nx, ny) || seen[nx][ny]) continue;
+			    if (levl[nx][ny].typ != POOL &&
+				levl[nx][ny].typ != MOAT) continue;
+			    seen[nx][ny] = 1;
+			    qx[tail] = nx; qy[tail++] = ny;
+			}
+		}
+		for (i = 0; i < tail; i++)
+		    if ((mtmp = m_at(qx[i], qy[i])) != 0 &&
+			    is_swimmer(mtmp->data))
+			swimmers = TRUE;
+		if (river) {
+		    for (i = 0; i < tail; i++) {
+			if ((mtmp = m_at(qx[i], qy[i])) != 0 &&
+				is_swimmer(mtmp->data)) continue;
+			if (!rn2(3)) levl[qx[i]][qy[i]].typ = SHALLOW_WATER;
+		    }
+		} else if (!swimmers && !rn2(3)) {
+		    for (i = 0; i < tail; i++)
+			levl[qx[i]][qy[i]].typ = SHALLOW_WATER;
+		}
+	    }
+}
 
 void
 mklev()
@@ -1234,6 +1303,7 @@ mklev()
 	if(getbones()) return;
 	in_mklev = TRUE;
 	makelevel();
+	mkshallows();
 	bound_digging();
 	mineralize();
 	in_mklev = FALSE;

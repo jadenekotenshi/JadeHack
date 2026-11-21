@@ -191,6 +191,24 @@ const char *verb;
 		return TRUE;
 	} else if (is_lava(x, y)) {
 		return fire_damage(obj, FALSE, FALSE, x, y);
+	} else if (is_shallow(x, y)) {
+		/* not deep enough to cover anything, but it soaks */
+		return water_damage(obj, FALSE, FALSE);
+	} else if (is_acid_pool(x, y)) {
+		bhitpos.x = x, bhitpos.y = y;	/* where messages are seen from */
+		if (obj->oclass == SCROLL_CLASS && !obj->greased
+#ifdef MAIL
+			&& obj->otyp != SCR_MAIL
+#endif
+			&& obj->otyp != SCR_BLANK_PAPER) {
+		    /* _erode_obj would use up an inventory object */
+		    if (cansee(x, y))
+			pline_The("%s dissolves in the acid!", xname(obj));
+		    obfree(obj, (struct obj *)0);
+		    return TRUE;
+		}
+		(void) _erode_obj(obj, AD_ACID);
+		return FALSE;
 	} else if (is_pool(x, y)) {
 		/* Reasonably bulky objects (arbitrary) splash when dropped.
 		 * If you're floating above the water even small things make noise.

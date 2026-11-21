@@ -196,7 +196,8 @@ dig_check(madeby, verbose, x, y)
 	} else if (madeby == BY_OBJECT &&
 		    /* the block against existing traps is mainly to
 		       prevent broken wands from turning holes into pits */
-		    (ttmp || is_pool(x,y) || is_lava(x,y))) {
+		    (ttmp || is_pool(x,y) || is_lava(x,y) ||
+		     is_shallow(x,y) || is_acid_pool(x,y))) {
 	    /* digging by player handles pools separately */
 	    return FALSE;
 	}
@@ -668,6 +669,10 @@ boolean pit_only;
 	    (lev->wall_info & W_NONDIGGABLE) != 0)) {
 		pline_The("%s here is too hard to dig in.", surface(u.ux,u.uy));
 
+	} else if (is_shallow(u.ux, u.uy) || is_acid_pool(u.ux, u.uy)) {
+		pline_The("%s here is too muddy to dig in.",
+			is_acid_pool(u.ux, u.uy) ? "acid pool" : "bottom");
+
 	} else if (is_pool(u.ux, u.uy) || is_lava(u.ux, u.uy)) {
 		pline_The("%s sloshes furiously for a moment, then subsides.",
 			is_lava(u.ux, u.uy) ? "lava" : "water");
@@ -985,6 +990,9 @@ struct obj *obj;
 		You("swing your %s through thin air.", aobjnam(obj, (char *)0));
 	} else if (!can_reach_floor()) {
 		You_cant("reach the %s.", surface(u.ux,u.uy));
+	} else if (is_shallow(u.ux, u.uy) || is_acid_pool(u.ux, u.uy)) {
+		pline_The("%s here is too muddy to dig in.",
+			is_acid_pool(u.ux, u.uy) ? "acid pool" : "bottom");
 	} else if (is_pool(u.ux, u.uy) || is_lava(u.ux, u.uy)) {
 		/* Monsters which swim also happen not to be able to dig */
 		You("cannot stay under%s long enough.",

@@ -464,6 +464,22 @@ register struct monst *mtmp;
 	return (0);
     }
 
+    /* acid pools burn whatever is not flying, acid-proof or clinging */
+    if (is_acid_pool(mtmp->mx,mtmp->my) && !is_flying(mtmp) &&
+	    !is_flyer(mtmp->data) && !is_floater(mtmp->data) &&
+	    !is_clinger(mtmp->data) && !resists_acid(mtmp) &&
+	    !acidic(mtmp->data) && mtmp->data != &mons[PM_WATER_ELEMENTAL]) {
+	if (cansee(mtmp->mx,mtmp->my))
+	    pline("%s is burned by the acid!", Monnam(mtmp));
+	if (damage_mon(mtmp, rnd(10), AD_ACID)) {
+	    if (cansee(mtmp->mx,mtmp->my))
+		pline("%s is dissolved by the acid.", Monnam(mtmp));
+	    mondead(mtmp);
+	    if (mtmp->mhp < 1) return (1);
+	}
+	return (0);
+    }
+
     if (inlava) {
 	/*
 	 * Lava effects much as water effects. Lava likers are able to
@@ -521,7 +537,8 @@ register struct monst *mtmp;
 	}
     } else {
 	/* but eels have a difficult time outside */
-	if (mtmp->data->mlet == S_EEL && !Is_waterlevel(&u.uz)) {
+	if (mtmp->data->mlet == S_EEL && !Is_waterlevel(&u.uz) &&
+		!is_shallow(mtmp->mx, mtmp->my)) {
 		if(mtmp->mhp > 1) damage_mon(mtmp,1,AD_PHYS);
 	    monflee(mtmp, 2, FALSE, mtmp->mflee ? FALSE : TRUE);
 	}
@@ -1141,7 +1158,7 @@ mfndpos(mon, poss, info, flag)
 	register int cnt = 0;
 	register uchar ntyp;
 	uchar nowtyp;
-	boolean wantpool,poolok,lavaok,nodiag;
+	boolean wantpool,poolok,lavaok,acidok,nodiag;
 	boolean rockok = FALSE, treeok = FALSE, thrudoor;
 	int maxx, maxy;
 	boolean treewalk;
@@ -1157,6 +1174,9 @@ mfndpos(mon, poss, info, flag)
 				(is_swimmer(mdat) && !wantpool);
 	lavaok = is_flyer(mdat) || is_clinger(mdat) || is_flying(mon) ||
 				likes_lava(mdat);
+	acidok = is_flyer(mdat) || is_floater(mdat) || is_clinger(mdat) ||
+				is_flying(mon) || resists_acid(mon) ||
+				acidic(mdat);
 	thrudoor = ((flag & (ALLOW_WALL|BUSTDOOR)) != 0L);
 	if (flag & ALLOW_DIG) {
 	    struct obj *mw_tmp;
@@ -1213,8 +1233,10 @@ nexttry:	/* eels prefer the water, but if there is no water nearby,
 #endif
 	       ))
 		continue;
-	    if((is_pool(nx,ny) == wantpool || poolok) &&
-	       (lavaok || !is_lava(nx,ny))) {
+	    if((is_pool(nx,ny) == wantpool || poolok ||
+		(wantpool && is_shallow(nx,ny))) &&
+	       (lavaok || !is_lava(nx,ny)) &&
+	       (acidok || !is_acid_pool(nx,ny))) {
 		int dispx, dispy;
 		boolean monseeu = (mon->mcansee && (!Invis || perceives(mdat)));
 		boolean checkobj = OBJ_AT(nx,ny);

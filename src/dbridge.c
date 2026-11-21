@@ -62,6 +62,20 @@ int x,y;
 }
 
 boolean
+is_shallow(x,y)
+int x,y;
+{
+    return (isok(x,y) && levl[x][y].typ == SHALLOW_WATER);
+}
+
+boolean
+is_acid_pool(x,y)
+int x,y;
+{
+    return (isok(x,y) && levl[x][y].typ == ACID_POOL);
+}
+
+boolean
 is_ice(x,y)
 int x,y;
 {

@@ -648,7 +648,8 @@ do_look(quick)
 		/* avoid "an air", "a water", "a floor of a room", "a dark part of a room" */
 		int article = ((i == S_room)||(i == S_darkroom)) ? 2 :		/* 2=>"the" */
 			      !(strcmp(x_str, "air") == 0 ||	/* 1=>"an"  */
-				strcmp(x_str, "water") == 0);	/* 0=>(none)*/
+				strcmp(x_str, "water") == 0 ||
+				strcmp(x_str, "shallow water") == 0); /* 0=>(none)*/
 
 		if (!found) {
 		    if (is_cmap_trap(i)) {

@@ -252,6 +252,8 @@ const struct symdef defsyms[MAXPCHARS] = {
 	{' ', "air",		C(CLR_CYAN)},	/* open air */
 	{'#', "cloud",		C(CLR_GRAY)},	/* [part of] a cloud */
 /*40*/	{'}', "water",		C(CLR_BLUE)},	/* under water */
+	{'}', "shallow water",	C(CLR_CYAN)},	/* shallow water */
+	{'}', "acid pool",	C(CLR_BRIGHT_GREEN)},	/* acid pool */
 	{'^', "arrow trap",	C(HI_METAL)},	/* trap */
 	{'^', "dart trap",	C(HI_METAL)},	/* trap */
 	{'^', "falling rock trap",C(CLR_GRAY)},	/* trap */
@@ -366,6 +368,8 @@ static uchar ibm_graphics[MAXPCHARS] = {
 	g_FILLER(S_air),
 	g_FILLER(S_cloud),
 /*40*/	0xf7,	/* S_water:	meta-w, approx. equals */
+	0xf7,	/* S_shallow:	meta-w, approx. equals */
+	0xf7,	/* S_acidpool:	meta-w, approx. equals */
 	g_FILLER(S_arrow_trap),
 	g_FILLER(S_dart_trap),
 	g_FILLER(S_falling_rock_trap),
@@ -468,6 +472,8 @@ static uchar dec_graphics[MAXPCHARS] = {
 	g_FILLER(S_air),
 	g_FILLER(S_cloud),
 /*40*/	0xe0,	/* S_water:	meta-\, diamond */
+	0xe0,	/* S_shallow:	meta-\, diamond */
+	0xe0,	/* S_acidpool:	meta-\, diamond */
 	g_FILLER(S_arrow_trap),
 	g_FILLER(S_dart_trap),
 	g_FILLER(S_falling_rock_trap),
@@ -567,6 +573,8 @@ static uchar mac_graphics[MAXPCHARS] = {
 	g_FILLER(S_air),
 	g_FILLER(S_cloud),
 /*40*/	g_FILLER(S_water),
+	g_FILLER(S_shallow),
+	g_FILLER(S_acidpool),
 	g_FILLER(S_arrow_trap),
 	g_FILLER(S_dart_trap),
 	g_FILLER(S_falling_rock_trap),
