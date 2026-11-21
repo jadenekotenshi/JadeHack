@@ -1267,6 +1267,24 @@ register struct obj	*sobj;
 	    }
 	case SCR_CREATE_MONSTER:
 	case SPE_CREATE_MONSTER:
+	    if (sobj->oclass == SCROLL_CLASS && confused && Hallucination) {
+		/* confused and hallucinating: BEES */
+		int bx, by;
+		struct monst *bee;
+
+		pline("BEEEEEEEEEEEEEEEEES!");
+		for (bx = u.ux - 1; bx <= u.ux + 1; bx++)
+		    for (by = u.uy - 1; by <= u.uy + 1; by++) {
+			if ((bx == u.ux && by == u.uy) || !isok(bx, by))
+			    continue;
+			bee = makemon(mkclass(S_ANT, 0), bx, by, NO_MM_FLAGS);
+			if (!bee) continue;
+			bee->mpeaceful = rn2(2) ? TRUE : FALSE;
+			set_malign(bee);
+		    }
+		known = TRUE;
+		break;
+	    }
 	    if (create_critters(1 + ((confused || sobj->cursed) ? 12 : 0) +
 				((sobj->blessed || rn2(73)) ? 0 : rnd(4)),
 			confused ? &mons[PM_ACID_BLOB] : (struct permonst *)0))

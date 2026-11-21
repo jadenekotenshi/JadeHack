@@ -1122,3 +1122,7 @@ A new scroll (`objects.c`, after antimagic; label **THUNDEDE** in the table, shu
 - Every scroll number after it moves up by one; old saves and bones are not compatible and the data files and utilities must be rebuilt as in Batch 79.
 
 Checked in wizard mode: reading it shows the message, a newt hit afterwards was "shocked" and killed; reading it confused gave the rime charge and hits were "chilled". The flame charge, cursed, blessed and blind readings and the expiry messages were not tried. The three stress tests ran clean.
+
+## Batch 108: BEEEEEEEEEEEEEEEEES
+
+Reading a **scroll** of create monster (the spell is unchanged) while both **confused and hallucinating** (`read.c`) prints "BEEEEEEEEEEEEEEEEES!" and makes a random `a` (`mkclass(S_ANT)`, so the usual difficulty limits apply) on every free square around you, up to eight, each **peaceful or hostile with equal chance** (`mpeaceful = rn2(2)`, then `set_malign()`). The scroll is identified. Nothing is created in squares that are blocked or occupied. Checked in wizard mode (confused and hallucinating Valkyrie: the message appeared and a ring of monsters with it); the three stress tests ran clean (they do not read scrolls while hallucinating, so this is only a sanity check). Only the binary changes.
