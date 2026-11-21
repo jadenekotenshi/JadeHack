@@ -1140,3 +1140,9 @@ A new monster (`z`, the "weird monsters" class with the zruty, right after the z
 - Monster numbers after the lesser merozalghu move up by two; old saves and bones are not compatible and the data files and utilities must be rebuilt as in Batch 79.
 
 Checked in wizard mode: all three were created and attacked (the lesser one picked up a mace); the three stress tests ran clean.
+
+## Batch 111: four more random scroll labels
+
+`objects.c` gets four more unnamed scroll appearances at the end of the shuffled list (after ANVIL BONK): **ABRA CADABRA, HOCUS POCUS, HOCUS CADABRA, ABRA CA POCUS** (supplied by the player). Like the other spare labels they have no scroll behind them (probability 0): they only make the pool of labels larger than the number of scrolls, so which labels turn up in a given game varies a little more. "stamped" (mail) and "unlabeled" (blank paper) stay last with their fixed descriptions. Every object number after the last spare label (mail, blank paper and everything beyond) moves up by four; old saves and bones are not compatible and the data files and utilities must be rebuilt as in Batch 79.
+
+Checked: the game starts, a scroll reads normally, the labels are in the binary, and the three stress tests ran clean.

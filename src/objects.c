@@ -945,6 +945,10 @@ POTION("water", "clear",                0, 0,          92, 100, CLR_CYAN),
 	SCROLL((char *)0,		"ZI ZEEBLE ZUMBLE ZO",   1,   0, 100),
 	SCROLL((char *)0,		"SNOO SNUNK SKO",        1,   0, 100),
 	SCROLL((char *)0,		"ANVIL BONK",            1,   0, 100),
+	SCROLL((char *)0,		"ABRA CADABRA",         1,   0, 100),
+	SCROLL((char *)0,		"HOCUS POCUS",          1,   0, 100),
+	SCROLL((char *)0,		"HOCUS CADABRA",        1,   0, 100),
+	SCROLL((char *)0,		"ABRA CA POCUS",        1,   0, 100),
 	/* these must come last because they have special descriptions */
 #ifdef MAIL
 	SCROLL("mail",                  "stamped",          0,   0,   0),
