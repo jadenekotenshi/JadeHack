@@ -11,7 +11,7 @@
 LEVEL: "merofill"
 FLAGS:mazelevel,noflip
 INIT_MAP: mines, '.' , ' ' , true , true , random , true
-MON_GENERATION:40%, (4,"lesser merozalghu"), (3,"merozalghu"), (2,"lesser merozalghu soldier"), (1,"merozalghu captain"), (1,"accursed merozalghu"), (3,"ghast"), (2,"gug"), (1,"shoggoth"), (1,"giant shoggoth")
+MON_GENERATION:40%, (4,"lesser merozalghu"), (3,"merozalghu"), (2,"lesser merozalghu soldier"), (1,"merozalghu captain"), (2,"merozalghu warlock"), (1,"accursed merozalghu"), (3,"ghast"), (2,"gug"), (1,"shoggoth"), (1,"giant shoggoth")
 NOMAP
 #
 # rivers of acid: one, or two a half of the time, running across the cave
@@ -46,6 +46,7 @@ LOOP [1 + 1d2] {
 }
 MONSTER[50%]: ('z', "accursed merozalghu"), random
 MONSTER[50%]: ('z', "lesser merozalghu soldier"), random
+MONSTER[40%]: ('z', "merozalghu warlock"), random
 MONSTER[35%]: ('z', "merozalghu captain"), random
 MONSTER[40%]: ('P', "shoggoth"), random
 MONSTER[20%]: ('P', "giant shoggoth"), random
@@ -70,7 +71,7 @@ LOOP [4 + 1d5] {
 LEVEL: "skunj"
 FLAGS:mazelevel,noflip
 INIT_MAP:mines,'.',' ',true,true,lit,true
-MON_GENERATION:40%, (4,"lesser merozalghu"), (3,"merozalghu"), (2,"lesser merozalghu soldier"), (1,"merozalghu captain"), (1,"accursed merozalghu"), (3,"ghast"), (2,"gug"), (1,"shoggoth"), (1,"giant shoggoth")
+MON_GENERATION:40%, (4,"lesser merozalghu"), (3,"merozalghu"), (2,"lesser merozalghu soldier"), (1,"merozalghu captain"), (2,"merozalghu warlock"), (1,"accursed merozalghu"), (3,"ghast"), (2,"gug"), (1,"shoggoth"), (1,"giant shoggoth")
 # acid rivers in the caves beyond either end of the town
 TERRAIN: grow(randline (4,0)-(9,20),4), 'a'
 TERRAIN: grow(randline (71,0)-(76,20),4), 'a'
@@ -177,6 +178,7 @@ LOOP [1 + 1d3] {
 MONSTER: ('z', "merozalghu"), random
 MONSTER[50%]: ('z', "lesser merozalghu soldier"), random
 MONSTER[35%]: ('z', "merozalghu captain"), random
+MONSTER[35%]: ('z', "merozalghu warlock"), random
 MONSTER[30%]: ('z', "accursed merozalghu"), random
 MONSTER[30%]: ('P', "shoggoth"), random
 MONSTER[15%]: ('P', "giant shoggoth"), random
@@ -197,7 +199,7 @@ LOOP [3 + 1d3] {
 LEVEL: "citadel"
 FLAGS:mazelevel,noflip
 INIT_MAP:solidfill,' '
-MON_GENERATION:40%, (4,"lesser merozalghu"), (3,"merozalghu"), (2,"lesser merozalghu soldier"), (1,"merozalghu captain"), (1,"accursed merozalghu"), (3,"ghast"), (2,"gug"), (1,"shoggoth"), (1,"giant shoggoth")
+MON_GENERATION:40%, (4,"lesser merozalghu"), (3,"merozalghu"), (2,"lesser merozalghu soldier"), (1,"merozalghu captain"), (2,"merozalghu warlock"), (1,"accursed merozalghu"), (3,"ghast"), (2,"gug"), (1,"shoggoth"), (1,"giant shoggoth")
 GEOMETRY:center,center
 MAP
 ...............................................
@@ -241,7 +243,7 @@ OBJECT:('\',"throne"),(23,09)
 MONSTER:('z',"Miralt"),(23,09),hostile
 
 # the guard of honor
-SWITCH [1d5] {
+SWITCH [1d6] {
   CASE 1:
     MONSTER: ('z', "lesser merozalghu"), (20,08), hostile
     BREAK
@@ -255,10 +257,13 @@ SWITCH [1d5] {
     MONSTER: ('z', "merozalghu captain"), (20,08), hostile
     BREAK
   CASE 5:
+    MONSTER: ('z', "merozalghu warlock"), (20,08), hostile
+    BREAK
+  CASE 6:
     MONSTER: ('z', "accursed merozalghu"), (20,08), hostile
     BREAK
 }
-SWITCH [1d5] {
+SWITCH [1d6] {
   CASE 1:
     MONSTER: ('z', "lesser merozalghu"), (20,10), hostile
     BREAK
@@ -272,10 +277,13 @@ SWITCH [1d5] {
     MONSTER: ('z', "merozalghu captain"), (20,10), hostile
     BREAK
   CASE 5:
+    MONSTER: ('z', "merozalghu warlock"), (20,10), hostile
+    BREAK
+  CASE 6:
     MONSTER: ('z', "accursed merozalghu"), (20,10), hostile
     BREAK
 }
-SWITCH [1d5] {
+SWITCH [1d6] {
   CASE 1:
     MONSTER: ('z', "lesser merozalghu"), (22,06), hostile
     BREAK
@@ -289,10 +297,13 @@ SWITCH [1d5] {
     MONSTER: ('z', "merozalghu captain"), (22,06), hostile
     BREAK
   CASE 5:
+    MONSTER: ('z', "merozalghu warlock"), (22,06), hostile
+    BREAK
+  CASE 6:
     MONSTER: ('z', "accursed merozalghu"), (22,06), hostile
     BREAK
 }
-SWITCH [1d5] {
+SWITCH [1d6] {
   CASE 1:
     MONSTER: ('z', "lesser merozalghu"), (24,06), hostile
     BREAK
@@ -306,10 +317,13 @@ SWITCH [1d5] {
     MONSTER: ('z', "merozalghu captain"), (24,06), hostile
     BREAK
   CASE 5:
+    MONSTER: ('z', "merozalghu warlock"), (24,06), hostile
+    BREAK
+  CASE 6:
     MONSTER: ('z', "accursed merozalghu"), (24,06), hostile
     BREAK
 }
-SWITCH [1d5] {
+SWITCH [1d6] {
   CASE 1:
     MONSTER: ('z', "lesser merozalghu"), (26,08), hostile
     BREAK
@@ -323,10 +337,13 @@ SWITCH [1d5] {
     MONSTER: ('z', "merozalghu captain"), (26,08), hostile
     BREAK
   CASE 5:
+    MONSTER: ('z', "merozalghu warlock"), (26,08), hostile
+    BREAK
+  CASE 6:
     MONSTER: ('z', "accursed merozalghu"), (26,08), hostile
     BREAK
 }
-SWITCH [1d5] {
+SWITCH [1d6] {
   CASE 1:
     MONSTER: ('z', "lesser merozalghu"), (26,10), hostile
     BREAK
@@ -340,10 +357,13 @@ SWITCH [1d5] {
     MONSTER: ('z', "merozalghu captain"), (26,10), hostile
     BREAK
   CASE 5:
+    MONSTER: ('z', "merozalghu warlock"), (26,10), hostile
+    BREAK
+  CASE 6:
     MONSTER: ('z', "accursed merozalghu"), (26,10), hostile
     BREAK
 }
-SWITCH [1d5] {
+SWITCH [1d6] {
   CASE 1:
     MONSTER: ('z', "lesser merozalghu"), (22,12), hostile
     BREAK
@@ -357,10 +377,13 @@ SWITCH [1d5] {
     MONSTER: ('z', "merozalghu captain"), (22,12), hostile
     BREAK
   CASE 5:
+    MONSTER: ('z', "merozalghu warlock"), (22,12), hostile
+    BREAK
+  CASE 6:
     MONSTER: ('z', "accursed merozalghu"), (22,12), hostile
     BREAK
 }
-SWITCH [1d5] {
+SWITCH [1d6] {
   CASE 1:
     MONSTER: ('z', "lesser merozalghu"), (24,12), hostile
     BREAK
@@ -374,6 +397,9 @@ SWITCH [1d5] {
     MONSTER: ('z', "merozalghu captain"), (24,12), hostile
     BREAK
   CASE 5:
+    MONSTER: ('z', "merozalghu warlock"), (24,12), hostile
+    BREAK
+  CASE 6:
     MONSTER: ('z', "accursed merozalghu"), (24,12), hostile
     BREAK
 }
@@ -381,7 +407,7 @@ SWITCH [1d5] {
 # a dozen more about the citadel
 $inside = selection: fillrect(13,05,33,13) & fillrect(06,03,40,03) & fillrect(06,15,40,15) & fillrect(11,03,11,15) & fillrect(35,03,35,15)
 LOOP [12] {
-  SWITCH [1d5] {
+  SWITCH [1d6] {
     CASE 1:
       MONSTER: ('z', "lesser merozalghu"), rndcoord($inside), hostile
       BREAK
@@ -395,6 +421,9 @@ LOOP [12] {
       MONSTER: ('z', "merozalghu captain"), rndcoord($inside), hostile
       BREAK
     CASE 5:
+      MONSTER: ('z', "merozalghu warlock"), rndcoord($inside), hostile
+      BREAK
+    CASE 6:
       MONSTER: ('z', "accursed merozalghu"), rndcoord($inside), hostile
       BREAK
   }
