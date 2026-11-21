@@ -43,11 +43,21 @@ struct monst *mon;
 	    dtype = (!rn2(20)) ? dlord(atyp) :
 				 (!rn2(6)) ? ndemon(atyp) : monsndx(ptr);
 	    cnt = 1;
+	} else if (ptr == &mons[PM_MEROZALGHU_CULTIST]) {
+	    /* a cultist calls up some random "weird monster" */
+	    struct permonst *zp = mkclass(S_ZRUTY, 0);
+
+	    if (!zp) return;
+	    dtype = monsndx(zp);
+	    cnt = 1;
+	    if (canseemon(mon))
+		pline("%s chants, and something answers!", Monnam(mon));
 	} else if (ptr == &mons[PM_MIRALT]) {
 	    /* Miralt gates in his own kind */
 	    static const int kin[] = { PM_LESSER_MEROZALGHU,
 		PM_LESSER_MEROZALGHU_SOLDIER, PM_MEROZALGHU,
 		PM_MEROZALGHU_CAPTAIN, PM_MEROZALGHU_WARLOCK, PM_MEROZALGHU_SHAMAN,
+		PM_MEROZALGHU_NECROMANCER, PM_MEROZALGHU_CULTIST,
 		PM_ACCURSED_MEROZALGHU };
 	    dtype = kin[rn2(SIZE(kin))];
 	    cnt = rn2(3) ? 1 : 2;

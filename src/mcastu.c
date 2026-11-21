@@ -23,6 +23,7 @@
 #define MGC_ENRAGE		13
 #define MGC_FIRE_BOLT   14
 #define MGC_ICE_BOLT    15
+#define MGC_SUMMON_UNDEAD 16
 
 /* monster cleric spells */
 #define CLC_OPEN_WOUNDS	 0
@@ -240,6 +241,10 @@ castmu(mtmp, mattk, thinks_it_foundyou, foundyou)
 				if (mtmp->data == &mons[PM_KUEI_JIN] &&
 				    spellnum == MGC_SUMMON_MONS)
 					spellnum = MGC_AGGRAVATION;
+				/* necromancers favor calling up the dead */
+				if (mtmp->data == &mons[PM_MEROZALGHU_NECROMANCER] &&
+				    rn2(2))
+					spellnum = MGC_SUMMON_UNDEAD;
 			}
 			else
 				spellnum = choose_clerical_spell(mtmp,spellnum);
@@ -492,6 +497,30 @@ int spellnum;
 		pline("%s around your displaced image!", mappear);
 	    else
 		pline("%s from nowhere!", mappear);
+	}
+	dmg = 0;
+	break;
+    }
+    case MGC_SUMMON_UNDEAD:
+    {
+	int count = 0, n = 1 + rn2(3);
+
+	while (n-- > 0) {
+	    int r = rn2(10);
+	    struct permonst *up = mkclass(r < 4 ? S_ZOMBIE :
+					  r < 7 ? S_MUMMY :
+					  r < 9 ? S_WRAITH : S_VAMPIRE, 0);
+
+	    if (up && makemon(up, u.ux, u.uy, NO_MM_FLAGS)) count++;
+	}
+	if (count) {
+	    if (Invisible && !perceives(mtmp->data) &&
+				    (mtmp->mux != u.ux || mtmp->muy != u.uy))
+		pline("The dead rise around a spot near you!");
+	    else if (Displaced && (mtmp->mux != u.ux || mtmp->muy != u.uy))
+		pline("The dead rise around your displaced image!");
+	    else
+		pline("The dead rise around you!");
 	}
 	dmg = 0;
 	break;
@@ -906,6 +935,7 @@ int spellnum;
 	switch (spellnum) {
 	case MGC_CLONE_WIZ:
 	case MGC_SUMMON_MONS:
+	case MGC_SUMMON_UNDEAD:
 	case MGC_AGGRAVATION:
 	case MGC_DISAPPEAR:
 	case MGC_HASTE_SELF:
@@ -975,7 +1005,8 @@ int spellnum;
     if (adtyp == AD_SPEL) {
 		/* aggravate monsters, etc. won't be cast by peaceful monsters */
 		if (mtmp->mpeaceful && (spellnum == MGC_AGGRAVATION ||
-			spellnum == MGC_SUMMON_MONS || spellnum == MGC_CLONE_WIZ))
+			spellnum == MGC_SUMMON_MONS || spellnum == MGC_CLONE_WIZ ||
+			spellnum == MGC_SUMMON_UNDEAD))
 			return TRUE;
 		/* haste self when already fast */
 		if (mtmp->permspeed == MFAST && spellnum == MGC_HASTE_SELF)
@@ -994,6 +1025,7 @@ int spellnum;
 			return TRUE;
 		/* don't summon monsters if it doesn't think you're around */
 		if (!mcouldseeu && (spellnum == MGC_SUMMON_MONS ||
+			spellnum == MGC_SUMMON_UNDEAD ||
 			(!mtmp->iswiz && spellnum == MGC_CLONE_WIZ)))
 			return TRUE;
 		if ((!mtmp->iswiz || flags.no_of_wizards > 1)

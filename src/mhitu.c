@@ -75,8 +75,9 @@ register struct attack *mattk;
 				mhis(mtmp));
 			break;
 		case AT_TENT:
-			pline("%s tentacles suck you!",
-				        s_suffix(Monnam(mtmp)));
+			/* merozalghi have thorned, clawed tentacles */
+			pline("%s tentacles %s you!", s_suffix(Monnam(mtmp)),
+				is_merozalghu(mtmp->data) ? "rend" : "suck");
 			break;
 		case AT_EXPL:
 		case AT_BOOM:
@@ -502,6 +503,11 @@ mattacku(mtmp)
 	   && mtmp->data != &mons[PM_SUCCUBUS]
 	   && mtmp->data != &mons[PM_INCUBUS])
 	    if(!mtmp->mcan && !rn2(13))	msummon(mtmp);
+
+/*	Cultists call on their own kind more often than demons gate */
+	if (mdat == &mons[PM_MEROZALGHU_CULTIST] && !range2 && !mtmp->mcan &&
+	    !rn2(6))
+	    msummon(mtmp);
 
 /*	Special lycanthrope handling code */
 	if(!mtmp->cham && is_were(mdat) && !range2) {

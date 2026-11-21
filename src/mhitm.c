@@ -447,8 +447,9 @@ hitmm(magr, mdef, mattk)
 				Sprintf(buf,"%s slams", magr_name);
 				break;
 			case AT_TENT:
-				Sprintf(buf, "%s tentacles suck",
-					s_suffix(magr_name));
+				Sprintf(buf, "%s tentacles %s",
+					s_suffix(magr_name),
+					is_merozalghu(magr->data) ? "rend" : "suck");
 				break;
 			case AT_HUGS:
 				if (magr != u.ustuck) {
