@@ -815,6 +815,9 @@ makelevel()
 	    } else if (In_mines(&u.uz)) {
 		    makemaz("minefill");
 		    return;
+	    } else if (In_realm(&u.uz)) {
+		    makemaz("merofill");
+		    return;
 	    } else if (In_quest(&u.uz)) {
 		    char	fillname[9];
 		    s_level	*loc_lev;

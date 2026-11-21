@@ -595,6 +595,53 @@ register struct monst *mtmp;
 		if (mm == PM_KUEI_JIN && (In_V_tower(&u.uz) || rn2(2))) (void)mongets(mtmp, KATANA);
 		break;
 	    case S_ZRUTY:
+		if (mm == PM_LESSER_MEROZALGHU_SOLDIER) {
+		    /* always armed and armored; half carry a messer */
+		    static const int swords[] = { LONG_SWORD, SHORT_SWORD,
+			BROADSWORD, SCIMITAR, FALCHION, RAPIER, SABER };
+		    (void)mongets(mtmp, BRONZE_PLATE_MAIL);
+		    (void)mongets(mtmp, rn2(2) ? MESSER :
+				  swords[rn2(SIZE(swords))]);
+		    break;
+		}
+		if (mm == PM_MEROZALGHU_CAPTAIN) {
+		    /* half carry a dao */
+		    static const int swords[] = { LONG_SWORD, BROADSWORD,
+			SCIMITAR, FALCHION, KATANA, TWO_HANDED_SWORD, RAPIER,
+			SABER };
+		    (void)mongets(mtmp, BRONZE_PLATE_MAIL);
+		    (void)mongets(mtmp, rn2(2) ? DAO :
+				  swords[rn2(SIZE(swords))]);
+		    break;
+		}
+		if (mm == PM_MIRALT) {
+		    struct obj *wep = mk_miralt_artifact();
+
+		    if (!wep) wep = mksobj(TSURUGI, TRUE, FALSE);
+		    if (wep) {
+			(void) mpickobj(mtmp, wep);
+			if (wep->oartifact == ART_HEARTSEEKER ||
+				wep->oartifact == ART_PLAGUE) {
+			    struct obj *arrows = mksobj(ARROW, TRUE, FALSE);
+
+			    if (arrows) {
+				arrows->quan = (long) rn1(11, 20);
+				arrows->spe = 2;
+				arrows->opoisoned = TRUE;
+				arrows->blessed = TRUE;
+				arrows->cursed = FALSE;
+				arrows->owt = weight(arrows);
+				(void) mpickobj(mtmp, arrows);
+			    }
+			}
+		    }
+		    (void)mongets(mtmp, SCR_TELEPORTATION);
+		    (void)mongets(mtmp, SCR_TELEPORTATION);
+		    (void)mongets(mtmp, SCR_TELEPORTATION);
+		    (void)mongets(mtmp, POT_EXTRA_HEALING);
+		    (void)mongets(mtmp, POT_EXTRA_HEALING);
+		    break;
+		}
 		if ((mm == PM_MEROZALGHU || mm == PM_LESSER_MEROZALGHU) && rn2(4))
 		    (void)mongets(mtmp, (rn2(3) ? MACE :
 				rn2(2) ? MORNING_STAR : FALCHION));

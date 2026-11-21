@@ -43,6 +43,14 @@ struct monst *mon;
 	    dtype = (!rn2(20)) ? dlord(atyp) :
 				 (!rn2(6)) ? ndemon(atyp) : monsndx(ptr);
 	    cnt = 1;
+	} else if (ptr == &mons[PM_MIRALT]) {
+	    /* Miralt gates in his own kind */
+	    static const int kin[] = { PM_LESSER_MEROZALGHU,
+		PM_LESSER_MEROZALGHU_SOLDIER, PM_MEROZALGHU,
+		PM_MEROZALGHU_CAPTAIN, PM_ACCURSED_MEROZALGHU };
+	    dtype = kin[rn2(SIZE(kin))];
+	    cnt = rn2(3) ? 1 : 2;
+	    if (mvitals[dtype].mvflags & G_GONE) return;
 	} else if (is_lminion(mon)) {
 	    dtype = (is_lord(ptr) && !rn2(20)) ? llord() :
 		     (is_lord(ptr) || !rn2(6)) ? lminion() : monsndx(ptr);

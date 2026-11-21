@@ -409,6 +409,29 @@ register struct monst *mtmp;
 		}
 	}
 
+	/* Miralt retreats to the stairs when badly hurt */
+	if (mdat == &mons[PM_MIRALT] && !mtmp->mpeaceful &&
+		mtmp->mhp < mtmp->mhpmax / 3) {
+	    xchar sx, sy;
+
+	    if (xupstair) sx = xupstair, sy = yupstair;
+	    else if (xdnstair) sx = xdnstair, sy = ydnstair;
+	    else sx = sy = 0;
+	    if (sx) {
+		if (mtmp->mx == sx && mtmp->my == sy) {
+		    /* rest on the stairs */
+		    mtmp->mhp += rnd(6);
+		    if (mtmp->mhp > mtmp->mhpmax) mtmp->mhp = mtmp->mhpmax;
+		} else if (!rn2(3)) {
+		    if (canseemon(mtmp))
+			pline("%s teleports away!", Monnam(mtmp));
+		    (void) mnearto(mtmp, sx, sy, FALSE);
+		    monflee(mtmp, rn1(10, 10), FALSE, FALSE);
+		    if (canseemon(mtmp)) newsym(mtmp->mx, mtmp->my);
+		}
+	    }
+	}
+
 	/* confused monsters get unconfused with small probability */
 	if (mtmp->mconf && !rn2(50)) mtmp->mconf = 0;
 

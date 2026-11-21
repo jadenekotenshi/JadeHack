@@ -496,7 +496,7 @@ mattacku(mtmp)
 	}
 
 /*	Special demon handling code */
-	if(!mtmp->cham && is_demon(mdat) && !range2
+	if(!mtmp->cham && (is_demon(mdat) || mdat == &mons[PM_MIRALT]) && !range2
 	   && mtmp->data != &mons[PM_BALROG]
 	   && mtmp->data != &mons[PM_WEREDEMON]
 	   && mtmp->data != &mons[PM_SUCCUBUS]

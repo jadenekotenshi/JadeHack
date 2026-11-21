@@ -365,6 +365,7 @@ parent_dlevel(s, pd)
 {
 	int i, j, num, base, dnum = parent_dnum(s, pd);
 	branch *curr;
+	boolean bad;
 
 
 	i = find_branch(s, pd);
@@ -376,12 +377,28 @@ parent_dlevel(s, pd)
 	/* KMH -- Try our best to find a level without an existing branch */
 	i = j = rn2(num);
 	do {
+		bad = FALSE;
 		if (++i >= num) i = 0;
 		for (curr = branches; curr; curr = curr->next)
 			if ((curr->end1.dnum == dnum && curr->end1.dlevel == base+i) ||
-				(curr->end2.dnum == dnum && curr->end2.dlevel == base+i))
+				(curr->end2.dnum == dnum && curr->end2.dlevel == base+i)) {
+				bad = TRUE;
 				break;
-	} while (curr && i != j);
+			}
+		/* the Merozalghi Realm is never entered from a special level
+		   (Medusa, the Castle, the Oracle, the bigroom...) */
+		if (!bad && !strcmp(s, "The Merozalghi Realm")) {
+			s_level *sl;
+
+			for (sl = sp_levchn; sl; sl = sl->next)
+				if (sl->dlevel.dnum == dnum &&
+					sl->dlevel.dlevel == base+i) {
+					bad = TRUE;
+					break;
+				}
+		}
+		if (!bad) curr = (branch *)0;
+	} while (bad && i != j);
 	return (base + i);
 }
 
@@ -922,6 +939,7 @@ init_dungeons()		/* initialize the "dungeon" structs */
 	quest_dnum = dname_to_dnum("The Quest");
 	sokoban_dnum = dname_to_dnum("Sokoban");
 	mines_dnum = dname_to_dnum("The Gnomish Mines");
+	realm_dnum = dname_to_dnum("The Merozalghi Realm");
 	tower_dnum = dname_to_dnum("Vlad's Tower");
 
 	/* one special fixup for dummy surface level */
@@ -1320,6 +1338,13 @@ d_level *lev;
 
 #endif /* OVL0 */
 #ifdef OVL1
+
+boolean
+In_realm(lev)	/* are you in the Merozalghi Realm? */
+d_level	*lev;
+{
+	return((boolean)(lev->dnum == realm_dnum));
+}
 
 boolean
 In_mines(lev)	/* are you in the mines dungeon? */

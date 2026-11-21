@@ -293,6 +293,34 @@ make_artif: if (by_align) otmp = mksobj((int)a->otyp, TRUE, FALSE);
 }
 
 
+/* A random neutral or chaotic artifact weapon that has not been made yet, for
+   Miralt; null if there are none left. */
+struct obj *
+mk_miralt_artifact()
+{
+	const struct artifact *a;
+	int n, m;
+	short eligible[NROFARTIFACTS];
+	struct obj *otmp;
+
+	for (n = 0, a = artilist+1, m = 1; a->otyp; a++, m++)
+	    if ((a->alignment == A_NEUTRAL || a->alignment == A_CHAOTIC) &&
+		!(a->spfx & SPFX_NOGEN) && !artiexist[m] &&
+		(objects[a->otyp].oc_class == WEAPON_CLASS ||
+		 (objects[a->otyp].oc_class == TOOL_CLASS &&
+		  objects[a->otyp].oc_skill != P_NONE)))
+		eligible[n++] = m;
+	if (!n) return (struct obj *)0;
+	m = eligible[rn2(n)];
+	a = &artilist[m];
+	otmp = mksobj((int)a->otyp, TRUE, FALSE);
+	otmp = oname(otmp, a->name);
+	otmp->oartifact = m;
+	artiexist[m] = TRUE;
+	return otmp;
+}
+
+
 /*** Object properties (see ITEM_xxx in obj.h) ***/
 
 /* give a weapon or armor some magical property; allow_detrimental permits
@@ -1504,9 +1532,7 @@ int dieroll; /* needed for Magicbane and vorpal blades */
 
 	/* Pernicimordax is deadly to merozalghi, on top of its cold */
 	if (otmp->oartifact == ART_PERNICIMORDAX && !youdefend &&
-		(mdef->data == &mons[PM_MEROZALGHU] ||
-		 mdef->data == &mons[PM_LESSER_MEROZALGHU] ||
-		 mdef->data == &mons[PM_ACCURSED_MEROZALGHU]))
+		is_merozalghu(mdef->data))
 	    *dmgptr *= 2;
 
 	if (youattack && youdefend) {

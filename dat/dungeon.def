@@ -18,6 +18,7 @@ DUNGEON:	"The Dungeons of Doom" "D" (25, 5)
 ALIGNMENT:	unaligned
 BRANCH:		"The Gnomish Mines" @ (2, 3)
 BRANCH:		"The Mall" @ (7, 8)
+BRANCH:		"The Merozalghi Realm" @ (12, -1)
 %REINCARNATION LEVEL:		"rogue" "R" @ (15, 4)
 LEVEL:		"oracle" "O" @ (5, 5)
 LEVALIGN:	neutral
@@ -178,3 +179,17 @@ DUNGEON:	"The Giant Caverns" "none" (1, 0)
 DESCRIPTION:	mazelike
 ALIGNMENT:	chaotic
 LEVEL:		"giants" "none" @ (1, 0)
+
+#
+#	The Merozalghi Realm: a branch of the main dungeon with its down stairs
+#	anywhere from level 12 to the Castle, never on a special level or one
+#	that already has a branch.  Its fill levels (merofill, chosen in mklev.c) are cave levels
+#	with acid rivers, the town of Skunj is three levels down and the
+#	Citadel of Miralt is at the bottom.
+#
+DUNGEON:	"The Merozalghi Realm" "Z" (7, 0)
+DESCRIPTION:	mazelike
+ALIGNMENT:	chaotic
+LEVEL:		"skunj" "T" @ (3, 0)
+LEVELDESC:	town
+LEVEL:		"citadel" "C" @ (-1, 0)

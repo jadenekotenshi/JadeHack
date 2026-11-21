@@ -16,6 +16,11 @@
 #define resists_disint(mon)	(((mon)->mintrinsics & MR_DISINT) != 0)
 #define resists_elec(mon)	(((mon)->mintrinsics & MR_ELEC) != 0)
 #define resists_poison(mon)	(((mon)->mintrinsics & MR_POISON) != 0)
+#define is_merozalghu(ptr)	((ptr) == &mons[PM_LESSER_MEROZALGHU] || \
+				 (ptr) == &mons[PM_LESSER_MEROZALGHU_SOLDIER] || \
+				 (ptr) == &mons[PM_MEROZALGHU] || \
+				 (ptr) == &mons[PM_MEROZALGHU_CAPTAIN] || \
+				 (ptr) == &mons[PM_ACCURSED_MEROZALGHU])
 #define resists_acid(mon)	(((mon)->mintrinsics & MR_ACID) != 0)
 #define resists_ston(mon)	(((mon)->mintrinsics & MR_STONE) != 0)
 #define resists_sick(mon)  ((mon)->data->mlet == S_FUNGUS || \

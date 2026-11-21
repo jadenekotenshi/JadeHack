@@ -939,6 +939,8 @@ char c;
 #endif
 		  case '}'  : return(MOAT);
 		  case 'P'  : return(POOL);
+		  case 'a'  : return(ACID_POOL);
+		  case 'w'  : return(SHALLOW_WATER);
 		  case 'L'  : return(LAVAPOOL);
 		  case 'I'  : return(ICE);
 		  case 'W'  : return(WATER);
