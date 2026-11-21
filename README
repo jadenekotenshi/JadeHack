@@ -117,8 +117,15 @@ Original JadeHack additions
     College of Parnassus, artifact the Lyre of Orpheus) and the Pirate
     (human, elf or orc; swimming, speed and stealth intrinsics; the cutlass,
     Reaver, the Marauder's Map and the Treasury of Proteus; a quest in Tortuga
-    and on Shipwreck Island).  Role skill and starting-gear changes for
-    Barbarians, Rangers, Archeologists, Healers, Knights and Priests.
+    and on Shipwreck Island) and the Ninja (after SLASH'EM: human, elf, gnome
+    or orc, neutral or chaotic; starts with a ninja-to, shuriken, a lock pick,
+    a grappling hook (kaginawa) and potions of sickness and invisibility;
+    stealth, searching, speed, swimming and warning intrinsics; Expert in
+    two-weapon combat, long sword, dart (shuriken), dagger and knife; the
+    escape spell skill; first gift Ichigeki; a quest against Jaquio for the
+    Fuma-itto no Ken, set in the Samurai quest's levels).  Role skill and
+    starting-gear changes for Barbarians, Rangers, Archeologists, Healers,
+    Knights and Priests.
   * Weapons and armor: falchion, kriegsmesser, saber, messer, rapier, orcish
     scimitar, crysteel falchion, silver knives and crossbow bolts, dwarvish
     bearded axe, parrying dagger and main gauche, bracers, the crystal
@@ -139,7 +146,7 @@ Original JadeHack additions
     Reaver, Sword of Kas, Hand and Eye of Vecna, Narya, Nenya and Vilya,
     Aegis, Yoichi no Yumi, Wallet of Perseus, the Marauder's Map, the
     Treasury of Proteus, Plague, Heartseeker, Frostbite, Mirrorbright,
-    Durandal and Arcanos Guard.  Grayswandir, Sunsword, Werebane,
+    Durandal, Arcanos Guard and the Ninja's Fuma-itto no Ken.  Grayswandir, Sunsword, Werebane,
     Frost Brand, Fire Brand and others were rebalanced.
   * Monsters: dozens, among them the lemming and lemming zombie,
     wire jelly, zuvembie, star and fire vampires, Kuei-jin, the nightgaunt,
@@ -156,7 +163,20 @@ Original JadeHack additions
   * Dungeon branches and levels: the Mall (twelve shops) and the Rat Sewers
     beneath it, Vecna's Domain (three levels, after EvilHack), the Sunless
     Sea, the Spider Caves and the Giant Caverns (one level each, after
-    SLASH'EM), and the Bard and Pirate quests.
+    SLASH'EM), and the Bard, Pirate and Ninja quests.
+  * The Merozalghi Realm: a seven-level branch of the Dungeons of Doom, entered
+    by down stairs from anywhere between dungeon level 12 and the Castle (never
+    on the Castle's level, the Mall's or any other special level).  Its caves
+    are cut by rivers of acid (a new "acid pool" terrain that burns you each
+    turn and corrodes boots and armor; there is also wadeable "shallow water")
+    and are full of merozalghi (z): lesser, soldier, ordinary, captain, accursed,
+    warlock, shaman, necromancer and cultist, whose thorned tentacles rend,
+    alongside shoggoths, ghasts and gugs.  Three levels down is the cave town
+    of Skunj (two general stores, a third shop, a chaotic temple and two cages
+    of soldiers), and at the bottom is Citadel Miralt, where the unique
+    Miralt (acid breath, clerical spells, gates in merozalghi, wields a
+    random artifact weapon and teleports to the stairs when hurt) sits on
+    his throne guarding two locked chests.
 
 For the stats, the design notes and what has and has not been played, read
 PORTING-5.0.md.
