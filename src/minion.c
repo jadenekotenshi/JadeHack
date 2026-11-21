@@ -47,7 +47,7 @@ struct monst *mon;
 	    /* Miralt gates in his own kind */
 	    static const int kin[] = { PM_LESSER_MEROZALGHU,
 		PM_LESSER_MEROZALGHU_SOLDIER, PM_MEROZALGHU,
-		PM_MEROZALGHU_CAPTAIN, PM_MEROZALGHU_WARLOCK,
+		PM_MEROZALGHU_CAPTAIN, PM_MEROZALGHU_WARLOCK, PM_MEROZALGHU_SHAMAN,
 		PM_ACCURSED_MEROZALGHU };
 	    dtype = kin[rn2(SIZE(kin))];
 	    cnt = rn2(3) ? 1 : 2;

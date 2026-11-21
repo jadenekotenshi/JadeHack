@@ -21,6 +21,7 @@
 				 (ptr) == &mons[PM_MEROZALGHU] || \
 				 (ptr) == &mons[PM_MEROZALGHU_CAPTAIN] || \
 				 (ptr) == &mons[PM_MEROZALGHU_WARLOCK] || \
+				 (ptr) == &mons[PM_MEROZALGHU_SHAMAN] || \
 				 (ptr) == &mons[PM_ACCURSED_MEROZALGHU])
 #define resists_acid(mon)	(((mon)->mintrinsics & MR_ACID) != 0)
 #define resists_ston(mon)	(((mon)->mintrinsics & MR_STONE) != 0)
