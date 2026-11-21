@@ -1143,9 +1143,11 @@ int dieroll;
 	    }
 	}
 
-	/* shocking grasp: melee strikes do an extra d10 of electricity */
+	/* shocking grasp: melee strikes do an extra d10 of electricity
+	   (or cold, or fire, if it was read while confused) */
 	if (u.ushock && !thrown && mdat != &mons[PM_SHADE] &&
-		!resists_elec(mon)) {
+		!(u.ushtype == 1 ? resists_cold(mon) :
+		  u.ushtype == 2 ? resists_fire(mon) : resists_elec(mon))) {
 	    tmp += rnd(10);
 	    shockmsg = TRUE;
 	}
@@ -1277,7 +1279,9 @@ int dieroll;
 	}
 
 	if (shockmsg && canspotmon(mon))
-		pline("%s is shocked!", Monnam(mon));
+		pline("%s is %s!", Monnam(mon),
+		      u.ushtype == 1 ? "chilled" :
+		      u.ushtype == 2 ? "scorched" : "shocked");
 
 	if (needpoismsg)
 		pline_The("poison doesn't seem to affect %s.", mon_nam(mon));

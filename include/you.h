@@ -266,6 +266,7 @@ struct you {
 
 	unsigned umconf;
 	unsigned ushock;	/* turns left of shocking grasp */
+	unsigned ushtype;	/* 0 lightning, 1 rime (cold), 2 flame (fire) */
 	char usick_cause[PL_PSIZ+20]; /* sizeof "unicorn horn named "+1 */
 	Bitfield(usick_type,2);
 #define SICK_VOMITABLE 0x01

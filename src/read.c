@@ -1131,10 +1131,7 @@ register struct obj	*sobj;
 		break;
 	case SCR_SHOCKING_GRASP:
 		/* like confuse monster, it does not identify itself */
-		if (confused) {
-		    pline("Static electricity makes your %s stand on end.",
-			  body_part(HAIR));
-		} else if (sobj->cursed) {
+		if (sobj->cursed) {
 		    pline_The("lightning arcs back at you!");
 		    if (Shock_resistance) {
 			shieldeff(u.ux, u.uy);
@@ -1146,14 +1143,32 @@ register struct obj	*sobj;
 		    }
 		} else {
 		    int turns = sobj->blessed ? rn1(20, 20) : rn1(10, 10);
+		    /* confused: rime or flame instead of lightning */
+		    unsigned newtype = confused ? (rn2(2) ? 1 : 2) : 0;
+		    const char *hands = makeplural(body_part(HAND));
+		    boolean more = (u.ushock && u.ushtype == newtype);
 
-		    if (Blind)
-			Your("%s tingle%s.", makeplural(body_part(HAND)),
-			     u.ushock ? " even more" : "");
-		    else
-			pline("Lightning crackles around your %s%s.",
-			      makeplural(body_part(HAND)),
-			      u.ushock ? " even more" : "");
+		    if (u.ushock && !more) u.ushock = 0;
+		    if (newtype == 1) {
+			if (Blind)
+			    Your("%s feel cold%s.", hands, more ? " as ice" : "");
+			else
+			    Your("%s are sheathed with rime%s.", hands,
+				 more ? " even more thickly" : "");
+		    } else if (newtype == 2) {
+			if (Blind)
+			    Your("%s feel hot%s.", hands, more ? " even more" : "");
+			else
+			    Your("%s are wreathed in flame%s.", hands,
+				 more ? " even more brightly" : "");
+		    } else {
+			if (Blind)
+			    Your("%s tingle%s.", hands, more ? " even more" : "");
+			else
+			    pline("Lightning crackles around your %s%s.", hands,
+				  more ? " even more" : "");
+		    }
+		    u.ushtype = newtype;
 		    u.ushock += turns;
 		}
 		break;
