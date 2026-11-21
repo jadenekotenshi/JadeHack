@@ -1111,3 +1111,14 @@ Checked in wizard mode: a neutral and a chaotic Ninja start with the inventory a
 ## Batch 106: the dao
 
 A new curved sword, the **dao** (`objects.c`, after the messer; `P_CURVED_SWORD`, iron, always identified): damage **d6+d4** against small and large (`oc_wsdam` and `oc_wldam` are 6 and the +d4 comes from `dmgval()` in `weapon.c`, as for the kriegsmesser's +d6), weight 50 (the falchion is 45), cost 80 (the katana's), generation probability 8. The class must still add up to 1000, so the scimitar goes from 14 to 11, the falchion from 15 to 12 and the messer from 10 to 8. Monsters that pick a weapon rank it just below the rapier (`hwep[]`), and a Pirate's sacrificed curved sword can turn into Reaver from a dao as from a scimitar (`pray.c`). Every object number after it moves up by one, so old saves and bones are not compatible; the data files and utilities must be rebuilt as in Batch 79 (a game must not be running when the installed data files are replaced).
+
+## Batch 107: scroll of shocking grasp
+
+A new scroll (`objects.c`, after antimagic; label **THUNDEDE** in the table, shuffled like every other label; cost 100, ink 12 like confuse monster in `write.c`; generation probability 20, taken from scroll of identify, which goes from 150 to 130 so the class still adds up to 1000).
+
+- **Reading it** (`read.c`): like confuse monster it does not identify itself, so after "Lightning crackles around your hands." (blind: "Your hands tingle.") the game asks you to name it. It sets `u.ushock` (new in `you.h`), a countdown of turns: **10-19 uncursed, 20-39 blessed**; reading another while charged adds to it ("even more"). Confused: only "Static electricity makes your hair stand on end" and nothing happens. Cursed: the lightning arcs back for d10 (nothing if you are shock resistant).
+- **Effect** (`uhitm.c`, `hmon_hitmon()`): while `u.ushock` is running, every melee hit (weapon, martial arts, bare hands, not thrown or fired objects) does an extra **d10** unless the monster resists electricity or is a shade, and prints "The X is shocked!".
+- **Timeout** (`timeout.c`): one turn per move; "Your hands stop crackling with lightning." (blind: "stop tingling.") when it runs out. Enlightenment and the dump say "charged with lightning" (`cmd.c`).
+- Every scroll number after it moves up by one; old saves and bones are not compatible and the data files and utilities must be rebuilt as in Batch 79.
+
+Checked in wizard mode: reading it shows the message, a newt hit afterwards was "shocked" and killed. Cursed, blessed, confused and blind readings and the expiry message were not tried.

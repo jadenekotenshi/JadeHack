@@ -196,6 +196,13 @@ nh_timeout()
 			rehumanize();
 	}
 	if(u.ucreamed) u.ucreamed--;
+	if(u.ushock && !--u.ushock) {
+	    if (Blind)
+		Your("%s stop tingling.", makeplural(body_part(HAND)));
+	    else
+		Your("%s stop crackling with lightning.",
+		     makeplural(body_part(HAND)));
+	}
 
 	/* Dissipate spell-based protection. */
 	if (u.usptime) {

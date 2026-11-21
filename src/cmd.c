@@ -1120,6 +1120,7 @@ int final;	/* 0 => still in progress; 1 => over, survived; 2 => dead */
 	if (Infravision) you_have("infravision");
 	if (Detect_monsters) you_are("sensing the presence of monsters");
 	if (u.umconf) you_are("going to confuse monsters");
+	if (u.ushock) you_are("charged with lightning");
 
 	/*** Appearance and behavior ***/
 	if (Adornment) {
@@ -1467,6 +1468,7 @@ int final;
 	if (Detect_monsters)
 	  dump(youwere, "sensing the presence of monsters");
 	if (u.umconf) dump(youwere, "going to confuse monsters");
+	if (u.ushock) dump(youwere, "charged with lightning");
 
 	/*** Appearance and behavior ***/
 	if (Adornment) {

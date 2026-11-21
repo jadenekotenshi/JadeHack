@@ -647,6 +647,7 @@ int dieroll;
 	 */
 	boolean hittxt = FALSE, destroyed = FALSE, already_killed = FALSE;
 	boolean get_dmg_bonus = TRUE;
+	boolean shockmsg = FALSE;
 	boolean ispoisoned = FALSE, needpoismsg = FALSE, poiskilled = FALSE;
 	boolean silvermsg = FALSE, silverobj = FALSE;
 	boolean valid_weapon_attack = FALSE;
@@ -1142,6 +1143,13 @@ int dieroll;
 	    }
 	}
 
+	/* shocking grasp: melee strikes do an extra d10 of electricity */
+	if (u.ushock && !thrown && mdat != &mons[PM_SHADE] &&
+		!resists_elec(mon)) {
+	    tmp += rnd(10);
+	    shockmsg = TRUE;
+	}
+
 	/* a boomerang, thrown or swung, kills a keese outright */
 	if (obj && obj->otyp == BOOMERANG && mdat == &mons[PM_KEESE] &&
 		mon->mhp > tmp)
@@ -1267,6 +1275,9 @@ int dieroll;
 		    whom = strcat(s_suffix(whom), " flesh");
 		pline(fmt, whom);
 	}
+
+	if (shockmsg && canspotmon(mon))
+		pline("%s is shocked!", Monnam(mon));
 
 	if (needpoismsg)
 		pline_The("poison doesn't seem to affect %s.", mon_nam(mon));

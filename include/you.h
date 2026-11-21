@@ -265,6 +265,7 @@ struct you {
     int u_telepathy_dist;
 
 	unsigned umconf;
+	unsigned ushock;	/* turns left of shocking grasp */
 	char usick_cause[PL_PSIZ+20]; /* sizeof "unicorn horn named "+1 */
 	Bitfield(usick_type,2);
 #define SICK_VOMITABLE 0x01

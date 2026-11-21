@@ -1129,6 +1129,34 @@ register struct obj	*sobj;
 		    }
 		}
 		break;
+	case SCR_SHOCKING_GRASP:
+		/* like confuse monster, it does not identify itself */
+		if (confused) {
+		    pline("Static electricity makes your %s stand on end.",
+			  body_part(HAIR));
+		} else if (sobj->cursed) {
+		    pline_The("lightning arcs back at you!");
+		    if (Shock_resistance) {
+			shieldeff(u.ux, u.uy);
+			You("seem unhurt.");
+			ugolemeffects(AD_ELEC, d(1,10));
+		    } else {
+			losehp(d(1,10), "scroll of shocking grasp",
+			       KILLED_BY_AN);
+		    }
+		} else {
+		    int turns = sobj->blessed ? rn1(20, 20) : rn1(10, 10);
+
+		    if (Blind)
+			Your("%s tingle%s.", makeplural(body_part(HAND)),
+			     u.ushock ? " even more" : "");
+		    else
+			pline("Lightning crackles around your %s%s.",
+			      makeplural(body_part(HAND)),
+			      u.ushock ? " even more" : "");
+		    u.ushock += turns;
+		}
+		break;
 	case SCR_SCARE_MONSTER:
 	case SPE_CAUSE_FEAR:
 	    {	register int ct = 0;

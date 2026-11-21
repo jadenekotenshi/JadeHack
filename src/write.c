@@ -37,6 +37,7 @@ register struct obj *otmp;
 		return(10);
 /*		break; */
 	case SCR_CONFUSE_MONSTER:
+	case SCR_SHOCKING_GRASP:
 		return(12);
 /*		break; */
 	case SCR_IDENTIFY:
