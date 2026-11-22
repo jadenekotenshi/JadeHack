@@ -429,9 +429,15 @@ morguemon()
 {
 	register int i = rn2(100), hd = rn2(level_difficulty());
 
-	if(hd > 10 && i < 10)
-		return((Inhell || In_endgame(&u.uz)) ? mkclass(S_DEMON,0) :
-						       &mons[ndemon(A_NONE)]);
+	if(hd > 10 && i < 10) {
+		int ndemon_res;
+
+		if (Inhell || In_endgame(&u.uz)) return mkclass(S_DEMON,0);
+		/* upper dungeon: only demons allowed outside Gehennom; if
+		   there is none to be had, fall through to the undead */
+		ndemon_res = ndemon(A_NONE);
+		if (ndemon_res != NON_PM) return &mons[ndemon_res];
+	}
 	if(hd > 8 && i > 85)
 		return(mkclass(S_VAMPIRE,0));
 

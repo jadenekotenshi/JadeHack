@@ -1213,3 +1213,11 @@ Checked in wizard mode: tentacles rend; a created cultist wielded a mace and cha
 The request said "slightly AC" without a direction; I took it as slightly *better* AC (2 against 3), and the 1d8 claws, level and lack of a sting are my choices too.
 
 Checked in wizard mode: a created snipion attacked with "The snipion snips you!" and killed a 16-HP starting wizard in a few rounds. Not seen: monster-on-monster "snips". The three stress tests ran clean.
+
+## Batch 117: Gehennom-only demons stay out of the upper dungeon
+
+A weredemon (`G_HELL`) killed a player on DL12. Ordinary generation honours `G_HELL` (`uncommon()`), but `mkclass(S_DEMON)` does not, and two places pick a random non-lord demon with it: graveyards (`morguemon()`, difficulty 12 and up) and demon summoning (`ndemon()`, used by `msummon()`, `summon_minion()` and the like). In vanilla that only let devils and the like turn up early; with the weredemon in the demon class it can too.
+
+`ndemon()` (`minion.c`) now rejects any `G_HELL` demon unless you are in Gehennom or the endgame, so graveyards and summoning demons outside Gehennom can only produce the non-hell demons (succubus, incubus). If it finds none in its 20 tries it returns `NON_PM`, as it always could. `morguemon()` (`mkroom.c`) used `&mons[ndemon(A_NONE)]` unchecked, which would index `mons[-1]` on a miss; it now falls through to the usual ghost, wraith, vampire or zombie. Lords and princes were already kept out of `ndemon()`. Only the binary changes; saves and bones still load.
+
+Checked with a temporary hook (not kept) calling `ndemon()` 20,000 times on DL1: no hell-only demon came back and about 28% returned none. The three stress tests ran clean. Not seen in play: a graveyard on DL12 or deeper.

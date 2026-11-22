@@ -375,6 +375,10 @@ aligntyp atyp;
 
 	for (tryct = 0; tryct < 20; tryct++) {
 	    ptr = mkclass(S_DEMON, 0);
+	    /* mkclass() ignores G_HELL, so keep the Gehennom-only demons
+	     * (weredemons, devils, ...) from turning up in the upper dungeon */
+	    if (ptr && (ptr->geno & G_HELL) && !Inhell && !In_endgame(&u.uz))
+		continue;
 	    if (ptr && is_ndemon(ptr) &&
 		    (atyp == A_NONE || sgn(ptr->maligntyp) == sgn(atyp)))
 		return(monsndx(ptr));
