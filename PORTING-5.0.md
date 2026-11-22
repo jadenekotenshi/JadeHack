@@ -1205,3 +1205,11 @@ The warlock's clerical twin (`monst.c`, after the warlock; **bright cyan**): lev
 Both are in `is_merozalghu()` (Pernicimordax, rending), are among the kinds Miralt gates in, and appear in the realm like the warlock and shaman: the fill levels and Skunj place the necromancer 25-30% and the cultist 35-40% of the time, both have weight 2 in the realm's random monster mix, and the Citadel's guard pick is now one of nine. Monster numbers after the shaman move up by two; old saves and bones are not compatible and the data files and utilities must be rebuilt as in Batch 79. Colours, the spell mix, the undead mix and the one-in-six rate are my choices.
 
 Checked in wizard mode: tentacles rend; a created cultist wielded a mace and chanted ("something answers" appeared); a necromancer's undead spell (forced for the test with a temporary hook, not kept) raised a zombie. Not seen: the necromancer choosing it unforced, wraiths or vampires from it, what a cultist actually summoned. The three stress tests ran clean.
+
+## Batch 116: snipion
+
+**Snipion** (`monst.c`, **cyan** `s`): a scorpion-like arachnid with big pincers instead of a stinger. Level 5, speed 15, AC 2 (the scorpion is AC 3), frequency 2, same size and the same concealing, oviparous, eagle-eyed build; two claw attacks of **1d8** each (the scorpion's are 1d2) and **no sting and no poison**, so the claws are the whole threat (average 9 a round against the scorpion's 5.5 plus poison). It is not poisonous to eat. Its claw hits read "The snipion snips you!" (`hitmsg()` in `mhitu.c`; "snips" for monster-on-monster fights in `mhitm.c`); every other claw attack still says "hits". It sits right after the scorpion in the `s` class, so monster numbers after it move up by one; old saves and bones are not compatible and the data files and utilities must be rebuilt as in Batch 79.
+
+The request said "slightly AC" without a direction; I took it as slightly *better* AC (2 against 3), and the 1d8 claws, level and lack of a sting are my choices too.
+
+Checked in wizard mode: a created snipion attacked with "The snipion snips you!" and killed a 16-HP starting wizard in a few rounds. Not seen: monster-on-monster "snips". The three stress tests ran clean.

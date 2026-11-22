@@ -456,6 +456,13 @@ hitmm(magr, mdef, mattk)
 				    Sprintf(buf,"%s squeezes", magr_name);
 				    break;
 				}
+				/* fall through */
+			case AT_CLAW:
+				if (magr->data == &mons[PM_SNIPION]) {
+				    Sprintf(buf,"%s snips", magr_name);
+				    break;
+				}
+				/* fall through */
 			default:
 				Sprintf(buf,"%s hits", magr_name);
 		    }

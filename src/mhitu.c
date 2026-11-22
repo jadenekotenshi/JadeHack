@@ -83,6 +83,12 @@ register struct attack *mattk;
 		case AT_BOOM:
 			pline("%s explodes!", Monnam(mtmp));
 			break;
+		case AT_CLAW:
+			if (mtmp->data == &mons[PM_SNIPION]) {
+			    pline("%s snips you!", Monnam(mtmp));
+			    break;
+			}
+			/* fall through */
 		default:
 			pline("%s hits!", Monnam(mtmp));
 	    }
