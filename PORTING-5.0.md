@@ -1236,3 +1236,11 @@ Where it appears:
 The probabilities are my choices. Old saves still load (the new room type is only ever set on new levels) but the data files must be rebuilt as in Batch 79 because the level files change.
 
 Checked in wizard mode with a temporary test hook (not kept) that made every shop a mimic shop: four generated shops had 13 of 20, 6 of 10, 5 of 6 and 22 of 40 squares as mimics. The three stress tests ran clean. The two `.des` changes compile into the data files but I did not see them generate in play, and I did not see the one-in-six rule fire below depth 20.
+
+## Batch 119: a smaller Mall
+
+The Mall (`dat/mall.des`) had twelve shops and was handing out too many artifacts. It now has **eight**, **three of them general stores**: the concourse is four shops wide instead of six (the level is 51 columns across instead of 75), two rows of four, each shop the same 11 by 5 size as before, so each one stocks as it did and the total stock is about two thirds of what it was. The row of doors, the fountain in the middle of the concourse, the up stairs at the west end, the down stairs at the east end, the watchmen and the random monsters are as before.
+
+The shops, north row then south row, west to east: general store, weapon shop, armor shop, wand shop; potion shop, general store, scroll shop, general store. The food, ring, book, tool and candle shops are gone (the general stores sell all of those, and a deli, a jeweler, a bookstore, a hardware store or a lighting shop is no longer guaranteed). Which five specialist shops stay, and where, is my choice. Mimics, which come from the depth of the level, are unchanged. Only the data files change; saves and bones still load, but a Mall level you have already visited keeps its twelve shops.
+
+Checked in wizard mode (a temporary hook, not kept, that sent the hero to the Mall): the level maps as eight shops with the right fronts, a fountain, stairs at both ends, and the overview lists a scroll shop. The three stress tests ran clean. Not counted: the artifacts a typical visit now yields.
