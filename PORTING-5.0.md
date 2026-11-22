@@ -1221,3 +1221,18 @@ A weredemon (`G_HELL`) killed a player on DL12. Ordinary generation honours `G_H
 `ndemon()` (`minion.c`) now rejects any `G_HELL` demon unless you are in Gehennom or the endgame, so graveyards and summoning demons outside Gehennom can only produce the non-hell demons (succubus, incubus). If it finds none in its 20 tries it returns `NON_PM`, as it always could. `morguemon()` (`mkroom.c`) used `&mons[ndemon(A_NONE)]` unchecked, which would index `mons[-1]` on a miss; it now falls through to the usual ghost, wraith, vampire or zombie. Lords and princes were already kept out of `ndemon()`. Only the binary changes; saves and bones still load.
 
 Checked with a temporary hook (not kept) calling `ndemon()` 20,000 times on DL1: no hell-only demon came back and about 28% returned none. The three stress tests ran clean. Not seen in play: a graveyard on DL12 or deeper.
+
+## Batch 118: the mimic shop
+
+A **mimic shop** is a general store in every respect but its stock: the shopkeeper greets you with "general store", the goods are random objects, and the shop shows up as a general store in the overview. At least **half** of the stocked squares hold a **mimic** instead of an item, and often a few more.
+
+It is a new room type, `MIMICSHOP` (28, `mkroom.h`), with a matching `shtypes[]` entry in `shknam.c` named "general store" (probability 0, so it is never rolled as an ordinary shop), a "mimic shop" name for `.des` files (`lev_main.c`) and a case in `shop_string()` (`dungeon.c`). `stock_room()` counts the squares that get stock (the new helper `shop_square()` holds the old per-square door test) and picks `(n+1)/2` plus up to `n/4` of them at random, front to back, so the half is exact rather than a per-square chance; if a mimic cannot be placed on a square (a monster is there, or `mkclass(S_MIMIC)` finds none) the debt carries to the next square. `mkshobj_at()` now returns whether it made a mimic and takes a force flag; in a mimic shop the mimics always take the look of a shop item instead of sometimes showing as a strange object. Mimic species still come from `mkclass(S_MIMIC)`, so they follow the level difficulty as before.
+
+Where it appears:
+- **Random shops** (`mkshop()`, `mkroom.c`): below depth 20, one random shop in six is a mimic shop, whatever type it would have been.
+- **Skunj** (`realm.des`): a one in three chance that the east general store is the mimic shop.
+- **Orcus Town** (`gehennom.des`): a one in two chance that the north-west shop is the mimic shop.
+
+The probabilities are my choices. Old saves still load (the new room type is only ever set on new levels) but the data files must be rebuilt as in Batch 79 because the level files change.
+
+Checked in wizard mode with a temporary test hook (not kept) that made every shop a mimic shop: four generated shops had 13 of 20, 6 of 10, 5 of 6 and 22 of 40 squares as mimics. The three stress tests ran clean. The two `.des` changes compile into the data files but I did not see them generate in play, and I did not see the one-in-six rule fire below depth 20.

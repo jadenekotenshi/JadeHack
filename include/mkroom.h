@@ -77,7 +77,8 @@ extern NEARDATA coord doors[DOORMAX];
 #define BOOKSHOP	26
 #define UNIQUESHOP	27	/* shops here & above not randomly gen'd. */
 #define CANDLESHOP	27
-#define MAXRTYPE	27	/* maximum valid room type */
+#define MIMICSHOP	28	/* a general store full of mimics */
+#define MAXRTYPE	28	/* maximum valid room type */
 
 /* Special type for search_special() */
 #define ANY_TYPE	(-1)

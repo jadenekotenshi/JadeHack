@@ -171,6 +171,10 @@ gottype:
 	     */
 	    if(isbig(sroom) && (shtypes[i].symb == WAND_CLASS
 				|| shtypes[i].symb == SPBOOK_CLASS)) i = 0;
+
+	    /* deep down, one random shop in six is a general store that is
+	     * mostly mimics */
+	    if (depth(&u.uz) > 20 && !rn2(6)) i = MIMICSHOP - SHOPBASE;
 	}
 	sroom->rtype = SHOPBASE + i;
 

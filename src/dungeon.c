@@ -2276,6 +2276,8 @@ int rtype;
 			return "bookstore";
 		case CANDLESHOP:
 			return "lighting shop";
+		case MIMICSHOP:
+			return "general store";
 		default:
 			/* In case another patch adds a shop type that doesn't exist,
 			 * do something reasonable like "a shop".

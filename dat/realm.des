@@ -111,7 +111,11 @@ FOUNTAIN:(30,08)
 # the two general stores
 REGION:(03,02,09,05),lit,"shop"
 DOOR:closed,(06,06)
-REGION:(29,02,35,05),lit,"shop"
+IF [33%] {
+  REGION:(29,02,35,05),lit,"mimic shop"
+} ELSE {
+  REGION:(29,02,35,05),lit,"shop"
+}
 DOOR:closed,(32,06)
 
 # and a shop of some other kind

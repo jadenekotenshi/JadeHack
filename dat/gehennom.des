@@ -383,7 +383,11 @@ OBJECT:('`',"boulder"),(14,14)
 ALTAR:(24,07),noalign,sanctum
 REGION:(22,12,25,16),unlit,"morgue"
 REGION:(32,09,37,12),lit,"shop"
-REGION:(12,00,15,04),lit,"shop"
+IF [50%] {
+  REGION:(12,00,15,04),lit,"mimic shop"
+} ELSE {
+  REGION:(12,00,15,04),lit,"shop"
+}
 # Doors
 DOOR:closed,(23,02)
 DOOR:open,(31,03)

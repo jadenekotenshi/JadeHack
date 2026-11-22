@@ -12,7 +12,7 @@ extern const struct shclass shtypes[];
 
 #else
 
-STATIC_DCL void FDECL(mkshobj_at, (const struct shclass *,int,int));
+STATIC_DCL boolean FDECL(mkshobj_at, (const struct shclass *,int,int,BOOLEAN_P));
 STATIC_DCL void FDECL(nameshk, (struct monst *,const char * const *));
 STATIC_DCL int  FDECL(shkinit, (const struct shclass *,struct mkroom *,int));
 
@@ -218,6 +218,11 @@ const struct shclass shtypes[] = {
 	{"lighting store", TOOL_CLASS, 0, D_SHOP,
 	    {{33, -WAX_CANDLE}, {50, -TALLOW_CANDLE},
 	     {5, -BRASS_LANTERN}, {10, -OIL_LAMP}, {2, -MAGIC_LAMP}}, shklight},
+	/* a general store in all but its stock: half or more of the goods
+	 * are mimics (see stock_room); it must stay last of the unique shops
+	 * and match MIMICSHOP in mkroom.h */
+	{"general store", RANDOM_CLASS, 0, D_SHOP,
+	    {{100, RANDOM_CLASS}, {0, 0}, {0, 0}}, shkgeneral},
 	{(char *)0, 0, 0, 0, {{0, 0}, {0, 0}, {0, 0}}, 0}
 };
 
@@ -242,24 +247,27 @@ init_shop_selection()
 }
 #endif /*0*/
 
-STATIC_OVL void
-mkshobj_at(shp, sx, sy)
-/* make an object of the appropriate type for a shop square */
+STATIC_OVL boolean
+mkshobj_at(shp, sx, sy, forcemimic)
+/* make an object of the appropriate type for a shop square; returns TRUE
+   if it made a mimic instead */
 const struct shclass *shp;
 int sx, sy;
+boolean forcemimic;	/* the mimic shop wants a mimic here */
 {
 	struct monst *mtmp;
 	int atype;
 	struct permonst *ptr;
 
-	if (rn2(100) < depth(&u.uz) &&
+	if ((forcemimic || rn2(100) < depth(&u.uz)) &&
 		!MON_AT(sx, sy) && (ptr = mkclass(S_MIMIC,0)) &&
 		(mtmp = makemon(ptr,sx,sy,NO_MM_FLAGS)) != 0) {
 	    /* note: makemon will set the mimic symbol to a shop item */
-	    if (rn2(10) >= depth(&u.uz)) {
+	    if (!forcemimic && rn2(10) >= depth(&u.uz)) {
 		mtmp->m_ap_type = M_AP_OBJECT;
 		mtmp->mappearance = STRANGE_OBJECT;
 	    }
+	    return TRUE;
 	} else {
 	    atype = get_shop_item(shp - shtypes);
 	    if (atype < 0)
@@ -267,6 +275,7 @@ int sx, sy;
 	    else
 		(void) mkobj_at(atype, sx, sy, TRUE);
 	}
+	return FALSE;
 }
 
 /* extract a shopkeeper name for the given shop type */
@@ -517,6 +526,24 @@ int shp_indx;
 	return(sh);
 }
 
+/* is this square of the room one that gets stock (not the one nearest
+   the door)? */
+STATIC_OVL boolean
+shop_square(sroom, rmno, sh, sx, sy)
+struct mkroom *sroom;
+int rmno, sh, sx, sy;
+{
+    if (sroom->irregular) {
+	if (levl[sx][sy].edge || (int) levl[sx][sy].roomno != rmno ||
+	   distmin(sx, sy, doors[sh].x, doors[sh].y) <= 1)
+	    return FALSE;
+    } else if ((sx == sroom->lx && doors[sh].x == sx-1) ||
+	      (sx == sroom->hx && doors[sh].x == sx+1) ||
+	      (sy == sroom->ly && doors[sh].y == sy-1) ||
+	      (sy == sroom->hy && doors[sh].y == sy+1)) return FALSE;
+    return TRUE;
+}
+
 /* stock a newly-created room with objects */
 void
 stock_room(shp_indx, sroom)
@@ -533,6 +560,7 @@ register struct mkroom *sroom;
     char buf[BUFSZ];
     int rmno = (sroom - rooms) + ROOMOFFSET;
     const struct shclass *shp = &shtypes[shp_indx];
+    int nsq = 0, nmim = 0;
 
     /* first, try to place a shopkeeper in the room */
     if ((sh = shkinit(shp, sroom, shp_indx)) < 0)
@@ -565,17 +593,26 @@ register struct mkroom *sroom;
 	    make_engr_at(m, n, buf, 0L, DUST);
     }
 
+    /* the mimic shop: half the squares, and often a good few more */
+    if (shp_indx == MIMICSHOP - SHOPBASE) {
+	for (sx = sroom->lx; sx <= sroom->hx; sx++)
+	    for (sy = sroom->ly; sy <= sroom->hy; sy++)
+		if (shop_square(sroom, rmno, sh, sx, sy)) nsq++;
+	nmim = (nsq + 1) / 2;
+	nmim += rn2(nsq / 4 + 1);
+	if (nmim > nsq) nmim = nsq;
+    }
+
     for(sx = sroom->lx; sx <= sroom->hx; sx++)
 	for(sy = sroom->ly; sy <= sroom->hy; sy++) {
-	    if(sroom->irregular) {
-		if (levl[sx][sy].edge || (int) levl[sx][sy].roomno != rmno ||
-		   distmin(sx, sy, doors[sh].x, doors[sh].y) <= 1)
-		    continue;
-	    } else if((sx == sroom->lx && doors[sh].x == sx-1) ||
-		      (sx == sroom->hx && doors[sh].x == sx+1) ||
-		      (sy == sroom->ly && doors[sh].y == sy-1) ||
-		      (sy == sroom->hy && doors[sh].y == sy+1)) continue;
-	    mkshobj_at(shp, sx, sy);
+	    boolean wantmimic;
+
+	    if (!shop_square(sroom, rmno, sh, sx, sy)) continue;
+	    /* pick exactly nmim of the nsq squares, front to back */
+	    wantmimic = (nsq > 0 && rn2(nsq) < nmim);
+	    if (nsq > 0) nsq--;
+	    /* if the mimic could not be made the debt stays for later squares */
+	    if (mkshobj_at(shp, sx, sy, wantmimic) && wantmimic) nmim--;
 	}
 
     /*
