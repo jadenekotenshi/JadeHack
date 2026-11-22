@@ -1244,3 +1244,7 @@ The Mall (`dat/mall.des`) had twelve shops and was handing out too many artifact
 The shops, north row then south row, west to east: general store, weapon shop, armor shop, wand shop; potion shop, general store, scroll shop, general store. The food, ring, book, tool and candle shops are gone (the general stores sell all of those, and a deli, a jeweler, a bookstore, a hardware store or a lighting shop is no longer guaranteed). Which five specialist shops stay, and where, is my choice. Mimics, which come from the depth of the level, are unchanged. Only the data files change; saves and bones still load, but a Mall level you have already visited keeps its twelve shops.
 
 Checked in wizard mode (a temporary hook, not kept, that sent the hero to the Mall): the level maps as eight shops with the right fronts, a fountain, stairs at both ends, and the overview lists a scroll shop. The three stress tests ran clean. Not counted: the artifacts a typical visit now yields.
+
+## Batch 120: slower glue golems
+
+The glue golem's speed goes from 9 to **7** (`monst.c`), the same as a clay golem; the rest is unchanged (level 5, AC 8, sticky claw 3d4). A hero at speed 12 now gets about five moves to its three. The monster numbering does not change, so saves and bones still load. The corpse stress test ran clean (it makes and kills every monster type, glue golems included).
