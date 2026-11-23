@@ -1248,3 +1248,9 @@ Checked in wizard mode (a temporary hook, not kept, that sent the hero to the Ma
 ## Batch 120: slower glue golems
 
 The glue golem's speed goes from 9 to **7** (`monst.c`), the same as a clay golem; the rest is unchanged (level 5, AC 8, sticky claw 3d4). A hero at speed 12 now gets about five moves to its three. The monster numbering does not change, so saves and bones still load. The corpse stress test ran clean (it makes and kills every monster type, glue golems included).
+
+## Batch 121: starting gold for Bards and Pirates
+
+Until now only the Healer (1001 to 2000) and the Tourist (1 to 1000) started with gold (the Rogue's is explicitly zero, as in vanilla). The **Bard** now starts with **100 to 350** gold (`rn1(251, 100)`) and the **Pirate** with **100 + 5d10**, so 105 to 150 (`u_init.c`). Both go through the same starting-money path as the Tourist and Healer, so it shows in the inventory as gold pieces and counts as the starting amount for the score. Only the binary changes; saves and bones still load.
+
+Checked in wizard mode: five Bards started with 134, 202, 238, 285 and 311 gold (plus two more, 209 and 315) and six Pirates with 121 to 142. The items and use stress tests ran clean.

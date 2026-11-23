@@ -770,6 +770,12 @@ u_init()
 						    GRAPEFRUIT };
 		    struct obj *otmp;
 
+		    /* a little plunder: 100 + 5d10, so 105..150 */
+#ifndef GOLDOBJ
+		    u.ugold = u.ugold0 = 100 + d(5, 10);
+#else
+		    u.umoney0 = 100 + d(5, 10);
+#endif
 		    Pirate[PIR_KNIVES].trquan = 4 + rnd(4);		/* 5..8 */
 		    Pirate[PIR_CRAM].trquan = rn1(3, 2);		/* 2..4 */
 		    Pirate[PIR_SNACK].trotyp = snacks[rn2(SIZE(snacks))];
@@ -794,6 +800,12 @@ u_init()
 		}
 		break;
 	case PM_BARD:
+		/* a travelling minstrel carries a little money: 100..350 */
+#ifndef GOLDOBJ
+		u.ugold = u.ugold0 = rn1(251, 100);
+#else
+		u.umoney0 = rn1(251, 100);
+#endif
 		/* silver dagger, short sword or messer (1/3 each) */
 		switch (rn2(3)) {
 		case 1: Bard[BARD_WEAPON].trotyp = SHORT_SWORD; break;
