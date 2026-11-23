@@ -1319,3 +1319,13 @@ Checked in wizard mode (nothing kept): an orcish Barbarian in bare skin wearing 
 The parrot (`monst.c`) now has `M1_CARNIVORE` as well as `M1_HERBIVORE`, so a tame parrot eats meat and corpses as well as vegetarian food. Monster numbering is unchanged, so saves and bones are unaffected. It is still not `M2_DOMESTIC`: it cannot be tamed by throwing food, only by a scroll or spell of taming, charm and the like.
 
 Checked in wizard mode (nothing kept): a parrot made tame with a scroll caught and ate a thrown tripe ration, which a herbivore would not. The three stress tests ran clean.
+
+## Batch 130: parrots can be tamed with food; the macaw
+
+**Parrots are now `M2_DOMESTIC`**, so throwing one something it likes to eat tames it, as with a dog or cat; being omnivores (Batch 129) almost any food will do. Whether a wild one is peaceful or hostile is unchanged.
+
+**Macaw** (`B`, bright blue, `monst.c`, right after the parrot): a somewhat stronger parrot: level 4 (parrot 2), speed 20, AC 5 (parrot 6), a bite of 1d6 and a claw of 1d3 (parrot: one bite of 1d4), small and weighing 60 (parrot tiny, 30), frequency 1. It has the parrot's flags: flies, animal, no hands, lays eggs, carnivore and herbivore, wanders, domestic, so it too can be tamed with food. **Parrots grow up into macaws** (`grownups[]` in `mondata.c`, the same way a kitten becomes a housecat), and a macaw's egg hatches back into a parrot.
+
+The monster numbers after the macaw move up by one, so old saves and bones are not compatible and the data files and utilities must be rebuilt as for Batch 79.
+
+Checked in wizard mode with a temporary hook (not kept): a wild parrot became tame when I threw it an apple ("The parrot devours an apple."), and a tame parrot made to gain levels turned into a macaw at level 4 and then went on gaining levels as a macaw. The three stress tests ran clean. Not seen: growth by killing monsters in ordinary play (the same code path as every other growing pet), and hatching a macaw egg.
