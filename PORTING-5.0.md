@@ -1284,3 +1284,9 @@ Checked in wizard mode (a temporary hook, not kept, made green lights hostile): 
 Monster numbers after the lightning cat move up by one; old saves and bones are not compatible and the data files and utilities must be rebuilt as in Batch 79. The rarity of 1 (a "fairly rare" cat; it cannot go lower than the large cat's), four in five peaceful, the corpse eating times and the seven-square range are my choices.
 
 Checked in wizard mode with temporary hooks (not kept): a made hostile lightning cat breathed at me and the damage sampled 1 to 10 per hit (a bounce twice gave up to 17); a merozalghu bit and hit a lightning cat and killed a kitten before it turned to me, and ate a lightning cat corpse put near it. The corpse, items and use stress tests ran clean. Not seen: a tamed lightning cat, the corpse's shock resistance, merozalghi other than the plain one, eating when the corpse was not in sight.
+
+## Batch 125: scroll probabilities (less amnesia and punishment; more ice, shocking grasp, enchant armor)
+
+In `objects.c` the scroll probabilities (out of 1000 for the class) changed: **amnesia 35 → 30**, **punishment 15 → 12**, and the 8 points freed went to **ice 20 → 23**, **shocking grasp 20 → 23** and **enchant armor 63 → 65**. The scroll class still sums to 1000, which `init_objects()` checks at startup. Nothing was renumbered, so existing saves and bones still load; only newly generated scrolls are affected.
+
+The three stress tests (corpse, items, use) ran clean. The new odds themselves were not sampled in play; it is a change to table constants.
