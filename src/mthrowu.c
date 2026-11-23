@@ -4,6 +4,8 @@
 
 #include "hack.h"
 
+extern int ray_sides;	/* zap.c */
+
 STATIC_DCL int FDECL(drop_throw,(struct obj *,BOOLEAN_P,int,int));
 
 #define URETREATING(x,y) (distmin(u.ux,u.uy,x,y) > distmin(u.ux0,u.uy0,x,y))
@@ -1043,6 +1045,13 @@ breamu(mtmp, mattk)			/* monster breathes at you (ranged) */
 				if(canseemon(mtmp))
 					pline("%s breathes %s!", Monnam(mtmp),
 				breathwep[typ-1]);
+				if (mtmp->data == &mons[PM_LIGHTNING_CAT]) {
+				    /* a real 1d10, not the scaled number of d6 */
+				    ray_sides = (int)mattk->damd;
+				    buzz((int) (-20 - (typ-1)), (int)mattk->damn,
+					 mtmp->mx, mtmp->my, sgn(tbx), sgn(tby));
+				    ray_sides = 6;
+				} else
 				buzz((int) (-20 - (typ-1)),
 				     (int)(mattk->damn * max((int)mattk->damd, 6) / 6),
 				mtmp->mx, mtmp->my, sgn(tbx), sgn(tby));

@@ -21,6 +21,10 @@ extern boolean notonhead;	/* for long worms */
 /* kludge to use mondied instead of killed */
 extern boolean m_using;
 
+/* sides of the dice a ray's damage is rolled with: normally d(nd,6); a
+   lightning cat's breath sets it to 10 while it is in the air */
+int ray_sides = 6;
+
 STATIC_DCL void FDECL(costly_cancel, (struct obj *));
 STATIC_DCL void FDECL(polyuse, (struct obj*, int, int));
 STATIC_DCL void FDECL(create_polymon, (struct obj *, int));
@@ -3080,7 +3084,7 @@ struct obj **ootmp;	/* to return worn armor for caller to disintegrate */
 		    sho_shieldeff = TRUE;
 		    break;
 		}
-		tmp = d(nd,6);
+		tmp = d(nd,ray_sides);
 		if (spellcaster) {
 		    tmp += spell_damage_bonus();
 		    if (tmp < 1) tmp = 1;	/* NetHack 3.6.0: never negative */
@@ -3096,7 +3100,7 @@ struct obj **ootmp;	/* to return worn armor for caller to disintegrate */
 		    sho_shieldeff = TRUE;
 		    break;
 		}
-		tmp = d(nd,6);
+		tmp = d(nd,ray_sides);
 		if (resists_cold(mon)) tmp += 7;
 		if (spellcaster) {
 		    tmp += spell_damage_bonus();
@@ -3118,7 +3122,7 @@ struct obj **ootmp;	/* to return worn armor for caller to disintegrate */
 		    sho_shieldeff = TRUE;
 		    break;
 		}
-		tmp = d(nd,6);
+		tmp = d(nd,ray_sides);
 		if (resists_fire(mon)) tmp += d(nd, 3);
 		if (spellcaster) {
 		    tmp += spell_damage_bonus();
@@ -3187,7 +3191,7 @@ struct obj **ootmp;	/* to return worn armor for caller to disintegrate */
 		    tmp = 0;
 		    /* can still blind the monster */
 		} else
-		    tmp = d(nd,6);
+		    tmp = d(nd,ray_sides);
 		if (spellcaster) {
 		    tmp += spell_damage_bonus();
 		    if (tmp < 1) tmp = 1;	/* NetHack 3.6.0: never negative */
@@ -3214,14 +3218,14 @@ struct obj **ootmp;	/* to return worn armor for caller to disintegrate */
 		    sho_shieldeff = TRUE;
 		    break;
 		}
-		tmp = d(nd,6);
+		tmp = d(nd,ray_sides);
 		break;
 	case ZT_ACID:
 		if (resists_acid(mon)) {
 		    sho_shieldeff = TRUE;
 		    break;
 		}
-		tmp = d(nd,6);
+		tmp = d(nd,ray_sides);
 		if (!rn2(6)) _erode_obj(MON_WEP(mon),AD_ACID);
 		if (!rn2(6)) erode_armor(mon, TRUE);
 		break;
@@ -3248,7 +3252,7 @@ xchar sx, sy;
 
 	switch (abs(type) % 10) {
 	case ZT_MAGIC_MISSILE:
-		 dam = d(nd,6);
+		 dam = d(nd,ray_sides);
 	    if (Antimagic) {
 			 monstseesu(M_SEEN_MAGR);
 			shieldeff(sx, sy);
@@ -3265,9 +3269,9 @@ xchar sx, sy;
 			shieldeff(sx, sy);
 			You("don't feel hot!");
 			monstseesu(M_SEEN_FIRE);
-			ugolemeffects(AD_FIRE, d(nd, 6));
+			ugolemeffects(AD_FIRE, d(nd,ray_sides));
 	    } else {
-			 dam = resist_reduce(d(nd,6),FIRE_RES);
+			 dam = resist_reduce(d(nd,ray_sides),FIRE_RES);
 	    }
 	    burn_away_slime();
 		 if (!Reflecting) {
@@ -3283,9 +3287,9 @@ xchar sx, sy;
 			shieldeff(sx, sy);
 			You("don't feel cold.");
 			monstseesu(M_SEEN_COLD);
-			ugolemeffects(AD_COLD, d(nd, 6));
+			ugolemeffects(AD_COLD, d(nd,ray_sides));
 	    } else {
-			 dam = resist_reduce(d(nd,6),COLD_RES);
+			 dam = resist_reduce(d(nd,ray_sides),COLD_RES);
 	    }
 		 if (!Reflecting) {
 			if (!rn2(3)) destroy_item(POTION_CLASS, AD_COLD);
@@ -3310,7 +3314,7 @@ xchar sx, sy;
 				break;
 			} else if (Reflecting) {
 				You("aren't disintegrated, but that hurts!");
-				dam = resist_reduce(d(nd,6),DISINT_RES);			/* partial is worthwhile! */
+				dam = resist_reduce(d(nd,ray_sides),DISINT_RES);			/* partial is worthwhile! */
 				break;
 			} else if (uarms) {
 				/* destroy shield; other possessions are safe */
@@ -3356,9 +3360,9 @@ xchar sx, sy;
 			shieldeff(sx, sy);
 			You("aren't shocked.");
 			monstseesu(M_SEEN_ELEC);
-			ugolemeffects(AD_ELEC, d(nd, 6));
+			ugolemeffects(AD_ELEC, d(nd,ray_sides));
 	    } else {
-			dam = resist_reduce(d(nd,6),SHOCK_RES);
+			dam = resist_reduce(d(nd,ray_sides),SHOCK_RES);
 			exercise(A_CON, FALSE);
 	    }
 		 if (!Reflecting) {
@@ -3378,7 +3382,7 @@ xchar sx, sy;
 			monstseesu(M_SEEN_ACID);
 	    } else {
 			pline_The("acid burns!");
-			dam = d(nd,6);
+			dam = d(nd,ray_sides);
 			exercise(A_STR, FALSE);
 	    }
 		 if (!Reflecting) {

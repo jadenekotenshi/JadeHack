@@ -15,6 +15,11 @@ STATIC_DCL int FDECL(disturb,(struct monst *));
 STATIC_DCL void FDECL(distfleeck,(struct monst *,int *,int *,int *));
 STATIC_DCL int FDECL(m_arrival, (struct monst *));
 STATIC_DCL void FDECL(watch_on_duty,(struct monst *));
+STATIC_DCL int FDECL(feline_hunt, (struct monst *));
+
+/* where a merozalghu hunting a feline or its corpse wants m_move() to go */
+static boolean mz_goal = FALSE;
+static xchar mz_gx, mz_gy;
 
 #endif /* OVL0 */
 #ifdef OVLB
@@ -322,6 +327,87 @@ struct monst *mon;
 /* The whole dochugw/m_move/distfleeck/mfndpos section is serious spaghetti
  * code. --KAA
  */
+/* is this a corpse of some kind of feline? */
+#define feline_corpse(o) ((o)->otyp == CORPSE && \
+			  mons[(o)->corpsenm].mlet == S_FELINE)
+
+/* A merozalghu is drawn to felines of any kind (yours, peaceful or hostile,
+ * a lightning cat or a kitten) and to their corpses, which it will stop
+ * whatever it is doing to eat.  Returns 0 if there is nothing to hunt (carry
+ * on as usual), 1 if it used its move, 2 if it died. */
+STATIC_OVL int
+feline_hunt(mtmp)
+struct monst *mtmp;
+{
+	struct monst *mt, *prey = (struct monst *)0;
+	struct obj *otmp, *meal = (struct obj *)0;
+	int x, y, d, best = 100, tx = 0, ty = 0, res;
+	int mx = mtmp->mx, my = mtmp->my;
+
+	/* still chewing: no attacks until the meal is done */
+	if (mtmp->meating) {
+	    mtmp->meating--;
+	    return 1;
+	}
+	if (!mtmp->mcansee || mtmp->mconf || mtmp->mstun || mtmp->mtrapped)
+	    return 0;
+
+	/* a feline corpse underfoot: eat it */
+	for (otmp = level.objects[mx][my]; otmp; otmp = otmp->nexthere)
+	    if (feline_corpse(otmp)) {
+		if (cansee(mx, my) && flags.verbose)
+		    pline("%s eats %s!", Monnam(mtmp),
+			  distant_name(otmp, doname));
+		else if (flags.soundok && flags.verbose)
+		    You_hear("a crunching sound.");
+		mtmp->meating = otmp->owt / 32 + 2;
+		mtmp->mhp += otmp->owt / 10;
+		if (mtmp->mhp > mtmp->mhpmax) mtmp->mhp = mtmp->mhpmax;
+		delobj(otmp);
+		newsym(mx, my);
+		return 1;
+	    }
+
+	/* the nearest feline in sight, or feline corpse (a corpse wins ties) */
+	for (mt = fmon; mt; mt = mt->nmon) {
+	    if (mt == mtmp || DEADMONSTER(mt) || mt->data->mlet != S_FELINE)
+		continue;
+	    d = dist2(mx, my, mt->mx, mt->my);
+	    if (d < best && m_cansee(mtmp, mt->mx, mt->my)) {
+		best = d;
+		prey = mt;
+	    }
+	}
+	for (x = max(1, mx - 7); x <= min(COLNO-1, mx + 7); x++)
+	    for (y = max(0, my - 7); y <= min(ROWNO-1, my + 7); y++) {
+		if (!level.objects[x][y]) continue;
+		d = dist2(mx, my, x, y);
+		if (d > best || !m_cansee(mtmp, x, y)) continue;
+		for (otmp = level.objects[x][y]; otmp; otmp = otmp->nexthere)
+		    if (feline_corpse(otmp)) {
+			best = d;
+			meal = otmp;
+			prey = (struct monst *)0;
+			tx = x; ty = y;
+			break;
+		    }
+	    }
+	if (prey) {
+	    tx = prey->mx;
+	    ty = prey->my;
+	} else if (!meal)
+	    return 0;
+
+	mz_goal = TRUE;
+	mz_gx = tx;
+	mz_gy = ty;
+	res = m_move(mtmp, 0);
+	mz_goal = FALSE;
+	if (res == 2) return 2;
+	if (res == 0) return 0;		/* could not get there: back to you */
+	return 1;
+}
+
 int
 dochug(mtmp)
 register struct monst *mtmp;
@@ -578,6 +664,16 @@ toofar:
 		!(mtmp->mtrapped && !nearby && select_rwep(mtmp))) {
 		mtmp->weapon_check = NEED_HTH_WEAPON;
 		if (mon_wield_item(mtmp) != 0) return(0);
+	    }
+	}
+
+	/* merozalghi can't resist felines: they go for one (or a feline
+	 * corpse) before anything else, you included */
+	if (is_merozalghu(mdat) && !mtmp->mtame && !u.uswallow) {
+	    switch (feline_hunt(mtmp)) {
+		case 1:	return(0);	/* spent its move */
+		case 2:	return(1);	/* it died */
+		default: break;		/* nothing to hunt */
 	    }
 	}
 
@@ -996,6 +1092,14 @@ not_special:
 	    ((!mtmp->mpeaceful || Conflict) &&
 	     dist2(mtmp->mx, mtmp->my, mtmp->mux, mtmp->muy) <= 8))
 	    can_tunnel = FALSE;
+
+	/* a merozalghu after a feline (see feline_hunt) */
+	if (mz_goal) {
+	    gx = mz_gx;
+	    gy = mz_gy;
+	    appr = 1;
+	    mz_goal = FALSE;
+	}
 
 	nix = omx;
 	niy = omy;

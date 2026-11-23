@@ -1380,6 +1380,9 @@ struct monst *magr,	/* monster that is currently deciding where to move */
 	   like to eat shriekers, so attack the latter when feasible */
 	if (magr->data == &mons[PM_PURPLE_WORM] && mdef->data == &mons[PM_SHRIEKER])
 	    return ALLOW_M|ALLOW_TM;
+	/* merozalghi cannot leave felines alone */
+	if (is_merozalghu(magr->data) && mdef->data->mlet == S_FELINE)
+	    return ALLOW_M|ALLOW_TM;
 	/* pirates and soldiers hold a grudge against each other */
 	if ((is_king_pirate(magr->data) &&
 		(mdef->data == &mons[PM_SOLDIER] ||

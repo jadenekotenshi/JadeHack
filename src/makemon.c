@@ -2047,6 +2047,9 @@ register struct permonst *ptr;
 	if (race_peaceful(ptr)) return TRUE;
 	if (race_hostile(ptr)) return FALSE;
 
+	/* lightning cats are usually peaceful to everyone */
+	if (ptr == &mons[PM_LIGHTNING_CAT]) return((boolean)(rn2(5) != 0));
+
 	/* green lights are harmless-ish and usually peaceful to everyone */
 	if (ptr == &mons[PM_GREEN_LIGHT]) return((boolean)(rn2(10) != 0));
 
