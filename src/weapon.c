@@ -1254,6 +1254,8 @@ struct obj *obj;
 	    case DWARVISH_SPEAR: case DWARVISH_SHORT_SWORD:
 	    case DWARVISH_BEARDED_AXE: case DWARVISH_MATTOCK:
 		return (boolean) Race_if(PM_DWARF);
+	    case AKLYS:		/* the gnomes' own club */
+		return (boolean) Race_if(PM_GNOME);
 	    default:
 		break;
 	}
