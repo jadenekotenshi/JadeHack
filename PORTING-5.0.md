@@ -1307,3 +1307,9 @@ Two new helpers in `weapon.c`: `racial_launcher_shot(ammo, launcher)` and `racia
 Checked in wizard mode with temporary markers (not kept): a dwarvish Valkyrie got the melee bonus with her dwarvish bearded axe and not with a dagger, and a dwarf slinging flint, an orc firing orcish arrows from an orcish bow and a gnome firing bolts from a crossbow each got both the to-hit and the damage bonus (including volleys). Not tried: elven/orcish melee weapons, two-weapon fighting (the off-hand weapon gets no bonus), and thrown racial daggers or spears (not "wielded", so no bonus). Nothing was renumbered; saves and bones are unaffected.
 
 The aklys addition was checked the same way: a gnome wielding one got the +1 to hit and a human with the same weapon did not.
+
+## Batch 128: bronze plate mail counts as orcish armor for orcs
+
+In `find_ac()` (`do_wear.c`) an **orc** wearing **bronze plate mail** now gets the same racial bonus to its AC (+2) as for orcish chain mail and orcish ring mail. Only the AC bonus changed: bronze plate mail is not otherwise treated as orcish (`is_orcish_armor()` is untouched), so nothing else that cares about orcish gear, such as other races' wearing restrictions, is affected.
+
+Checked in wizard mode (nothing kept): an orcish Barbarian in bare skin wearing a +0 bronze plate mail reached AC 2, a human Barbarian AC 4. Nothing was renumbered; saves and bones are unaffected. The three stress tests ran clean.

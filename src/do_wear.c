@@ -1837,7 +1837,8 @@ find_ac()
 
 	if(uarm) {
 		uac -= ARM_BONUS(uarm);
-		if ((Race_if(PM_ORC) && (uarm->otyp == ORCISH_CHAIN_MAIL || uarm->otyp == ORCISH_RING_MAIL)) ||
+		if ((Race_if(PM_ORC) && (uarm->otyp == ORCISH_CHAIN_MAIL || uarm->otyp == ORCISH_RING_MAIL ||
+				 uarm->otyp == BRONZE_PLATE_MAIL)) ||
 				(Race_if(PM_GNOME) && uarm->otyp == GNOMISH_SUIT) ||
 				(Race_if(PM_ELF) && uarm->otyp == ELVEN_MITHRIL_COAT) ||
 				(Race_if(PM_DWARF) && uarm->otyp == DWARVISH_MITHRIL_COAT)) {
