@@ -1341,3 +1341,9 @@ Checked in wizard mode with a temporary test hook (not kept) that drew 8,000 gif
 A Bard's casting stat (`urole.spelstat`, `role.c`) was still Intelligence, and `percent_success()` (`spell.c`) switched to Charisma only for enchantment spells. It is now **Charisma for every spell**: the role's stat is `A_CHA` and the enchantment special case is gone. Nothing else about the Bard's spellcasting (base, armor and shield penalties, emergency-spell bonus, the Sleep special spell) changed, and nothing else reads the role's casting stat. Reading a spellbook still uses Intelligence for every role, and the energy-regeneration formulae are untouched.
 
 Checked in wizard mode: the failure rate of a level 2 attack spell (magic missile) came out at 85% for a Bard with Cha 16 and Int 8, and 96% for one with Cha 14 and Int 9, so it follows Charisma rather than Intelligence. (I could not get a ring of gain charisma to raise the stat in the test to compare the same character before and after.) The three stress tests ran clean. Nothing was renumbered; saves and bones are unaffected, but a Bard's displayed spell failure rates change at once.
+
+## Batch 133: a Tourist casts every spell with Charisma
+
+As for the Bard in Batch 132: the Tourist's casting stat (`urole.spelstat`, `role.c`) is now **Charisma** instead of Intelligence, for every spell. Nothing else about Tourist spellcasting changed (base, armor penalties, emergency-spell bonus, the Charm Monster special spell), and reading spellbooks still uses Intelligence.
+
+Checked in wizard mode: a Tourist with Cha 15 and Int 12 had a 91% failure rate on magic missile (a level 2 spell); on Intelligence, 12 gives no chance at all and it would have been 100%. The three stress tests ran clean. Nothing was renumbered; saves and bones are unaffected, but a Tourist's displayed spell failure rates change at once.
