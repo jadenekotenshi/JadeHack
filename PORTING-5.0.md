@@ -1329,3 +1329,9 @@ Checked in wizard mode (nothing kept): a parrot made tame with a scroll caught a
 The monster numbers after the macaw move up by one, so old saves and bones are not compatible and the data files and utilities must be rebuilt as for Batch 79.
 
 Checked in wizard mode with a temporary hook (not kept): a wild parrot became tame when I threw it an apple ("The parrot devours an apple."), and a tame parrot made to gain levels turned into a macaw at level 4 and then went on gaining levels as a macaw. The three stress tests ran clean. Not seen: growth by killing monsters in ordinary play (the same code path as every other growing pet), and hatching a macaw egg.
+
+## Batch 131: weapon gifts from the gods favour trained skills
+
+When a god gives a gift for a sacrifice and it turns out to be a plain weapon (half the time; the other half is armor, and the rare artifact gift is separate), `dosacrifice()` (`pray.c`) now picks it with `pick_gift_weapon()`: **three times in four the weapon is in a skill you already have at Basic or better**, and the other quarter it is any weapon in a skill you are not restricted in (the old rule). If the hero has no skill at Basic or better the 75% case gives up after 250 tries and settles for any unrestricted weapon, so it can never loop. Armor gifts, the odds of getting a gift at all, and artifact gifts are unchanged.
+
+Checked in wizard mode with a temporary test hook (not kept) that drew 8,000 gift weapons: a Valkyrie got a Basic-or-better weapon 82% of the time (75% by design, plus the 25% unbiased picks that happen to land on one) and a Wizard 80%; a Tourist, with nothing at Basic in the gift range, got usable weapons every time (no restricted ones, no failures). The three stress tests ran clean. Not seen: an actual sacrifice gift in play. Nothing was renumbered; saves and bones are unaffected.

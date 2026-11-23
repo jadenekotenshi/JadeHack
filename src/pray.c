@@ -18,6 +18,7 @@ STATIC_DCL void FDECL(pleased,(ALIGNTYP_P));
 STATIC_DCL void FDECL(godvoice,(ALIGNTYP_P,const char*));
 STATIC_DCL void FDECL(god_zaps_you,(ALIGNTYP_P));
 STATIC_DCL void FDECL(fry_by_god,(ALIGNTYP_P));
+STATIC_DCL int NDECL(pick_gift_weapon);
 STATIC_DCL void FDECL(gods_angry,(ALIGNTYP_P));
 STATIC_DCL void FDECL(gods_upset,(ALIGNTYP_P));
 STATIC_DCL void FDECL(consume_offering,(struct obj *));
@@ -1272,6 +1273,26 @@ gods_upset(g_align)
 	angrygods(g_align);
 }
 
+/* pick the type of weapon a god gives as a gift: never one the hero is
+ * restricted in, and three times in four one in a skill already trained to
+ * at least Basic (otherwise any skill that isn't restricted).  Returns -1 if
+ * nothing suitable turns up. */
+STATIC_OVL int
+pick_gift_weapon()
+{
+	int typ, ncount = 0;
+	boolean want_basic = (rn2(4) != 0);
+
+	do {
+	    typ = rnd_class(SPEAR,CROSSBOW);
+	    /* nothing at Basic to be found: settle for anything usable */
+	    if (ncount == 250) want_basic = FALSE;
+	} while (ncount++ < 500 && typ &&
+		 (P_RESTRICTED(objects[typ].oc_skill) ||
+		  (want_basic && P_SKILL(objects[typ].oc_skill) < P_BASIC)));
+	return (ncount > 499) ? -1 : typ;
+}
+
 static NEARDATA const char sacrifice_types[] = { FOOD_CLASS, AMULET_CLASS, 0 };
 
 STATIC_OVL void
@@ -1713,13 +1734,10 @@ dosacrifice()
 
 		 if (rn2(10) >= (nchance*nchance)/100) {
 			 if (u.uluck >= 0 && !rn2(6 + (2 * u.ugifts))) {
-				 int typ, ncount = 0;
+				 int typ;
 				 if (rn2(2)) {
-					/* don't give unicorn horns or anything the player's restricted in */
-					do {
-						typ = rnd_class(SPEAR,CROSSBOW);
-					} while (ncount++ < 500 && typ && P_RESTRICTED(objects[typ].oc_skill));
-					if (ncount > 499) { return 1; }
+					typ = pick_gift_weapon();
+					if (typ < 0) { return 1; }
 				 } else {
 					 typ = rnd_class(ELVEN_LEATHER_HELM,LEVITATION_BOOTS);
 				 }
