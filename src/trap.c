@@ -3293,6 +3293,10 @@ dountrap()	/* disarm a trap */
 #endif /* OVLB */
 #ifdef OVL2
 
+/* roles with the rogue's knack for disarming traps */
+#define good_untrapper() (Role_if(PM_ROGUE) || Role_if(PM_BARD) || \
+			  Role_if(PM_PIRATE) || Role_if(PM_NINJA))
+
 /* Probability of disabling a trap.  Helge Hafting */
 STATIC_OVL int
 untrap_prob(ttmp)
@@ -3309,9 +3313,9 @@ struct trap *ttmp;
 	if (Fumbling) chance *= 2;
 	/* Your own traps are better known than others. */
 	if (ttmp && ttmp->madeby_u) chance--;
-	if (Role_if(PM_ROGUE)) {
+	if (good_untrapper()) {
 	    if (rn2(2 * MAXULEV) < u.ulevel) chance--;
-	    if (u.uhave.questart && chance > 1) chance--;
+	    if (Role_if(PM_ROGUE) && u.uhave.questart && chance > 1) chance--;
 	} else if (Role_if(PM_RANGER) && chance > 1) chance--;
 	return rn2(chance);
 }
@@ -3809,7 +3813,7 @@ boolean force;
 			if(otmp->otrapped) {
 			    exercise(A_DEX, TRUE);
 			    ch = ACURR(A_DEX) + u.ulevel;
-			    if (Role_if(PM_ROGUE)) ch *= 2;
+			    if (good_untrapper()) ch *= 2;
 			    if(!force && (confused || Fumbling ||
 				rnd(75+level_difficulty()/2) > ch)) {
 				(void) chest_trap(otmp, FINGER, TRUE);
@@ -3868,7 +3872,7 @@ boolean force;
 		exercise(A_WIS, TRUE);
 		if (ynq("Disarm it?") != 'y') return(1);
 		if (levl[x][y].doormask & D_TRAPPED) {
-		    ch = 15 + (Role_if(PM_ROGUE) ? u.ulevel*3 : u.ulevel);
+		    ch = 15 + (good_untrapper() ? u.ulevel*3 : u.ulevel);
 		    exercise(A_DEX, TRUE);
 		    if(!force && (confused || Fumbling ||
 				     rnd(75+level_difficulty()/2) > ch)) {

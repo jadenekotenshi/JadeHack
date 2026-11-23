@@ -1290,3 +1290,9 @@ Checked in wizard mode with temporary hooks (not kept): a made hostile lightning
 In `objects.c` the scroll probabilities (out of 1000 for the class) changed: **amnesia 35 -> 20**, **punishment 15 -> 12**; the 3 points from punishment and 5 from amnesia went to **ice 20 -> 23**, **shocking grasp 20 -> 23** and **enchant armor 63 -> 65**, and the further 10 from amnesia split between **remove curse 65 -> 70** and **enchant weapon 70 -> 75**. The scroll class still sums to 1000, which `init_objects()` checks at startup. Nothing was renumbered, so existing saves and bones still load; only newly generated scrolls are affected.
 
 The three stress tests (corpse, items, use) ran clean. The new odds themselves were not sampled in play; it is a change to table constants.
+
+## Batch 126: bards, pirates and ninjas disarm traps like rogues
+
+`trap.c` has a small `good_untrapper()` test (rogue, bard, pirate or ninja) that replaces the three rogue-only checks on disarming: the floor-trap failure roll in `untrap_prob()` (a `ulevel/60` chance of one less on the roll), the trapped-chest skill (`Dex + level`, doubled) and the trapped-door skill (`15 + 3 * level` rather than `15 + level`). The extra reduction for carrying the Master Key of Thievery stays **rogue-only**, as asked. The ranger's separate flat bonus on floor traps is unchanged. Nothing was renumbered; saves and bones are unaffected.
+
+The three stress tests ran clean and it compiles; the disarm chances were not sampled in play.
