@@ -2007,6 +2007,16 @@ common:
 		}
 		break;
 
+	    case AD_CONF:
+		/* a dazzling flash; a blindfold or blindness keeps it out */
+		not_affected |= Blind || Confusion_resistance ||
+				u.umonnum == PM_BLUE_LIGHT;
+		if (!not_affected) {
+		    You_feel("addled!");
+		    make_confused(HConfusion + (long)tmp, FALSE);
+		}
+		break;
+
 	    default:
 		break;
 	}

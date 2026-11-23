@@ -1979,6 +1979,7 @@ register struct attack *mattk;
 		    mdef->mcansee = 0;
 		}
 		break;
+	    case AD_CONF:
 	    case AD_HALU:
 		if (haseyes(mdef->data) && mdef->mcansee) {
 		    pline("%s is affected by your flash of light!",

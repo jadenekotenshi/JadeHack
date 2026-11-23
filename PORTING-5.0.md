@@ -1254,3 +1254,11 @@ The glue golem's speed goes from 9 to **7** (`monst.c`), the same as a clay gole
 Until now only the Healer (1001 to 2000) and the Tourist (1 to 1000) started with gold (the Rogue's is explicitly zero, as in vanilla). The **Bard** now starts with **100 to 350** gold (`rn1(251, 100)`) and the **Pirate** with **100 + 5d10**, so 105 to 150 (`u_init.c`). Both go through the same starting-money path as the Tourist and Healer, so it shows in the inventory as gold pieces and counts as the starting amount for the score. Only the binary changes; saves and bones still load.
 
 Checked in wizard mode: five Bards started with 134, 202, 238, 285 and 311 gold (plus two more, 209 and 315) and six Pirates with 121 to 142. The items and use stress tests ran clean.
+
+## Batch 122: blue light
+
+A new light (`y`, **blue**), `blue light` in `monst.c` between the yellow and black lights: level 4, speed 15, AC 0, **rare** (frequency 1; yellow is 4, black 2), no corpse, flies, mindless, and resists everything the other lights do. Its attack is an explosion, `AT_EXPL`/`AD_CONF` 6d10 (`explmu()`, `mhitu.c`): you are **confused** for that many turns (about 33, added to any confusion you already have) with the message **"You feel addled!"**. Blindness, confusion resistance and being a blue light yourself keep it out ("You seem unaffected by it."). Like the other lights it gives light, is amorphous (flows under doors, like the yellow light) and is visible, unlike the black light.
+
+Against other monsters (`mdamagem()` in `mhitm.c`, only for `AT_EXPL`, so the existing `AD_CONF` attacks are unchanged) it confuses any monster that has eyes and can see, with no damage; if you explode as a blue light yourself (`explum()`, `uhitm.c`) the same happens to the monster you hit. Monster numbers after it move up by one, so old saves and bones are not compatible and the data files and utilities must be rebuilt as in Batch 79.
+
+Checked in wizard mode: a created blue light exploded with "You feel addled!" and the status line showed Conf. The corpse, items and use stress tests ran clean. Not seen: it being blocked by blindness, monster-on-monster confusion, a self-made blue-light explosion. The level, frequency, duration and blue colour are my choices.

@@ -942,6 +942,17 @@ mdamagem(magr, mdef, mattk)
 		}
 		break;
 	    case AD_CONF:
+		if (mattk->aatyp == AT_EXPL) {
+		    /* a blue light's flash: needs eyes to dazzle, no damage */
+		    if (!magr->mcan && haseyes(pd) && mdef->mcansee) {
+			if (vis) pline("%s looks %sconfused.",
+				    Monnam(mdef), mdef->mconf ? "more " : "");
+			mdef->mconf = 1;
+			mdef->mstrategy &= ~STRAT_WAITFORU;
+		    }
+		    tmp = 0;
+		    break;
+		}
 		/* Since confusing another monster doesn't have a real time
 		 * limit, setting spec_used would not really be right (though
 		 * we still should check for it).
