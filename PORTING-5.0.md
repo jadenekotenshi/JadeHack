@@ -1313,3 +1313,9 @@ The aklys addition was checked the same way: a gnome wielding one got the +1 to 
 In `find_ac()` (`do_wear.c`) an **orc** wearing **bronze plate mail** now gets the same racial bonus to its AC (+2) as for orcish chain mail and orcish ring mail. Only the AC bonus changed: bronze plate mail is not otherwise treated as orcish (`is_orcish_armor()` is untouched), so nothing else that cares about orcish gear, such as other races' wearing restrictions, is affected.
 
 Checked in wizard mode (nothing kept): an orcish Barbarian in bare skin wearing a +0 bronze plate mail reached AC 2, a human Barbarian AC 4. Nothing was renumbered; saves and bones are unaffected. The three stress tests ran clean.
+
+## Batch 129: parrots are omnivores
+
+The parrot (`monst.c`) now has `M1_CARNIVORE` as well as `M1_HERBIVORE`, so a tame parrot eats meat and corpses as well as vegetarian food. Monster numbering is unchanged, so saves and bones are unaffected. It is still not `M2_DOMESTIC`: it cannot be tamed by throwing food, only by a scroll or spell of taming, charm and the like.
+
+Checked in wizard mode (nothing kept): a parrot made tame with a scroll caught and ate a thrown tripe ration, which a herbivore would not. The three stress tests ran clean.
