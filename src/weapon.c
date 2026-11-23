@@ -1236,6 +1236,52 @@ int type;
 	return sk;
 }
 
+/* Is this a melee weapon made by the hero's own people?  (Not ammunition
+ * or launchers; those have their own racial bonuses.)  Worth +1 to hit
+ * when wielded.  A polymorphed hero has no race to speak of. */
+boolean
+racial_melee_weapon(obj)
+struct obj *obj;
+{
+	if (!obj || Upolyd) return FALSE;
+	switch (obj->otyp) {
+	    case ELVEN_SPEAR: case ELVEN_DAGGER: case ELVEN_SHORT_SWORD:
+	    case ELVEN_BROADSWORD:
+		return (boolean) Race_if(PM_ELF);
+	    case ORCISH_SPEAR: case ORCISH_DAGGER: case ORCISH_SHORT_SWORD:
+	    case ORCISH_SCIMITAR:
+		return (boolean) Race_if(PM_ORC);
+	    case DWARVISH_SPEAR: case DWARVISH_SHORT_SWORD:
+	    case DWARVISH_BEARDED_AXE: case DWARVISH_MATTOCK:
+		return (boolean) Race_if(PM_DWARF);
+	    default:
+		break;
+	}
+	return FALSE;
+}
+
+/* Does the hero fire this ammunition from the launcher his or her race
+ * is known for?  Worth +1 to hit and +1 damage: orcish arrows from an
+ * orcish bow, bolts from a crossbow (gnomes), and rocks or flint stones
+ * from a sling (dwarves).  (Elves and samurai have their own bonuses
+ * elsewhere.) */
+boolean
+racial_launcher_shot(obj, launcher)
+struct obj *obj, *launcher;
+{
+	if (!obj || !launcher || Upolyd) return FALSE;
+	if (Race_if(PM_ORC))
+	    return (boolean) (obj->otyp == ORCISH_ARROW &&
+			      launcher->otyp == ORCISH_BOW);
+	if (Race_if(PM_GNOME))
+	    return (boolean) (obj->otyp == CROSSBOW_BOLT &&
+			      launcher->otyp == CROSSBOW);
+	if (Race_if(PM_DWARF))
+	    return (boolean) ((obj->otyp == ROCK || obj->otyp == FLINT) &&
+			      launcher->otyp == SLING);
+	return FALSE;
+}
+
 /*
  * Return hit bonus/penalty based on skill of weapon.
  * Treat restricted weapons as unskilled.

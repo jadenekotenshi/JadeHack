@@ -1296,3 +1296,12 @@ The three stress tests (corpse, items, use) ran clean. The new odds themselves w
 `trap.c` has a small `good_untrapper()` test (rogue, bard, pirate or ninja) that replaces the three rogue-only checks on disarming: the floor-trap failure roll in `untrap_prob()` (a `ulevel/60` chance of one less on the roll), the trapped-chest skill (`Dex + level`, doubled) and the trapped-door skill (`15 + 3 * level` rather than `15 + level`). The extra reduction for carrying the Master Key of Thievery stays **rogue-only**, as asked. The ranger's separate flat bonus on floor traps is unchanged. Nothing was renumbered; saves and bones are unaffected.
 
 The three stress tests ran clean and it compiles; the disarm chances were not sampled in play.
+
+## Batch 127: racial launcher and melee weapon bonuses
+
+Two new helpers in `weapon.c`: `racial_launcher_shot(ammo, launcher)` and `racial_melee_weapon(weapon)`. Neither applies while polymorphed.
+
+- **+1 to hit and +1 damage when firing the race's own kit** (`dothrow.c` for the to-hit roll, `uhitm.c` for damage): **orcs** with orcish arrows from an orcish bow, **gnomes** with crossbow bolts from a crossbow (any crossbow), **dwarves** with rocks or flint stones from a sling. They stack with the existing elf/samurai bow bonuses (which are unchanged) and with ordinary launcher skill and enchantment.
+- **+1 to hit, no damage bonus, when wielding a racial melee weapon** (`find_roll_to_hit()`): elves with elven spear, dagger, short sword or broadsword; orcs with orcish spear, dagger, short sword or scimitar; dwarves with dwarvish spear, short sword, bearded axe or mattock. Only the wielded primary weapon counts. **Gnomes get no melee bonus, because there are no gnomish melee weapons** in the game.
+
+Checked in wizard mode with temporary markers (not kept): a dwarvish Valkyrie got the melee bonus with her dwarvish bearded axe and not with a dagger, and a dwarf slinging flint, an orc firing orcish arrows from an orcish bow and a gnome firing bolts from a crossbow each got both the to-hit and the damage bonus (including volleys). Not tried: elven/orcish melee weapons, two-weapon fighting (the off-hand weapon gets no bonus), and thrown racial daggers or spears (not "wielded", so no bonus). Nothing was renumbered; saves and bones are unaffected.

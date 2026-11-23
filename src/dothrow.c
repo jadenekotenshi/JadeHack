@@ -1446,6 +1446,8 @@ register struct obj   *obj;
 		    tmp += uwep->spe - greatest_erosion(uwep);
 		    tmp += weapon_hit_bonus(uwep);
 		    if (uwep->oartifact) tmp += spec_abon(uwep, mon);
+		    /* orcs, gnomes and dwarves with their own kit */
+		    if (racial_launcher_shot(obj, uwep)) tmp++;
 		    /* Frostbite: +5 to hit with bolts */
 		    if (frostbite_shot(obj))
 			tmp += 5;

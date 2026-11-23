@@ -287,6 +287,8 @@ register struct monst *mtmp;
 	if (!Upolyd) {
 		tmp += hitval(uwep, mtmp);
 		tmp += weapon_hit_bonus(uwep);  /* picks up bare-handed bonuses */
+		/* a weapon of your own people's make fits the hand */
+		if (racial_melee_weapon(uwep)) tmp++;
 	}
 	/* Let's make UNSKILLED matter, shall we?  If you're UNSKILLED,
 	 * you never get more than an 75% chance to hit anything.
@@ -816,6 +818,9 @@ int dieroll;
 			    else if (Race_if(PM_ELF) &&
 				     obj->otyp == ELVEN_ARROW &&
 				     uwep->otyp == ELVEN_BOW)
+				tmp++;
+			    /* orcs, gnomes and dwarves with their own kit */
+			    if (racial_launcher_shot(obj, uwep))
 				tmp++;
 			}
 			if((obj->opoisoned && is_poisonable(obj)) ||
