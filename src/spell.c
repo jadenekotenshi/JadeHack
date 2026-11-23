@@ -1361,12 +1361,8 @@ int spell;
 
 	splcaster = urole.spelbase;
 	special = urole.spelheal;
-	{
-	    int sk_ = spell_skilltype(spellid(spell));
-	    /* songs use Charisma, and so do a Bard's enchantment spells */
-	    statused = (Role_if(PM_BARD) && sk_ == P_ENCHANTMENT_SPELL) ?
-			ACURR(A_CHA) : ACURR(urole.spelstat);
-	}
+	/* the role's casting stat: Int, Wis, or (for a Bard) Cha */
+	statused = ACURR(urole.spelstat);
 	
 	/* Knights don't get metal armor penalty for clerical spells */
 	paladin_bonus = Role_if(PM_KNIGHT) && spell_skilltype(spellid(spell)) == P_CLERIC_SPELL;
