@@ -2007,6 +2007,31 @@ common:
 		}
 		break;
 
+	    case AD_STUN:
+		/* a stunning flash; blindness keeps it out */
+		not_affected |= Blind || u.umonnum == PM_ORANGE_LIGHT;
+		if (!not_affected) make_stunned(HStun + (long)tmp, TRUE);
+		break;
+
+	    case AD_CURE: {
+		/* a little damage, but it clears what ails you */
+		boolean cured = FALSE;
+
+		if (HConfusion) { make_confused(0L, FALSE); cured = TRUE; }
+		if (Blinded) { make_blinded(0L, FALSE); cured = TRUE; }
+		if (HHallucination) { make_hallucinated(0L, FALSE, 0L); cured = TRUE; }
+		if (HStun) { make_stunned(0L, FALSE); cured = TRUE; }
+		if (Sick) { make_sick(0L, (char *)0, FALSE, SICK_ALL); cured = TRUE; }
+		if (cured) pline("A soothing green glow washes your afflictions away.");
+		if (ACURR(A_DEX) > rnd(20)) {
+		    You("duck some of the blast.");
+		    tmp = (tmp+1) / 2;
+		} else if (flags.verbose) You("get blasted!");
+		if (Half_physical_damage) tmp = (tmp+1) / 2;
+		mdamageu(mtmp, tmp);
+		break;
+	    }
+
 	    case AD_CONF:
 		/* a dazzling flash; a blindfold or blindness keeps it out */
 		not_affected |= Blind || Confusion_resistance ||

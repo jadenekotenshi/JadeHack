@@ -1979,6 +1979,21 @@ register struct attack *mattk;
 		    mdef->mcansee = 0;
 		}
 		break;
+	    case AD_STUN:
+		if (!mdef->mstun) {
+		    pline("%s is stunned by your flash of light!", Monnam(mdef));
+		    mdef->mstun = 1;
+		}
+		break;
+	    case AD_CURE:
+		if (mdef->mconf || mdef->mstun || !mdef->mcansee) {
+		    pline("%s looks better.", Monnam(mdef));
+		    mdef->mconf = mdef->mstun = 0;
+		    mdef->mcansee = 1;
+		    mdef->mblinded = 0;
+		}
+		resistance = FALSE;
+		goto common;
 	    case AD_CONF:
 	    case AD_HALU:
 		if (haseyes(mdef->data) && mdef->mcansee) {

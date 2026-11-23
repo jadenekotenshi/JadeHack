@@ -89,6 +89,7 @@
 #define AD_PRSM		48	/* crystal: blinding light */
 #define AD_FORC		49	/* amethyst: force ray, ignores reflection */
 #define AD_METL		50	/* ferroloth: molten metal, half damage even when fire resistant */
+#define AD_CURE		51	/* green light: a little damage, and cures the afflicted */
 
 #define AD_CLRC		240	/* random clerical spell */
 #define AD_SPEL		241	/* random magic spell */

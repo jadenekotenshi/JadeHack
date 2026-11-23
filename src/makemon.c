@@ -2047,6 +2047,9 @@ register struct permonst *ptr;
 	if (race_peaceful(ptr)) return TRUE;
 	if (race_hostile(ptr)) return FALSE;
 
+	/* green lights are harmless-ish and usually peaceful to everyone */
+	if (ptr == &mons[PM_GREEN_LIGHT]) return((boolean)(rn2(10) != 0));
+
 	/* the monster is hostile if its alignment is different from the
 	 * player's */
 	if (sgn(mal) != sgn(ual)) return FALSE;

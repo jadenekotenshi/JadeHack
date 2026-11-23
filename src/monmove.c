@@ -1181,7 +1181,9 @@ postmov:
 			    pline("%s %s under the door.", Monnam(mtmp),
 				  (ptr == &mons[PM_FOG_CLOUD] ||
 				   ptr == &mons[PM_YELLOW_LIGHT] ||
-				   ptr == &mons[PM_BLUE_LIGHT])
+				   ptr == &mons[PM_BLUE_LIGHT] ||
+				   ptr == &mons[PM_GREEN_LIGHT] ||
+				   ptr == &mons[PM_ORANGE_LIGHT])
 				  ? "flows" : "oozes");
 		    } else if(here->doormask & D_LOCKED && can_unlock) {
 			if(btrapped) {

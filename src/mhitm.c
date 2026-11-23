@@ -714,7 +714,20 @@ mdamagem(magr, mdef, mattk)
 		    pline("%s %s for a moment.", Monnam(mdef),
 			  makeplural(stagger(mdef->data, "stagger")));
 		mdef->mstun = 1;
+		if (mattk->aatyp == AT_EXPL) {	/* an orange light's flash */
+		    tmp = 0;
+		    break;
+		}
 		goto physical;
+	    case AD_CURE:
+		/* a green light: a little damage, and the afflicted recover */
+		if (mdef->mconf || mdef->mstun || !mdef->mcansee) {
+		    if (vis) pline("%s looks better.", Monnam(mdef));
+		    mdef->mconf = mdef->mstun = 0;
+		    mdef->mcansee = 1;
+		    mdef->mblinded = 0;
+		}
+		break;
 	    case AD_LEGS:
 		if (magr->mcan) {
 		    tmp = 0;
