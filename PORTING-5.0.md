@@ -1347,3 +1347,7 @@ Checked in wizard mode: the failure rate of a level 2 attack spell (magic missil
 As for the Bard in Batch 132: the Tourist's casting stat (`urole.spelstat`, `role.c`) is now **Charisma** instead of Intelligence, for every spell. Nothing else about Tourist spellcasting changed (base, armor penalties, emergency-spell bonus, the Charm Monster special spell), and reading spellbooks still uses Intelligence.
 
 Checked in wizard mode: a Tourist with Cha 15 and Int 12 had a 91% failure rate on magic missile (a level 2 spell); on Intelligence, 12 gives no chance at all and it would have been 100%. The three stress tests ran clean. Nothing was renumbered; saves and bones are unaffected, but a Tourist's displayed spell failure rates change at once.
+
+## Batch 134: a Pirate casts every spell with Charisma
+
+Like the Bard (Batch 132) and Tourist (Batch 133), the Pirate's casting stat (`urole.spelstat`, `role.c`) is now **Charisma** instead of Intelligence, for every spell. Nothing else about Pirate spellcasting changed (base, armor penalties, emergency-spell bonus, the Cause Fear special spell), and reading spellbooks still uses Intelligence. Every other role keeps its Intelligence or Wisdom casting stat.
