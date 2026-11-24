@@ -97,7 +97,7 @@ const struct Role roles[] = {
 	{  20, 10, 10, 20, 10, 30 },
 	/* Init   Lower  Higher */
 	{ 10, 0,  0, 8,  1, 0 },	/* Hit points */
-	{  6, 0,  0, 2,  0, 2 },10,	/* Energy */
+	{  1, 4,  0, 1,  0, 2 },10,	/* Energy */
 	10, 5, 1, 2, 10, A_CHA, SPE_SLEEP,   -4
 },
 {	{"Caveman", "Cavewoman"}, {
@@ -172,7 +172,7 @@ const struct Role roles[] = {
 	{  30, 15, 15, 10, 20, 10 },
 	/* Init   Lower  Higher */
 	{ 14, 0,  0,10,  2, 0 },	/* Hit points */
-	{  1, 4,  0, 1,  0, 2 },10,	/* Energy */
+	{  6, 0,  0, 2,  0, 2 },10,	/* Energy */
 	10, 8,-2, 0,  9, A_WIS, SPE_EXTRA_HEALING,     -4
 },
 {	{"Monk", 0}, {
@@ -441,7 +441,7 @@ const struct Role roles[] = {
 	{  10, 20, 30, 10, 20, 10 },
 	/* Init   Lower  Higher */
 	{ 12, 0,  0, 8,  1, 0 },	/* Hit points */
-	{  6, 0,  0, 2,  0, 2 },10,	/* Energy */
+	{  4, 3,  0, 2,  0, 2 },10,	/* Energy */
 	0, 2,-2, 2, 10, A_WIS, SPE_CHARM_MONSTER,   -4
 },
 {	{"Wizard", 0}, {

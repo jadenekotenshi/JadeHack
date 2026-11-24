@@ -1459,3 +1459,10 @@ With the Witch the class column had 17 rows, which pushed the menu past the bott
 The Witch's pantheon is now **the Crone** (lawful), **the Mother** (neutral) and **the Maiden** (chaotic); without the article the names read wrongly in prayer messages. The names are stored as `_the Crone` and so on (the underscore still marks a goddess), so mid-sentence uses read right ("You feel that the Crone is displeased"). Where a god's name begins a sentence, a new `cap_gname()` (`pray.c`) capitalises it: the prayer-result and sacrifice messages in `pray.c` ("The Crone accepts your gift...", "... seems ...", "... is enraged..."), and the god's line in the attributes screen and dump (`cmd.c`). The one Witch quest line that starts with the god's name uses the `%dC` capitalising form. No other role's gods changed, and saves are unaffected.
 
 Checked in wizard mode: "You begin praying to the Crone", "You feel that the Crone is displeased", and the attributes screen's deities listed as "the Maiden / the Mother / the Crone".
+
+## Batch 145: Pw growth swaps (Witch like Priest; Bard and Knight trade)
+
+- The **Witch** now has the Priest's Pw curve: start 4 + d3, `rn2(Wis/2+2)` per level, and the x2 multiplier in `enermod()` (`exper.c`). About 12 Pw a level at Wis 15 for a human, up from 6.
+- The **Bard** and **Knight** traded energy curves: the Bard now starts with 1 + d4 and gains `rn2(Wis/2+1)` a level with the x1.5 multiplier (about 8 a level at Wis 15); the Knight starts with 6 and gains `rn2(Wis/2+2)` a level at x1 (about 6 a level). Cutoff levels were both 10 already.
+
+No monsters or objects changed, so saves still load (existing characters keep the Pw they have; only future levels use the new curve). Checked in wizard mode: starting Pw for a human Witch 6-8, Bard 3-6, Knight 7; nine levels of gain level took Witches to about 113, Bards to about 55-70 and Knights to about 50-70.

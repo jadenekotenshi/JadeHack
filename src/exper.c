@@ -21,10 +21,11 @@ int en;
 {
 	switch (Role_switch) {
 	case PM_PRIEST:
+	case PM_WITCH:
 	case PM_WIZARD:
 	    return(2 * en);
 	case PM_HEALER:
-	case PM_KNIGHT:
+	case PM_BARD:
 	    return((3 * en) / 2);
 	case PM_BARBARIAN:
 	case PM_VALKYRIE:
