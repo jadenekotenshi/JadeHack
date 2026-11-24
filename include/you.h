@@ -308,6 +308,9 @@ struct you {
 	Bitfield(uedibility,1);		/* blessed food detection; sense unsafe food */
 	/* 1 free bit! */
 
+	xchar ubroom;			/* riding a broom: BROOM_xxx (zero if not) */
+	unsigned ubroomid;		/* o_id of the broom being ridden */
+
 	unsigned udg_cnt;		/* how long you have been demigod */
 	struct u_event	uevent;		/* certain events have happened */
 	struct u_have	uhave;		/* you're carrying special objects */
@@ -372,5 +375,12 @@ struct you {
 };	/* end of `struct you' */
 
 #define Upolyd (u.umonnum != u.umonster)
+
+/* u.ubroom: what a broom is doing for you (set by applying it) */
+#define BROOM_OFF	0
+#define BROOM_LEV	1	/* Basic: levitating */
+#define BROOM_LEVFAST	2	/* Skilled: levitating, and fast */
+#define BROOM_FLY	3	/* Expert: flying, and fast */
+#define Broom_fast	(u.ubroom >= BROOM_LEVFAST)
 
 #endif	/* YOU_H */

@@ -1040,7 +1040,7 @@ moveloop()
 					/* average movement is 1.67 times normal */
 					moveamt += NORMAL_SPEED / 2;
 					if (rn2(3) == 0) moveamt += NORMAL_SPEED / 2;
-				} else if (Fast) {
+				} else if (Fast || Broom_fast) {
 					/* average movement is 1.33 times normal */
 					if (rn2(3) != 0) moveamt += NORMAL_SPEED / 2;
 				} else if (Slow) {
@@ -1088,6 +1088,7 @@ moveloop()
 		    run_regions();
 
 		    if (u.ublesscnt)  u.ublesscnt--;
+		    if (u.ubroom) broom_check();
 		    acid_pool_burn();
 		    if(flags.time && !flags.run)
 			flags.botl = 1;

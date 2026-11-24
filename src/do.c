@@ -875,6 +875,10 @@ dodown()
 	} else
 #endif
 	if (Levitation) {
+	    if (u.ubroom) {
+		dismount_broom("You dismount your broom.");
+		return (1);
+	    }
 	    if ((HLevitation & I_SPECIAL) || (ELevitation & W_ARTI)) {
 		/* end controlled levitation */
 		if (ELevitation & W_ARTI) {
@@ -903,6 +907,11 @@ dodown()
 		floating_above(stairs_down ? "stairs" : ladder_down ?
 			       "ladder" : surface(u.ux, u.uy));
 	    return (0);   /* didn't move */
+	}
+	if (u.ubroom == BROOM_FLY && !stairs_down && !ladder_down) {
+		/* nothing to go down here: land the broom */
+		dismount_broom("You land and dismount your broom.");
+		return (1);
 	}
 	if (!stairs_down && !ladder_down) {
 		if (!(trap = t_at(u.ux,u.uy)) ||

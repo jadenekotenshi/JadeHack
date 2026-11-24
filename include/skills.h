@@ -41,29 +41,30 @@
 #define P_DART              19
 #define P_BOOMERANG         20
 #define P_WHIP              21
-#define P_UNICORN_HORN      22	/* last weapon */
+#define P_UNICORN_HORN      22
+#define P_BROOMSTICK        23	/* last weapon; also governs riding a broom */
 #define P_FIRST_WEAPON      P_DAGGER
-#define P_LAST_WEAPON       P_UNICORN_HORN
+#define P_LAST_WEAPON       P_BROOMSTICK
 
 /* Spell Skills added by Larry Stewart-Zerba */
-#define P_ATTACK_SPELL      23
-#define P_HEALING_SPELL     24
-#define P_DIVINATION_SPELL  25
-#define P_ENCHANTMENT_SPELL 26
-#define P_CLERIC_SPELL      27
-#define P_ESCAPE_SPELL      28
-#define P_MATTER_SPELL      29
+#define P_ATTACK_SPELL      24
+#define P_HEALING_SPELL     25
+#define P_DIVINATION_SPELL  26
+#define P_ENCHANTMENT_SPELL 27
+#define P_CLERIC_SPELL      28
+#define P_ESCAPE_SPELL      29
+#define P_MATTER_SPELL      30
 #define P_FIRST_SPELL		P_ATTACK_SPELL
-#define P_MUSICAL_SPELL     30	/* songs; needs an instrument */
+#define P_MUSICAL_SPELL     31	/* songs; needs an instrument */
 #define P_LAST_SPELL		P_MUSICAL_SPELL
 
 /* Other types of combat */
-#define P_BARE_HANDED_COMBAT	31
+#define P_BARE_HANDED_COMBAT	32
 #define P_MARTIAL_ARTS		P_BARE_HANDED_COMBAT	/* Role distinguishes */
-#define P_TWO_WEAPON_COMBAT	32	/* Finally implemented */
-#define P_SHIELD		33	/* shield blocking and bashing */
+#define P_TWO_WEAPON_COMBAT	33	/* Finally implemented */
+#define P_SHIELD		34	/* shield blocking and bashing */
 #ifdef STEED
-#define P_RIDING		34	/* How well you control your steed */
+#define P_RIDING		35	/* How well you control your steed */
 #define P_LAST_H_TO_H		P_RIDING
 #else
 #define P_LAST_H_TO_H		P_SHIELD

@@ -1351,3 +1351,24 @@ Checked in wizard mode: a Tourist with Cha 15 and Int 12 had a 91% failure rate 
 ## Batch 134: a Pirate casts every spell with Charisma
 
 Like the Bard (Batch 132) and Tourist (Batch 133), the Pirate's casting stat (`urole.spelstat`, `role.c`) is now **Charisma** instead of Intelligence, for every spell. Nothing else about Pirate spellcasting changed (base, armor penalties, emergency-spell bonus, the Cause Fear special spell), and reading spellbooks still uses Intelligence. Every other role keeps its Intelligence or Wisdom casting stat.
+
+## Batch 135: Witch, stage 1 -- sickle, broom, staff of enchantment, broomstick skill
+
+First of six stages toward a new **Witch** role (see the design notes the user and I worked out: familiar, hexes, cauldron, the Boline of Cerridwen, a forest quest). This stage adds only the items and skill the role will lean on, all usable by existing roles. Objects were added, so this needs a full rebuild; old saves and bones are incompatible.
+
+- **Staff of enchantment** -- the missing seventh school staff (alongside divination, healing, holiness, matter, escape and battle). Wielded, it gives +50 to the success chance of enchantment spells (`spell.c`, same code as the other staves).
+- **Broom** -- a weak bludgeon (d4 / d3). When wielded it works as a staff of enchantment for spellcasting. It is a new weapon-class object with its own skill.
+- **Broomstick skill** (`P_BROOMSTICK`, the last weapon skill, so every later skill number shifted by one): Expert for Witches later; Wizards cap at Skilled, Healers and Tourists at Basic; everyone else is restricted. 
+- **Applying a broom** (`apply.c use_broom`) mounts it. Wielding is not required to ride. It is a status, not a steed (`u.ubroom`, kept in sync each turn by `broom_check`; losing the broom throws you off):
+  - Restricted: you have no idea how to ride it. Unskilled: you cannot keep your balance, but each attempt trains the skill, so you can reach Basic.
+  - Basic: levitation (at will; `>` or applying again dismounts).
+  - Skilled: levitation plus Fast.
+  - Expert: true flight plus Fast (`>` off the stairs lands you).
+  - Riding practises the skill (every 20 turns). A cursed broom bucks you off half the time (d6 damage). You cannot ride while on a steed, trapped, swallowed, polymorphed into something handless or tiny, or already levitating or flying.
+  - Levitation uses `ELevitation |= W_ARTI` (so it is "at will" like an invoked artifact); flight uses `EFlying |= W_ARTI`.
+- **Sickle** -- a knife-skill blade, d6 against small and d3 against large, -1 to hit when thrown. Brooms are exempt from the "eroded tools may break when applied" rule.
+- Object generation odds: arrows and darts lost 8 each to keep the weapon class summing to 1000 (staff of enchantment 5, sickle 8, broom 3).
+
+Tested in wizard mode: unskilled apply trains, #enhance to Basic, mount/dismount at Basic, Skilled ("You feel swift") and Expert (flight, `>` lands); failure rate of charm monster (level 3, XL2 Wizard) fell from 100% to 51% with either the broom or a staff of enchantment wielded.
+
+Still to come: Witch role core (Wit, Wisdom casting, titles, gods, kit), familiar and hex, cauldron, the Boline of Cerridwen, the quest.

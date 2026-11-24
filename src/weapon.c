@@ -32,6 +32,7 @@ STATIC_DCL int FDECL(enhance_skill, (boolean));
 #define PN_MATTER_SPELL			(-14)
 #define PN_MUSICAL_SPELL		(-15)
 #define PN_SHIELD			(-16)
+#define PN_BROOMSTICK			(-17)
 
 STATIC_DCL void FDECL(give_may_advance_msg, (int));
 
@@ -52,6 +53,7 @@ STATIC_VAR NEARDATA const short skill_names_indices[P_NUM_SKILLS] = {
 	LANCE,            BOW,
 	SLING,            CROSSBOW,       DART,
 	BOOMERANG,      PN_WHIP,      UNICORN_HORN,
+	PN_BROOMSTICK,
 	PN_ATTACK_SPELL,     PN_HEALING_SPELL,
 	PN_DIVINATION_SPELL, PN_ENCHANTMENT_SPELL,
 	PN_CLERIC_SPELL,     PN_ESCAPE_SPELL,
@@ -81,6 +83,7 @@ STATIC_VAR NEARDATA const char * const odd_skill_names[] = {
     "matter spells",
     "musicalize spell",
     "shield",
+    "broomstick",
 };
 /* indexed vis `is_martial() */
 STATIC_VAR NEARDATA const char * const barehands_or_martial[] = {

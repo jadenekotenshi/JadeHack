@@ -399,6 +399,7 @@ static const struct def_skill Skill_H[] = {
     { P_MATTER_SPELL, P_BASIC },
     { P_CLERIC_SPELL, P_SKILLED },
     { P_BARE_HANDED_COMBAT, P_BASIC },
+    { P_BROOMSTICK, P_BASIC },
     { P_NONE, 0 }
 };
 
@@ -582,6 +583,7 @@ static const struct def_skill Skill_T[] = {
     { P_TWO_WEAPON_COMBAT, P_SKILLED },
     { P_BARE_HANDED_COMBAT, P_SKILLED },
     { P_SHIELD, P_BASIC },
+    { P_BROOMSTICK, P_BASIC },
     { P_NONE, 0 }
 };
 #endif /* TOURIST */
@@ -619,6 +621,7 @@ static const struct def_skill Skill_W[] = {
 #endif
     { P_BARE_HANDED_COMBAT, P_BASIC },
     { P_MACE, P_BASIC },
+    { P_BROOMSTICK, P_SKILLED },
     { P_NONE, 0 }
 };
 

@@ -82,7 +82,7 @@ NEARDATA struct objclass objects[] = {
 
 /* missiles */
 PROJECTILE("arrow", (char *)0,
-		1, 43, 1, 2, 6, 6, 0, IRON, -P_BOW, HI_METAL),
+		1, 35, 1, 2, 6, 6, 0, IRON, -P_BOW, HI_METAL),
 PROJECTILE("elven arrow", "runed arrow",
 		0, 19, 1, 2, 7, 6, 0, WOOD, -P_BOW, HI_WOOD),
 PROJECTILE("orcish arrow", "crude arrow",
@@ -104,7 +104,7 @@ PROJECTILE("silver crossbow bolt", (char *)0,
 		1, 8, 1, 4, 4, 6, 0, SILVER, -P_CROSSBOW, HI_SILVER),
 
 WEAPON("dart", (char *)0,
-	1, 1, 0, 46,  1,  2,  3,  2, 0, P,   -P_DART, IRON, HI_METAL),
+	1, 1, 0, 38,  1,  2,  3,  2, 0, P,   -P_DART, IRON, HI_METAL),
 WEAPON("shuriken", "throwing star",
 	0, 1, 0, 30,  1,  5,  8,  6, 2, P,   -P_DART, IRON, HI_METAL),
 WEAPON("boomerang", (char *)0,
@@ -155,6 +155,9 @@ WEAPON("worm tooth", (char *)0,
 	1, 0, 0,  0, 20,  2,  2,  2, 0, 0,   P_KNIFE, 0, CLR_WHITE),
 WEAPON("crysknife", (char *)0,
 	1, 0, 0,  0, 20,100, 10, 10, 3, P,   P_KNIFE, MINERAL, CLR_WHITE),
+/* a curved reaping blade: -1 to hit when thrown (see thitmonst) */
+WEAPON("sickle", (char *)0,
+	1, 0, 0,  8, 20,  6,  6,  3, 0, S,   P_KNIFE, IRON, HI_METAL),
 
 WEAPON("axe", (char *)0,
 	1, 0, 0, 32, 60,  8,  6,  4, 0, S,   P_AXE, IRON, HI_METAL),
@@ -295,6 +298,10 @@ WEAPON("staff of holiness",   "staff", 0, 0, 1, 5, 40, 400,  6,  6, 0, B, P_QUAR
 WEAPON("staff of matter",     "staff", 0, 0, 1, 5, 40, 400,  6,  6, 0, B, P_QUARTERSTAFF, WOOD, HI_WOOD),
 WEAPON("staff of escape",     "staff", 0, 0, 1, 5, 40, 400,  6,  6, 0, B, P_QUARTERSTAFF, WOOD, HI_WOOD),
 WEAPON("staff of battle",     "staff", 0, 0, 1, 5, 40, 400,  6,  6, 0, B, P_QUARTERSTAFF, WOOD, HI_WOOD),
+WEAPON("staff of enchantment","staff", 0, 0, 1, 5, 40, 400,  6,  6, 0, B, P_QUARTERSTAFF, WOOD, HI_WOOD),
+/* a witch's broom: a poor weapon, but it can be ridden (apply it) and,
+ * when wielded, helps enchantment spells like a staff of enchantment */
+WEAPON("broom", (char *)0, 1, 0, 0, 3, 30, 60,  4,  3, 0, B, P_BROOMSTICK, WOOD, CLR_BROWN),
 /* two-piece */
 WEAPON("aklys", "thonged club", 0, 0, 0,  3, 15,  4,  6,  3, 0, B,   P_MACE, IRON, HI_METAL),
 WEAPON("flail", (char *)0, 1, 0, 0, 20, 15,  4,  6,  4, 0, B,   P_FLAIL, IRON, HI_METAL),

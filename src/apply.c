@@ -35,6 +35,7 @@ STATIC_DCL void FDECL(use_stone, (struct obj *));
 STATIC_DCL void FDECL(apply_flint, (struct obj *));
 STATIC_PTR int NDECL(set_trap);		/* occupation callback */
 STATIC_DCL int FDECL(use_whip, (struct obj *));
+STATIC_DCL int FDECL(use_broom, (struct obj *));
 STATIC_DCL int FDECL(use_bearded_axe, (struct obj *));
 STATIC_DCL int FDECL(use_pole, (struct obj *));
 STATIC_DCL int FDECL(use_cream_pie, (struct obj *));
@@ -2346,6 +2347,99 @@ struct obj *obj;
     return use_pick_axe2(obj) ? 1 : res;
 }
 
+/* Brooms.  Applying one mounts it; the effect depends on broomstick skill:
+ * Basic levitates, Skilled levitates and is fast, Expert flies and is fast.
+ * Riding it doesn't require wielding it (wielding is what helps casting). */
+void
+dismount_broom(msg)
+const char *msg;
+{
+	int mode = u.ubroom;
+
+	if (!mode) return;
+	u.ubroom = BROOM_OFF;
+	u.ubroomid = 0;
+	if (msg) pline("%s", msg);
+	if (mode == BROOM_FLY) {
+	    EFlying &= ~W_ARTI;
+	    if (!Flying) (void) float_down(0L, 0L);
+	} else
+	    (void) float_down(0L, W_ARTI);
+}
+
+/* called once per turn while mounted */
+void
+broom_check()
+{
+	struct obj *otmp;
+
+	for (otmp = invent; otmp; otmp = otmp->nobj)
+	    if (otmp->otyp == BROOM && otmp->o_id == u.ubroomid) break;
+	if (!otmp) {
+	    dismount_broom("Without your broom, you tumble back to earth.");
+	    return;
+	}
+	if (!(moves % 20)) use_skill(P_BROOMSTICK, 1);
+}
+
+STATIC_OVL int
+use_broom(obj)
+struct obj *obj;
+{
+	int skill = P_SKILL(P_BROOMSTICK);
+
+	if (u.ubroom) {
+	    dismount_broom("You dismount your broom.");
+	    return 1;
+	}
+	if (skill == P_ISRESTRICTED) {
+	    You("have no idea how to ride %s.", the(xname(obj)));
+	    return 0;
+	}
+	if (u.usteed) {
+	    You("cannot ride a broom while riding %s.", y_monnam(u.usteed));
+	    return 0;
+	}
+	if (u.uswallow || u.utrap) {
+	    You_cant("mount %s right now.", the(xname(obj)));
+	    return 0;
+	}
+	if (nohands(youmonst.data) || verysmall(youmonst.data)) {
+	    You_cant("hold on to %s.", the(xname(obj)));
+	    return 0;
+	}
+	if (Levitation || Flying) {
+	    You("are already %s.", Levitation ? "floating in the air" : "flying");
+	    return 0;
+	}
+	if (skill < P_BASIC) {
+	    You("try to mount %s, but cannot keep your balance.", the(xname(obj)));
+	    use_skill(P_BROOMSTICK, 1);
+	    return 1;
+	}
+	if (obj->cursed && rn2(2)) {
+	    pline("%s bucks wildly and throws you to the ground!", The(xname(obj)));
+	    losehp(rnd(6), "falling off a cursed broom", KILLED_BY);
+	    return 1;
+	}
+	use_skill(P_BROOMSTICK, 1);
+	u.ubroomid = obj->o_id;
+	if (skill >= P_EXPERT) {
+	    u.ubroom = BROOM_FLY;
+	    You("mount %s and take flight!", the(xname(obj)));
+	    EFlying |= W_ARTI;
+	    spoteffects(FALSE);
+	} else {
+	    u.ubroom = (skill >= P_SKILLED) ? BROOM_LEVFAST : BROOM_LEV;
+	    You("mount %s.", the(xname(obj)));
+	    ELevitation |= W_ARTI;
+	    float_up();
+	    spoteffects(FALSE);
+	}
+	if (Broom_fast) You_feel("swift.");
+	return 1;
+}
+
 STATIC_OVL int
 use_whip(obj)
 struct obj *obj;
@@ -3121,6 +3215,9 @@ doapply()
 	case BULLWHIP:
 		res = use_whip(obj);
 		break;
+	case BROOM:
+		res = use_broom(obj);
+		break;
 	case GRAPPLING_HOOK:
 		res = use_grapple(obj);
 		break;
@@ -3336,7 +3433,7 @@ doapply()
 	
 	/* Tools that aren't in perfect condition might break... 
 	 * ...but only tools, not the weapons */
-	if (obj && !obj->oerodeproof && obj->otyp != BULLWHIP && 
+	if (obj && !obj->oerodeproof && obj->otyp != BULLWHIP && obj->otyp != BROOM && 
 			!is_pole(obj) && !is_pick(obj) && !obj->oartifact) {	 /* don't break the Key */
 		breakchance = obj->blessed ? 100 : obj->cursed ? 5 : 10;
 		if (rn2(breakchance) < greatest_erosion(obj)) {

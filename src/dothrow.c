@@ -1484,6 +1484,8 @@ register struct obj   *obj;
 		    tmp += 2;
 		else				/* not meant to be thrown */
 		    tmp -= 2;
+		if (otyp == SICKLE)		/* awkward curved blade */
+		    tmp--;
 		/* we know we're dealing with a weapon or weptool handled
 		   by WEAPON_SKILLS once ammo objects have been excluded */
 		tmp += weapon_hit_bonus(obj);
