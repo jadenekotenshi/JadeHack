@@ -1464,7 +1464,8 @@ int spell;
 	 * It won't fix the Wizard's body armor restriction, but for all other
 	 * classes it should be a significant help.
 	 */
-	if (uwep && uwep->otyp >= STAFF_OF_DIVINATION && uwep->otyp <= BROOM)
+	if (uwep && ((uwep->otyp >= STAFF_OF_DIVINATION &&
+		      uwep->otyp <= STAFF_OF_ENCHANTMENT) || uwep->otyp == BROOM))
 	{
 #define STAFFBONUS 50
 		if (spell_skilltype(spellid(spell)) == P_CLERIC_SPELL && uwep->otyp == STAFF_OF_HOLINESS)

@@ -223,7 +223,7 @@ static struct trobj Wizard[] = {
 
 static struct trobj Witch[] = {
 	{ ATHAME, 1, WEAPON_CLASS, 1, 0 },
-	{ BROOM, 0, WEAPON_CLASS, 1, 0 },
+	{ BROOM, 0, TOOL_CLASS, 1, 0 },
 	{ LEATHER_ARMOR, 0, ARMOR_CLASS, 1, 0 },
 	{ ROBE, 0, ARMOR_CLASS, 1, 0 },
 	{ CRAM_RATION, 0, FOOD_CLASS, 2, 0 },

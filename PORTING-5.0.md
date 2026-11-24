@@ -1390,3 +1390,7 @@ The **Witch** (`Wit`, menu key `W`) is now playable. A new player monster ("witc
 - Also: Witches can appear as random player monsters (`mplayer.c`) and in the themed-room statue list (`mklev.c`); the character-creation menu (`charinit.c`) gained a `Witch` row.
 
 Tested in wizard mode for all five races: kit, spells, skills, discoveries, titles by level, cursed helm removable, cursed dagger no longer welds, cursed ring still sticks, "You feel healthy!" at XL3, "You feel awake!" at XL6, and the `^V quest` teleport shows the placeholder quest message with Medea's grove.
+
+## Batch 137: the broom is a weapon-tool
+
+Like the pick-axe, the broom is now a **weapon-tool**: a `(` in the Tools class (`WEPTOOL`, damage d4/d3, broomstick skill) rather than a `)` weapon. Behaviour is unchanged (apply to ride it; wielded, it helps enchantment spells), and the Witch's starting broom still sits in her alternate-weapon slot. Generation odds moved with it: the broom's 3 points came back to darts (weapons) and out of tin whistles (tools), keeping both classes at 1000. Objects renumbered, so a full rebuild; old saves and bones are incompatible.

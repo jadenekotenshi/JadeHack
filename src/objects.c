@@ -104,7 +104,7 @@ PROJECTILE("silver crossbow bolt", (char *)0,
 		1, 8, 1, 4, 4, 6, 0, SILVER, -P_CROSSBOW, HI_SILVER),
 
 WEAPON("dart", (char *)0,
-	1, 1, 0, 38,  1,  2,  3,  2, 0, P,   -P_DART, IRON, HI_METAL),
+	1, 1, 0, 41,  1,  2,  3,  2, 0, P,   -P_DART, IRON, HI_METAL),
 WEAPON("shuriken", "throwing star",
 	0, 1, 0, 30,  1,  5,  8,  6, 2, P,   -P_DART, IRON, HI_METAL),
 WEAPON("boomerang", (char *)0,
@@ -299,9 +299,6 @@ WEAPON("staff of matter",     "staff", 0, 0, 1, 5, 40, 400,  6,  6, 0, B, P_QUAR
 WEAPON("staff of escape",     "staff", 0, 0, 1, 5, 40, 400,  6,  6, 0, B, P_QUARTERSTAFF, WOOD, HI_WOOD),
 WEAPON("staff of battle",     "staff", 0, 0, 1, 5, 40, 400,  6,  6, 0, B, P_QUARTERSTAFF, WOOD, HI_WOOD),
 WEAPON("staff of enchantment","staff", 0, 0, 1, 5, 40, 400,  6,  6, 0, B, P_QUARTERSTAFF, WOOD, HI_WOOD),
-/* a witch's broom: a poor weapon, but it can be ridden (apply it) and,
- * when wielded, helps enchantment spells like a staff of enchantment */
-WEAPON("broom", (char *)0, 1, 0, 0, 3, 30, 60,  4,  3, 0, B, P_BROOMSTICK, WOOD, CLR_BROWN),
 /* two-piece */
 WEAPON("aklys", "thonged club", 0, 0, 0,  3, 15,  4,  6,  3, 0, B,   P_MACE, IRON, HI_METAL),
 WEAPON("flail", (char *)0, 1, 0, 0, 20, 15,  4,  6,  4, 0, B,   P_FLAIL, IRON, HI_METAL),
@@ -767,7 +764,7 @@ TOOL("magic marker", (char *)0, 1, 0, 1, 1,   0,  2,  50, PLASTIC, CLR_RED),
 TOOL("land mine",(char *)0,     1, 0, 0, 0,   0,300, 180, IRON, CLR_RED),
 TOOL("beartrap", (char *)0,     1, 0, 0, 0,   0,200,  60, IRON, HI_METAL),
 /* instruments */
-TOOL("tin whistle", "whistle",  0, 0, 0, 0, 100,  3,  10, METAL, HI_METAL),
+TOOL("tin whistle", "whistle",  0, 0, 0, 0,  97,  3,  10, METAL, HI_METAL),
 TOOL("magic whistle", "whistle",0, 0, 1, 0,  30,  3,  10, METAL, HI_METAL),
 /* "If tin whistles are made out of tin, what do they make foghorns out of?" */
 TOOL("wooden flute", "flute",   0, 0, 0, 0,   8,  5,  12, WOOD, HI_WOOD),
@@ -785,6 +782,10 @@ TOOL("drum of earthquake", "drum", 0, 0, 1, 1,   4, 25,  25, LEATHER, HI_LEATHER
 /* tools useful as weapons */
 WEPTOOL("pick-axe", (char *)0,
 	1, 0, 0, 20, 100,  50,	6,  3, WHACK,  P_PICK_AXE, IRON, HI_METAL),
+/* a witch's broom: a poor weapon, but it can be ridden (apply it) and,
+ * when wielded, helps enchantment spells like a staff of enchantment */
+WEPTOOL("broom", (char *)0,
+	1, 0, 0,  3,  30,  60,  4,  3, WHACK,  P_BROOMSTICK, WOOD, CLR_BROWN),
 WEPTOOL("grappling hook", "iron hook",
 	0, 0, 0,  5,  30,  50,  2,  6, WHACK,  P_FLAIL, IRON, HI_METAL),
 /* 3.4.1: unicorn horn left classified as "magic" */
