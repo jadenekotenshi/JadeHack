@@ -419,6 +419,32 @@ const struct Role roles[] = {
 	{  1, 0,  0, 1,  0, 1 },10,	/* Energy */
 	0, 10,-2, 0,  9, A_WIS, SPE_REPAIR_ARMOR,    -4
 },
+{	{"Witch", 0}, {
+	{"Initiate",    0},
+	{"Hedgewitch",  0},
+	{"Herbalist",   0},
+	{"Brewer",      0},
+	{"Diviner",     0},
+	{"Scryer",      0},
+	{"Enchanter",   "Enchantress"},
+	{"Witch",       0},
+	{"Greybeard",   "Wise Woman"} },
+	"_Crone", "_Mother", "_Maiden", /* the three faces of the Goddess */
+	"Wit", "Medea's grove", "Baba Yaga's hut",
+	PM_WITCH, NON_PM, PM_KITTEN,
+	/* placeholders until the Witch quest is written: the Ranger's quest */
+	PM_ORION, PM_HUNTER, PM_SCORPIUS,
+	ART_LONGBOW_OF_DIANA,
+	MH_HUMAN|MH_ELF|MH_GNOME|MH_ORC|MH_DWARF | ROLE_MALE|ROLE_FEMALE |
+	  ROLE_LAWFUL|ROLE_NEUTRAL|ROLE_CHAOTIC,
+	/* Str Int Wis Dex Con Cha */
+	{   7,  9, 10,  7,  9,  7 },
+	{  10, 20, 30, 10, 20, 10 },
+	/* Init   Lower  Higher */
+	{ 12, 0,  0, 8,  1, 0 },	/* Hit points */
+	{  6, 0,  0, 2,  0, 2 },10,	/* Energy */
+	0, 2,-2, 2, 10, A_WIS, SPE_CHARM_MONSTER,   -4
+},
 {	{"Wizard", 0}, {
 	{"Evoker",      0},
 	{"Conjurer",    0},

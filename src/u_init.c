@@ -16,6 +16,7 @@ STATIC_DCL void FDECL(ini_inv, (struct trobj *));
 STATIC_DCL void FDECL(knows_object,(int));
 STATIC_DCL void FDECL(knows_class,(CHAR_P));
 STATIC_DCL boolean FDECL(restricted_spell_discipline, (int));
+STATIC_DCL boolean FDECL(witch_book_school, (int));
 
 #define UNDEF_TYP	0
 #define UNDEF_SPE	'\177'
@@ -217,6 +218,28 @@ static struct trobj Wizard[] = {
 	{ SPE_FORCE_BOLT, 0, SPBOOK_CLASS, 1, 1 },
 	{ SPE_PROTECTION, 0, SPBOOK_CLASS, 1, 1},
 	{ UNDEF_TYP, UNDEF_SPE, SPBOOK_CLASS, 1, UNDEF_BLESS },
+	{ 0, 0, 0, 0, 0 }
+};
+
+static struct trobj Witch[] = {
+	{ ATHAME, 1, WEAPON_CLASS, 1, 0 },
+	{ BROOM, 0, WEAPON_CLASS, 1, 0 },
+	{ LEATHER_ARMOR, 0, ARMOR_CLASS, 1, 0 },
+	{ ROBE, 0, ARMOR_CLASS, 1, 0 },
+	{ CRAM_RATION, 0, FOOD_CLASS, 2, 0 },
+#define WIT_HERB1	5	/* three random herbs: type and quantity set at start */
+	{ CLOVE_OF_GARLIC, 0, FOOD_CLASS, 1, 0 },
+	{ CLOVE_OF_GARLIC, 0, FOOD_CLASS, 1, 0 },
+	{ CLOVE_OF_GARLIC, 0, FOOD_CLASS, 1, 0 },
+	{ SACK, 0, TOOL_CLASS, 1, 0 },
+	{ UNDEF_TYP, UNDEF_SPE, WAND_CLASS, 1, UNDEF_BLESS },
+	{ UNDEF_TYP, UNDEF_SPE, RING_CLASS, 1, UNDEF_BLESS },
+	{ POT_HEALING, 0, POTION_CLASS, 1, UNDEF_BLESS },
+	{ POT_EXTRA_HEALING, 0, POTION_CLASS, 1, UNDEF_BLESS },
+#define WIT_POTIONS	13	/* d4+2 random potions: quantity set at start */
+	{ UNDEF_TYP, UNDEF_SPE, POTION_CLASS, 3, UNDEF_BLESS },
+	{ SPE_SLEEP, 0, SPBOOK_CLASS, 1, 1 },
+	{ UNDEF_TYP, UNDEF_SPE, SPBOOK_CLASS, 1, 1 },	/* clerical, divination or healing */
 	{ 0, 0, 0, 0, 0 }
 };
 
@@ -608,6 +631,20 @@ static const struct def_skill Skill_V[] = {
     { P_NONE, 0 }
 };
 
+static const struct def_skill Skill_Wit[] = {
+    { P_DAGGER, P_EXPERT },		{ P_KNIFE,  P_EXPERT },
+    { P_QUARTERSTAFF, P_EXPERT },	{ P_SHORT_SWORD, P_SKILLED },
+    { P_UNICORN_HORN, P_SKILLED },	{ P_MACE, P_BASIC },
+    { P_BOW, P_BASIC },			{ P_DART, P_SKILLED },
+    { P_ENCHANTMENT_SPELL, P_EXPERT },	{ P_HEALING_SPELL, P_EXPERT },
+    { P_DIVINATION_SPELL, P_EXPERT },	{ P_CLERIC_SPELL, P_SKILLED },
+    { P_ESCAPE_SPELL, P_SKILLED },	{ P_MATTER_SPELL, P_BASIC },
+    { P_ATTACK_SPELL, P_BASIC },
+    { P_BARE_HANDED_COMBAT, P_BASIC },
+    { P_BROOMSTICK, P_EXPERT },
+    { P_NONE, 0 }
+};
+
 static const struct def_skill Skill_W[] = {
     { P_DAGGER, P_EXPERT },		{ P_KNIFE,  P_SKILLED },
     { P_QUARTERSTAFF, P_EXPERT },
@@ -965,6 +1002,38 @@ u_init()
 		knows_class(ARMOR_CLASS);
 		skill_init(Skill_V);
 		break;
+	case PM_WITCH: {
+		static const short herbs[] = { CLOVE_OF_GARLIC, CARROT,
+				EUCALYPTUS_LEAF, SPRIG_OF_WOLFSBANE };
+		int h, k, j, otyp;
+
+		/* three different herbs, one to three of each */
+		for (h = 0; h < 3; h++) {
+		    do {
+			k = rn2(SIZE(herbs));
+			for (j = 0; j < h; j++)
+			    if (Witch[WIT_HERB1 + j].trotyp == herbs[k]) break;
+		    } while (j < h);
+		    Witch[WIT_HERB1 + h].trotyp = herbs[k];
+		    Witch[WIT_HERB1 + h].trquan = rn1(3, 1);
+		}
+		Witch[WIT_POTIONS].trquan = rnd(4) + 2;
+		ini_inv(Witch);
+		/* a witch already knows 1d6 potions, 3 scrolls and a spellbook
+		   in addition to what she carries */
+		for (h = rnd(6); h > 0; h--) {
+		    otyp = rnd_class(POT_GAIN_ABILITY, POT_WATER);
+		    if (otyp) knows_object(otyp);
+		}
+		for (h = 0; h < 3; h++) {
+		    otyp = rnd_class(SCR_ENCHANT_ARMOR, SCR_BLANK_PAPER);
+		    if (otyp) knows_object(otyp);
+		}
+		otyp = rnd_class(SPE_DIG, SPE_BLANK_PAPER);
+		if (otyp) knows_object(otyp);
+		skill_init(Skill_Wit);
+		break;
+	}
 	case PM_WIZARD:
 		ini_inv(Wizard);
 		if(!rn2(5)) ini_inv(Blindfold);
@@ -1174,6 +1243,17 @@ u_init()
 	return;
 }
 
+/* a witch's random starting spellbook: clerical, divination or healing */
+STATIC_OVL boolean
+witch_book_school(otyp)
+int otyp;
+{
+    int s = spell_skilltype(otyp);
+
+    return (s == P_CLERIC_SPELL || s == P_DIVINATION_SPELL ||
+	    s == P_HEALING_SPELL);
+}
+
 /* skills aren't initialized, so we use the role-specific skill lists */
 STATIC_OVL boolean
 restricted_spell_discipline(otyp)
@@ -1200,6 +1280,7 @@ int otyp;
      case PM_TOURIST:		skills = Skill_T; break;
 #endif
      case PM_VALKYRIE:		skills = Skill_V; break;
+     case PM_WITCH:		skills = Skill_Wit; break;
      case PM_WIZARD:		skills = Skill_W; break;
      default:			skills = 0; break;	/* lint suppression */
     }
@@ -1283,7 +1364,9 @@ register struct trobj *trop;
 				   spells in restricted skill categories */
 				|| (obj->oclass == SPBOOK_CLASS &&
 				    (objects[otyp].oc_level > 3 ||
-				    restricted_spell_discipline(otyp)))
+				    restricted_spell_discipline(otyp) ||
+				    (Role_if(PM_WITCH) &&
+				     !witch_book_school(otyp))))
 							) {
 				dealloc_obj(obj);
 				obj = mkobj(trop->trclass, FALSE);

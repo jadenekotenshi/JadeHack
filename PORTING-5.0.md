@@ -1372,3 +1372,21 @@ First of six stages toward a new **Witch** role (see the design notes the user a
 Tested in wizard mode: unskilled apply trains, #enhance to Basic, mount/dismount at Basic, Skilled ("You feel swift") and Expert (flight, `>` lands); failure rate of charm monster (level 3, XL2 Wizard) fell from 100% to 51% with either the broom or a staff of enchantment wielded.
 
 Still to come: Witch role core (Wit, Wisdom casting, titles, gods, kit), familiar and hex, cauldron, the Boline of Cerridwen, the quest.
+
+## Batch 136: Witch, stage 2 -- the role
+
+The **Witch** (`Wit`, menu key `W`) is now playable. A new player monster ("witch", numbered between the valkyrie and the wizard, so the player-monster range checks still hold) means another renumbering and full rebuild; old saves and bones are incompatible.
+
+- **Who:** human, elf, gnome, orc or dwarf, either sex, any alignment the race allows (dwarf lawful, gnome neutral, elf and orc chaotic, human any).
+- **Pantheon:** Crone (lawful), Mother (neutral), Maiden (chaotic).
+- **Ranks:** Initiate, Hedgewitch, Herbalist, Brewer, Diviner, Scryer, Enchanter/Enchantress, Witch, Greybeard/Wise Woman.
+- **Casting:** Wisdom; special spell Charm Monster. HP advance as the Priest, Pw advance as the Bard. Spell base 2, healing -2, shield 2, metal armor 10. Pet: kitten for now (stage 3 replaces it).
+- **Intrinsics:** poison resistance at XL3, sleep resistance at XL6.
+- **Skills** (`Skill_Wit`): dagger, knife, quarterstaff and broomstick Expert; short sword, unicorn horn, dart Skilled; mace and bow Basic; bare hands Basic. Spells: enchantment, healing, divination Expert; clerical and escape Skilled; matter and attack Basic.
+- **Kit:** +1 uncursed athame (wielded), +0 broom (alternate weapon), +0 leather armor, +0 robe, 2 cram rations, three different herbs (garlic, carrot, eucalyptus leaf, wolfsbane; 1-3 each), sack, a random wand and ring, potions of healing and extra healing plus d4+2 random potions, blessed spellbook of sleep and a blessed random clerical, divination or healing book (level 3 or less). Her gnomish/elven/orcish race substitutions come from the usual machinery. She also starts knowing 1d6 more potion types, 3 scroll types and 1 spellbook type.
+- **Curses:** she can always unwield a cursed weapon (it never welds) and take off cursed armor. Cursed rings, amulets and blindfolds still hold her.
+- **Pw regeneration:** a little faster at night (up to 5%) and by moon phase (0-15%, full moon best), by shortening the regeneration interval.
+- **Quest:** a placeholder until stage 6 -- `dat/Witch.des` is the Ranger quest renamed `Wit-*`, and the Witch's section of `quest.txt` is the Ranger's text. The leader, guardians and nemesis are Orion, hunters and Scorpius; the home-base name is already Medea's grove. (The goal artifact is the Longbow of Diana, which a Witch cannot handle.) Added to the quest-level lists in `sys/unix/Makefile.dat`.
+- Also: Witches can appear as random player monsters (`mplayer.c`) and in the themed-room statue list (`mklev.c`); the character-creation menu (`charinit.c`) gained a `Witch` row.
+
+Tested in wizard mode for all five races: kit, spells, skills, discoveries, titles by level, cursed helm removable, cursed dagger no longer welds, cursed ring still sticks, "You feel healthy!" at XL3, "You feel awake!" at XL6, and the `^V quest` teleport shows the placeholder quest message with Medea's grove.

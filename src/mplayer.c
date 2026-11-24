@@ -251,6 +251,10 @@ register boolean special;
 		    if (rn2(2)) weapon = WAR_HAMMER;
 		    if (rn2(2)) armor = rnd_class(PLATE_MAIL, CHAIN_MAIL);
 		    break;
+		case PM_WITCH:
+		    if (rn2(4)) weapon = rn2(2) ? SICKLE : ATHAME;
+		    shield = STRANGE_OBJECT;
+		    break;
 		case PM_WIZARD:
 		    if (rn2(4)) weapon = rn2(2) ? QUARTERSTAFF : ATHAME;
 		    if (rn2(2)) {

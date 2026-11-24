@@ -107,6 +107,10 @@ const struct innate {
 		     {  17, &(HTeleport_control), "controlled","uncontrolled" },
 		     {	 0, 0, 0, 0 } },
 
+	wit_abil[] = { {	3, &(HPoison_resistance), "healthy", "" },
+		     {	6, &(HSleep_resistance), "awake", "tired" },
+		     {	 0, 0, 0, 0 } },
+
 	/* Intrinsics conferred by race */
 	elf_abil[] = { {	4, &(HSleep_resistance), "awake", "tired" },
 		     {	 0, 0, 0, 0 } },
@@ -576,6 +580,7 @@ int oldlevel, newlevel;
 	case PM_BARD:           abil = brd_abil;	break;
 	case PM_PIRATE:         abil = pir_abil;	break;
 	case PM_VALKYRIE:       abil = val_abil;	break;
+	case PM_WITCH:          abil = wit_abil;	break;
 	case PM_WIZARD:         abil = wiz_abil;	break;
 	default:                abil = 0;		break;
 	}

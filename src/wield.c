@@ -61,6 +61,7 @@ STATIC_DCL int FDECL(ready_weapon, (struct obj *));
 
 /* used by welded(), and also while wielding */
 #define will_weld(optr)		((optr)->cursed \
+				&& !Role_if(PM_WITCH) /* her curses don't bind her */ \
 				&& (erodeable_wep(optr) \
 				   || (optr)->otyp == TIN_OPENER))
 

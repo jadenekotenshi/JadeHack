@@ -29,7 +29,8 @@ struct player_selection_menu_option {
         { 2,16, 's', "Samurai",      &flags.initrole, str2role, ok_role },
         { 2,17, 't', "Tourist",      &flags.initrole, str2role, ok_role },
         { 2,18, 'v', "Valkyrie",     &flags.initrole, str2role, ok_role },
-        { 2,19, 'w', "Wizard",       &flags.initrole, str2role, ok_role },
+        { 2,19, 'W', "Witch",        &flags.initrole, str2role, ok_role },
+        { 2,20, 'w', "Wizard",       &flags.initrole, str2role, ok_role },
 
         {21, 4, 'H', "Human",        &flags.initrace, str2race, ok_race },
         {21, 5, 'D', "Dwarf",        &flags.initrace, str2race, ok_race },

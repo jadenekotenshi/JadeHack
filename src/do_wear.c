@@ -1390,8 +1390,11 @@ int
 cursed(otmp)
 register struct obj *otmp;
 {
-	/* Curses, like chickens, come home to roost. */
-	if((otmp == uwep) ? welded(otmp) : (int)otmp->cursed) {
+	/* Curses, like chickens, come home to roost.
+	   (A witch can always remove cursed armor, but not cursed jewelry.) */
+	if((otmp == uwep) ? welded(otmp) :
+	   (int)(otmp->cursed &&
+		 !(Role_if(PM_WITCH) && otmp->oclass == ARMOR_CLASS))) {
 		You("can't.  %s cursed.",
 			(is_boots(otmp) || is_gloves(otmp) || otmp->quan > 1L)
 			? "They are" : "It is");

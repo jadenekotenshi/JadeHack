@@ -1802,7 +1802,7 @@ struct mkroom *croom;
 #ifdef TOURIST
 	    PM_TOURIST,
 #endif
-	    PM_VALKYRIE, PM_WIZARD
+	    PM_VALKYRIE, PM_WITCH, PM_WIZARD
 	};
 
 	do {
