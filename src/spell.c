@@ -1466,7 +1466,8 @@ int spell;
 	 */
 	if (uwep && ((uwep->otyp >= STAFF_OF_DIVINATION &&
 		      uwep->otyp <= STAFF_OF_ENCHANTMENT) || uwep->otyp == BROOM ||
-		     uwep->oartifact == ART_BOLINE_OF_CERRIDWEN))
+		     uwep->oartifact == ART_BOLINE_OF_CERRIDWEN ||
+		     uwep->oartifact == ART_BESOM_OF_HECATE))
 	{
 #define STAFFBONUS 50
 		if (spell_skilltype(spellid(spell)) == P_CLERIC_SPELL && uwep->otyp == STAFF_OF_HOLINESS)
@@ -1499,6 +1500,13 @@ int spell;
 		if (spell_skilltype(spellid(spell)) == P_ENCHANTMENT_SPELL &&
 			(uwep->otyp == STAFF_OF_ENCHANTMENT || uwep->otyp == BROOM ||
 			 uwep->oartifact == ART_BOLINE_OF_CERRIDWEN))
+		{
+			chance += STAFFBONUS;
+		}
+		/* the Besom of Hecate is a staff of every school (its broom
+		   nature already covers enchantment) */
+		if (uwep->oartifact == ART_BESOM_OF_HECATE &&
+			spell_skilltype(spellid(spell)) != P_ENCHANTMENT_SPELL)
 		{
 			chance += STAFFBONUS;
 		}

@@ -4151,14 +4151,14 @@ experienced before, so be prepared!
 "For this you were born, %s!  I am very proud of you."
 %E
 #
-#	Witch (PLACEHOLDER: the Ranger text, until the Witch quest is written)
+#	Witch
 #
 %Cc Wit 00001
 You arrive in familiar surroundings.  In the distance, you %x the
-ancient forest grove, the place of worship to %d.
+sacred grove of %d, where the sisters gather beneath the old oaks.
 
-Something is wrong, though.  Surrounding the grove are centaurs!
-And they've noticed you!
+Something is wrong, though.  Surrounding the grove are witch-hunters,
+with wolves slinking at their heels!  And they've noticed you!
 %E
 %Cp Wit 00002
 Once again, you stand before %H.
@@ -4171,14 +4171,15 @@ are to enter %H.
 "%pC!  I have not seen you in many moons.  How do you fare?"
 %E
 %Cp Wit 00006
-"%nC continues to threaten the grove.  But we hold fast."
+"%nC still lurks beyond the wood.  The hunters burn what they cannot hold."
 %E
 %Cp Wit 00007
-"%lC is growing weak.  The magic required to defend the grove drains us."
+"The sisters grow weary.  Without %o the wards
+we raise on this grove cost us dearly."
 %E
 %Cp Wit 00008
-"Remember %i is hard to enter.  Beware the
-distraction of leatherwings."
+"Remember, %i is a place that turns a stranger back
+upon her own footsteps.  Mind the owls: they do not all serve us."
 %E
 %Cp Wit 00009
 "We must regain %o.  Without it we will be overrun."
@@ -4187,76 +4188,78 @@ distraction of leatherwings."
 "%pC!  I have not seen you in many moons.  How do you fare?"
 %E
 %Cp Wit 00011
-"Birdsong has returned to the grove, surely this means you have defeated %n."
+"The owls sing again in the grove; surely this means you have bested %n."
 %E
 %Cp Wit 00012
-"%lC seems to have regained some of his strength."
+"%lC seems to have regained something of her strength."
 %E
 %Cp Wit 00013
-"So, tell us how you entered %i, in case some new evil arises there."
+"So, tell us how you found your way through %i, in case some new
+evil comes of it."
 %E
 %Cp Wit 00014
-"Is that truely %o that I see you carrying?"
+"Is that truly %o that I see you carrying?"
 %E
 %Cc Wit 00015
-"%pC!  You have returned!  Thank %d.
+"%pC!  You have returned!  Blessed be %d.
 
 "We have great need of you.  But first, I must see if you have the
-required abilities to take on this responsibility."
+craft to take on this burden."
 %E
 %Cp Wit 00016
-"Once again, %p, you stand in our midst.  Are you ready now?"
+"Once again, %p, you stand in our circle.  Are you ready now?"
 %E
 %Cp Wit 00017
-"Ah, you are here again, %p.  Allow me to determine your readiness..."
+"Ah, you are here again, %p.  Let me weigh your readiness..."
 %E
 %Cc Wit 00018
-"%pC!  You have doomed us all.  You fairly radiate %L influences
-and weaken the power we have raised in this grove as a result!
+"%pC!  You have doomed us all.  You fairly reek of %L influences
+and fray the wards we have raised in this grove as a result!
 
 "Begone!  We renounce your %shood with us!  You are an outcast now!"
 %E
 %Cc Wit 00019
-"%p, you are yet too inexperienced to withstand the demands of that
-which we need you to do.  %RA might just be able to do this thing.
+"%p, you are yet too green to bear what we must ask of you.
+%RA could not hope to do this thing.
 
 "Return to us when you have learned more, my %S."
 %E
 %Cc Wit 00020
 "You have strayed, %p!  You know that %d requires that
-we maintain a pure devotion to things %a!
+we keep our devotion pure, in all things %a!
 
 "You must go from us.  Return when you have purified yourself."
 %E
 %Cc Wit 00021
-"You are indeed ready, %p.  I shall tell you what has transpired,
+"You are indeed ready, %p.  I shall tell you what has happened,
 and why we so desperately need your help:
 
-"A short time ago, the mountain centaurs to the east invaded
-and enslaved the plains centaurs in this area.  The local
-leader is now only a figurehead, and serves %n.
+"The witch-hunters came out of the east at the dark of the moon,
+with crossbows and short swords and braided whips, and with
+wolves to run us down.  Few of us knew how much they had gathered.
 
-"During our last gathering of worship here, we were beset by hordes of
-hostile centaurs, as you witnessed.  In the first onslaught a group,
-headed by %n himself, managed to breach the grove and
-steal %o.
+"In the first onslaught they were led by %n, an old
+enemy of my art and of %d.  She broke through the grove,
+and carried off %o, the broom on which all our
+power turns.
 
-"Since then, we have been besieged.  We do not know how much longer
-we will be able to maintain our magical barriers.
+"Since then we have been besieged.  We cannot hold the wards
+much longer.
 
-"If we are to survive, you, %p, must infiltrate
-%i.  There, you will find a pathway down, to the
-underground cavern of %n.  He has always coveted
-%o, and will surely keep it.
+"If we are to survive, you, %p, must find your way through
+%i.  Beyond it you will come to the hut of %n,
+where it stands upon its great chicken legs, ringed with a fence of
+bones.  She has always coveted %o, and she keeps it
+close.
 
 "Recover %o for us, %p!  Only then will %d be safe."
 %E
 %Cp Wit 00025
-"It is rumored that the Forest and Mountain Centaurs have resolved
-their ancient feud and now band together against us."
+"It is rumored that %n has promised the hunters
+a place at her table, if they bring her enough of our heads."
 %E
 %Cp Wit 00026
-"%nC is strong, and very smart."
+"%nC is cunning, and old beyond reckoning."
 %E
 %Cp Wit 00027
 "Use %o, when you find it.  It will help you survive
@@ -4267,19 +4270,20 @@ to reach us."
 %E
 %Cp Wit 00029
 "Call upon %d when you face %n.
-The very act of doing so will infuriate him, and give you advantage."
+The very act of doing so will enrage her, and give you advantage."
 %E
 %Cp Wit 00030
-"%n and his kind have always hated us."
+"%n and her kind have always hated us."
 %E
 %Cp Wit 00031
 "We cannot hold the grove much longer, %p.  Hurry!"
 %E
 %Cp Wit 00032
-"To infiltrate %i, you must be very stealthy."
+"To pass through %i you must trust your own senses, and the
+wind, and not the paths themselves."
 %E
 %Cp Wit 00033
-"Remember that %n is a braggart.  Trust not what he says."
+"Remember that %n is a liar.  Trust not what she says."
 %E
 %Cp Wit 00034
 "You can triumph, %p, if you trust in %d."
@@ -4287,62 +4291,60 @@ The very act of doing so will infuriate him, and give you advantage."
 %Cc Wit 00035
 This must be %i.
 
-You are in a cave built of many different rooms, all interconnected
-by tunnels.  Your quest is to find and shoot the evil wumpus that
-resides elsewhere in the cave without running into any bottomless
-pits or using up your limited supply of arrows.  Good luck.
+The trees close in overhead, and the paths wind back upon themselves
+until you cannot tell the way you came.  Somewhere in this wood, the
+hut of %n stands on its chicken legs.  You will have to
+find the way down.
 
-You are in room 9 of the cave.  There are tunnels to rooms
-5, 8, and 10.
-*rustle* *rustle* (must be bats nearby)
-*sniff* (I can smell the evil wumpus nearby!)
+Off in the distance, a wolf howls.  Closer by, an owl does not answer.
 %E
 %Cc Wit 00036
-Once again, you descend into %i.
+Once again, you walk the Witchwood.
 
-*whoosh* (I feel a draft from some pits).
-*rustle* *rustle* (must be bats nearby)
+The paths shift as you watch.  An owl turns its head to follow you.
 %E
 %Cc Wit 00040
-You descend into a weird place, in which roughly cut cave-like walls
-join with smooth, finished ones, as if someone was in the midst of
-finishing off the construction of a subterranean complex.
+You step into a clearing ringed by a fence of bones, each post topped
+with a grinning skull whose eyes burn with a cold light.  In the
+midst of the yard squats a hut raised high on enormous scaly legs,
+and beside it sit a great mortar and pestle.
 
-Off in the distance, you hear a sound like the clattering of many
-hooves on rock.
+Somewhere inside, a cauldron bubbles.
 %E
 %Cp Wit 00041
-Once again, you enter the distorted castle of %n.
+Once again, you enter the bone-fenced yard of %n.
 %E
 %Cc Wit 00050
 "So, %c.  %lC has sent you to recover %o.
 
-"Well, I shall keep that bauble.  It pleases me.  You, %c, shall die."
+"Well, I shall keep that besom.  It pleases me.  You, %c, shall make
+a fine stew."
 %E
 %Cp Wit 00051
-"Back again, eh?  Well, a mere %r is no threat to me!  Die, %c!"
+"Back again, eh?  Well, a mere %r is no threat to me!  Into the pot, %c!"
 %E
 %Cp Wit 00052
-"You haven't learned your lesson, %c.  You can't kill me!  You shall die now."
+"You haven't learned your lesson, %c.  You can't kill me!  I shall
+boil you now."
 %E
 %Cp Wit 00053
 "I shall have %o from you, %r.  Then I shall
-kill you."
+grind your bones."
 %E
 %Cp Wit 00060
 "Your %d is nothing, %c.  You are mine now!"
 %E
 %Cp Wit 00061
-"Run away little %c!  You can never hope to defeat %n!"
+"Run away, little %c!  You can never hope to defeat %n!"
 %E
 %Cp Wit 00062
-"My servants will rip you to shreds!"
+"My hunters will cut you to shreds!"
 %E
 %Cp Wit 00063
-"I shall display your head as a trophy.  What do you think about that wall?"
+"I shall add your skull to my fence.  What do you think of that post?"
 %E
 %Cp Wit 00064
-"I shall break your %ls grove, and destroy all the %gP!"
+"I shall break your %ls grove, and burn all the %gP!"
 %E
 %Cp Wit 00065
 "%d has abandoned you, %c.  You are doomed."
@@ -4357,11 +4359,11 @@ kill you."
 "You really think you can defeat me, eh %c?  You are wrong!"
 %E
 %Cp Wit 00069
-"You weaken, %c.  I shall kill you now."
+"You weaken, %c.  I shall cook you now."
 %E
 %Cc Wit 00070
-As you pick up %o, it seems to glow, and a warmth
-fills you completely.  You realize that its power is what has protected
+As you pick up %o, it seems to hum, and a warmth fills you
+completely.  You realize that its power is what has protected
 your %sp against their enemies for so long.
 
 You must now return it to %l without delay -- their lives depend
@@ -4371,25 +4373,25 @@ on your speed.
 %nC collapses to the ground, cursing you and %l, then says:
 
     You have defeated me, %r!  But I curse you one final time, with my
-    dying breath!  You shall die before you leave my castle!
+    dying breath!  You shall die before you leave my yard!
 %E
 %Cc Wit 00081
 "%pC!  You have succeeded!  I feared it was not possible!
 
 "You have returned with %o!
 
-"I fear, now, that the Centaurs will regroup and plot yet another raid.
+"I fear, now, that the hunters will regroup and plot yet another raid.
 This will take some time, but if you can recover the Amulet of Yendor
 for %d before that happens, we will be eternally safe.
 
 "Take %o with you.  It will aid in your quest for
 the Amulet."
 %E
-# assumes The Longbow of Diana
+# assumes The Besom of Hecate
 %Cc Wit 00082
-%l flexs %o reverently.
+%l holds %o to her brow reverently.
 
-"With this wondrous bow, one need never run out of arrows.
+"With this besom, the night wind itself will carry you.
 You are its keeper now, and the time has come to resume your
 search for the Amulet.  %Z await your return
 through the magic portal that brought you here."

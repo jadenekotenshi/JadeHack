@@ -127,6 +127,7 @@ int mndx, mode;
 	case PM_GUIDE:       mndx = mode ? PM_TOURIST   : PM_HUMAN; break;
 #endif
 	case PM_APPRENTICE:  mndx = mode ? PM_WIZARD    : PM_HUMAN; break;
+	case PM_COVEN_SISTER: mndx = mode ? PM_WITCH    : PM_HUMAN; break;
 	case PM_WARRIOR:     mndx = mode ? PM_VALKYRIE  : PM_HUMAN; break;
 	default:
 		if (mndx >= LOW_PM && mndx < NUMMONS) {

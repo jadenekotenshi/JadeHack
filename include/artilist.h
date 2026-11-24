@@ -456,6 +456,16 @@ A("The Mitre of Holiness",	HELM_OF_BRILLIANCE,
 	NO_ATTK,	SPDF_NONE,	CARY(AD_FIRE),
 	ENERGY_BOOST,	A_LAWFUL, PM_PRIEST, NON_PM, 2000L ),
 
+/*
+ *	The Besom of Hecate, the Witch's quest artifact: a broom that is always
+ *	ridden at Expert (apply.c), is a staff of every school when wielded
+ *	(spell.c), and warns of enemies and halves spell damage when carried.
+ */
+A("The Besom of Hecate", BROOM,
+	(SPFX_NOGEN|SPFX_RESTR|SPFX_INTEL), (SPFX_WARN|SPFX_HSPDAM), 0,
+	PHYS(5,6),	SPDF_NONE,	CARY(AD_MAGM),
+	ENERGY_BOOST,	A_NEUTRAL, PM_WITCH, NON_PM, 4000L ),
+
 A("The Longbow of Diana", BOW,
 	(SPFX_NOGEN|SPFX_RESTR|SPFX_INTEL|SPFX_REFLECT), SPFX_ESP, 0,
 	PHYS(5,0),	SPDF_NONE,	NO_CARY,

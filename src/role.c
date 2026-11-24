@@ -430,11 +430,10 @@ const struct Role roles[] = {
 	{"Witch",       0},
 	{"Greybeard",   "Wise Woman"} },
 	"_Crone", "_Mother", "_Maiden", /* the three faces of the Goddess */
-	"Wit", "Medea's grove", "Baba Yaga's hut",
+	"Wit", "Medea's grove", "the Witchwood",
 	PM_WITCH, NON_PM, PM_KITTEN,
-	/* placeholders until the Witch quest is written: the Ranger's quest */
-	PM_ORION, PM_HUNTER, PM_SCORPIUS,
-	ART_LONGBOW_OF_DIANA,
+	PM_MEDEA, PM_COVEN_SISTER, PM_BABA_YAGA,
+	ART_BESOM_OF_HECATE,
 	MH_HUMAN|MH_ELF|MH_GNOME|MH_ORC|MH_DWARF | ROLE_MALE|ROLE_FEMALE |
 	  ROLE_LAWFUL|ROLE_NEUTRAL|ROLE_CHAOTIC,
 	/* Str Int Wis Dex Con Cha */

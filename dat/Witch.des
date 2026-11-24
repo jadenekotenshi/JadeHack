@@ -1,23 +1,19 @@
-#	Witch quest -- PLACEHOLDER
-#	A straight copy of the Ranger quest (renamed Wit-*), so that a Witch
-#	can reach the quest without the game failing.  To be replaced by the
-#	real Witch quest (Medea, Baba Yaga) in stage 6.
-#
-#	SCCS Id: @(#)Ranger.des	3.4	2001/02/01
+#	Witch quest levels, adapted from the Ranger levels of Jean-Christophe Collet
+#	and M. Stephenson.
 #	Copyright (c) 1989 by Jean-Christophe Collet
 #	Copyright (c) 1991 by M. Stephenson
 # NetHack may be freely redistributed.  See license for details.
 #
 #	The "start" level for the quest.
 #
-#	Here you meet your (besieged) class leader, Orion,
+#	Here you meet your (besieged) class leader, Medea,
 #	and receive your quest assignment.
 #
 LEVEL: "Wit-strt"
 FLAGS: noteleport,hardfloor,arboreal,mazelevel
 INIT_MAP:mines,'.','.',true,true,lit,false
 REPLACE_TERRAIN:(0,0,76,19),'.', 'T', 5%
-MON_GENERATION:86%, (64,"forest centaur"), (16,'C'), (16,"scorpion"), (4,'s')
+MON_GENERATION:86%, (64,"witch-hunter"), (16,"wolf"), (16,"warg"), (4,"winter wolf")
 GEOMETRY:(0,1)
 #1234567890123456789012345678901234567890123456789012345678901234567890
 MAP
@@ -49,57 +45,49 @@ REGION:(00,00,40,20),lit,"ordinary"
 STAIR:(10,10),down
 # Portal arrival point; just about anywhere on the right hand side of the map
 BRANCH:levregion(51,2,77,18),(0,0,40,20)
-# Orion
-MONSTER:('@',"Orion"),(20,10) {
-  OBJECT:('[',"leather armor"),1d4
-  OBJECT:(')',"yumi"),1d4
-  OBJECT:(')',"arrow"),1d4,quantity:10d5
+# Medea
+MONSTER:('@',"Medea"),(20,10) {
+  OBJECT:('[',"robe")
+  OBJECT:(')',"athame")
+  OBJECT:('!',"extra healing")
+  OBJECT:('!',"gain energy")
 }
-# The treasure of Orion
-OBJECT:('(',"chest"),(20,10)
+# The cauldron of Medea
+OBJECT:('(',"cauldron"),(20,10)
 # Guards for the audience chamber
-MONSTER:('@',"hunter"),(19,09) {
-  OBJECT[25%]:('[',"leather armor")
-  IF [50%] {
-    OBJECT:(')',"bow")
-    OBJECT:(')',"arrow")
-  }
+MONSTER:('@',"coven sister"),(19,09) {
+  OBJECT[25%]:('[',"robe")
+  OBJECT[50%]:'!'
   OBJECT[15%]:')'
 }
-MONSTER:('@',"hunter"),(20,09) {
-  OBJECT[25%]:('[',"leather armor")
-  IF [50%] {
-    OBJECT:(')',"bow")
-    OBJECT:(')',"arrow")
-  }
+MONSTER:('@',"coven sister"),(20,09) {
+  OBJECT[25%]:('[',"robe")
+  OBJECT[50%]:'!'
   OBJECT[15%]:')'
 }
-MONSTER:('@',"hunter"),(21,09) {
-  OBJECT[25%]:('[',"leather armor")
-  IF [50%] {
-    OBJECT:(')',"bow")
-    OBJECT:(')',"arrow")
-  }
+MONSTER:('@',"coven sister"),(21,09) {
+  OBJECT[25%]:('[',"robe")
+  OBJECT[50%]:'!'
   OBJECT[15%]:')'
 }
-MONSTER:('@',"hunter"),(19,10) {
-  OBJECT[25%]:('[',"leather armor")
+MONSTER:('@',"coven sister"),(19,10) {
+  OBJECT[25%]:('[',"robe")
   OBJECT[15%]:')'
 }
-MONSTER:('@',"hunter"),(21,10) {
-  OBJECT[25%]:('[',"leather armor")
+MONSTER:('@',"coven sister"),(21,10) {
+  OBJECT[25%]:('[',"robe")
   OBJECT[15%]:')'
 }
-MONSTER:('@',"hunter"),(19,11) {
-  OBJECT[25%]:('[',"leather armor")
+MONSTER:('@',"coven sister"),(19,11) {
+  OBJECT[25%]:('[',"robe")
   OBJECT[15%]:')'
 }
-MONSTER:('@',"hunter"),(20,11) {
-  OBJECT[25%]:('[',"leather armor")
+MONSTER:('@',"coven sister"),(20,11) {
+  OBJECT[25%]:('[',"robe")
   OBJECT[15%]:')'
 }
-MONSTER:('@',"hunter"),(21,11) {
-  OBJECT[25%]:('[',"leather armor")
+MONSTER:('@',"coven sister"),(21,11) {
+  OBJECT[25%]:('[',"robe")
   OBJECT[15%]:')'
 }
 # Non diggable walls
@@ -112,43 +100,43 @@ TRAP:"spiked pit",random
 TRAP:"bear",random
 TRAP:"bear",random
 # Monsters on siege duty.
-MONSTER: ('H',"minotaur"),(33,09),hostile,asleep
-MONSTER: ('C',"forest centaur"),(19,03),hostile
-MONSTER: ('C',"forest centaur"),(19,04),hostile
-MONSTER: ('C',"forest centaur"),(19,05),hostile
-MONSTER: ('C',"forest centaur"),(21,03),hostile
-MONSTER: ('C',"forest centaur"),(21,04),hostile
-MONSTER: ('C',"forest centaur"),(21,05),hostile
-MONSTER: ('C',"forest centaur"),(01,09),hostile
-MONSTER: ('C',"forest centaur"),(02,09),hostile
-MONSTER: ('C',"forest centaur"),(03,09),hostile
-MONSTER: ('C',"forest centaur"),(01,11),hostile
-MONSTER: ('C',"forest centaur"),(02,11),hostile
-MONSTER: ('C',"forest centaur"),(03,11),hostile
-MONSTER: ('C',"forest centaur"),(19,15),hostile
-MONSTER: ('C',"forest centaur"),(19,16),hostile
-MONSTER: ('C',"forest centaur"),(19,17),hostile
-MONSTER: ('C',"forest centaur"),(21,15),hostile
-MONSTER: ('C',"forest centaur"),(21,16),hostile
-MONSTER: ('C',"forest centaur"),(21,17),hostile
+MONSTER: ('d',"warg"),(33,09),hostile,asleep
+MONSTER: ('@',"witch-hunter"),(19,03),hostile
+MONSTER: ('@',"witch-hunter"),(19,04),hostile
+MONSTER: ('@',"witch-hunter"),(19,05),hostile
+MONSTER: ('@',"witch-hunter"),(21,03),hostile
+MONSTER: ('@',"witch-hunter"),(21,04),hostile
+MONSTER: ('@',"witch-hunter"),(21,05),hostile
+MONSTER: ('@',"witch-hunter"),(01,09),hostile
+MONSTER: ('@',"witch-hunter"),(02,09),hostile
+MONSTER: ('@',"witch-hunter"),(03,09),hostile
+MONSTER: ('@',"witch-hunter"),(01,11),hostile
+MONSTER: ('@',"witch-hunter"),(02,11),hostile
+MONSTER: ('@',"witch-hunter"),(03,11),hostile
+MONSTER: ('@',"witch-hunter"),(19,15),hostile
+MONSTER: ('@',"witch-hunter"),(19,16),hostile
+MONSTER: ('@',"witch-hunter"),(19,17),hostile
+MONSTER: ('@',"witch-hunter"),(21,15),hostile
+MONSTER: ('@',"witch-hunter"),(21,16),hostile
+MONSTER: ('@',"witch-hunter"),(21,17),hostile
 LOOP [4 + 2d5] {
-  MONSTER: ('C',"plains centaur"),random,hostile
+  MONSTER: ('@',"witch-hunter"),random,hostile
 }
-MONSTER: ('s',"scorpion"),random,hostile
-MONSTER: ('s',"scorpion"),random,hostile
+MONSTER: ('d',"wolf"),random,hostile
+MONSTER: ('d',"wolf"),random,hostile
 
 
 #
 #	The "locate" level for the quest.
 #
-#	Here you have to infiltrate the Cave of the Wumpus to go
+#	Here you have to find your way through the Witchwood to go
 #	further towards your assigned quest.
 #
 
 LEVEL: "Wit-loca"
 FLAGS: hardfloor,mazelevel
 INIT_MAP:solidfill,' '
-MON_GENERATION:86%, (64,"forest centaur"), (16,'C'), (16,"scorpion"), (4,'s')
+MON_GENERATION:86%, (64,"witch-hunter"), (16,"wolf"), (16,"warg"), (4,"winter wolf")
 GEOMETRY:center,center
 #1234567890123456789012345678901234567890123456789012345678901234567890
 MAP
@@ -197,30 +185,30 @@ TRAP:"teleport",random
 TRAP:"arrow",random
 TRAP:"arrow",random
 # Random monsters.
-MONSTER:('q',"wumpus"),(27,18),hostile,asleep
+MONSTER:('d',"warg"),(27,18),hostile,asleep
 LOOP [2 + 1d6] {
-  MONSTER:('B',"giant bat"),random,hostile
-  MONSTER:('C',"forest centaur"),random,hostile
-  MONSTER:('s',"scorpion"),random,hostile
-  MONSTER:('C',"mountain centaur"),random,hostile
-  MONSTER:('C',"mountain centaur"),random,hostile
+  MONSTER:('B',"raven"),random,hostile
+  MONSTER:('@',"witch-hunter"),random,hostile
+  MONSTER:('d',"wolf"),random,hostile
+  MONSTER:('@',"witch-hunter"),random,hostile
+  MONSTER:('@',"witch-hunter"),random,hostile
 }
-MONSTER:'s',random,hostile
-MONSTER:'s',random,hostile
+MONSTER:('d',"winter wolf"),random,hostile
+MONSTER:('d',"winter wolf"),random,hostile
 
 
 #
 #	The "goal" level for the quest.
 #
-#	Here you meet Scorpius, your nemesis monster.  You have to
-#	defeat Scorpius in combat to gain the artifact you have
+#	Here you meet Baba Yaga, your nemesis monster.  You have to
+#	defeat Baba Yaga in combat to gain the artifact you have
 #	been assigned to retrieve.
 #
 
 LEVEL: "Wit-goal"
 FLAGS:mazelevel
 INIT_MAP:solidfill,' '
-MON_GENERATION:86%, (64,"forest centaur"), (16,'C'), (16,"scorpion"), (4,'s')
+MON_GENERATION:86%, (64,"witch-hunter"), (16,"wolf"), (16,"warg"), (4,"winter wolf")
 GEOMETRY:center,center
 MAP
                                                                             
@@ -251,9 +239,8 @@ STAIR:(19,10),up
 # Non diggable walls
 NON_DIGGABLE:(00,00,75,19)
 # Objects
-OBJECT:('\',"throne"),(37,10)
-OBJECT:(')',"bow"),(37,10),blessed,0,NAME:"The Longbow of Diana"
-OBJECT:('(',"chest"),(37,10)
+OBJECT:('(',"broom"),(37,10),blessed,0,NAME:"The Besom of Hecate"
+OBJECT:('(',"cauldron"),(37,10)
 OBJECT:random,(36,09)
 OBJECT:random,(36,10)
 OBJECT:random,(36,11)
@@ -285,7 +272,7 @@ DOOR:closed,(51,10)
 DOOR:locked,(53,08)
 DOOR:closed,(65,05)
 # Random monsters.
-MONSTER:('s',"Scorpius"),(37,10),hostile {
+MONSTER:('@',"Baba Yaga"),(37,10),hostile {
   OBJECT:('(', "Bell of Opening"),uncursed
   OBJECT:random
   OBJECT:random
@@ -294,30 +281,30 @@ MONSTER:('s',"Scorpius"),(37,10),hostile {
   OBJECT:random
   OBJECT:random
 }
-MONSTER:('C',"forest centaur"),(36,09),hostile
-MONSTER:('C',"forest centaur"),(36,10),hostile
-MONSTER:('C',"forest centaur"),(36,11),hostile
-MONSTER:('C',"forest centaur"),(37,09),hostile
-MONSTER:('C',"forest centaur"),(37,11),hostile
-MONSTER:('C',"forest centaur"),(38,09),hostile
-MONSTER:('C',"mountain centaur"),(38,10),hostile
-MONSTER:('C',"mountain centaur"),(38,11),hostile
-MONSTER:('C',"mountain centaur"),(02,02),hostile
-MONSTER:('C',"mountain centaur"),(71,02),hostile
-MONSTER:('C',"mountain centaur"),(02,16),hostile
-MONSTER:('C',"mountain centaur"),(71,16),hostile
-MONSTER:('s',"scorpion"),(03,02),hostile
-MONSTER:('s',"scorpion"),(72,02),hostile
-MONSTER:('s',"scorpion"),(03,17),hostile
-MONSTER:('s',"scorpion"),(72,17),hostile
-MONSTER:('s',"scorpion"),(41,10),hostile
-MONSTER:('s',"scorpion"),(33,09),hostile
+MONSTER:('@',"witch-hunter"),(36,09),hostile
+MONSTER:('@',"witch-hunter"),(36,10),hostile
+MONSTER:('@',"witch-hunter"),(36,11),hostile
+MONSTER:('@',"witch-hunter"),(37,09),hostile
+MONSTER:('@',"witch-hunter"),(37,11),hostile
+MONSTER:('@',"witch-hunter"),(38,09),hostile
+MONSTER:('@',"witch-hunter"),(38,10),hostile
+MONSTER:('@',"witch-hunter"),(38,11),hostile
+MONSTER:('@',"witch-hunter"),(02,02),hostile
+MONSTER:('@',"witch-hunter"),(71,02),hostile
+MONSTER:('@',"witch-hunter"),(02,16),hostile
+MONSTER:('@',"witch-hunter"),(71,16),hostile
+MONSTER:('d',"wolf"),(03,02),hostile
+MONSTER:('d',"wolf"),(72,02),hostile
+MONSTER:('d',"wolf"),(03,17),hostile
+MONSTER:('d',"wolf"),(72,17),hostile
+MONSTER:('d',"wolf"),(41,10),hostile
+MONSTER:('d',"wolf"),(33,09),hostile
 LOOP [2 + 1d5] {
-  MONSTER:('C',"forest centaur"),random,hostile
-  MONSTER:('C',"mountain centaur"),random,hostile
-  MONSTER:'C',random,hostile
-  MONSTER:('s',"scorpion"),random,hostile
-  MONSTER:'s',random,hostile
+  MONSTER:('@',"witch-hunter"),random,hostile
+  MONSTER:('@',"witch-hunter"),random,hostile
+  MONSTER:('@',"witch-hunter"),random,hostile
+  MONSTER:('d',"wolf"),random,hostile
+  MONSTER:('d',"winter wolf"),random,hostile
 }
 
 WALLIFY
@@ -334,7 +321,7 @@ WALLIFY
 LEVEL: "Wit-fila"
 FLAGS:mazelevel,noflip
 INIT_MAP: mines, '.' , 'T', true, true, random, true
-MON_GENERATION:86%, (64,"forest centaur"), (16,'C'), (16,"scorpion"), (4,'s')
+MON_GENERATION:86%, (64,"witch-hunter"), (16,"wolf"), (16,"warg"), (4,"winter wolf")
 NOMAP
 #
 STAIR: random, up
@@ -349,16 +336,16 @@ LOOP [3 + 1d4] {
 }
 #
 LOOP [2 + 1d4] {
-  MONSTER: ('C', "mountain centaur"), random, hostile
-  MONSTER: ('C', "forest centaur"), random, hostile
+  MONSTER: ('@',"witch-hunter"), random, hostile
+  MONSTER: ('@',"witch-hunter"), random, hostile
 }
-MONSTER: 'C', random, hostile
-MONSTER: ('s', "scorpion"), random, hostile
+MONSTER: ('@',"witch-hunter"), random, hostile
+MONSTER: ('d',"wolf"), random, hostile
 
 LEVEL: "Wit-filb"
 FLAGS:mazelevel,noflip
 INIT_MAP: mines, '.' , ' ', true, true, random, true
-MON_GENERATION:86%, (64,"forest centaur"), (16,'C'), (16,"scorpion"), (4,'s')
+MON_GENERATION:86%, (64,"witch-hunter"), (16,"wolf"), (16,"warg"), (4,"winter wolf")
 NOMAP
 #
 STAIR: random, up
@@ -373,8 +360,8 @@ LOOP [2 + 1d5] {
 }
 #
 LOOP [3 + 1d5] {
-  MONSTER: ('C', "mountain centaur"), random, hostile
-  MONSTER: 'C', random, hostile
-  MONSTER: ('s', "scorpion"), random, hostile
+  MONSTER: ('@',"witch-hunter"), random, hostile
+  MONSTER: ('@',"witch-hunter"), random, hostile
+  MONSTER: ('d',"wolf"), random, hostile
 }
 

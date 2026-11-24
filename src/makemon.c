@@ -360,6 +360,13 @@ register struct monst *mtmp;
 			    (void)mongets(mtmp, PICK_AXE);
 			if (!rn2(50)) (void)mongets(mtmp, CRYSTAL_BALL);
 		    }
+		} else if (mm == PM_WITCH_HUNTER) {
+		    /* crossbow, short sword and bullwhip */
+		    (void)mongets(mtmp, CROSSBOW);
+		    m_initthrow(mtmp, CROSSBOW_BOLT, 12);
+		    (void)mongets(mtmp, SHORT_SWORD);
+		    (void)mongets(mtmp, BULLWHIP);
+		    if (rn2(2)) (void)mongets(mtmp, LEATHER_ARMOR);
 		} else if (mm == PM_PIRATE_BROTHER) {
 		    otmp = mksobj(pirate_blade(), TRUE, FALSE);
 		    if (otmp) { otmp->cursed = 0; (void) mpickobj(mtmp, otmp); }

@@ -2456,6 +2456,9 @@ struct obj *obj;
 {
 	int skill = P_SKILL(P_BROOMSTICK);
 
+	/* the Besom of Hecate is always ridden as an expert would */
+	if (obj->oartifact == ART_BESOM_OF_HECATE) skill = P_EXPERT;
+
 	if (u.ubroom) {
 	    dismount_broom("You dismount your broom.");
 	    return 1;
