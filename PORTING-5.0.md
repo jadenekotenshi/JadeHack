@@ -1449,3 +1449,7 @@ Tested in wizard mode with a temporary hook (since removed) that jumped to the q
 
 - **Fledgling raven** (new monster, so a full rebuild; old saves and bones are incompatible): a level-2, domestic bird (bite d4, blinding claw d3) that grows into the raven at level 4 and then into the giant raven. It is now the chaotic Witch's starting familiar, matching the black kitten and owlet; the raven itself is no longer a starting pet. It counts as a familiar for the bond (growth with her level, Pw loss and restore). Tested: a chaotic Witch's fledgling raven grew into a raven at experience level 4.
 - **Cauldrons are common finds:** the random-tool odds went from 3 to 8 (tin whistles lost 5; the tool class still sums to 1000), and `mklev.c` now also puts a cauldron in a room now and then, as it does for boxes and chests (a room's chance is `1 / (5 x number of rooms)`, about half as often as a box).
+
+## Batch 143: character-creation menu fits a short terminal
+
+With the Witch the class column had 17 rows, which pushed the menu past the bottom of a short terminal (rows overwrote each other). `charinit.c` now lays the classes out in two columns (Archeologist..Pirate, Priest..Wizard), moves the race, gender and alignment columns to the right, and brings the quit/reroll/play row up to row 19, so the whole menu needs 21 rows instead of 23. Checked at 24 and 21 rows, and selecting a Witch with `W` still starts a game.

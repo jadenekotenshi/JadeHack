@@ -23,31 +23,31 @@ struct player_selection_menu_option {
         { 2,10, 'm', "Monk",         &flags.initrole, str2role, ok_role },
         { 2,11, 'n', "Ninja",        &flags.initrole, str2role, ok_role },
         { 2,12, 'P', "Pirate",       &flags.initrole, str2role, ok_role },
-        { 2,13, 'p', "Priest",       &flags.initrole, str2role, ok_role },
-        { 2,14, 'R', "Ranger",       &flags.initrole, str2role, ok_role },
-        { 2,15, 'r', "Rogue",        &flags.initrole, str2role, ok_role },
-        { 2,16, 's', "Samurai",      &flags.initrole, str2role, ok_role },
-        { 2,17, 't', "Tourist",      &flags.initrole, str2role, ok_role },
-        { 2,18, 'v', "Valkyrie",     &flags.initrole, str2role, ok_role },
-        { 2,19, 'W', "Witch",        &flags.initrole, str2role, ok_role },
-        { 2,20, 'w', "Wizard",       &flags.initrole, str2role, ok_role },
+        {20, 4, 'p', "Priest",       &flags.initrole, str2role, ok_role },
+        {20, 5, 'R', "Ranger",       &flags.initrole, str2role, ok_role },
+        {20, 6, 'r', "Rogue",        &flags.initrole, str2role, ok_role },
+        {20, 7, 's', "Samurai",      &flags.initrole, str2role, ok_role },
+        {20, 8, 't', "Tourist",      &flags.initrole, str2role, ok_role },
+        {20, 9, 'v', "Valkyrie",     &flags.initrole, str2role, ok_role },
+        {20,10, 'W', "Witch",        &flags.initrole, str2role, ok_role },
+        {20,11, 'w', "Wizard",       &flags.initrole, str2role, ok_role },
 
-        {21, 4, 'H', "Human",        &flags.initrace, str2race, ok_race },
-        {21, 5, 'D', "Dwarf",        &flags.initrace, str2race, ok_race },
-        {21, 6, 'E', "Elf",          &flags.initrace, str2race, ok_race },
-        {21, 7, 'G', "Gnome",        &flags.initrace, str2race, ok_race },
-        {21, 8, 'O', "Orc",          &flags.initrace, str2race, ok_race },
+        {38, 4, 'H', "Human",        &flags.initrace, str2race, ok_race },
+        {38, 5, 'D', "Dwarf",        &flags.initrace, str2race, ok_race },
+        {38, 6, 'E', "Elf",          &flags.initrace, str2race, ok_race },
+        {38, 7, 'G', "Gnome",        &flags.initrace, str2race, ok_race },
+        {38, 8, 'O', "Orc",          &flags.initrace, str2race, ok_race },
 
-        {21,11, 'M', "Male",         &flags.initgend, str2gend, ok_gend },
-        {21,12, 'F', "Female",       &flags.initgend, str2gend, ok_gend },
+        {38,11, 'M', "Male",         &flags.initgend, str2gend, ok_gend },
+        {38,12, 'F', "Female",       &flags.initgend, str2gend, ok_gend },
 
-        {21,15, 'L', "Lawful",       &flags.initalign,str2align,ok_align},
-        {21,16, 'N', "Neutral",      &flags.initalign,str2align,ok_align},
-        {21,17, 'C', "Chaotic",      &flags.initalign,str2align,ok_align},
+        {38,15, 'L', "Lawful",       &flags.initalign,str2align,ok_align},
+        {38,16, 'N', "Neutral",      &flags.initalign,str2align,ok_align},
+        {38,17, 'C', "Chaotic",      &flags.initalign,str2align,ok_align},
 
-        { 2,21, 'q', "quit",         0,               0,        0},
-        {13,21, '*', "reroll",       0,               0,        0},
-        {26,21, '.', "play!",        0,               0,        0},
+        { 2,19, 'q', "quit",         0,               0,        0},
+        {13,19, '*', "reroll",       0,               0,        0},
+        {26,19, '.', "play!",        0,               0,        0},
         {0,0,0,0,0,0} /* fencepost */
 };
 
@@ -109,11 +109,11 @@ player_selection_menu(win,toggle_color)
     (*toggle_color)(CLR_WHITE,OFF);
     curs(win, 6, 4);
     putstr(win, ATR_INVERSE, "Class");
-    curs(win, 25, 4);
+    curs(win, 42, 4);
     putstr(win, ATR_INVERSE, "Race");
-    curs(win, 25, 11);
+    curs(win, 42, 11);
     putstr(win, ATR_INVERSE, "Gender");
-    curs(win, 25, 15);
+    curs(win, 42, 15);
     putstr(win, ATR_INVERSE, "Alignment");
 
     /* Changing parts of the window */
@@ -149,7 +149,7 @@ player_selection_menu(win,toggle_color)
             xallowed = TRUE;
         } else { xallowed = FALSE; }
 
-        curs(win, 26, 21); /* the . of . - play! */
+        curs(win, 26, 19); /* the . of . - play! */
 
         ch = readchar();
         if (ch == 'q' || ch == 'Q') return -1;
