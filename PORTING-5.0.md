@@ -1421,3 +1421,14 @@ A new container tool, the **cauldron** (iron, 200 weight, odds 3; tin whistles g
 - **Gaze** (`detect.c scry_cauldron`): the crystal ball's visions, for 5 Pw (10 Pw for anyone else). Non-Witches may be overwhelmed (a Wisdom check, as with a crystal ball's Intelligence check): confusion, blindness or hallucination. A cursed cauldron always overwhelms.
 
 Tested in wizard mode (with a temporary hook, since removed, that supplied water and ingredients): healing plus gain energy plus wolfsbane brewed a blessed extra healing; an unmixable pair left a Witch's potions alone and blasted a Priest once in three tries; a stew of a newt corpse and a carrot was eaten while a cockatrice corpse stayed in the cauldron; gazing detected coins. The three stress tests ran clean.
+
+## Batch 140: Witch, stage 5 -- the Boline of Cerridwen
+
+A new artifact sickle, **The Boline of Cerridwen** (`artilist.h`; one more artifact and a new `CREATE_POTION` invoke property, so a full rebuild and incompatible saves).
+
+- **Weapon:** a flat d5 to hit and d10 damage against everything (`PHYS(5,10)`, like Excalibur's); restricted (it can't be wished for in normal play or renamed onto).
+- **Spells:** wielded, it adds +50 to the success chance of healing and enchantment spells, the same bonus the school staves give (`spell.c`).
+- **#invoke:** brews a random potion, never gain level, then rests for a long while (`rnz(400)` turns). A Witch or Wizard gets a blessed potion, and half the time two of it; a Priest or Healer gets one blessed potion; anyone else gets one uncursed potion.
+- **Gift:** it is the Witch's first sacrifice gift. Like the Bard's Luck Blade, its alignment is set to the Witch's own at the start of the game (`hack_artifacts`), so a Witch of any alignment is offered it; for everyone else it is a neutral artifact that can turn up as an ordinary random artifact sickle or as a neutral altar's gift.
+
+Tested in wizard mode: selecting a gift through `mk_artifact` for a lawful, neutral and chaotic Witch gives the Boline each time; `#invoke` as Witch (a blessed pair of healing once), Wizard, Priest (blessed) and Rogue (uncursed single); with the Boline wielded, a Witch's failure rates for cure blindness (healing) and slow monster (enchantment) dropped from 44% and 50% to 0%. The test hook that forced the gift lived only in the build tree and has been removed. The three stress tests ran clean.

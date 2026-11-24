@@ -1465,14 +1465,17 @@ int spell;
 	 * classes it should be a significant help.
 	 */
 	if (uwep && ((uwep->otyp >= STAFF_OF_DIVINATION &&
-		      uwep->otyp <= STAFF_OF_ENCHANTMENT) || uwep->otyp == BROOM))
+		      uwep->otyp <= STAFF_OF_ENCHANTMENT) || uwep->otyp == BROOM ||
+		     uwep->oartifact == ART_BOLINE_OF_CERRIDWEN))
 	{
 #define STAFFBONUS 50
 		if (spell_skilltype(spellid(spell)) == P_CLERIC_SPELL && uwep->otyp == STAFF_OF_HOLINESS)
 		{
 			chance += STAFFBONUS;
 		}
-		if (spell_skilltype(spellid(spell)) == P_HEALING_SPELL && uwep->otyp == STAFF_OF_HEALING)
+		if (spell_skilltype(spellid(spell)) == P_HEALING_SPELL &&
+			(uwep->otyp == STAFF_OF_HEALING ||
+			 uwep->oartifact == ART_BOLINE_OF_CERRIDWEN))
 		{
 			chance += STAFFBONUS;
 		}
@@ -1494,7 +1497,8 @@ int spell;
 		}
 		/* a broom works as a staff of enchantment */
 		if (spell_skilltype(spellid(spell)) == P_ENCHANTMENT_SPELL &&
-			(uwep->otyp == STAFF_OF_ENCHANTMENT || uwep->otyp == BROOM))
+			(uwep->otyp == STAFF_OF_ENCHANTMENT || uwep->otyp == BROOM ||
+			 uwep->oartifact == ART_BOLINE_OF_CERRIDWEN))
 		{
 			chance += STAFFBONUS;
 		}

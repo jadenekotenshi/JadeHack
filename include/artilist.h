@@ -109,6 +109,18 @@ A("Magicbane",			ATHAME,
 	(SPFX_RESTR|SPFX_ATTK|SPFX_DEFN), 0, 0,
 	STUN(3,4),	SPDF_MAGIC,	NO_CARY,	0, A_NEUTRAL, PM_WIZARD, NON_PM, 3500L ),
 
+/*
+ *	The Boline of Cerridwen: a witch's white-handled sickle.  A flat
+ *	d5 to hit and d10 damage against everything, and it helps healing
+ *	and enchantment spells when wielded (spell.c).  #invoke brews a
+ *	potion (see arti_invoke).  The Witch's first sacrifice gift, in her own
+ *	alignment (hack_artifacts); neutral for everyone else.
+ */
+A("The Boline of Cerridwen",	SICKLE,
+	(SPFX_RESTR), 0, 0,
+	PHYS(5,10),	SPDF_NONE,	NO_CARY,
+	CREATE_POTION,	A_NEUTRAL, PM_WITCH, NON_PM, 4000L ),
+
 A("Frost Brand",		BROADSWORD,
 	(SPFX_RESTR|SPFX_ATTK|SPFX_DEFN), 0, 0,
 	COLD(5,0),	SPDF_COLD,	NO_CARY,	0, A_NONE, NON_PM, NON_PM, 3000L ),

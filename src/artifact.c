@@ -193,6 +193,9 @@ hack_artifacts()
 	    artilist[urole.questarti].role = Role_switch;
 	}
 	fix_lotr_rings();
+	/* Witches' first sacrifice gift is the Boline, in their alignment */
+	if (Role_if(PM_WITCH))
+	    artilist[ART_BOLINE_OF_CERRIDWEN].alignment = alignmnt;
 	/* Bards' first sacrifice gift is the Luck Blade, in their alignment */
 	if (Role_if(PM_BARD)) {
 	    artilist[ART_LUCK_BLADE].alignment = alignmnt;
@@ -2411,6 +2414,31 @@ arti_invoke(obj)
 	    otmp = mksobj(rn2(2) ? BLINDING_VENOM : ACID_VENOM, TRUE, FALSE);
 	    otmp->spe = 1;	/* the poison is yours */
 	    throwit(otmp, 0L, FALSE);
+	    break;
+	  }
+	case CREATE_POTION: {
+	    /* brew a random potion (never gain level): blessed for the
+	       craft-wise, and a witch or wizard may get two of it */
+	    struct obj *otmp;
+	    boolean craft = (Role_if(PM_WITCH) || Role_if(PM_WIZARD)),
+		    holy = (craft || Role_if(PM_PRIEST) || Role_if(PM_HEALER));
+	    int tries = 0;
+
+	    do {
+		otmp = mkobj(POTION_CLASS, FALSE);
+		if (otmp->otyp != POT_GAIN_LEVEL) break;
+		obfree(otmp, (struct obj *)0);
+		otmp = (struct obj *)0;
+	    } while (++tries < 50);
+	    if (!otmp) goto nothing_special;
+	    otmp->cursed = 0;
+	    otmp->blessed = holy;
+	    otmp->odiluted = 0;
+	    otmp->quan = (craft && rn2(2)) ? 2L : 1L;
+	    obj->age = monstermoves + rnz(400);	/* a long rest after brewing */
+	    otmp->owt = weight(otmp);
+	    otmp = hold_another_object(otmp, "Suddenly %s out.",
+				       aobjnam(otmp, "bubble"), (const char *)0);
 	    break;
 	  }
 	case CREATE_AMMO: {

@@ -91,5 +91,6 @@ struct artifact {
 #define ARCANE_BURST	(LAST_PROP+16)
 #define UNCURSE_ALL	(LAST_PROP+17)
 #define CREATE_SHURIKEN	(LAST_PROP+18)
+#define CREATE_POTION	(LAST_PROP+19)
 
 #endif /* ARTIFACT_H */
