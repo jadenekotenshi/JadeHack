@@ -1049,6 +1049,11 @@ skip0:
 			    (void) mksobj_at(boxtype, pos.x,pos.y, TRUE, FALSE);
 		}
 
+		/* a cauldron now and then, as heavy and out of place as a box
+		 * (about half as often as a box turns up) */
+		if (!rn2(nroom * 5) && somexyspace(croom, &pos, 0))
+		    (void) mksobj_at(CAULDRON, pos.x, pos.y, TRUE, FALSE);
+
 		/* maybe make some graffiti */
 		if(!rn2(27 + 3 * abs(depth(&u.uz)))) {
 		    char buf[BUFSZ];

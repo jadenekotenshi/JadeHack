@@ -33,13 +33,13 @@ register struct monst *mtmp;
 }
 
 /* A witch's familiar: an owlet for the lawful, a black kitten for the
- * neutral, a raven for the chaotic. */
+ * neutral, a fledgling raven for the chaotic. */
 STATIC_OVL int
 pet_type()
 {
 	if (Role_if(PM_WITCH))
 	    return (u.ualign.type == A_LAWFUL ? PM_OWLET :
-		    u.ualign.type == A_CHAOTIC ? PM_RAVEN : PM_BLACK_KITTEN);
+		    u.ualign.type == A_CHAOTIC ? PM_FLEDGLING_RAVEN : PM_BLACK_KITTEN);
 	if (urole.petnum != NON_PM)
 	    return (urole.petnum);
 	else if (Role_if(PM_PIRATE))		/* a parrot or a monkey */
@@ -880,7 +880,7 @@ struct permonst *ptr;
 	    m == PM_BLACK_KITTEN || m == PM_BLACK_CAT || m == PM_LARGE_BLACK_CAT ||
 	    m == PM_LIGHTNING_KITTEN || m == PM_LIGHTNING_CAT ||
 	    m == PM_OWLET || m == PM_OWL || m == PM_GIANT_OWL ||
-	    m == PM_RAVEN || m == PM_GIANT_RAVEN);
+	    m == PM_FLEDGLING_RAVEN || m == PM_RAVEN || m == PM_GIANT_RAVEN);
 }
 
 /* the witch has gained a level: so do her familiars */

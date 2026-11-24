@@ -1444,3 +1444,8 @@ The Ranger-copy placeholder is replaced by the real Witch quest. New monsters an
 - Wiring: `genus()` and `grownups[]` map coven sisters to Witches, `makemon.c` arms the hunters, and the Besom is a special case in `use_broom` and `percent_success`.
 
 Tested in wizard mode with a temporary hook (since removed) that jumped to the quest levels and set the alignment record: the home-level intro, Medea refusing a hero who "strayed" (record too low), accepting a Witch of XL14 with her full assignment, the Witchwood arrival text, and the goal-level text with Baba Yaga picking up the Besom while hunters shot crossbow bolts and slashed with short swords. I did not play through the fight. The three stress tests ran clean.
+
+## Batch 142: fledgling raven; cauldrons turn up in the dungeon
+
+- **Fledgling raven** (new monster, so a full rebuild; old saves and bones are incompatible): a level-2, domestic bird (bite d4, blinding claw d3) that grows into the raven at level 4 and then into the giant raven. It is now the chaotic Witch's starting familiar, matching the black kitten and owlet; the raven itself is no longer a starting pet. It counts as a familiar for the bond (growth with her level, Pw loss and restore). Tested: a chaotic Witch's fledgling raven grew into a raven at experience level 4.
+- **Cauldrons are common finds:** the random-tool odds went from 3 to 8 (tin whistles lost 5; the tool class still sums to 1000), and `mklev.c` now also puts a cauldron in a room now and then, as it does for boxes and chests (a room's chance is `1 / (5 x number of rooms)`, about half as often as a box).
