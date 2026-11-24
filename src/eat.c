@@ -2817,6 +2817,75 @@ boolean stopping;
 	return FALSE;
 }
 
+/*
+ * Stewing in a witch's cauldron: every corpse and bit of food inside is
+ * cooked into one stew and eaten.  The cooking makes old and poisonous
+ * meat safe, but the stew refuses anything that would turn you to stone,
+ * slime you, make you a were-creature, or that is your own kind.  Each
+ * corpse may confer its intrinsic as if eaten (a witch's stew is likelier
+ * to).
+ */
+int
+stew_cauldron(cauld)
+struct obj *cauld;
+{
+	struct obj *otmp, *nobj;
+	long nut = 0L;
+	int pms[24], npm = 0, i, n = 0;
+	boolean witch = Role_if(PM_WITCH);
+
+	for (otmp = cauld->cobj; otmp; otmp = otmp->nobj) {
+	    if (otmp->otyp == CORPSE) {
+		int pm = otmp->corpsenm;
+		if (pm < LOW_PM) continue;
+		if (touch_petrifies(&mons[pm]) || pm == PM_MEDUSA ||
+			pm == PM_GREEN_SLIME || is_were(&mons[pm]) ||
+			(your_race(&mons[pm]) && !CANNIBAL_ALLOWED()))
+		    continue;
+	    } else if (otmp->oclass != FOOD_CLASS || otmp->otyp == TIN ||
+		       otmp->otyp == EGG || otmp->otyp == LUMP_OF_ROYAL_JELLY ||
+		       otmp->otyp == LEMBAS_WAFER || otmp->otyp == CRAM_RATION)
+		continue;
+	    n++;
+	}
+	if (!n) {
+	    pline("There is nothing in the cauldron fit to stew.");
+	    return 0;
+	}
+	for (otmp = cauld->cobj; otmp; otmp = nobj) {
+	    nobj = otmp->nobj;
+	    if (otmp->otyp == CORPSE) {
+		int pm = otmp->corpsenm;
+		if (pm < LOW_PM) continue;
+		if (touch_petrifies(&mons[pm]) || pm == PM_MEDUSA ||
+			pm == PM_GREEN_SLIME || is_were(&mons[pm]) ||
+			(your_race(&mons[pm]) && !CANNIBAL_ALLOWED()))
+		    continue;
+		nut += (long)mons[pm].cnutrit;
+		if (npm < SIZE(pms) && pm != PM_CHAMELEON &&
+			pm != PM_DOPPELGANGER && pm != PM_SANDESTIN)
+		    pms[npm++] = pm;
+	    } else if (otmp->oclass != FOOD_CLASS || otmp->otyp == TIN ||
+		       otmp->otyp == EGG || otmp->otyp == LUMP_OF_ROYAL_JELLY ||
+		       otmp->otyp == LEMBAS_WAFER || otmp->otyp == CRAM_RATION)
+		continue;
+	    else
+		nut += (long)objects[otmp->otyp].oc_nutrition * otmp->quan;
+	    obj_extract_self(otmp);
+	    obfree(otmp, (struct obj *)0);
+	}
+	cauld->spe = 0;		/* the water is spent */
+	if (nut > 1200L) nut = 1200L;
+	You("ladle out the stew and eat it.");
+	nomul(-(int)(nut / 150L + 2L), "eating stew");
+	nomovemsg = "You finish the stew.";
+	lesshungry((int)nut);
+	for (i = 0; i < npm; i++)
+	    if (!rn2(witch ? 3 : 6)) cpostfx(pms[i]);
+	exercise(A_CON, TRUE);
+	return 1;
+}
+
 #endif /* OVL1 */
 
 /*eat.c*/

@@ -13,7 +13,6 @@ static NEARDATA const char beverages[] = { POTION_CLASS, 0 };
 STATIC_DCL long FDECL(itimeout, (long));
 STATIC_DCL long FDECL(itimeout_incr, (long,int));
 STATIC_DCL void NDECL(ghost_from_bottle);
-STATIC_DCL short FDECL(mixtype, (struct obj *,struct obj *));
 
 /* force `val' to be within valid range for intrinsic timeout value */
 STATIC_OVL long
@@ -1443,7 +1442,7 @@ register struct obj *obj;
 	}
 }
 
-STATIC_OVL short
+short
 mixtype(o1, o2)
 register struct obj *o1, *o2;
 /* returns the potion type when o1 is dipped in o2 */
@@ -2176,6 +2175,96 @@ struct monst *mon,	/* monster being split */
 	    }
 	}
 	return mtmp2;
+}
+
+/*
+ * Brewing in a witch's cauldron: the potions inside are combined, one after
+ * another, using the same recipes as dipping one potion into another.
+ * A herb (garlic, wolfsbane, eucalyptus or carrot) in the cauldron blesses
+ * the result (or un-curses it).  A witch's brew never goes wrong; anyone
+ * else who tries a combination that doesn't exist risks a blast.
+ */
+STATIC_OVL void
+cauldron_use_one(otmp)
+struct obj *otmp;	/* use up one of a stack inside the cauldron */
+{
+	if (otmp->quan > 1L) {
+	    struct obj *one = splitobj(otmp, 1L);
+	    obj_extract_self(one);
+	    obfree(one, (struct obj *)0);
+	} else {
+	    obj_extract_self(otmp);
+	    obfree(otmp, (struct obj *)0);
+	}
+}
+
+int
+brew_cauldron(cauld)
+struct obj *cauld;
+{
+	struct obj *cur = (struct obj *)0, *q, *nq, *herb = (struct obj *)0;
+	boolean witch = Role_if(PM_WITCH), mixed = FALSE;
+	int mixture, npot = 0;
+
+	for (q = cauld->cobj; q; q = q->nobj) {
+	    if (q->oclass == POTION_CLASS && q->otyp != POT_WATER) {
+		npot += (int)q->quan;
+		if (!cur) cur = q;
+	    } else if (q->otyp == SPRIG_OF_WOLFSBANE || q->otyp == CLOVE_OF_GARLIC ||
+		       q->otyp == EUCALYPTUS_LEAF || q->otyp == CARROT)
+		herb = q;
+	}
+	if (npot < 2) {
+	    pline("There must be at least two potions in the cauldron to brew.");
+	    return 0;
+	}
+	/* take one unit of the first potion as the base of the brew */
+	if (cur->quan > 1L) cur = splitobj(cur, 1L);
+	You("stir the cauldron...");
+	for (q = cauld->cobj; q; q = nq) {
+	    nq = q->nobj;
+	    if (q == cur || q->oclass != POTION_CLASS || q->otyp == POT_WATER ||
+		    q->otyp == cur->otyp)
+		continue;
+	    if ((mixture = mixtype(cur, q)) != 0) {
+		cur->otyp = mixture;
+		cur->odiluted = 0;
+		if (!q->blessed) cur->blessed = 0;
+		if (q->cursed) { cur->cursed = 1; cur->blessed = 0; }
+		cur->dknown = 1;
+		cauldron_use_one(q);
+		mixed = TRUE;
+		/* the list may have changed under us; start the scan over
+		   from the next potion that is still there */
+		nq = cauld->cobj;
+		while (nq && (nq == cur || nq->oclass != POTION_CLASS ||
+			      nq->otyp == POT_WATER || nq->otyp == cur->otyp))
+		    nq = nq->nobj;
+	    } else if (!witch && !rn2(3)) {
+		pline("The cauldron bubbles violently -- and blasts apart the brew!");
+		potionbreathe(cur);
+		potionbreathe(q);
+		obj_extract_self(cur);
+		obfree(cur, (struct obj *)0);
+		cauldron_use_one(q);
+		cauld->spe = 0;
+		losehp(rnd(10), "alchemic blast", KILLED_BY_AN);
+		return 1;
+	    }
+	}
+	cauld->spe = 0;		/* the water is spent */
+	if (!mixed) {
+	    pline("The potions will not blend.");
+	    return 1;
+	}
+	if (herb) {
+	    if (cur->cursed) cur->cursed = 0;
+	    else cur->blessed = 1;
+	    cauldron_use_one(herb);
+	    pline("The herb lends the brew a pleasant scent.");
+	}
+	pline("The brew settles into %s.", doname(cur));
+	return 1;
 }
 
 #endif /* OVLB */

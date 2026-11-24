@@ -36,6 +36,7 @@ STATIC_DCL void FDECL(apply_flint, (struct obj *));
 STATIC_PTR int NDECL(set_trap);		/* occupation callback */
 STATIC_DCL int FDECL(use_whip, (struct obj *));
 STATIC_DCL int FDECL(use_broom, (struct obj *));
+STATIC_DCL int FDECL(use_cauldron, (struct obj *));
 STATIC_DCL int FDECL(use_bearded_axe, (struct obj *));
 STATIC_DCL int FDECL(use_pole, (struct obj *));
 STATIC_DCL int FDECL(use_cream_pie, (struct obj *));
@@ -2382,6 +2383,73 @@ broom_check()
 	if (!(moves % 20)) use_skill(P_BROOMSTICK, 1);
 }
 
+/* A witch's cauldron.  It is a container; to do anything but fill it, stir
+ * it or look in it, it must first be filled with water at a fountain or
+ * beside a pool.  Brewing and scrying use the water up. */
+STATIC_OVL int
+use_cauldron(obj)
+struct obj *obj;
+{
+	char c;
+	int x, y;
+	boolean water_near = IS_FOUNTAIN(levl[u.ux][u.uy].typ);
+
+	for (x = u.ux - 1; x <= u.ux + 1 && !water_near; x++)
+	    for (y = u.uy - 1; y <= u.uy + 1; y++)
+		if (isok(x, y) && is_pool(x, y)) { water_near = TRUE; break; }
+
+	c = yn_function("Use the cauldron: Contents, Fill, Brew, Stew, Gaze?",
+			"cfbsgq", 'q');
+	switch (c) {
+	case 'c':
+	    return use_container(obj, 1);
+	case 'f':
+	    if (obj->spe) {
+		pline("The cauldron is already full of water.");
+		return 0;
+	    }
+	    if (!water_near) {
+		pline("You need a fountain or a pool at hand to fill it.");
+		return 0;
+	    }
+	    obj->spe = 1;
+	    You("fill the cauldron with water.");
+	    if (IS_FOUNTAIN(levl[u.ux][u.uy].typ)) dryup(u.ux, u.uy, TRUE);
+	    return 1;
+	case 'b':
+	case 's':
+	case 'g':
+	    if (!obj->spe) {
+		pline("The cauldron holds no water.");
+		return 0;
+	    }
+	    if (c == 'b') return brew_cauldron(obj);
+	    if (c == 'g') {
+		int cost = Role_if(PM_WITCH) ? 5 : 10;
+		if (u.uen < cost) {
+		    You("lack the energy to scry.");
+		    return 0;
+		}
+		u.uen -= cost;
+		flags.botl = 1;
+		scry_cauldron(obj);
+		return 1;
+	    }
+	    {	/* stew: needs a light burning to heat it */
+		struct obj *o;
+		for (o = invent; o; o = o->nobj)
+		    if (o->lamplit) break;
+		if (!o) {
+		    pline("You need a lit lamp or candle to heat the cauldron.");
+		    return 0;
+		}
+	    }
+	    return stew_cauldron(obj);
+	default:
+	    return 0;
+	}
+}
+
 STATIC_OVL int
 use_broom(obj)
 struct obj *obj;
@@ -3217,6 +3285,9 @@ doapply()
 		break;
 	case BROOM:
 		res = use_broom(obj);
+		break;
+	case CAULDRON:
+		res = use_cauldron(obj);
 		break;
 	case GRAPPLING_HOOK:
 		res = use_grapple(obj);

@@ -334,6 +334,8 @@ boolean ignore_oquan;
 	    case TOOL_CLASS:
 		if (typ == LENSES)
 			Strcpy(buf, "pair of ");
+		else if (typ == CAULDRON && obj->spe)
+			Strcpy(buf, "water-filled ");
 
 		if (!obj->dknown)
 			Strcat(buf, dn ? dn : actualn);

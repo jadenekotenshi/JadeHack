@@ -909,6 +909,88 @@ struct obj *obj;
     return;
 }
 
+/* Scrying in a witch's cauldron (water-filled): the same visions as a
+ * crystal ball.  A witch's gaze is steady; others may be overwhelmed. */
+void
+scry_cauldron(obj)
+struct obj *obj;
+{
+    char ch;
+    int oops;
+
+    if (Blind) {
+	pline("Too bad you can't see the water.");
+	return;
+    }
+    oops = (obj->cursed || (!Role_if(PM_WITCH) && rnd(20) > ACURR(A_WIS)));
+    if (oops) {
+	switch (rnd(4)) {
+	case 1 : pline_The("water swirls into too much to comprehend!");
+	    break;
+	case 2 : pline_The("water confuses you!");
+	    make_confused(HConfusion + rnd(100),FALSE);
+	    break;
+	case 3 : if (!resists_blnd(&youmonst)) {
+		pline_The("water flashes, damaging your vision!");
+		make_blinded(Blinded + rnd(100),FALSE);
+		if (!Blind) Your("%s", vision_clears);
+	    } else {
+		pline_The("water flashes.");
+		You("are unaffected!");
+	    }
+	    break;
+	case 4 : pline_The("water burns your mind!");
+	    (void) make_hallucinated(HHallucination + rnd(100),FALSE,0L);
+	    break;
+	}
+	obj->spe = 0;
+	return;
+    }
+
+    if (flags.verbose) You("may look for an object or monster symbol.");
+    ch = yn_function("What do you look for?", (char *)0, '\0');
+    if ((ch != def_monsyms[S_GHOST]) && index(quitchars,ch)) {
+	if (flags.verbose) pline("%s", Never_mind);
+	obj->spe = 1;
+	return;
+    }
+    You("peer into the water...");
+    nomul(-rnd(10), "gazing into a cauldron");
+    nomovemsg = "";
+    obj->spe = 0;	/* the water is used up */
+    {
+	int class;
+	int ret = 0;
+
+	if (ch == DEF_MIMIC_DEF) ch = DEF_MIMIC;
+	if ((class = def_char_to_objclass(ch)) != MAXOCLASSES)
+		ret = object_detect((struct obj *)0, class);
+	else if ((class = def_char_to_monclass(ch)) != MAXMCLASSES)
+		ret = monster_detect((struct obj *)0, class);
+	else if (iflags.bouldersym && (ch == iflags.bouldersym))
+		ret = object_detect((struct obj *)0, ROCK_CLASS);
+	else switch(ch) {
+		case '^':
+		    ret = trap_detect((struct obj *)0);
+		    break;
+		default:
+		    {
+		    int i = rn2(SIZE(level_detects));
+		    You("see %s, %s.",
+			level_detects[i].what,
+			level_distance(level_detects[i].where));
+		    }
+		    ret = 0;
+		    break;
+	}
+	if (ret) {
+	    if (!rn2(100))  /* make them nervous */
+		You("see the Wizard of Yendor gazing out at you.");
+	    else pline_The("vision is unclear.");
+	}
+    }
+}
+
 STATIC_OVL void
 show_map_spot(x, y)
 register int x, y;

@@ -715,6 +715,8 @@ CONTAINER("large box", (char *)0,       1, 0, 0,  40,350,   8, WOOD, HI_WOOD),
 CONTAINER("chest", (char *)0,           1, 0, 0,  25,600,  16, WOOD, HI_WOOD),
 CONTAINER("iron safe", (char *)0,       1, 0, 0,  10,900,  50, IRON, HI_METAL),
 CONTAINER("ice box", (char *)0,         1, 0, 0,   5,900,  42, PLASTIC, CLR_WHITE),
+/* a witch's cauldron: fill it with water, then brew, stew or scry */
+CONTAINER("cauldron", (char *)0,        1, 0, 0,   3,200,  40, IRON, HI_METAL),
 CONTAINER("small sack", "small bag",    0, 0, 0,  30, 15,   2, CLOTH, HI_CLOTH),
 CONTAINER("sack", "bag",                0, 0, 0,  20, 15,   2, CLOTH, HI_CLOTH),
 CONTAINER("oilskin sack", "bag",        0, 0, 0,   5, 15, 100, CLOTH, HI_CLOTH),
@@ -764,7 +766,7 @@ TOOL("magic marker", (char *)0, 1, 0, 1, 1,   0,  2,  50, PLASTIC, CLR_RED),
 TOOL("land mine",(char *)0,     1, 0, 0, 0,   0,300, 180, IRON, CLR_RED),
 TOOL("beartrap", (char *)0,     1, 0, 0, 0,   0,200,  60, IRON, HI_METAL),
 /* instruments */
-TOOL("tin whistle", "whistle",  0, 0, 0, 0,  97,  3,  10, METAL, HI_METAL),
+TOOL("tin whistle", "whistle",  0, 0, 0, 0,  94,  3,  10, METAL, HI_METAL),
 TOOL("magic whistle", "whistle",0, 0, 1, 0,  30,  3,  10, METAL, HI_METAL),
 /* "If tin whistles are made out of tin, what do they make foghorns out of?" */
 TOOL("wooden flute", "flute",   0, 0, 0, 0,   8,  5,  12, WOOD, HI_WOOD),
