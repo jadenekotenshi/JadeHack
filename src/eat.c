@@ -530,6 +530,11 @@ register int pm;
 	    case PM_KITTEN:
 	    case PM_HOUSECAT:
 	    case PM_LARGE_CAT:
+	    case PM_BLACK_KITTEN:
+	    case PM_BLACK_CAT:
+	    case PM_LARGE_BLACK_CAT:
+	    case PM_LIGHTNING_KITTEN:
+	    case PM_LIGHTNING_CAT:
 		if (!CANNIBAL_ALLOWED()) {
 		    You_feel("that eating the %s was a bad idea.", mons[pm].mname);
 		    HAggravate_monster |= FROMOUTSIDE;

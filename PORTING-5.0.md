@@ -1394,3 +1394,19 @@ Tested in wizard mode for all five races: kit, spells, skills, discoveries, titl
 ## Batch 137: the broom is a weapon-tool
 
 Like the pick-axe, the broom is now a **weapon-tool**: a `(` in the Tools class (`WEPTOOL`, damage d4/d3, broomstick skill) rather than a `)` weapon. Behaviour is unchanged (apply to ride it; wielded, it helps enchantment spells), and the Witch's starting broom still sits in her alternate-weapon slot. Generation odds moved with it: the broom's 3 points came back to darts (weapons) and out of tin whistles (tools), keeping both classes at 1000. Objects renumbered, so a full rebuild; old saves and bones are incompatible.
+
+## Batch 138: Witch, stage 3 -- the familiar, the hex, and the familiar's eyes
+
+New monsters (so another renumbering and full rebuild; old saves and bones are incompatible):
+- **black kitten -> black cat -> large black cat** (a little magic resistant: 5, 15, 25), **lightning kitten -> lightning cat** (the cat already existed), **owlet -> owl -> giant owl** (flying, domestic), and **raven -> giant raven** (the raven existed, hostile; the giant is new). Growth is in `grownups[]` (`mondata.c`). Lightning kittens, like lightning cats, are usually born peaceful. Eating a black or lightning cat counts as the same cannibalism-style taboo as eating a housecat.
+
+The **familiar bond** (`dog.c`) applies to a tame monster of one of these kinds (the kitten and housecat lines too), and only for a Witch:
+- **Her starting familiar** depends on alignment: owlet (lawful), black kitten (neutral), raven (chaotic). The raven starts a good deal stronger than the others (it is a level-4 monster; the kitten and owlet are level 2).
+- **It grows with her:** whenever she gains a level, each familiar on the level that is below her level gains levels (via `grow_up`, so it grows into the next form when it is big enough) until it matches her.
+- **Its death costs power:** a quarter of her maximum Pw (at least 2), remembered in `u.ufamlost`; **taming any new familiar** (a charm monster spell, scroll of taming, the create-familiar spell, food) returns it all.
+
+`#hex` (Witch only, 5 Pw): choose a direction; the first visible monster within 8 squares is hexed for 5-10 turns plus a few for level and Wisdom (`mhexed`): it moves a third slower, its attacks are -4 to hit, and its AC is 3 worse. The target gets a magic-resistance check against her level and Wisdom, and is woken (or angered) either way. Undead and mindless monsters can't be hexed (no cost); an empty line costs a turn but no Pw.
+
+`#familiar` (Witch of XL7 or more, 8 Pw): shows everything within 8 squares that the nearest seeing, awake familiar can see, then returns to the normal map.
+
+Tested in wizard mode: each alignment's pet; a kitten growing at XL2 and XL3 ("grows stronger along with you") and reaching large black cat by XL7; a familiar's death (max Pw 34 -> 26) and a scroll of taming a new kitten (back to 34); `#hex` on a newt (Pw 54 -> 49), a kobold zombie ("no mind to hex") and an empty line; and `#familiar` showing the cat's view of a room. The three stress tests ran clean. (A temporary hook to kill the familiar and a ray-free way to test it lived only in the build tree and has been removed.)

@@ -394,6 +394,9 @@ register struct monst *mon;
 	if (bonus < 0) { bonus = 0; }
 	base -= (int)bonus;
 
+	/* a hexed monster is easier to hit */
+	if (mon->mhexed > 0) base += 3;
+
 	return base;
 }
 

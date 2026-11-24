@@ -241,6 +241,7 @@ mattackm(magr, mdef)
 
     /* Calculate the armour class differential. */
     tmp = find_mac(mdef) + magr->m_lev;
+    if (magr->mhexed > 0) tmp -= 4;		/* a witch's hex */
     if (mdef->mconf || !mdef->mcanmove || mdef->msleeping) {
 	tmp += 4;
 	mdef->msleeping = 0;

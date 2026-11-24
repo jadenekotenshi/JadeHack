@@ -561,6 +561,9 @@ struct monst *mon;
 	mmove = (2 * mmove + 1) / 3;
     else if (mon->mspeed == MFAST)
 	mmove = (4 * mmove + 2) / 3;
+    /* a witch's hex slows its victim by a third */
+    if (mon->mhexed > 0)
+	mmove = (2 * mmove + 1) / 3;
 
 #ifdef STEED
 	if (mon == u.usteed) {
@@ -634,6 +637,7 @@ mcalcdistress()
 
 	/* song effects wear off */
 	if (mtmp->mconftime > 0 && --mtmp->mconftime == 0) mtmp->mconf = 0;
+	if (mtmp->mhexed > 0) mtmp->mhexed--;
 	if (mtmp->mslowtime > 0 && --mtmp->mslowtime == 0 &&
 	    mtmp->permspeed == MSLOW)
 	    mon_adjust_speed(mtmp, 1, (struct obj *)0);
@@ -1619,6 +1623,10 @@ register struct monst *mtmp;
 	}
 	lifesaved_monster(mtmp);
 	if (mtmp->mhp > 0) return;
+
+	/* a witch's familiar takes some of her power with it */
+	if (mtmp->mtame && Role_if(PM_WITCH) && is_familiar_species(mtmp->data))
+	    familiar_death();
 
 	/* deep ones share a soul: when one dies the others grow stronger */
 	if (is_deep_one(mtmp->data)) {

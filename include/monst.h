@@ -66,6 +66,7 @@ struct monst {
 	int mstuntime;		/* turns of thundering stun left */
 	int mconftime;		/* turns of song-induced confusion left */
 	int mslowtime;		/* turns of song-induced slowness left */
+	int mhexed;		/* turns of a witch's hex left */
 
 /* These should stay in the same order as monattk.h so
  * the mask translations will work properly */

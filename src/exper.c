@@ -212,6 +212,7 @@ boolean incr;	/* true iff via incremental experience growth */
 	    if (u.ulevelmax < u.ulevel) u.ulevelmax = u.ulevel;
 	    pline("Welcome to experience level %d.", u.ulevel);
 	    adjabil(u.ulevel - 1, u.ulevel);	/* give new intrinsics */
+	    if (Role_if(PM_WITCH)) familiar_levelup();
 	    reset_rndmonst(NON_PM);		/* new monster selection */
 	}
 	flags.botl = 1;

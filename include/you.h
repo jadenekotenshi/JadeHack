@@ -310,6 +310,7 @@ struct you {
 
 	xchar ubroom;			/* riding a broom: BROOM_xxx (zero if not) */
 	unsigned ubroomid;		/* o_id of the broom being ridden */
+	int ufamlost;			/* max Pw lost to a familiar's death */
 
 	unsigned udg_cnt;		/* how long you have been demigod */
 	struct u_event	uevent;		/* certain events have happened */

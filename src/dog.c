@@ -32,9 +32,14 @@ register struct monst *mtmp;
 	EDOG(mtmp)->killed_by_u = 0;
 }
 
+/* A witch's familiar: an owlet for the lawful, a black kitten for the
+ * neutral, a raven for the chaotic. */
 STATIC_OVL int
 pet_type()
 {
+	if (Role_if(PM_WITCH))
+	    return (u.ualign.type == A_LAWFUL ? PM_OWLET :
+		    u.ualign.type == A_CHAOTIC ? PM_RAVEN : PM_BLACK_KITTEN);
 	if (urole.petnum != NON_PM)
 	    return (urole.petnum);
 	else if (Role_if(PM_PIRATE))		/* a parrot or a monkey */
@@ -185,6 +190,7 @@ makedog()
 		mtmp = christen_monst(mtmp, petname);
 
 	initedog(mtmp);
+	if (Role_if(PM_WITCH)) familiar_tamed(mtmp);
 	return(mtmp);
 }
 
@@ -855,7 +861,75 @@ register struct obj *obj;
 		mtmp2->weapon_check = NEED_HTH_WEAPON;
 		(void) mon_wield_item(mtmp2);
 	}
+	if (Role_if(PM_WITCH)) familiar_tamed(mtmp2);
 	return(mtmp2);
+}
+
+/*
+ * A witch's familiar: a tame cat or bird of one of her kinds.  Its level
+ * grows with hers, it takes some of her power with it when it dies, and
+ * taming a new one restores that power.
+ */
+boolean
+is_familiar_species(ptr)
+struct permonst *ptr;
+{
+	int m = monsndx(ptr);
+
+	return (boolean)(m == PM_KITTEN || m == PM_HOUSECAT || m == PM_LARGE_CAT ||
+	    m == PM_BLACK_KITTEN || m == PM_BLACK_CAT || m == PM_LARGE_BLACK_CAT ||
+	    m == PM_LIGHTNING_KITTEN || m == PM_LIGHTNING_CAT ||
+	    m == PM_OWLET || m == PM_OWL || m == PM_GIANT_OWL ||
+	    m == PM_RAVEN || m == PM_GIANT_RAVEN);
+}
+
+/* the witch has gained a level: so do her familiars */
+void
+familiar_levelup()
+{
+	struct monst *mtmp, *next;
+	int tries;
+
+	for (mtmp = fmon; mtmp; mtmp = next) {
+	    next = mtmp->nmon;
+	    if (DEADMONSTER(mtmp) || !mtmp->mtame ||
+		    !is_familiar_species(mtmp->data))
+		continue;
+	    if ((int)mtmp->m_lev >= u.ulevel) continue;
+	    for (tries = 0; tries < 3 && (int)mtmp->m_lev < u.ulevel; tries++)
+		if (!grow_up(mtmp, (struct monst *)0)) break;
+	    if (!DEADMONSTER(mtmp) && canspotmon(mtmp))
+		pline("%s grows stronger along with you.", Monnam(mtmp));
+	}
+}
+
+/* a familiar has died */
+void
+familiar_death()
+{
+	int loss = u.uenmax / 4;
+
+	if (loss < 2) loss = 2;
+	if (loss > u.uenmax - 1) loss = u.uenmax - 1;
+	if (loss <= 0) return;
+	u.uenmax -= loss;
+	u.ufamlost += loss;
+	if (u.uen > u.uenmax) u.uen = u.uenmax;
+	flags.botl = 1;
+	You_feel("your power wane with the death of your familiar.");
+}
+
+/* a new familiar has been tamed: its bond returns what was lost */
+void
+familiar_tamed(mtmp)
+struct monst *mtmp;
+{
+	if (!is_familiar_species(mtmp->data) || u.ufamlost <= 0) return;
+	u.uenmax += u.ufamlost;
+	u.uen += u.ufamlost;
+	u.ufamlost = 0;
+	flags.botl = 1;
+	You_feel("your lost power return as %s bonds with you.", mon_nam(mtmp));
 }
 
 /*

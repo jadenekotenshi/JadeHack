@@ -488,6 +488,7 @@ mattacku(mtmp)
 
 /*	Work out the armor class differential	*/
 	tmp = AC_VALUE(u.uac) + 10;		/* tmp ~= 0 - 20 */
+	if (mtmp->mhexed > 0) tmp -= 4;		/* a witch's hex */
 	tmp += mtmp->m_lev;
 	if(multi < 0) tmp += 4;
 	if((Invis && !perceives(mdat)) || !mtmp->mcansee)

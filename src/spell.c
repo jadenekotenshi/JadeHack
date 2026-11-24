@@ -1520,6 +1520,130 @@ int spell;
 }
 
 
+/* #hex: a witch's curse.  Costs 5 Pw.  The first monster in the chosen line
+ * (within 8 squares, and visible) is slowed by a third, hits less often and
+ * is easier to hit, for some turns.  Undead and mindless creatures have no
+ * mind to hex; others may shrug it off by magic resistance. */
+int
+dohex()
+{
+	struct monst *mtmp = (struct monst *)0;
+	int i, dur, alev, dlev;
+	xchar x, y;
+
+	if (!Role_if(PM_WITCH)) {
+	    You("don't know how to hex.");
+	    return 0;
+	}
+	if (u.uen < 5) {
+	    You("lack the energy to hex.");
+	    return 0;
+	}
+	if (!getdir((char *)0)) return 0;
+	if (u.dz || (!u.dx && !u.dy)) {
+	    You("cannot hex %s.", u.dz ? "that direction" : "yourself");
+	    return 0;
+	}
+	x = u.ux;
+	y = u.uy;
+	for (i = 0; i < 8; i++) {
+	    x += u.dx;
+	    y += u.dy;
+	    if (!isok(x, y) || !ZAP_POS(levl[x][y].typ) || closed_door(x, y))
+		break;
+	    if ((mtmp = m_at(x, y)) != 0 && canspotmon(mtmp)) break;
+	    mtmp = (struct monst *)0;
+	}
+	if (!mtmp) {
+	    pline("Your hex finds no one to cling to.");
+	    return 1;
+	}
+	if (is_undead(mtmp->data) || mindless(mtmp->data)) {
+	    pline("%s has no mind to hex.", Monnam(mtmp));
+	    return 0;
+	}
+	u.uen -= 5;
+	flags.botl = 1;
+	exercise(A_WIS, TRUE);
+	/* level and Wisdom against the target's level and magic resistance */
+	alev = u.ulevel + ((int)ACURR(A_WIS) - 10) / 2;
+	dlev = (int)mtmp->m_lev;
+	if (dlev > 50) dlev = 50;
+	else if (dlev < 1) dlev = 1;
+	if (rn2(100 + alev - dlev) < mtmp->data->mr) {
+	    shieldeff(mtmp->mx, mtmp->my);
+	    pline("%s shrugs off your hex.", Monnam(mtmp));
+	} else {
+	    dur = rn1(6, 5) + u.ulevel / 3;
+	    if (ACURR(A_WIS) > 14) dur += ((int)ACURR(A_WIS) - 14) / 2;
+	    if (dur > mtmp->mhexed) mtmp->mhexed = dur;
+	    pline("A baleful light settles over %s!", mon_nam(mtmp));
+	}
+	wakeup(mtmp);
+	return 1;
+}
+
+/* #familiar: from XL7, a witch can look through the eyes of a seeing
+ * familiar on the level (8 Pw).  Shows what it sees within 8 squares. */
+int
+dofamiliar()
+{
+	struct monst *mtmp, *fam = (struct monst *)0;
+	int x, y, dist, best = 0;
+	int lo_x, hi_x, lo_y, hi_y;
+
+	if (!Role_if(PM_WITCH)) {
+	    You("have no familiar bond.");
+	    return 0;
+	}
+	if (u.ulevel < 7) {
+	    You("have not yet learned to see through your familiar's eyes.");
+	    return 0;
+	}
+	for (mtmp = fmon; mtmp; mtmp = mtmp->nmon) {
+	    if (DEADMONSTER(mtmp) || !mtmp->mtame ||
+		    !is_familiar_species(mtmp->data) ||
+		    !mtmp->mcansee || mtmp->msleeping)
+		continue;
+	    dist = distmin(u.ux, u.uy, mtmp->mx, mtmp->my);
+	    if (!fam || dist < best) {
+		fam = mtmp;
+		best = dist;
+	    }
+	}
+	if (!fam) {
+	    You("sense no familiar nearby whose eyes you could use.");
+	    return 0;
+	}
+	if (u.uen < 8) {
+	    You("lack the energy to share your familiar's sight.");
+	    return 0;
+	}
+	u.uen -= 8;
+	flags.botl = 1;
+	You("look through %s eyes...", s_suffix(mon_nam(fam)));
+	cls();
+	lo_x = fam->mx - 8 < 1 ? 1 : fam->mx - 8;
+	hi_x = fam->mx + 8 > COLNO - 1 ? COLNO - 1 : fam->mx + 8;
+	lo_y = fam->my - 8 < 0 ? 0 : fam->my - 8;
+	hi_y = fam->my + 8 > ROWNO - 1 ? ROWNO - 1 : fam->my + 8;
+	for (x = lo_x; x <= hi_x; x++)
+	    for (y = lo_y; y <= hi_y; y++) {
+		if (!m_cansee(fam, x, y)) continue;
+		show_glyph(x, y, back_to_glyph(x, y));
+		if (level.objects[x][y])
+		    show_glyph(x, y, obj_to_glyph(level.objects[x][y]));
+		if ((mtmp = m_at(x, y)) != 0 && !mtmp->mundetected &&
+			(!mtmp->minvis || perceives(fam->data)))
+		    show_glyph(x, y, mon_to_glyph(mtmp));
+	    }
+	display_self();
+	pline("This is what %s sees.", mon_nam(fam));
+	display_nhwindow(WIN_MAP, TRUE);
+	docrt();
+	return 1;
+}
+
 /* Learn a spell during creation of the initial inventory */
 void
 initialspell(obj)
