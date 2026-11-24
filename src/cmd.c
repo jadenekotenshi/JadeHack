@@ -1273,7 +1273,7 @@ int final;	/* 0 => still in progress; 1 => over, survived; 2 => dead */
 #ifdef WIZARD
 	    if (wizard) Sprintf(eos(buf), " (%d)", u.ugangr);
 #endif
-	    enl_msg(u_gname(), " is", " was", buf);
+	    enl_msg(cap_gname(u_gname()), " is", " was", buf);
 	} else
 	    /*
 	     * We need to suppress this when the game is over, because death
@@ -1604,7 +1604,7 @@ int final;
 #ifdef WIZARD
 	    if (wizard) Sprintf(eos(buf), " (%d)", u.ugangr);
 #endif
-	    Sprintf(buf2, "%s was %s", u_gname(), buf);
+	    Sprintf(buf2, "%s was %s", cap_gname(u_gname()), buf);
 	    dump("  ", buf2);
 	}
 

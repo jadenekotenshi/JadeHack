@@ -4347,7 +4347,7 @@ grind your bones."
 "I shall break your %ls grove, and burn all the %gP!"
 %E
 %Cp Wit 00065
-"%d has abandoned you, %c.  You are doomed."
+"%dC has abandoned you, %c.  You are doomed."
 %E
 %Cp Wit 00066
 "%rA?  %lC sends a mere %r against me?  Hah!"

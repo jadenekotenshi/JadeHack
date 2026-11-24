@@ -1453,3 +1453,9 @@ Tested in wizard mode with a temporary hook (since removed) that jumped to the q
 ## Batch 143: character-creation menu fits a short terminal
 
 With the Witch the class column had 17 rows, which pushed the menu past the bottom of a short terminal (rows overwrote each other). `charinit.c` now lays the classes out in two columns (Archeologist..Pirate, Priest..Wizard), moves the race, gender and alignment columns to the right, and brings the quit/reroll/play row up to row 19, so the whole menu needs 21 rows instead of 23. Checked at 24 and 21 rows, and selecting a Witch with `W` still starts a game.
+
+## Batch 144: the Witch's gods take an article
+
+The Witch's pantheon is now **the Crone** (lawful), **the Mother** (neutral) and **the Maiden** (chaotic); without the article the names read wrongly in prayer messages. The names are stored as `_the Crone` and so on (the underscore still marks a goddess), so mid-sentence uses read right ("You feel that the Crone is displeased"). Where a god's name begins a sentence, a new `cap_gname()` (`pray.c`) capitalises it: the prayer-result and sacrifice messages in `pray.c` ("The Crone accepts your gift...", "... seems ...", "... is enraged..."), and the god's line in the attributes screen and dump (`cmd.c`). The one Witch quest line that starts with the god's name uses the `%dC` capitalising form. No other role's gods changed, and saves are unaffected.
+
+Checked in wizard mode: "You begin praying to the Crone", "You feel that the Crone is displeased", and the attributes screen's deities listed as "the Maiden / the Mother / the Crone".

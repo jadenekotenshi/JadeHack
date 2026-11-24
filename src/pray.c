@@ -502,7 +502,7 @@ aligntyp resp_god;
 			fry_by_god(resp_god);
 	}
 
-	pline("%s is not deterred...", align_gname(resp_god));
+	pline("%s is not deterred...", cap_gname(align_gname(resp_god)));
 	if (u.uswallow) {
 	    pline("A wide-angle disintegration beam aimed at you hits %s!",
 			mon_nam(u.ustuck));
@@ -1508,8 +1508,8 @@ dosacrifice()
 		   carries you off on their shoulders */
 		adjalign(-2*ALIGNLIM);
 		pline("%s accepts your gift, and gains dominion over %s...",
-		      a_gname(), u_gname());
-		pline("%s is enraged...", u_gname());
+		      cap_gname(a_gname()), u_gname());
+		pline("%s is enraged...", cap_gname(u_gname()));
 		pline("Fortunately, %s permits you to live...", a_gname());
 		pline("A cloud of %s smoke surrounds you...",
 		      hcolor((const char *)"orange"));
@@ -1519,7 +1519,7 @@ dosacrifice()
 			adjalign(10);
 			/* You'd better hope so... */
 			if (u.ualign.record < 0) {
-				pline("%s accepts your gift...",a_gname());
+				pline("%s accepts your gift...",cap_gname(a_gname()));
 				godvoice(altaralign,"Mortal, thou art unworthy to join me!");
 				verbalize("Thou art no longer a follower of the path of %s, "
 						"and this I cannot forgive.",a_gname());
@@ -1593,7 +1593,7 @@ dosacrifice()
 		   altaralign != A_NONE) {
 		    You("have a strong feeling that %s is angry...", u_gname());
 		    consume_offering(otmp);
-		    pline("%s accepts your allegiance.", a_gname());
+		    pline("%s accepts your allegiance.", cap_gname(a_gname()));
 
 		    /* The player wears a helm of opposite alignment? */
 		    if (uarmh && uarmh->otyp == HELM_OF_OPPOSITE_ALIGNMENT)
@@ -1611,7 +1611,7 @@ dosacrifice()
 		} else {
 		    u.ugangr += 3;
 			 major_sin();
-		    pline("%s rejects your sacrifice!", a_gname());
+		    pline("%s rejects your sacrifice!", cap_gname(a_gname()));
 		    godvoice(altaralign, "Suffer, infidel!");
 		    change_luck(-5);
 		    (void) adjattrib(A_WIS, -2, TRUE);
@@ -1672,11 +1672,11 @@ dosacrifice()
 	    if(u.ugangr < 0) u.ugangr = 0;
 	    if(u.ugangr != saved_anger) {
 			if (u.ugangr) {
-				pline("%s seems %s.", u_gname(),
+				pline("%s seems %s.", cap_gname(u_gname()),
 					Hallucination ? "groovy" : "slightly mollified");
 				if ((int)u.uluck < 0) change_luck(1);
 			} else {
-				pline("%s seems %s.", u_gname(), Hallucination ?
+				pline("%s seems %s.", cap_gname(u_gname()), Hallucination ?
 					"cosmic (not a new fact)" : "mollified");
 				if ((int)u.uluck < 0) u.uluck = 0;
 			}
@@ -2050,6 +2050,18 @@ doturn()
 	}
 	nomul(-5, "trying to turn the monsters");
 	return(1);
+}
+
+/* a deity's name starting a sentence ("the Crone" -> "The Crone") */
+const char *
+cap_gname(gnam)
+const char *gnam;
+{
+	static char capbuf[BUFSZ];
+
+	Strcpy(capbuf, gnam);
+	(void) upstart(capbuf);
+	return capbuf;
 }
 
 const char *

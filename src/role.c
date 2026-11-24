@@ -429,7 +429,7 @@ const struct Role roles[] = {
 	{"Enchanter",   "Enchantress"},
 	{"Witch",       0},
 	{"Greybeard",   "Wise Woman"} },
-	"_Crone", "_Mother", "_Maiden", /* the three faces of the Goddess */
+	"_the Crone", "_the Mother", "_the Maiden", /* the three faces of the Goddess */
 	"Wit", "Medea's grove", "the Witchwood",
 	PM_WITCH, NON_PM, PM_KITTEN,
 	PM_MEDEA, PM_COVEN_SISTER, PM_BABA_YAGA,
