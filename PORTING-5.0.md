@@ -1508,3 +1508,7 @@ Checked by starting ten Witches in wizard mode: they carried 3, 4, 5, 5, 3, 5, 4
 - **Mall up stairs** (`dat/mall.des`): the first level of a branch dungeon never makes a stairway from the `STAIR ... up` line (`mkstairs()` refuses an up stair on the top level of a dungeon); its up stairs are the branch's other end, placed by `place_branch()` anywhere on the level, so they often came out inside a shop. The level now has `BRANCH:(02,08,02,08),(0,0,0,0)`, pinning them to the west end of the concourse, where the old `STAIR` line meant them to be, and the dead `STAIR` line is gone. Only newly made Mall levels change, so saves and bones still load.
 
 Checked in wizard mode by entering the Mall by its stairs a number of times (a temporary start-up hook, removed): before, I arrived inside the potion shop; after, every arrival was in the concourse, at its west end (five of six on the stairs themselves, the sixth a step away after being nudged by a monster or pet).
+
+## Batch 152: a new rumor
+
+"Sane hackers don't duke it out with mimics - they go fly a kite" is added to the true rumors (`dat/rumors.tru`, between the sacks and scrolls rumors): it is advice about kiting slow, strong mimics. Only the data file changes; saves and bones still load.
