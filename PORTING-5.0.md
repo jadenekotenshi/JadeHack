@@ -1476,3 +1476,12 @@ Seven new weapons -- **athames of divination, healing, holiness, matter, escape,
 - Objects were added, so a full rebuild; old saves and bones are incompatible.
 
 Tested in wizard mode with a level-2 healing spell (cure blindness): failure was 62% bare, 12% for a Witch wielding an athame of healing, 32% for a Priest wielding the same, and unchanged with an athame of matter.
+
+## Batch 147: a plain athame helps every school; the wizard staff
+
+- **Any athame gives +10** to the success chance of spells of every school while wielded (`spell.c`, `percent_success`). The school athames keep their totals in their own school (+50 for a Witch or Bard, +30 for anyone else) and give +10 in all the others, so they are now "a plain athame, plus". A Witch's starting athame therefore helps her a little with everything.
+- **Wizard staff** (new weapon, `objects.c`): a quarterstaff-like staff (d6/d6, two-handed, quarterstaff skill, price 500, 4 in 1000 weapons; arrows and darts each gave up 2 to keep the class at 1000) that gives the same +10 to every school. It looks like the other staves ("staff") until identified. A Wizard's starting quarterstaff is unchanged. It is meant for casters who use many schools (Wizards, Priests); a school staff is still much better for one school.
+- `objnam.c`: wishing for a "wizard staff" no longer reads as the Wizard monster plus "staff" (and hands out a quarterstaff).
+- Objects were added, so a full rebuild; old saves and bones are incompatible.
+
+Tested in wizard mode with cure blindness (a level-2 healing spell): failure for a Wizard was 70% bare or with a quarterstaff, 60% with a plain athame or the wizard staff, 40% with an athame of healing; for a Witch, 54% bare, 44% with a plain athame or the wizard staff, 4% with an athame of healing.

@@ -82,7 +82,7 @@ NEARDATA struct objclass objects[] = {
 
 /* missiles */
 PROJECTILE("arrow", (char *)0,
-		1, 28, 1, 2, 6, 6, 0, IRON, -P_BOW, HI_METAL),
+		1, 26, 1, 2, 6, 6, 0, IRON, -P_BOW, HI_METAL),
 PROJECTILE("elven arrow", "runed arrow",
 		0, 19, 1, 2, 7, 6, 0, WOOD, -P_BOW, HI_WOOD),
 PROJECTILE("orcish arrow", "crude arrow",
@@ -104,7 +104,7 @@ PROJECTILE("silver crossbow bolt", (char *)0,
 		1, 8, 1, 4, 4, 6, 0, SILVER, -P_CROSSBOW, HI_SILVER),
 
 WEAPON("dart", (char *)0,
-	1, 1, 0, 34,  1,  2,  3,  2, 0, P,   -P_DART, IRON, HI_METAL),
+	1, 1, 0, 32,  1,  2,  3,  2, 0, P,   -P_DART, IRON, HI_METAL),
 WEAPON("shuriken", "throwing star",
 	0, 1, 0, 30,  1,  5,  8,  6, 2, P,   -P_DART, IRON, HI_METAL),
 WEAPON("boomerang", (char *)0,
@@ -308,6 +308,8 @@ WEAPON("staff of matter",     "staff", 0, 0, 1, 5, 40, 400,  6,  6, 0, B, P_QUAR
 WEAPON("staff of escape",     "staff", 0, 0, 1, 5, 40, 400,  6,  6, 0, B, P_QUARTERSTAFF, WOOD, HI_WOOD),
 WEAPON("staff of battle",     "staff", 0, 0, 1, 5, 40, 400,  6,  6, 0, B, P_QUARTERSTAFF, WOOD, HI_WOOD),
 WEAPON("staff of enchantment","staff", 0, 0, 1, 5, 40, 400,  6,  6, 0, B, P_QUARTERSTAFF, WOOD, HI_WOOD),
+/* a staff that helps every school a little (spell.c) */
+WEAPON("wizard staff",        "staff", 0, 0, 1, 4, 40, 500,  6,  6, 0, B, P_QUARTERSTAFF, WOOD, HI_WOOD),
 /* two-piece */
 WEAPON("aklys", "thonged club", 0, 0, 0,  3, 15,  4,  6,  3, 0, B,   P_MACE, IRON, HI_METAL),
 WEAPON("flail", (char *)0, 1, 0, 0, 20, 15,  4,  6,  4, 0, B,   P_FLAIL, IRON, HI_METAL),

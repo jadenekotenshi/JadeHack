@@ -1513,8 +1513,12 @@ int spell;
 #undef STAFFBONUS
 	}
 
-	/* A school athame helps its school like the matching staff does: fully
-	 * for a witch or a bard, a bit less for anyone else. */
+	/* Any athame, and the wizard staff, give a small bonus to every school.
+	 * A school athame does the same and, in its own school, helps like the
+	 * matching staff does: fully for a witch or a bard, a bit less for
+	 * anyone else. */
+	if (uwep && (is_athame(uwep) || uwep->otyp == WIZARD_STAFF))
+		chance += 10;
 	if (uwep && is_athame(uwep) && uwep->otyp != ATHAME) {
 		int school = P_NONE;
 
@@ -1528,7 +1532,7 @@ int spell;
 		    case ATHAME_OF_ENCHANTMENT: school = P_ENCHANTMENT_SPELL; break;
 		}
 		if (school != P_NONE && spell_skilltype(spellid(spell)) == school)
-		    chance += (Role_if(PM_WITCH) || Role_if(PM_BARD)) ? 50 : 30;
+		    chance += ((Role_if(PM_WITCH) || Role_if(PM_BARD)) ? 50 : 30) - 10;
 	}
 
 	/* Oh, wait... and there's one more.  Wizards are casters,
