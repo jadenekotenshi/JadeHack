@@ -1282,6 +1282,13 @@ start_tin(otmp)		/* called when starting to open a tin */
 		case ELVEN_DAGGER:
 		case ORCISH_DAGGER:
 		case ATHAME:
+		case ATHAME_OF_DIVINATION:
+		case ATHAME_OF_HEALING:
+		case ATHAME_OF_HOLINESS:
+		case ATHAME_OF_MATTER:
+		case ATHAME_OF_ESCAPE:
+		case ATHAME_OF_BATTLE:
+		case ATHAME_OF_ENCHANTMENT:
 		case CRYSKNIFE:
 			tmp = 3;
 			break;

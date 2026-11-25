@@ -1513,6 +1513,24 @@ int spell;
 #undef STAFFBONUS
 	}
 
+	/* A school athame helps its school like the matching staff does: fully
+	 * for a witch or a bard, a bit less for anyone else. */
+	if (uwep && is_athame(uwep) && uwep->otyp != ATHAME) {
+		int school = P_NONE;
+
+		switch (uwep->otyp) {
+		    case ATHAME_OF_DIVINATION: school = P_DIVINATION_SPELL; break;
+		    case ATHAME_OF_HEALING:	school = P_HEALING_SPELL; break;
+		    case ATHAME_OF_HOLINESS:	school = P_CLERIC_SPELL; break;
+		    case ATHAME_OF_MATTER:	school = P_MATTER_SPELL; break;
+		    case ATHAME_OF_ESCAPE:	school = P_ESCAPE_SPELL; break;
+		    case ATHAME_OF_BATTLE:	school = P_ATTACK_SPELL; break;
+		    case ATHAME_OF_ENCHANTMENT: school = P_ENCHANTMENT_SPELL; break;
+		}
+		if (school != P_NONE && spell_skilltype(spellid(spell)) == school)
+		    chance += (Role_if(PM_WITCH) || Role_if(PM_BARD)) ? 50 : 30;
+	}
+
 	/* Oh, wait... and there's one more.  Wizards are casters,
 	 * not combat monkeys.  Bolting body armor onto a Wizard is
 	 * very similar to bolting body armor onto a Monk.  It just isn't

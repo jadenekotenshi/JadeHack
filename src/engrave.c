@@ -1114,7 +1114,7 @@ doengrave()
 	    case ENGRAVE:
 		multi = -(len/10);
 		if ((otmp->oclass == WEAPON_CLASS) &&
-		    ((otmp->otyp != ATHAME) || otmp->cursed)) {
+		    (!is_athame(otmp) || otmp->cursed)) {
 		    multi = -len;
 		    maxelen = ((otmp->spe + 3) * 2) + 1;
 			/* -2 = 3, -1 = 5, 0 = 7, +1 = 9, +2 = 11

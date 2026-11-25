@@ -1466,3 +1466,13 @@ Checked in wizard mode: "You begin praying to the Crone", "You feel that the Cro
 - The **Bard** and **Knight** traded energy curves: the Bard now starts with 1 + d4 and gains `rn2(Wis/2+1)` a level with the x1.5 multiplier (about 8 a level at Wis 15); the Knight starts with 6 and gains `rn2(Wis/2+2)` a level at x1 (about 6 a level). Cutoff levels were both 10 already.
 
 No monsters or objects changed, so saves still load (existing characters keep the Pw they have; only future levels use the new curve). Checked in wizard mode: starting Pw for a human Witch 6-8, Bard 3-6, Knight 7; nine levels of gain level took Witches to about 113, Bards to about 55-70 and Knights to about 50-70.
+
+## Batch 146: athames of the spell schools
+
+Seven new weapons -- **athames of divination, healing, holiness, matter, escape, battle and enchantment** -- matching the school staves. Each is an ordinary athame (dagger skill, d4/d3, +2 to hit, engraves like an athame: `is_athame()` in `obj.h`, used by `engrave.c`) that, when wielded, helps casting in its one school (`spell.c`, `percent_success`). They look like a plain "athame" until identified (price tells: 300 against 4), as the staves look like plain staves.
+
+- **Bonus:** +50 to the spell's success chance for a **Witch or a Bard** (the same as a staff), +30 for anyone else, so the staves remain the stronger casting focus for everyone but those two, who get both a good blade and a full staff's help.
+- **Odds:** 2 in 1000 weapons each (14 total; arrows and darts lost 7 each to keep the class at 1000). Metal-eaters treat them as daggers.
+- Objects were added, so a full rebuild; old saves and bones are incompatible.
+
+Tested in wizard mode with a level-2 healing spell (cure blindness): failure was 62% bare, 12% for a Witch wielding an athame of healing, 32% for a Priest wielding the same, and unchanged with an athame of matter.

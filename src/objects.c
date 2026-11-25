@@ -82,7 +82,7 @@ NEARDATA struct objclass objects[] = {
 
 /* missiles */
 PROJECTILE("arrow", (char *)0,
-		1, 35, 1, 2, 6, 6, 0, IRON, -P_BOW, HI_METAL),
+		1, 28, 1, 2, 6, 6, 0, IRON, -P_BOW, HI_METAL),
 PROJECTILE("elven arrow", "runed arrow",
 		0, 19, 1, 2, 7, 6, 0, WOOD, -P_BOW, HI_WOOD),
 PROJECTILE("orcish arrow", "crude arrow",
@@ -104,7 +104,7 @@ PROJECTILE("silver crossbow bolt", (char *)0,
 		1, 8, 1, 4, 4, 6, 0, SILVER, -P_CROSSBOW, HI_SILVER),
 
 WEAPON("dart", (char *)0,
-	1, 1, 0, 41,  1,  2,  3,  2, 0, P,   -P_DART, IRON, HI_METAL),
+	1, 1, 0, 34,  1,  2,  3,  2, 0, P,   -P_DART, IRON, HI_METAL),
 WEAPON("shuriken", "throwing star",
 	0, 1, 0, 30,  1,  5,  8,  6, 2, P,   -P_DART, IRON, HI_METAL),
 WEAPON("boomerang", (char *)0,
@@ -141,6 +141,15 @@ WEAPON("silver dagger", (char *)0,
 	1, 1, 0,  4, 10, 40,  4,  3, 2, P,   P_DAGGER, SILVER, HI_SILVER),
 WEAPON("athame", (char *)0,
 	1, 1, 0,  1, 10,  4,  4,  3, 2, S,   P_DAGGER, IRON, HI_METAL),
+/* school athames: a plain athame that helps one school of spell, as the
+ * school staves do (spell.c); the same "athame" until identified */
+WEAPON("athame of divination", "athame", 0, 0, 0, 2, 10, 300,  4,  3, 2, S, P_DAGGER, IRON, HI_METAL),
+WEAPON("athame of healing", "athame", 0, 0, 0, 2, 10, 300,  4,  3, 2, S, P_DAGGER, IRON, HI_METAL),
+WEAPON("athame of holiness", "athame", 0, 0, 0, 2, 10, 300,  4,  3, 2, S, P_DAGGER, IRON, HI_METAL),
+WEAPON("athame of matter", "athame", 0, 0, 0, 2, 10, 300,  4,  3, 2, S, P_DAGGER, IRON, HI_METAL),
+WEAPON("athame of escape", "athame", 0, 0, 0, 2, 10, 300,  4,  3, 2, S, P_DAGGER, IRON, HI_METAL),
+WEAPON("athame of battle", "athame", 0, 0, 0, 2, 10, 300,  4,  3, 2, S, P_DAGGER, IRON, HI_METAL),
+WEAPON("athame of enchantment", "athame", 0, 0, 0, 2, 10, 300,  4,  3, 2, S, P_DAGGER, IRON, HI_METAL),
 WEAPON("scalpel", (char *)0,
 	1, 1, 0,  0,  5,  6,  3,  3, 2, S,   P_KNIFE, METAL, HI_METAL),
 WEAPON("knife", (char *)0,

@@ -148,6 +148,9 @@ struct obj {
 #define is_sword(otmp)	(otmp->oclass == WEAPON_CLASS && \
 			 objects[otmp->otyp].oc_skill >= P_SHORT_SWORD && \
 			 objects[otmp->otyp].oc_skill <= P_CURVED_SWORD)
+/* a plain athame or one of the school athames (which follow it) */
+#define is_athame(otmp)	((otmp)->otyp >= ATHAME && \
+			 (otmp)->otyp <= ATHAME_OF_ENCHANTMENT)
 #define is_pole(otmp)	((otmp->oclass == WEAPON_CLASS || \
 			otmp->oclass == TOOL_CLASS) && \
 			 (objects[otmp->otyp].oc_skill == P_POLEARMS))
