@@ -1485,3 +1485,7 @@ Tested in wizard mode with a level-2 healing spell (cure blindness): failure was
 - Objects were added, so a full rebuild; old saves and bones are incompatible.
 
 Tested in wizard mode with cure blindness (a level-2 healing spell): failure for a Wizard was 70% bare or with a quarterstaff, 60% with a plain athame or the wizard staff, 40% with an athame of healing; for a Witch, 54% bare, 44% with a plain athame or the wizard staff, 4% with an athame of healing.
+
+## Batch 148: quarterstaff d8/d8
+
+The quarterstaff now does d8 against small and large (was d6/d6); the wizard staff stays d6/d6, and the school staves and artifacts based on a quarterstaff are unchanged (the Staff of Aesculapius picks up the quarterstaff's new dice, since it is one). Only a damage figure changed, so saves and bones still load.

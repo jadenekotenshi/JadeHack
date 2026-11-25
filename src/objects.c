@@ -299,7 +299,7 @@ WEAPON("club", (char *)0,
 WEAPON("rubber hose", (char *)0,
 	1, 0, 0,  0, 20,  3,  4,  3, 0, B,   P_WHIP, PLASTIC, CLR_BROWN),
 #endif
-WEAPON("quarterstaff", "staff", 0, 0, 1, 15, 40,  5,  6,  6, 0, B,   P_QUARTERSTAFF, WOOD, HI_WOOD),
+WEAPON("quarterstaff", "staff", 0, 0, 1, 15, 40,  5,  8,  8, 0, B,   P_QUARTERSTAFF, WOOD, HI_WOOD),
 /* spell school staves */
 WEAPON("staff of divination", "staff", 0, 0, 1, 5, 40, 400,  6,  6, 0, B, P_QUARTERSTAFF, WOOD, HI_WOOD),
 WEAPON("staff of healing",    "staff", 0, 0, 1, 5, 40, 400,  6,  6, 0, B, P_QUARTERSTAFF, WOOD, HI_WOOD),
