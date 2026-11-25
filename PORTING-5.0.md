@@ -473,7 +473,7 @@ Bard row (accelerator `B`).
 
 | Change | Notes |
 |---|---|
-| Parrying dagger / main gauche | dagger d4/d3 and knife d6/d4; +1 AC plus enchantment while wielded in either hand; two of them, or one plus bracers, do not stack (the better counts); `find_ac()` is refreshed on wield/twoweapon changes |
+| Parrying dagger / main gauche / swordbreaker | dagger d4/d3, knife d6/d4 and short sword d6/d6 (Batch 149); +1 AC plus enchantment while wielded in either hand; two of them, or one plus bracers, do not stack (the better counts); `find_ac()` is refreshed on wield/twoweapon changes |
 | Dwarvish bearded axe | EvilHack stats (d8/d10, wt 70, "broad bearded axe"); apply it to hook a monster's weapon away, or chop as usual; dwarves have a 1/20 chance to carry one |
 | Silver mace | prob 3 (was never generated) |
 | Bracers | plain bracers (AC1 leather), runed bracers (AC2 wood, never random), dwarvish bracers (AC1 steel, safe to +7; dwarves carry them 1/40); shield-slot items that never bash, allow two-handed weapons and two-weapon fighting |
@@ -1489,3 +1489,9 @@ Tested in wizard mode with cure blindness (a level-2 healing spell): failure for
 ## Batch 148: quarterstaff d8/d8
 
 The quarterstaff now does d8 against small and large (was d6/d6); the wizard staff stays d6/d6, and the school staves and artifacts based on a quarterstaff are unchanged (the Staff of Aesculapius picks up the quarterstaff's new dice, since it is one). Only a damage figure changed, so saves and bones still load.
+
+## Batch 149: the swordbreaker
+
+A new short sword, the **swordbreaker** (`objects.c`): short-sword skill, d6/d6, weight 30, price 20, 4 in 1000 weapons (the short sword gave up 2 and darts 2 to keep the class at 1000). Like the parrying dagger and main gauche it adds 1 plus its enchantment to your armor class while wielded (in either hand when fighting with two weapons); it is part of `is_parry_wep()` (`obj.h`), so it follows the same no-stacking rule with the other parrying weapons and with bracers. Monsters rank it just below the short sword when choosing a weapon (`weapon.c`). Objects were added, so a full rebuild; old saves and bones are incompatible.
+
+Tested in wizard mode with bare AC 5: a +3 swordbreaker gave AC 1 and a +0 one AC 4 (the same as a parrying dagger of the same enchantment); a +3 short sword changed nothing.

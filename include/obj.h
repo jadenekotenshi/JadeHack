@@ -200,7 +200,8 @@ struct obj {
 			 (o)->otyp == DWARVISH_BRACERS))
 #define wearing_shield()	(uarms && !is_bracers(uarms))
 #define is_parry_wep(o)	((o) && ((o)->otyp == PARRYING_DAGGER || \
-			 (o)->otyp == MAIN_GAUCHE))
+			 (o)->otyp == MAIN_GAUCHE || \
+			 (o)->otyp == SWORDBREAKER))
 /* Object properties (after EvilHack): magical properties that can show up
    on ordinary weapons and armor.  Weapons gain elemental damage; armor
    grants the matching resistance while worn. */
