@@ -1495,3 +1495,9 @@ The quarterstaff now does d8 against small and large (was d6/d6); the wizard sta
 A new short sword, the **swordbreaker** (`objects.c`): short-sword skill, d6/d6, weight 30, price 20, 4 in 1000 weapons (the short sword gave up 2 and darts 2 to keep the class at 1000). Like the parrying dagger and main gauche it adds 1 plus its enchantment to your armor class while wielded (in either hand when fighting with two weapons); it is part of `is_parry_wep()` (`obj.h`), so it follows the same no-stacking rule with the other parrying weapons and with bracers. Monsters rank it just below the short sword when choosing a weapon (`weapon.c`). Objects were added, so a full rebuild; old saves and bones are incompatible.
 
 Tested in wizard mode with bare AC 5: a +3 swordbreaker gave AC 1 and a +0 one AC 4 (the same as a parrying dagger of the same enchantment); a +3 short sword changed nothing.
+
+## Batch 150: the Witch starts with scrolls
+
+The Witch's starting kit gains **2 + d3 random scrolls** (3 to 5, each rolled separately, so they may merge). They come out identified like the rest of her kit, and the 3 further scroll types she already knows at the start (and the potions and spellbook) are in addition to them. Her random scrolls are never punishment or amnesia; the general start-of-game exclusions (fire, flood, blank paper) apply too, so the pool is the other scrolls (`u_init.c`; the punishment exclusion is for Witches only, so other roles can still start with one). Only the starting kit changed, so saves and bones still load.
+
+Checked by starting ten Witches in wizard mode: they carried 3, 4, 5, 5, 3, 5, 4, 3, 4 and 4 scrolls, all identified, none of them punishment or amnesia.

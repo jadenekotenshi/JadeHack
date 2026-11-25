@@ -238,6 +238,8 @@ static struct trobj Witch[] = {
 	{ POT_EXTRA_HEALING, 0, POTION_CLASS, 1, UNDEF_BLESS },
 #define WIT_POTIONS	13	/* d4+2 random potions: quantity set at start */
 	{ UNDEF_TYP, UNDEF_SPE, POTION_CLASS, 3, UNDEF_BLESS },
+#define WIT_SCROLLS	14	/* d3+2 random scrolls: quantity set at start */
+	{ UNDEF_TYP, UNDEF_SPE, SCROLL_CLASS, 3, UNDEF_BLESS },
 	{ SPE_SLEEP, 0, SPBOOK_CLASS, 1, 1 },
 	{ UNDEF_TYP, UNDEF_SPE, SPBOOK_CLASS, 1, 1 },	/* clerical, divination or healing */
 	{ 0, 0, 0, 0, 0 }
@@ -1018,9 +1020,11 @@ u_init()
 		    Witch[WIT_HERB1 + h].trquan = rn1(3, 1);
 		}
 		Witch[WIT_POTIONS].trquan = rnd(4) + 2;
+		Witch[WIT_SCROLLS].trquan = rnd(3) + 2;
 		ini_inv(Witch);
 		/* a witch already knows 1d6 potions, 3 scrolls and a spellbook
-		   in addition to what she carries */
+		   in addition to what she carries (her starting scrolls are
+		   known as well) */
 		for (h = rnd(6); h > 0; h--) {
 		    otyp = rnd_class(POT_GAIN_ABILITY, POT_WATER);
 		    if (otyp) knows_object(otyp);
@@ -1341,6 +1345,8 @@ register struct trobj *trop;
 				|| otyp == POT_HALLUCINATION
 				|| otyp == POT_ACID
 				|| otyp == SCR_AMNESIA
+				/* a witch would not start with one of these either */
+				|| (otyp == SCR_PUNISHMENT && Role_if(PM_WITCH))
 				|| otyp == SCR_FIRE
 				|| otyp == SCR_FLOOD
 				|| otyp == SCR_BLANK_PAPER
