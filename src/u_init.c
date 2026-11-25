@@ -1326,10 +1326,8 @@ register struct trobj *trop;
 		 * items: wand of wishing, ring of levitation, or the
 		 * polymorph/polymorph control combination.  Specific objects,
 		 * i.e. the discovery wishing, are still OK.
-		 * Also, don't get a couple of really useless items.  (Note:
-		 * punishment isn't "useless".  Some players who start out with
-		 * one will immediately read it and use the iron ball as a
-		 * weapon.)
+		 * Also, don't get a couple of really useless items.  (Punishment
+		 * is left out too, for every role.)
 		 */
 			obj = mkobj(trop->trclass, FALSE);
 			otyp = obj->otyp;
@@ -1345,8 +1343,9 @@ register struct trobj *trop;
 				|| otyp == POT_HALLUCINATION
 				|| otyp == POT_ACID
 				|| otyp == SCR_AMNESIA
-				/* a witch would not start with one of these either */
-				|| (otyp == SCR_PUNISHMENT && Role_if(PM_WITCH))
+				|| otyp == SCR_PUNISHMENT
+				/* a witch has her own way with genocide */
+				|| (otyp == SCR_GENOCIDE && Role_if(PM_WITCH))
 				|| otyp == SCR_FIRE
 				|| otyp == SCR_FLOOD
 				|| otyp == SCR_BLANK_PAPER

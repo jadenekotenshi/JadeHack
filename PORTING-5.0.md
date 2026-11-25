@@ -1501,3 +1501,10 @@ Tested in wizard mode with bare AC 5: a +3 swordbreaker gave AC 1 and a +0 one A
 The Witch's starting kit gains **2 + d3 random scrolls** (3 to 5, each rolled separately, so they may merge). They come out identified like the rest of her kit, and the 3 further scroll types she already knows at the start (and the potions and spellbook) are in addition to them. Her random scrolls are never punishment or amnesia; the general start-of-game exclusions (fire, flood, blank paper) apply too, so the pool is the other scrolls (`u_init.c`; the punishment exclusion is for Witches only, so other roles can still start with one). Only the starting kit changed, so saves and bones still load.
 
 Checked by starting ten Witches in wizard mode: they carried 3, 4, 5, 5, 3, 5, 4, 3, 4 and 4 scrolls, all identified, none of them punishment or amnesia.
+
+## Batch 151: starting scrolls tightened; the Mall's up stairs
+
+- **Starting scrolls** (`u_init.c`): the general random-start exclusions now include **punishment for every role** (it was allowed before on the grounds that some players use the iron ball as a weapon), and **genocide for the Witch** (her 2+d3 random scrolls from Batch 150). The Witch's own scrolls were already free of amnesia, fire, flood and blank paper.
+- **Mall up stairs** (`dat/mall.des`): the first level of a branch dungeon never makes a stairway from the `STAIR ... up` line (`mkstairs()` refuses an up stair on the top level of a dungeon); its up stairs are the branch's other end, placed by `place_branch()` anywhere on the level, so they often came out inside a shop. The level now has `BRANCH:(02,08,02,08),(0,0,0,0)`, pinning them to the west end of the concourse, where the old `STAIR` line meant them to be, and the dead `STAIR` line is gone. Only newly made Mall levels change, so saves and bones still load.
+
+Checked in wizard mode by entering the Mall by its stairs a number of times (a temporary start-up hook, removed): before, I arrived inside the potion shop; after, every arrival was in the concourse, at its west end (five of six on the stairs themselves, the sixth a step away after being nudged by a monster or pet).

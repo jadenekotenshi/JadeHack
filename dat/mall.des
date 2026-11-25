@@ -35,7 +35,10 @@ REGION:(26,01,36,05),lit,"armor shop"
 REGION:(26,11,36,15),lit,"scroll shop"
 REGION:(38,01,48,05),lit,"wand shop"
 REGION:(38,11,48,15),lit,"shop"
-STAIR:(02,08),up
+# the first level of a branch gets its up stairs from the branch, not from a
+# STAIR line, so pin the branch to the west end of the concourse; otherwise
+# it lands anywhere, shops included
+BRANCH:(02,08,02,08),(0,0,0,0)
 STAIR:(48,08),down
 NON_DIGGABLE:(00,00,50,16)
 DOOR:closed,(07,06)
