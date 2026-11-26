@@ -2231,6 +2231,8 @@ boolean from_user;
 		else if (!strncmpi(bp, "es ", 3)) bp += 3;
 		else if (mntmp == PM_BANDERSNATCH && !strncmpi(bp, "im ", 3))
 		    bp += 3;	/* bandersnatchim corpses */
+		else if (mntmp == PM_MUMAK && !strncmpi(bp, "il ", 3))
+		    bp += 3;	/* mumakil corpses */
 		else if (!*bp && !actualn && !dn && !un && !oclass) {
 		    /* no referent; they don't really mean a monster type */
 		    bp = obp;

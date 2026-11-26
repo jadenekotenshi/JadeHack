@@ -457,7 +457,7 @@ register struct monst *mtmp;
 	register int tmp=0;
 	struct monst* mdummy;
 	int inrange, nearby, scared, oldx, oldy;
-	boolean reach_ok;	/* a bandersnatch within snapping distance */
+	boolean reach_ok;	/* a bandersnatch/merozalghu within snapping distance */
 #ifdef GOLDOBJ
         struct obj *ygold = 0, *lepgold = 0;
 #endif
@@ -730,7 +730,7 @@ toofar:
 	    }
 	}
 
-	/* a bandersnatch with you two squares off stays and snaps (mostly) */
+	/* a snapper with you two squares off stays and snaps (mostly) */
 	reach_ok = ((!mtmp->mpeaceful || Conflict) && inrange &&
 		    bite_reach(mtmp));
 

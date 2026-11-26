@@ -469,6 +469,11 @@ const char *in_str;
 	else if (slen > 3 && !strcmpi(term-3, "ves"))
 	    Strcpy(term-3, "f");
 
+	/* merozalghi -> merozalghu (same length, so callers can still skip
+	 * the monster name by its length) */
+	if ((s = strstri(str, "merozalghi")) != 0)
+	    s[9] = 'u';
+
 	slen = strlen(str); /* length possibly needs recomputing */
 
     {

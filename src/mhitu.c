@@ -305,8 +305,8 @@ struct attack *alt_attk_buf;
     return attk;
 }
 
-/* A bandersnatch can bite from a square away: you stand two squares off in
- * a straight line (orthogonal or diagonal) and the square between is open
+/* A bandersnatch (and the accursed merozalghu) can bite from a square away:
+ * you stand two squares off in a straight line (orthogonal or diagonal) and the square between is open
  * ground with nothing standing in it. */
 boolean
 bite_reach(mtmp)
@@ -315,7 +315,9 @@ struct monst *mtmp;
 	int dx = mtmp->mux - mtmp->mx, dy = mtmp->muy - mtmp->my;
 	int x, y;
 
-	if (mtmp->data != &mons[PM_BANDERSNATCH] || u.uswallow) return FALSE;
+	if ((mtmp->data != &mons[PM_BANDERSNATCH] &&
+	     mtmp->data != &mons[PM_ACCURSED_MEROZALGHU]) || u.uswallow)
+	    return FALSE;
 	if ((dx != 0 && abs(dx) != 2) || (dy != 0 && abs(dy) != 2) ||
 	    (dx == 0 && dy == 0))
 	    return FALSE;
@@ -623,7 +625,9 @@ mattacku(mtmp)
 			snap = (range2 && mattk->aatyp == AT_BITE &&
 				bite_reach(mtmp));
 			if (snap && foundyou && youseeit)
-			    pline("%s stretches out its neck and snaps at you!",
+			    pline(mtmp->data == &mons[PM_BANDERSNATCH] ?
+				  "%s stretches out its neck and snaps at you!" :
+				  "%s lunges forward and snaps at you!",
 				  Monnam(mtmp));
 			if((!range2 || snap) && (!MON_WEP(mtmp) || mtmp->mconf || Conflict ||
 					!touch_petrifies(youmonst.data))) {
