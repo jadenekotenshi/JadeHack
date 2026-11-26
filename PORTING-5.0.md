@@ -1580,3 +1580,14 @@ Checked by printing the compiled object table from a build of `objects.c` (spear
 ## Batch 163: tridents d8/d6
 
 The trident does d8 against small and d6 against large (`objects.c`; was d6/d4). Its built-in bonus (+1 against small, +2d4 against large, in `dmgval()`) is unchanged, so a trident now averages 5.5 against small and 8.5 against large before enchantment and Strength. Only damage figures changed; saves and bones still load. Checked by printing the compiled object table (trident 8/6); stress tests clean.
+
+## Batch 164: lifting the weakest roles
+
+A comparison of starting gear, hit points and skills found the Samurai the strongest role (Fast from level 1, katana, bow, AC 4) and the **Tourist** clearly the weakest (10 HP, AC 10, Basic in nearly every weapon). The Samurai is left alone; the bottom is raised instead.
+
+- **Tourist:** starting HP 8 to **11** (`role.c`; a human now starts at 13); the Hawaiian shirt starts at **+2** (AC 10 to 8); axe, long sword, mace and spear can now reach **Skilled** (were Basic; `Skill_T[]`); and the shopkeepers' Tourist surcharge, and the matching low offers when selling, last until **level 8** instead of level 15 (`shk.c`, both places; the visible-shirt surcharge is as before).
+- **Healer:** starting HP 11 to **12**; the scalpel starts **+2** (was +0).
+- **Archeologist:** starting HP 11 to **12**; the leather jacket and fedora start **+1** (AC 9 to 7).
+- **Bard:** starts with a pair of **high boots** (the "jackboots"; AC 2, no special effect, to be traded up later), added at the end of the starting list so the indices the Bard setup code uses do not move (AC 8 to 6).
+
+Checked in wizard mode by starting each role as a human: Tourist HP 13, AC 8; Healer HP 14, scalpel +2; Archeologist HP 14, AC 7 (jacket and fedora +1); Bard AC 6 wearing the boots. Not run: leveling a Tourist to confirm the skill caps (a four-word table edit) or the level-8 shop change. Stress tests clean. Only new characters are affected; saves still load.

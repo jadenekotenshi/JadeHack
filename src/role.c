@@ -46,7 +46,7 @@ const struct Role roles[] = {
 	{   7, 10, 10,  7,  7,  7 },
 	{  20, 20, 20, 10, 20, 10 },
 	/* Init   Lower  Higher */
-	{ 11, 0,  0, 8,  1, 0 },	/* Hit points */
+	{ 12, 0,  0, 8,  1, 0 },	/* Hit points */
 	{  1, 0,  0, 1,  0, 1 },14,	/* Energy */
 	10, 5, 0, 2, 10, A_INT, SPE_MAGIC_MAPPING,   -4
 },
@@ -146,7 +146,7 @@ const struct Role roles[] = {
 	{   7,  7, 13,  7, 11, 16 },
 	{  15, 20, 20, 15, 25, 5 },
 	/* Init   Lower  Higher */
-	{ 11, 0,  0, 6,  1, 0 },	/* Hit points */
+	{ 12, 0,  0, 6,  1, 0 },	/* Hit points */
 	{  1, 4,  0, 1,  0, 2 },20,	/* Energy */
 	10, 3,-3, 2, 10, A_WIS, SPE_CURE_SICKNESS,   -4
 },
@@ -390,7 +390,7 @@ const struct Role roles[] = {
 	{   7, 10,  6,  7,  7, 10 },
 	{  15, 10, 10, 15, 30, 20 },
 	/* Init   Lower  Higher */
-	{  8, 0,  0, 8,  0, 0 },	/* Hit points */
+	{ 11, 0,  0, 8,  0, 0 },	/* Hit points */
 	{  1, 0,  0, 1,  0, 1 },14,	/* Energy */
 	0, 5, 1, 2, 10, A_CHA, SPE_CHARM_MONSTER,   -4
 },

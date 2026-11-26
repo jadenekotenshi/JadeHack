@@ -29,8 +29,8 @@ STATIC_DCL boolean FDECL(witch_book_school, (int));
 static struct trobj Archeologist[] = {
 	/* if adventure has a name...  idea from tan@uvm-gen */
 	{ BULLWHIP, 2, WEAPON_CLASS, 1, UNDEF_BLESS },
-	{ LEATHER_JACKET, 0, ARMOR_CLASS, 1, UNDEF_BLESS },
-	{ FEDORA, 0, ARMOR_CLASS, 1, UNDEF_BLESS },
+	{ LEATHER_JACKET, 1, ARMOR_CLASS, 1, UNDEF_BLESS },
+	{ FEDORA, 1, ARMOR_CLASS, 1, UNDEF_BLESS },
 	{ FOOD_RATION, 0, FOOD_CLASS, 3, 0 },
 	{ PICK_AXE, UNDEF_SPE, TOOL_CLASS, 1, UNDEF_BLESS },
 	{ TINNING_KIT, UNDEF_SPE, TOOL_CLASS, 1, UNDEF_BLESS },
@@ -62,6 +62,7 @@ static struct trobj Bard[] = {
 #define BARD_MINOR	6
 	{ TIN_WHISTLE, 0, TOOL_CLASS, 1, UNDEF_BLESS },
 	{ SPE_SLEEP, 0, SPBOOK_CLASS, 1, 1 },
+	{ HIGH_BOOTS, 0, ARMOR_CLASS, 1, UNDEF_BLESS },	/* jackboots */
 	{ 0, 0, 0, 0, 0 }
 };
 static struct trobj Cave_man[] = {
@@ -74,7 +75,7 @@ static struct trobj Cave_man[] = {
 	{ 0, 0, 0, 0, 0 }
 };
 static struct trobj Healer[] = {
-	{ SCALPEL, 0, WEAPON_CLASS, 1, UNDEF_BLESS },
+	{ SCALPEL, 2, WEAPON_CLASS, 1, UNDEF_BLESS },
 	{ LEATHER_GLOVES, 1, ARMOR_CLASS, 1, UNDEF_BLESS },
 	{ STETHOSCOPE, 0, TOOL_CLASS, 1, 0 },
 	{ POT_HEALING, 0, POTION_CLASS, 4, UNDEF_BLESS },
@@ -193,7 +194,7 @@ static struct trobj Tourist[] = {
 	{ UNDEF_TYP, UNDEF_SPE, FOOD_CLASS, 10, 0 },
 	{ POT_EXTRA_HEALING, 0, POTION_CLASS, 2, UNDEF_BLESS },
 	{ SCR_MAGIC_MAPPING, 0, SCROLL_CLASS, 4, UNDEF_BLESS },
-	{ HAWAIIAN_SHIRT, 0, ARMOR_CLASS, 1, UNDEF_BLESS },
+	{ HAWAIIAN_SHIRT, 2, ARMOR_CLASS, 1, UNDEF_BLESS },
 	{ EXPENSIVE_CAMERA, UNDEF_SPE, TOOL_CLASS, 1, 0 },
 	{ CREDIT_CARD, 0, TOOL_CLASS, 1, 0 },
 	{ 0, 0, 0, 0, 0 }
@@ -586,14 +587,14 @@ static const struct def_skill Skill_S[] = {
 #ifdef TOURIST
 static const struct def_skill Skill_T[] = {
     { P_DAGGER, P_EXPERT },		{ P_KNIFE,  P_SKILLED },
-    { P_AXE, P_BASIC },			{ P_PICK_AXE, P_BASIC },
+    { P_AXE, P_SKILLED },		{ P_PICK_AXE, P_BASIC },
     { P_SHORT_SWORD, P_EXPERT },	
-    { P_LONG_SWORD, P_BASIC },		{ P_TWO_HANDED_SWORD, P_BASIC },
+    { P_LONG_SWORD, P_SKILLED },		{ P_TWO_HANDED_SWORD, P_BASIC },
     { P_CURVED_SWORD, P_SKILLED },
-    { P_MACE, P_BASIC },		
+    { P_MACE, P_SKILLED },		
     { P_FLAIL, P_BASIC },		{ P_HAMMER, P_BASIC },
     { P_QUARTERSTAFF, P_BASIC },	{ P_POLEARMS, P_BASIC },
-    { P_SPEAR, P_BASIC },		
+    { P_SPEAR, P_SKILLED },		
     { P_LANCE, P_BASIC },
     { P_BOW, P_BASIC },			{ P_SLING, P_BASIC },
     { P_CROSSBOW, P_BASIC },		{ P_DART, P_EXPERT },

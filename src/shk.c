@@ -1940,7 +1940,7 @@ register struct monst *shkp;	/* if angry, impose a surcharge */
 		    tmp += tmp / 3L;
 	}
 #ifdef TOURIST
-	if ((Role_if(PM_TOURIST) && u.ulevel < (MAXULEV/2))
+	if ((Role_if(PM_TOURIST) && u.ulevel < 8)
 	    || (uarmu && !uarm && !uarmc))	/* touristy shirt visible */
 		tmp += tmp / 3L;
 	else
@@ -2156,7 +2156,7 @@ register struct monst *shkp;
 	long tmp = getprice(obj, TRUE) * obj->quan;
 
 #ifdef TOURIST
-	if ((Role_if(PM_TOURIST) && u.ulevel < (MAXULEV/2))
+	if ((Role_if(PM_TOURIST) && u.ulevel < 8)
 	    || (uarmu && !uarm && !uarmc))	/* touristy shirt visible */
 		tmp /= 3L;
 	else
