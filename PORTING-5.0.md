@@ -1570,3 +1570,9 @@ Checked in wizard mode: a human Valkyrie starts with "a blessed +1 spear (weapon
 - **Dwarvish Valkyries** start with the **+1 dwarvish bearded axe** they had before Batch 160 (the old long-sword substitution), not a dwarvish spear: `u_init()` sets the first Valkyrie item to `DWARVISH_BEARDED_AXE` for dwarves. Human Valkyries still start with the +1 spear.
 
 Checked in wizard mode: a human Valkyrie starts with "a +1 spear (weapon in hand)", a dwarvish one with "a +1 dwarvish bearded axe (weapon in hand)". I did not run a character up to Expert in spear; the cap is a one-word table change like the others in that list. Stress tests clean. Only new characters are affected; saves still load.
+
+## Batch 162: spears hit harder
+
+Spear damage (`objects.c`): **spear d8/d8** (was d6/d8), **dwarvish spear d10/d8** (was d8/d8). The other spears keep their place relative to the plain one by the same two points: the **silver spear** d8/d8 (as the spear was d6/d8 like it), **elven spear d9/d8** (was d7/d8) and **orcish spear d7/d8** (was d5/d8). The javelin (d6/d6) and the trident (d6/d4) are unchanged. Lancea Longini, a silver spear, and Gungnir pick up the new dice. Only damage figures changed, so saves and bones still load.
+
+Checked by printing the compiled object table from a build of `objects.c` (spear 8/8, elven 9/8, orcish 7/8, dwarvish 10/8, silver 8/8, trident 6/4); stress tests clean.
