@@ -1545,3 +1545,9 @@ A new food, the **charred newt** (`objects.c`, right after the roast chicken; ne
 Like all non-corpse food it can still turn out to be "rotten" once it is over 30 turns old (the usual one-in-seven chance), which does not stop the effect. A new object shifts every later object number, so old saves are not compatible and the data files and utilities must be rebuilt as for Batch 79.
 
 Checked in wizard mode: a wish for "3 charred newts" gives them; eating one at full energy took a Wizard from Pw 6(6) to 7(7); at 5(7) and at 2(7) it filled to 7(7); a newt corpse and a chicken corpse hit by a downward bolt of fire became a charred newt and a roast chicken; a newt killed by a wand of fire left a charred newt; the corpse, item and use stress tests were clean (6,539, 21,353 and 13,426 log lines). Not checked: pets eating it, and kills with the three artifacts (same flag as the chicken).
+
+## Batch 158: rotten food only when it is old
+
+The check that makes non-corpse food "rotten" (`doeat()` in `eat.c`) was meant to apply only to food more than 30 turns old (50 if blessed), with a one-in-seven chance. A precedence slip, `(monstermoves - otmp->age) > (int) otmp->blessed ? 50:30`, parsed as `((age > blessed) ? 50 : 30)`, which is always true, so food of any age could be rotten, a fresh ration as much as an old one. It now reads `(monstermoves - otmp->age) > (otmp->blessed ? 50L : 30L)`. Cursed food is still always rotten, fortune cookies still never are, and food that is old enough still has the one-in-seven chance (as does anything already marked rotten).
+
+Checked in wizard mode: eating 12 fresh charred newts in a row gave no rotten ones (before, about two in twelve would be), and eating 12 more after 120 turns gave two. Corpse, item and use stress tests clean. Only the binary changes; saves and bones still load.
