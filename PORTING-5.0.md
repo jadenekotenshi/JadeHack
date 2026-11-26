@@ -1579,4 +1579,4 @@ Checked by printing the compiled object table from a build of `objects.c` (spear
 
 ## Batch 163: tridents d8/d6
 
-The trident does d8 against small and d6 against large (`objects.c`; was d6/d4). Its built-in bonus (+1 against small, +2d4 against large, in `dmgval()`) is unchanged, so a trident now averages 5.5 against small and 10.5 against large before enchantment and Strength. Only damage figures changed; saves and bones still load. Checked by printing the compiled object table (trident 8/6); stress tests clean.
+The trident does d8 against small and d6 against large (`objects.c`; was d6/d4). Its built-in bonus (+1 against small, +2d4 against large, in `dmgval()`) is unchanged, so a trident now averages 5.5 against small and 8.5 against large before enchantment and Strength. Only damage figures changed; saves and bones still load. Checked by printing the compiled object table (trident 8/6); stress tests clean.
