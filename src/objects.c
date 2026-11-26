@@ -588,7 +588,8 @@ GLOVES("gauntlets of fortune", "ragged gloves",
 		0, 1,  LUCKY,		5, 1, 10, 50,  9, 0, LEATHER, HI_LEATHER),
 GLOVES("gloves of expertise", "snakeskin gloves",
 		0, 1,  0,		3, 1, 10, 50,  9, 0, LEATHER, HI_LEATHER),
-/* fixed appearance: protection also gives MC3 */
+/* fixed appearance (the one pair of gloves not shuffled): protection also
+ * gives MC3 */
 GLOVES("gauntlets of protection", "adamantine gauntlets",
 		0, 1,  0,		1, 1, 20, 200, 8, 3, METAL, HI_METAL),
 
