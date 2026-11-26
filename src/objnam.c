@@ -1551,6 +1551,12 @@ const char *oldstr;
 		goto bottom;
 	}
 
+	/* bandersnatch/bandersnatchim */
+	if (len >= 12 && !strcmpi(spot-11, "bandersnatch")) {
+		Strcpy(spot+1, "im");
+		goto bottom;
+	}
+
 	/* merozalghu/merozalghi */
 	if (len >= 10 && !strcmpi(spot-9, "merozalghu")) {
 		*spot = 'i';
@@ -2223,6 +2229,8 @@ boolean from_user;
 		if (*bp == ' ') bp++;
 		else if (!strncmpi(bp, "s ", 2)) bp += 2;
 		else if (!strncmpi(bp, "es ", 3)) bp += 3;
+		else if (mntmp == PM_BANDERSNATCH && !strncmpi(bp, "im ", 3))
+		    bp += 3;	/* bandersnatchim corpses */
 		else if (!*bp && !actualn && !dn && !un && !oclass) {
 		    /* no referent; they don't really mean a monster type */
 		    bp = obp;

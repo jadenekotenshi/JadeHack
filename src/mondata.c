@@ -516,6 +516,7 @@ const char *in_str;
 		{ "cavewomen",		PM_CAVEWOMAN },
 		{ "djinn",		PM_DJINNI },
 		{ "mumakil",		PM_MUMAK },
+		{ "bandersnatchim",	PM_BANDERSNATCH },
 		{ "erinyes",		PM_ERINYS },
 	    /* falsely caught by -ves check above */
 		{ "master of thief",	PM_MASTER_OF_THIEVES },

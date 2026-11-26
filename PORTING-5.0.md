@@ -1522,3 +1522,7 @@ A new `J`, the **bandersnatch** (magenta), placed after the snark and jabberwock
 - `dat/data.base` has an entry for it.
 
 Tested in wizard mode: a bandersnatch two squares away in a line stretched out its neck and bit (a 16-HP test hero died to the one bite and was saved by life saving); a bandersnatch and an accursed merozalghu created in the same small room went for each other, trading blows until the merozalghu (level 20) killed it. The long-range hunt was only checked in that small room, where they were already within a few squares, and I removed the temporary start-up hook afterwards.
+
+## Batch 154: bandersnatchim
+
+The plural of "bandersnatch" is **bandersnatchim** (`makeplural()` in `objnam.c`; no reason, as requested). The messages that make a plural now say so ("Wiped out all bandersnatchim."), and the name is read back in wishes and the like: `name_to_mon()` (`mondata.c`) knows "bandersnatchim", and `readobjnam()` skips the "im" in "bandersnatchim corpses". (Corpses of them are still "bandersnatch corpses", as the plural belongs to the creature, not the corpse.) Only the binary changes; saves and bones still load.
