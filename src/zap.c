@@ -3988,9 +3988,9 @@ boolean moncast;
 		    You("%s of smoke.",
 			!Blind ? "see a puff" : "smell a whiff");
 		}
-	/* fire and lightning cook chicken corpses */
+	/* fire and lightning cook chicken and newt corpses */
 	if (OBJ_AT(x, y) && (abstype == ZT_FIRE || abstype == ZT_LIGHTNING))
-		roast_chickens_at(x, y);
+		cook_corpses_at(x, y);
 	if ((mon = m_at(x,y)) != 0) {
 		/* Cannot use wakeup() which also angers the monster */
 		mon->msleeping = 0;

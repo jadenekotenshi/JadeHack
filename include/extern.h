@@ -561,8 +561,8 @@ E void FDECL(recbranch_mapseen, (d_level *, d_level *));
 E void FDECL(remdun_mapseen, (int));
 
 /* ### eat.c ### */
-E struct obj *FDECL(roast_chicken, (struct obj *));
-E void FDECL(roast_chickens_at, (XCHAR_P,XCHAR_P));
+E struct obj *FDECL(cook_corpse, (struct obj *));
+E void FDECL(cook_corpses_at, (XCHAR_P,XCHAR_P));
 
 #ifdef USE_TRAMPOLI
 E int NDECL(eatmdone);

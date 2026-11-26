@@ -1296,7 +1296,7 @@ int dieroll;
 		return FALSE;
 	} else if (destroyed) {
 		if (!already_killed) {
-		    /* flaming and lightning weapons cook chickens */
+		    /* flaming and lightning weapons cook chickens and newts */
 		    roast_kill = (obj && (obj->oartifact == ART_FIRE_BRAND ||
 				obj->oartifact == ART_SUNSWORD ||
 				obj->oartifact == ART_MJOLLNIR));

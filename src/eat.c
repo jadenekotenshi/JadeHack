@@ -1600,45 +1600,50 @@ struct obj *otmp;
 	}
 }
 
-/* a chicken corpse lying on the floor that is hit by fire or lightning is
-   cooked into a roast chicken; returns the roast chicken, or obj if it was
-   not a chicken corpse on the floor */
+/* a chicken or newt corpse lying on the floor that is hit by fire or
+   lightning is cooked into a roast chicken or a charred newt; returns the
+   cooked food, or obj if it was not such a corpse on the floor */
 struct obj *
-roast_chicken(obj)
+cook_corpse(obj)
 struct obj *obj;
 {
-	struct obj *roast;
+	struct obj *cooked;
 	xchar x, y;
+	int otyp;
 
-	if (obj->otyp != CORPSE || obj->corpsenm != PM_CHICKEN ||
-	    obj->where != OBJ_FLOOR)
-	    return obj;
+	if (obj->otyp != CORPSE || obj->where != OBJ_FLOOR) return obj;
+	if (obj->corpsenm == PM_CHICKEN) otyp = ROAST_CHICKEN;
+	else if (obj->corpsenm == PM_NEWT) otyp = CHARRED_NEWT;
+	else return obj;
 	x = obj->ox;
 	y = obj->oy;
-	roast = mksobj(ROAST_CHICKEN, TRUE, FALSE);
-	roast->bypass = obj->bypass;	/* the same beam must not hit it again */
-	if (obj->onamelth) roast = oname(roast, ONAME(obj));
+	cooked = mksobj(otyp, TRUE, FALSE);
+	cooked->bypass = obj->bypass;	/* the same beam must not hit it again */
+	if (obj->onamelth) cooked = oname(cooked, ONAME(obj));
 	obj_extract_self(obj);
 	obfree(obj, (struct obj *) 0);
-	place_object(roast, x, y);
-	stackobj(roast);
+	place_object(cooked, x, y);
+	stackobj(cooked);
 	if (cansee(x, y)) {
-	    pline_The("chicken corpse is roasted to a golden brown!");
+	    if (otyp == ROAST_CHICKEN)
+		pline_The("chicken corpse is roasted to a golden brown!");
+	    else
+		pline_The("newt corpse is charred black!");
 	}
 	newsym(x, y);
-	return roast;
+	return cooked;
 }
 
-/* roast every chicken corpse on a square hit by fire or lightning */
+/* cook every chicken and newt corpse on a square hit by fire or lightning */
 void
-roast_chickens_at(x, y)
+cook_corpses_at(x, y)
 xchar x, y;
 {
 	struct obj *otmp, *next;
 
 	for (otmp = level.objects[x][y]; otmp; otmp = next) {
 	    next = otmp->nexthere;
-	    (void) roast_chicken(otmp);
+	    (void) cook_corpse(otmp);
 	}
 }
 
@@ -1951,6 +1956,20 @@ register struct obj *otmp;
 			delayed_killer = killer_buf;
 		    }
 		}
+		break;
+	    case CHARRED_NEWT:
+		/* a sure thing, unlike eating the eye of newt raw: restore
+		   5d4 energy, or raise the maximum by one if already full */
+		if (u.uen >= u.uenmax) {
+		    u.uenmax++;
+		    u.uen = u.uenmax;
+		    You_feel("your magical capacity grow!");
+		} else {
+		    u.uen += d(5, 4);
+		    if (u.uen > u.uenmax) u.uen = u.uenmax;
+		    You_feel("magical energy flow back into you.");
+		}
+		flags.botl = 1;
 		break;
 	    case EUCALYPTUS_LEAF:
 		if (Sick && !otmp->cursed)

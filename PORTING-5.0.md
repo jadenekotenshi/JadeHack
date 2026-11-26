@@ -1535,3 +1535,13 @@ The plural of "bandersnatch" is **bandersnatchim** (`makeplural()` in `objnam.c`
 ## Batch 156: the Samurai's third title
 
 Now that the Ninja is a role of its own, the Samurai's third rank (XL 6-9) is no longer "Ninja"/"Kunoichi" but **Kumigashira**, the captain of a unit of retainers, for both sexes (`role.c`). The ladder now runs Hatamoto, Ronin, Kumigashira, Joshu, Ryoshu, Kokushu, Daimyo, Kuge, Shogun. Checked in wizard mode by drinking potions of gain level as a Samurai: Hatamoto at XL 1, Ronin at 2-5, Kumigashira from XL 6. A one-string change, so the stress tests were not rerun; saves and bones still load.
+
+## Batch 157: charred newt
+
+A new food, the **charred newt** (`objects.c`, right after the roast chicken; never generated at random): weight 10 (a newt corpse's), 50 nutrition, one turn to eat, flesh, black, and a carnivorous pet's food like the roast chicken (`dog.c`). It is made exactly as the roast chicken is, from a newt:
+- a **newt corpse on the floor hit by fire or lightning** becomes one ("The newt corpse is charred black!"), and a **newt killed by fire or lightning** (rays, fire and shock explosions, Fire Brand, Sunsword, Mjollnir) leaves one instead of a corpse. The old `roast_chicken()` / `roast_chickens_at()` became `cook_corpse()` / `cook_corpses_at()` (`eat.c`, `extern.h`) and handle both animals; `make_corpse()` (`mon.c`), `zap_over_floor()` (`zap.c`) call them.
+- **Eating it** restores **5d4 energy** (capped at your maximum), or, if your energy is already at its maximum, **raises the maximum by 1** (and the current energy with it); `fpostfx()` in `eat.c`. Unlike eating a raw newt corpse (a one-in-three-ish chance of 1d3 points) it always works. "You feel magical energy flow back into you." / "You feel your magical capacity grow!"
+
+Like all non-corpse food it can still turn out to be "rotten" once it is over 30 turns old (the usual one-in-seven chance), which does not stop the effect. A new object shifts every later object number, so old saves are not compatible and the data files and utilities must be rebuilt as for Batch 79.
+
+Checked in wizard mode: a wish for "3 charred newts" gives them; eating one at full energy took a Wizard from Pw 6(6) to 7(7); at 5(7) and at 2(7) it filled to 7(7); a newt corpse and a chicken corpse hit by a downward bolt of fire became a charred newt and a roast chicken; a newt killed by a wand of fire left a charred newt; the corpse, item and use stress tests were clean (6,539, 21,353 and 13,426 log lines). Not checked: pets eating it, and kills with the three artifacts (same flag as the chicken).

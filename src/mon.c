@@ -337,9 +337,9 @@ register struct monst *mtmp;
 	/* some cases (the glue golem) may leave nothing behind */
 	if (!obj) return (struct obj *)0;
 
-	/* a chicken killed by fire or lightning is cooked */
-	if (roast_kill && obj->otyp == CORPSE && obj->corpsenm == PM_CHICKEN)
-	    obj = roast_chicken(obj);
+	/* a chicken or newt killed by fire or lightning is cooked */
+	if (roast_kill && obj->otyp == CORPSE)
+	    obj = cook_corpse(obj);
 
 	/* if polymorph or undead turning has killed this monster,
 	   prevent the same attack beam from hitting its corpse */
