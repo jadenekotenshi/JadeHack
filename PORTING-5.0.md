@@ -1557,3 +1557,9 @@ Checked in wizard mode: eating 12 fresh charred newts in a row gave no rotten on
 The gloves of expertise always had the appearance "snakeskin gloves": `shuffle_all()` (`o_init.c`) shuffled the glove appearances over `LEATHER_GLOVES` to `GAUNTLETS_OF_FORTUNE`, and the gloves of expertise come after the gauntlets of fortune in `objects.c`, outside that range. The range now ends at `GLOVES_OF_EXPERTISE`, so the eight kinds of shuffled gloves (leather, fumbling, power, dexterity, force, haste, fortune, expertise) share the eight appearances (old, padded, riding, fencing, fur-lined, crystal chitin, ragged, snakeskin), and "snakeskin gloves" can be any of them. Only the gauntlets of protection keep a fixed appearance (adamantine gauntlets; they are the only gloves with MC3).
 
 Checked in wizard mode by starting 20 games and wishing for gloves of expertise: eight different appearances, snakeskin in three of them. Stress tests clean. Only games started from now on are affected; a game in progress keeps its appearances, so saves still load.
+
+## Batch 160: the Valkyrie starts with a spear
+
+The Valkyrie's starting weapon is a **+1 spear** instead of a +1 long sword (`Valkyrie[]` in `u_init.c`); a dwarvish Valkyrie gets the usual racial substitute, a **+1 dwarvish spear** (it used to be a dwarvish bearded axe, from the long-sword substitution). The spear is blessed or uncursed at random like the sword was. Skills are unchanged: she starts Basic in spear (every starting weapon does), spear still tops out at Skilled, and long sword, now unskilled, can be trained up to Expert as before.
+
+Checked in wizard mode: a human Valkyrie starts with "a blessed +1 spear (weapon in hand)", a dwarvish one with "a +1 dwarvish spear (weapon in hand)". Stress tests clean. Only new characters are affected; saves still load.
