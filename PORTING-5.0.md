@@ -1512,3 +1512,13 @@ Checked in wizard mode by entering the Mall by its stairs a number of times (a t
 ## Batch 152: a new rumor
 
 "Sane hackers don't duke it out with mimics - they go fly a kite" is added to the true rumors (`dat/rumors.tru`, between the sacks and scrolls rumors): it is advice about kiting slow, strong mimics. Only the data file changes; saves and bones still load.
+
+## Batch 153: the bandersnatch
+
+A new `J`, the **bandersnatch** (magenta), placed after the snark and jabberwock in `monst.c` (so all later monster numbers move up by one: **old saves and bones are incompatible**, and the utilities, `dungeon`/`nhdat` must be rebuilt as for Batch 79). Level 13, speed 24 (twice a player's), AC 3, MR 20, alignment -3, frequency 1, genocidable, large, 1000 weight; carnivorous animal without hands, hostile, strong, nasty, infravision. Attacks: **bite 2d12** and **claw 2d6**; at speed 24 that is about 40 damage a turn if everything lands, a little under the jabberwock's 44 at level 15.
+
+- **Reach:** its neck lets it **snap at you from a square away**. When you are exactly two squares off in a straight line (orthogonal or diagonal), the square between is open ground (no wall, closed door, boulder or monster) and it is hostile, it bites from there ("The bandersnatch stretches out its neck and snaps at you!") without closing in; two times in three it holds its ground and bites again, otherwise it steps in and uses the claw as well (`bite_reach()` in `mhitu.c`, `reach_ok` in `dochug()`). Only the bite reaches; the claw needs you adjacent.
+- **Rivalry:** the bandersnatch and the **accursed merozalghu** are sworn enemies. Next to each other they fight (`mm_aggression()` in `mon.c`), and when either one **sees the other** (clear line, within 12 squares, not invisible unless it sees invisible) it stops what it is doing and goes for it, you included (`rival_hunt()` in `monmove.c`, built on the merozalghu's feline-hunt movement). A tame one is left alone.
+- `dat/data.base` has an entry for it.
+
+Tested in wizard mode: a bandersnatch two squares away in a line stretched out its neck and bit (a 16-HP test hero died to the one bite and was saved by life saving); a bandersnatch and an accursed merozalghu created in the same small room went for each other, trading blows until the merozalghu (level 20) killed it. The long-range hunt was only checked in that small room, where they were already within a few squares, and I removed the temporary start-up hook afterwards.

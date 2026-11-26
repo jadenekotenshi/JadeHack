@@ -16,6 +16,7 @@ STATIC_DCL void FDECL(distfleeck,(struct monst *,int *,int *,int *));
 STATIC_DCL int FDECL(m_arrival, (struct monst *));
 STATIC_DCL void FDECL(watch_on_duty,(struct monst *));
 STATIC_DCL int FDECL(feline_hunt, (struct monst *));
+STATIC_DCL int FDECL(rival_hunt, (struct monst *));
 
 /* where a merozalghu hunting a feline or its corpse wants m_move() to go */
 static boolean mz_goal = FALSE;
@@ -408,6 +409,46 @@ struct monst *mtmp;
 	return 1;
 }
 
+/* The bandersnatch and the accursed merozalghu are sworn enemies: either one
+ * that sees the other (within a dozen squares, clear line, not invisible
+ * unless it sees invisible) goes for it, you included or not; next to each
+ * other they fight (mm_aggression in mon.c).  Returns 0 if there is no rival
+ * in sight (carry on as usual), 1 if it used its move, 2 if it died. */
+STATIC_OVL int
+rival_hunt(mtmp)
+struct monst *mtmp;
+{
+	struct monst *mt, *prey = (struct monst *)0;
+	int d, best = 145, res;
+	int mx = mtmp->mx, my = mtmp->my;
+	int rival = (mtmp->data == &mons[PM_BANDERSNATCH]) ?
+			PM_ACCURSED_MEROZALGHU : PM_BANDERSNATCH;
+
+	if (!mtmp->mcansee || mtmp->mconf || mtmp->mstun || mtmp->mtrapped ||
+	    mtmp->msleeping || !mtmp->mcanmove)
+	    return 0;
+	for (mt = fmon; mt; mt = mt->nmon) {
+	    if (mt == mtmp || DEADMONSTER(mt) || mt->data != &mons[rival])
+		continue;
+	    if (mt->minvis && !perceives(mtmp->data)) continue;
+	    d = dist2(mx, my, mt->mx, mt->my);
+	    if (d < best && m_cansee(mtmp, mt->mx, mt->my)) {
+		best = d;
+		prey = mt;
+	    }
+	}
+	if (!prey) return 0;
+
+	mz_goal = TRUE;
+	mz_gx = prey->mx;
+	mz_gy = prey->my;
+	res = m_move(mtmp, 0);
+	mz_goal = FALSE;
+	if (res == 2) return 2;
+	if (res == 0) return 0;		/* could not get there: back to you */
+	return 1;
+}
+
 int
 dochug(mtmp)
 register struct monst *mtmp;
@@ -416,6 +457,7 @@ register struct monst *mtmp;
 	register int tmp=0;
 	struct monst* mdummy;
 	int inrange, nearby, scared, oldx, oldy;
+	boolean reach_ok;	/* a bandersnatch within snapping distance */
 #ifdef GOLDOBJ
         struct obj *ygold = 0, *lepgold = 0;
 #endif
@@ -677,10 +719,25 @@ toofar:
 	    }
 	}
 
+	/* a bandersnatch and an accursed merozalghu go for each other */
+	if ((mdat == &mons[PM_BANDERSNATCH] ||
+	     mdat == &mons[PM_ACCURSED_MEROZALGHU]) &&
+	    !mtmp->mtame && !u.uswallow) {
+	    switch (rival_hunt(mtmp)) {
+		case 1:	return(0);	/* spent its move */
+		case 2:	return(1);	/* it died */
+		default: break;		/* no rival in sight */
+	    }
+	}
+
+	/* a bandersnatch with you two squares off stays and snaps (mostly) */
+	reach_ok = ((!mtmp->mpeaceful || Conflict) && inrange &&
+		    bite_reach(mtmp));
+
 /*	Now the actual movement phase	*/
 
 #ifndef GOLDOBJ
-	if(!nearby || mtmp->mflee || scared ||
+	if((!nearby && !(reach_ok && rn2(3))) || mtmp->mflee || scared ||
 	   mtmp->mconf || mtmp->mstun || (mtmp->minvis && !rn2(3)) ||
 	   (mdat->mlet == S_LEPRECHAUN && !u.ugold && (mtmp->mgold || rn2(2))) ||
 #else
@@ -689,7 +746,7 @@ toofar:
 	    lepgold = findgold(mtmp->minvent);
 	}
 
-	if(!nearby || mtmp->mflee || scared ||
+	if((!nearby && !(reach_ok && rn2(3))) || mtmp->mflee || scared ||
 	   mtmp->mconf || mtmp->mstun || (mtmp->minvis && !rn2(3)) ||
 	   (mdat->mlet == S_LEPRECHAUN && !ygold && (lepgold || rn2(2))) ||
 #endif

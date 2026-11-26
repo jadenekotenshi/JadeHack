@@ -1388,6 +1388,12 @@ struct monst *magr,	/* monster that is currently deciding where to move */
 	/* merozalghi cannot leave felines alone */
 	if (is_merozalghu(magr->data) && mdef->data->mlet == S_FELINE)
 	    return ALLOW_M|ALLOW_TM;
+	/* the bandersnatch and the accursed merozalghu are sworn enemies */
+	if ((magr->data == &mons[PM_BANDERSNATCH] &&
+		mdef->data == &mons[PM_ACCURSED_MEROZALGHU]) ||
+	    (magr->data == &mons[PM_ACCURSED_MEROZALGHU] &&
+		mdef->data == &mons[PM_BANDERSNATCH]))
+	    return ALLOW_M|ALLOW_TM;
 	/* pirates and soldiers hold a grudge against each other */
 	if ((is_king_pirate(magr->data) &&
 		(mdef->data == &mons[PM_SOLDIER] ||

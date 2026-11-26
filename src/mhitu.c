@@ -305,6 +305,28 @@ struct attack *alt_attk_buf;
     return attk;
 }
 
+/* A bandersnatch can bite from a square away: you stand two squares off in
+ * a straight line (orthogonal or diagonal) and the square between is open
+ * ground with nothing standing in it. */
+boolean
+bite_reach(mtmp)
+struct monst *mtmp;
+{
+	int dx = mtmp->mux - mtmp->mx, dy = mtmp->muy - mtmp->my;
+	int x, y;
+
+	if (mtmp->data != &mons[PM_BANDERSNATCH] || u.uswallow) return FALSE;
+	if ((dx != 0 && abs(dx) != 2) || (dy != 0 && abs(dy) != 2) ||
+	    (dx == 0 && dy == 0))
+	    return FALSE;
+	x = mtmp->mx + dx / 2;
+	y = mtmp->my + dy / 2;
+	if (!isok(x, y) || !ZAP_POS(levl[x][y].typ) || closed_door(x, y) ||
+	    m_at(x, y) || sobj_at(BOULDER, x, y))
+	    return FALSE;
+	return TRUE;
+}
+
 /*
  * mattacku: monster attacks you
  *	returns 1 if monster dies (e.g. "yellow light"), 0 otherwise
@@ -331,6 +353,7 @@ mattacku(mtmp)
 		/* Might be attacking your image around the corner, or
 		 * invisible, or you might be blind....
 		 */
+	boolean snap = FALSE;	/* biting from a square away */
 	
 	if(!ranged) nomul(0, 0);
 	if(mtmp->mhp <= 0 || (Underwater && !is_swimmer(mtmp->data)))
@@ -596,7 +619,13 @@ mattacku(mtmp)
 		case AT_BUTT:
 		case AT_TENT:
 		case AT_TAIL:
-			if(!range2 && (!MON_WEP(mtmp) || mtmp->mconf || Conflict ||
+			/* the bandersnatch's long neck */
+			snap = (range2 && mattk->aatyp == AT_BITE &&
+				bite_reach(mtmp));
+			if (snap && foundyou && youseeit)
+			    pline("%s stretches out its neck and snaps at you!",
+				  Monnam(mtmp));
+			if((!range2 || snap) && (!MON_WEP(mtmp) || mtmp->mconf || Conflict ||
 					!touch_petrifies(youmonst.data))) {
 			    if (foundyou) {
 				if(tmp > (j = rnd(20+i))) {

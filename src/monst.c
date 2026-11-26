@@ -2386,6 +2386,17 @@ struct permonst _mons2[] = {
 	SIZ(1300, 600, 0, MS_BURBLE, MZ_LARGE), 0, 0,
 	M1_ANIMAL|M1_FLY|M1_CARNIVORE,
 	M2_HOSTILE|M2_STRONG|M2_NASTY|M2_COLLECT, M3_INFRAVISIBLE, 0, CLR_ORANGE),
+    /* the frumious one: fast, and its long neck lets it snap at you from
+       a square away (mhitu.c: bite_reach); it and the accursed merozalghu
+       hate each other on sight (mon.c, monmove.c) */
+    MON("bandersnatch", S_JABBERWOCK,
+	LVL(13, 24, 3, 20, -3), (G_GENO|1),
+	A(ATTK(AT_BITE, AD_PHYS, 2,12), ATTK(AT_CLAW, AD_PHYS, 2,6),
+	  NO_ATTK, NO_ATTK, NO_ATTK, NO_ATTK),
+	SIZ(1000, 500, 0, MS_GROWL, MZ_LARGE), 0, 0,
+	M1_ANIMAL|M1_NOHANDS|M1_CARNIVORE,
+	M2_HOSTILE|M2_STRONG|M2_NASTY, M3_INFRAVISIBLE|M3_INFRAVISION,
+	0, CLR_MAGENTA),
 	 /* boojum only come from snarks */
 	 MON("boojum", S_JABBERWOCK,
 	LVL(18, 15, 0, 90, 0), (G_NOGEN),
