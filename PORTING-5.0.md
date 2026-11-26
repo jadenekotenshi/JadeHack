@@ -1576,3 +1576,7 @@ Checked in wizard mode: a human Valkyrie starts with "a +1 spear (weapon in hand
 Spear damage (`objects.c`): **spear d8/d8** (was d6/d8), **dwarvish spear d10/d8** (was d8/d8). The other spears keep their place relative to the plain one by the same two points: the **silver spear** d8/d8 (as the spear was d6/d8 like it), **elven spear d9/d8** (was d7/d8) and **orcish spear d7/d8** (was d5/d8). The javelin (d6/d6) and the trident (d6/d4) are unchanged. Lancea Longini, a silver spear, and Gungnir pick up the new dice. Only damage figures changed, so saves and bones still load.
 
 Checked by printing the compiled object table from a build of `objects.c` (spear 8/8, elven 9/8, orcish 7/8, dwarvish 10/8, silver 8/8, trident 6/4); stress tests clean.
+
+## Batch 163: tridents d8/d6
+
+The trident does d8 against small and d6 against large (`objects.c`; was d6/d4). Its built-in bonus (+1 against small, +2d4 against large, in `dmgval()`) is unchanged, so a trident now averages 5.5 against small and 10.5 against large before enchantment and Strength. Only damage figures changed; saves and bones still load. Checked by printing the compiled object table (trident 8/6); stress tests clean.

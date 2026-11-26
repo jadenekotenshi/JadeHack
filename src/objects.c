@@ -125,7 +125,7 @@ WEAPON("javelin", "throwing spear",
 	0, 1, 0, 12, 20,  3,  6,  6, 0, P,   P_SPEAR, IRON, HI_METAL),
 
 WEAPON("trident", (char *)0,
-	1, 0, 0, 10, 25,  5,  6,  4, 0, P,   P_SPEAR, IRON, HI_METAL),
+	1, 0, 0, 10, 25,  5,  8,  6, 0, P,   P_SPEAR, IRON, HI_METAL),
 						/* +1 small, +2d4 large */
 
 /* blades */
