@@ -620,7 +620,7 @@ static const struct def_skill Skill_V[] = {
     { P_TWO_HANDED_SWORD, P_EXPERT },	{ P_CURVED_SWORD, P_BASIC },
     { P_HAMMER, P_EXPERT },
     { P_QUARTERSTAFF, P_BASIC },	{ P_POLEARMS, P_SKILLED },
-    { P_SPEAR, P_SKILLED },		
+    { P_SPEAR, P_EXPERT },		
     { P_LANCE, P_SKILLED },
     { P_SLING, P_BASIC },
     { P_ATTACK_SPELL, P_BASIC },	{ P_ESCAPE_SPELL, P_BASIC },
@@ -998,6 +998,9 @@ u_init()
 		break;
 #endif
 	case PM_VALKYRIE:
+		/* dwarvish Valkyries keep a dwarvish bearded axe (the old
+		   long-sword substitute) rather than a dwarvish spear */
+		if (Race_if(PM_DWARF)) Valkyrie[0].trotyp = DWARVISH_BEARDED_AXE;
 		ini_inv(Valkyrie);
 		if(!rn2(6)) ini_inv(Lamp);
 		knows_class(WEAPON_CLASS);

@@ -1563,3 +1563,10 @@ Checked in wizard mode by starting 20 games and wishing for gloves of expertise:
 The Valkyrie's starting weapon is a **+1 spear** instead of a +1 long sword (`Valkyrie[]` in `u_init.c`); a dwarvish Valkyrie gets the usual racial substitute, a **+1 dwarvish spear** (it used to be a dwarvish bearded axe, from the long-sword substitution). The spear is blessed or uncursed at random like the sword was. Skills are unchanged: she starts Basic in spear (every starting weapon does), spear still tops out at Skilled, and long sword, now unskilled, can be trained up to Expert as before.
 
 Checked in wizard mode: a human Valkyrie starts with "a blessed +1 spear (weapon in hand)", a dwarvish one with "a +1 dwarvish spear (weapon in hand)". Stress tests clean. Only new characters are affected; saves still load.
+
+## Batch 161: Valkyrie spear skill; dwarvish Valkyries keep the axe
+
+- **Spear skill:** the Valkyrie's spear maximum is raised from Skilled to **Expert** (`Skill_V[]` in `u_init.c`), to go with her new starting weapon (Batch 160).
+- **Dwarvish Valkyries** start with the **+1 dwarvish bearded axe** they had before Batch 160 (the old long-sword substitution), not a dwarvish spear: `u_init()` sets the first Valkyrie item to `DWARVISH_BEARDED_AXE` for dwarves. Human Valkyries still start with the +1 spear.
+
+Checked in wizard mode: a human Valkyrie starts with "a +1 spear (weapon in hand)", a dwarvish one with "a +1 dwarvish bearded axe (weapon in hand)". I did not run a character up to Expert in spear; the cap is a one-word table change like the others in that list. Stress tests clean. Only new characters are affected; saves still load.
