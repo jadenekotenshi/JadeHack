@@ -1650,3 +1650,17 @@ Checked by starting 40 Witches in wizard mode and reading all the inventory page
 - **Pirates and shops** (`shk.c`): like Rogues, a Pirate no longer takes the minor alignment penalty for leaving a shop without paying, and does not get the small alignment bonus a hero otherwise gets for paying back a shopkeeper he had robbed.
 
 Checked in wizard mode by sleeping gnome lords with a wand of sleep and attacking them: a Ninja got "You sneak attack the gnome lord!" on two of three hits; a Pirate on three of ten hits (the sleeping monster wakes after the first blow, so later hits don't count); a Valkyrie never did. I did not read the damage dealt by each level tier, test a fleeing (rather than sleeping) monster, or rob a shop as a Pirate; the shop change is a one-condition edit in two places. Stress tests clean. Only the damage and alignment rules change; saves and bones still load.
+
+## Batch 174: the witch's hat
+
+A new rare helmet, **witch's hat** (`objects.c`, after the dunce cap), unidentified as a **"broad-brimmed conical hat"** with its own fixed appearance (it is not shuffled with the cornuthaum and dunce cap, which share "conical hat"). Black cloth, weight 4, cost 80, generation probability 2 (taken from the dunce cap, 3 to 1, so the armor class still sums to 1000). Wearing it identifies it.
+
+- **AC 1 and MC 2** whenever worn, enchantment adding to the AC as usual.
+- **Spellcasting** (`percent_success()` in `spell.c`): worth half an athame, **+5** to the success chance of every spell, or the **whole athame bonus, +10, for a Witch or a Wizard**. It adds to a wielded athame or wizard staff.
+- **Charisma** (`Helmet_on()` and `Helmet_off()` in `do_wear.c`): **-1** for anyone except a Witch, Wizard, Bard or Tourist, undone on removal.
+- **Witch bonus** (`find_ac()`): a Witch wearing it gets **one more point of AC**, two in all.
+- The "witch" in its name was read as the monster by the wish parser, so "witch's hat" is excluded from the monster-name check in `readobjnam()` (`objnam.c`), like "wizard lock" and "bardiche".
+
+It adds an object, so everything after it is renumbered: **old saves and bones are not compatible**, and the data files and utilities must be rebuilt as in Batch 79.
+
+Checked in wizard mode by wearing one as five roles: a Witch's AC went 6 to 4 and a Wizard's 7 to 6 with Charisma unchanged for both; a Valkyrie's AC went 4 to 3 and Charisma 10 to 9; a Tourist and a Bard kept their Charisma and gained 1 AC. A Wizard's failure rate for restore ability went from 70% to 60% (the +10); I did not see the half bonus (+5) on another role, since the roles tried had spells already at 0%. Stress tests clean. Not checked: the hat's appearance when found on the floor or in a shop, or a monster wearing one.

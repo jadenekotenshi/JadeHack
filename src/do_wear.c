@@ -347,6 +347,16 @@ Helmet_on()
 	case HELM_OF_BRILLIANCE:
 		adj_abon(uarmh, uarmh->spe);
 		break;
+	case WITCH_S_HAT:
+		/* looks wrong on anyone who is not a witch, wizard, bard or
+		   tourist (and those who dress up for a living) */
+		if (!(Role_if(PM_WITCH) || Role_if(PM_WIZARD) ||
+		      Role_if(PM_BARD) || Role_if(PM_TOURIST))) {
+		    ABON(A_CHA) -= 1;
+		    flags.botl = 1;
+		}
+		makeknown(uarmh->otyp);
+		break;
 	case HELM_OF_CLARITY:
 	   make_hallucinated(0, TRUE, 0);
 		see_monsters();
@@ -415,6 +425,13 @@ Helmet_off()
 	case CORNUTHAUM:
 	    if (!cancelled_don) {
 		ABON(A_CHA) += (Role_if(PM_WIZARD) ? -1 : 1);
+		flags.botl = 1;
+	    }
+	    break;
+	case WITCH_S_HAT:
+	    if (!cancelled_don && !(Role_if(PM_WITCH) || Role_if(PM_WIZARD) ||
+				    Role_if(PM_BARD) || Role_if(PM_TOURIST))) {
+		ABON(A_CHA) += 1;
 		flags.botl = 1;
 	    }
 	    break;
@@ -1956,6 +1973,8 @@ find_ac()
 	if (HProtection & INTRINSIC) uac -= u.ublessed;
 	uac -= u.uspellprot;
 	uac += dex_ac_mod(ACURR(A_DEX));
+	/* a witch's hat is worth a point more on a witch */
+	if (uarmh && uarmh->otyp == WITCH_S_HAT && Role_if(PM_WITCH)) uac -= 1;
 	if (uac < -128) uac = -128;	/* u.uac is an schar */
 	if(uac != u.uac){
 		u.uac = uac;

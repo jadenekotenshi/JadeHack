@@ -1535,6 +1535,10 @@ int spell;
 	 * anyone else. */
 	if (uwep && (is_athame(uwep) || uwep->otyp == WIZARD_STAFF))
 		chance += 10;
+	/* a witch's hat is worth half an athame to most and a whole one to
+	 * a witch or wizard */
+	if (uarmh && uarmh->otyp == WITCH_S_HAT)
+		chance += (Role_if(PM_WITCH) || Role_if(PM_WIZARD)) ? 10 : 5;
 	if (uwep && is_athame(uwep) && uwep->otyp != ATHAME) {
 		int school = P_NONE;
 

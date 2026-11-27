@@ -373,7 +373,12 @@ HELM("fedora", (char *)0,
 HELM("cornuthaum", "conical hat",
 		0, 1,  CLAIRVOYANT, 3, 1,  4,  80,10, 2, CLOTH, CLR_BLUE),
 HELM("dunce cap", "conical hat",
-		0, 1,  0,			3, 1,  4,   1,10, 0, CLOTH, CLR_BLUE),
+		0, 1,  0,			1, 1,  4,   1,10, 0, CLOTH, CLR_BLUE),
+/* a rare hat with a fixed appearance: AC 1, MC2, helps spellcasting (see
+ * percent_success()), costs most roles a point of Charisma and gives a
+ * witch a further point of AC (see find_ac()) */
+HELM("witch's hat", "broad-brimmed conical hat",
+		0, 1,  0,			2, 1,  4,  80, 9, 2, CLOTH, CLR_BLACK),
 HELM("dented pot", (char *)0,
 		1, 0,  0,			2, 0, 10,   8, 9, 0, IRON, CLR_BLACK),
 /* the crystal helmet is glass, so it does not hamper spellcasting, and its
