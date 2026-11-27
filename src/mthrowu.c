@@ -84,6 +84,11 @@ const char *name;	/* if null, then format `obj' */
 			monstseesu(M_SEEN_ACID);
 		} else {
 			if (is_acid) pline("It burns!");
+			/* plate armor and the like soak up a point per piece */
+			if (dam > 1) {
+			    dam -= armor_dr();
+			    if (dam < 1) dam = 1;
+			}
 			if (Half_physical_damage) dam = (dam+1) / 2;
 			losehp(dam, knm, kprefix);
 			exercise(A_STR, FALSE);

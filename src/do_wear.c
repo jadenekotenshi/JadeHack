@@ -1839,8 +1839,9 @@ int dex;
 	return -8;
 }
 
-/* pieces of worn armor that each soak up one point of damage from a hit:
-   the plate mails, the crystal helmet and boots, cloak of protection */
+/* pieces of worn armor that each soak up one point of damage from a hit
+   (melee or missile): the plate mails, the crystal helmet, boots and
+   shield, and the cloak of protection; dragon scale mail does not count */
 int
 armor_dr()
 {
@@ -1849,6 +1850,7 @@ armor_dr()
 	if (uarm && (uarm->otyp == PLATE_MAIL || uarm->otyp == CRYSTAL_PLATE_MAIL ||
 		     uarm->otyp == BRONZE_PLATE_MAIL)) n++;
 	if (uarmc && uarmc->otyp == CLOAK_OF_PROTECTION) n++;
+	if (uarms && uarms->otyp == CRYSTAL_SHIELD) n++;
 	if (uarmh && uarmh->otyp == HELM_OF_BRILLIANCE) n++;
 	if (uarmf && uarmf->otyp == BOOTS_OF_SHIELDING) n++;
 	return n;
