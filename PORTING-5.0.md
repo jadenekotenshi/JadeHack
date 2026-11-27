@@ -1637,3 +1637,9 @@ Checked in wizard mode with a temporary print of the hunger charged for a level 
 The Rogue's starting daggers (`u_init.c`) are now **d8+8, so 9 to 16** (average 12.5), instead of 6 to 15 (average 10.5). The stiletto is separate and unchanged; elves and orcs still get elven or orcish daggers in the same number.
 
 Checked by starting ten human Rogues in wizard mode: 10, 10, 10, 10, 13, 13, 14, 14, 14 and 15 daggers, all in range (the extremes 9 and 16 did not come up in so few starts). Only new characters are affected; saves still load.
+
+## Batch 172: witches sometimes start with a magic marker
+
+One Witch in ten (`!rn2(10)` in the `PM_WITCH` case of `u_init()`, `u_init.c`) starts with an **uncursed magic marker** with the usual random charges (30 to 99, as any generated marker). It is its own small table (`Marker[]`) added after the main kit, so the indices used by the Witch's herb, potion and scroll setup do not move.
+
+Checked by starting 40 Witches in wizard mode and reading all the inventory pages: 6 had a marker ("a magic marker (0:39)", (0:99), (0:89), (0:40), (0:81) and (0:62)), 34 did not, about 15% -- a little high for 10% in a sample that small, which is not unusual. The three known-scroll and potion rules for witches still apply, so a Witch with a marker already knows what she carries. Stress test (`use`) clean. Only new characters are affected; saves still load.

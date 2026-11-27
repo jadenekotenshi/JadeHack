@@ -258,6 +258,11 @@ static struct trobj Lamp[] = {
 	{ OIL_LAMP, 1, TOOL_CLASS, 1, 0 },
 	{ 0, 0, 0, 0, 0 }
 };
+static struct trobj Marker[] = {
+	{ MAGIC_MARKER, UNDEF_SPE, TOOL_CLASS, 1, 0 },	/* random charges */
+	{ 0, 0, 0, 0, 0 }
+};
+
 static struct trobj Blindfold[] = {
 	{ BLINDFOLD, 0, TOOL_CLASS, 1, 0 },
 	{ 0, 0, 0, 0, 0 }
@@ -1026,6 +1031,7 @@ u_init()
 		Witch[WIT_POTIONS].trquan = rnd(4) + 2;
 		Witch[WIT_SCROLLS].trquan = rnd(3) + 2;
 		ini_inv(Witch);
+		if (!rn2(10)) ini_inv(Marker);	/* one witch in ten */
 		/* a witch already knows 1d6 potions, 3 scrolls and a spellbook
 		   in addition to what she carries (her starting scrolls are
 		   known as well) */
