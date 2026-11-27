@@ -1671,3 +1671,10 @@ Checked in wizard mode by wearing one as five roles: a Witch's AC went 6 to 4 an
 - **Floor artifacts**: `artifact_chance()` (`artifact.c`, used by `mkobj.c`) now makes artifacts **four times likelier for any Pirate**, not only one carrying the Marauder's Map: a generated weapon is an artifact 1 time in 5 instead of 1 in 20, armor 1 in 10 instead of 1 in 40, and rings becoming Narya or Nenya (`mkobj.c`, 1 in 25) 1 in 6. Carrying the Map **no longer adds anything to the odds** (it was the same four times, so the two would otherwise stack to near certainty); the Map is now only the scroll, the clairvoyance, and the artifact-detecting `#invoke`. The description of the Map in Batch 47 ("four times as likely to be generated as artifacts") is out of date by this.
 
 Checked in wizard mode with a temporary log of `artifact_chance()`: a Pirate got 5 for a weapon, where another role got 40 for armor (the unmodified value). Stress test (`items`) clean. Only newly generated objects are affected; saves and bones still load.
+
+## Batch 176: the Merozalghi Realm's caverns are always lit
+
+The realm's fill levels (`merofill` in `dat/realm.des`) used a cave that was lit or dark at random (the mines' generator, `INIT_MAP ... random`); it is now **always lit**, as Skunj already was (the Citadel is a lit walled map). A data-only change: `realm.des` is rebuilt into `merofill.lev` and `nhdat`; no source or save changes, though a level already generated in an existing game keeps the lighting it was made with.
+
+Checked in wizard mode with a temporary level-teleport shortcut into the realm (not kept): six fresh dungeons each showed a wide stretch of cave, including the far side of an acid river, on arrival.
+

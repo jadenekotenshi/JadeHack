@@ -10,7 +10,7 @@
 #
 LEVEL: "merofill"
 FLAGS:mazelevel,noflip
-INIT_MAP: mines, '.' , ' ' , true , true , random , true
+INIT_MAP: mines, '.' , ' ' , true , true , lit , true
 MON_GENERATION:40%, (4,"lesser merozalghu"), (3,"merozalghu"), (2,"lesser merozalghu soldier"), (1,"merozalghu captain"), (2,"merozalghu warlock"), (2,"merozalghu shaman"), (2,"merozalghu necromancer"), (2,"merozalghu cultist"), (1,"accursed merozalghu"), (3,"ghast"), (2,"gug"), (1,"shoggoth"), (1,"giant shoggoth")
 NOMAP
 #
