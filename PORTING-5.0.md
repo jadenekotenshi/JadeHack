@@ -1631,3 +1631,9 @@ Checked in wizard mode with a Wizard (cloak off) reading the force bolt failure 
 The Wizard's reduced spell hunger (`spelleffects()` in `spell.c`: Intelligence 15 halves the nutrition a cast costs, 16 cuts it to a quarter, 17 and up makes it free) now also applies to the **Witch**, using **Wisdom**, and the **Bard**, using **Charisma**: the same thresholds, read from the role's own casting stat (`urole.spelstat`). No other role gets it; everyone else pays full hunger. The spell of obtain food is still exempt for everyone.
 
 Checked in wizard mode with a temporary print of the hunger charged for a level 1 spell: a Witch with Wisdom 16 paid 2 (a quarter of 10), a Bard with Charisma 14 paid the full 10, a Wizard with Intelligence 18 paid 0. I did not try the Witch or Bard at 15 or 17 and up. Stress tests clean. Only hunger changes; saves and bones still load.
+
+## Batch 171: more daggers for the Rogue
+
+The Rogue's starting daggers (`u_init.c`) are now **d8+8, so 9 to 16** (average 12.5), instead of 6 to 15 (average 10.5). The stiletto is separate and unchanged; elves and orcs still get elven or orcish daggers in the same number.
+
+Checked by starting ten human Rogues in wizard mode: 10, 10, 10, 10, 13, 13, 14, 14, 14 and 15 daggers, all in range (the extremes 9 and 16 did not come up in so few starts). Only new characters are affected; saves still load.

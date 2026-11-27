@@ -959,7 +959,7 @@ u_init()
 		skill_init(Skill_Ran);
 		break;
 	case PM_ROGUE:
-		Rogue[R_DAGGERS].trquan = rn1(10, 6);
+		Rogue[R_DAGGERS].trquan = rnd(8) + 8;	/* 9..16 */
 #ifndef GOLDOBJ
 		u.ugold = u.ugold0 = 0;
 #else
