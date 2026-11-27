@@ -914,6 +914,15 @@ int dieroll;
 			tmp = (obj->corpsenm >= LOW_PM ?
 					mons[obj->corpsenm].msize : 0) + 1;
 			break;
+		    case ORANGE:
+		    case GRAPEFRUIT:
+			if (thrown) {
+			    pline("Splork!");
+			    hittxt = TRUE;
+			}
+			tmp = 1;		/* nominal physical damage */
+			get_dmg_bonus = FALSE;
+			break;
 		    case EGG:
 		      {
 #define useup_eggs(o)	{ if (thrown) obfree(o,(struct obj *)0); \

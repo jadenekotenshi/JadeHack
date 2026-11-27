@@ -1696,3 +1696,9 @@ The Bard's starting weapon is a +1 silver dagger one time in three (a +1 short s
 
 Checked in wizard mode: starting Bards were given the rapier (a blessed +1 rapier), the short sword or the messer, and the Bard with a rapier started with long sword at Basic. I did not advance it to check the Skilled cap in play. The items stress test ran clean. Only new characters are affected.
 
+## Batch 179: "Splork!"
+
+A thrown **orange or grapefruit** that hits a monster now says **"Splork!"** (instead of the usual "The orange hits the newt."). Before this, fruit thrown at a monster could only miss (`thitmonst()` in `dothrow.c` had no branch for food that is not a pet treat); now an orange or grapefruit gets a normal to-hit roll, like a weapon (not the egg's Dexterity roll), and a hit does 1 point of damage through `hmon()` (`uhitm.c`, which prints the "Splork!" and nothing else). The fruit is not used up: it lands as before. A miss still reads "The orange misses the newt." A pet or other monster that would eat the fruit still gets it as a treat first; being swallowed does not change (the fruit vanishes into the monster).
+
+Checked in wizard mode by throwing 20 oranges and 20 grapefruit at newts: hits said "Splork!" (including killing blows, "Splork!  You kill the newt!") and misses said "misses". The `use` and `items` stress tests ran clean.
+

@@ -1582,6 +1582,12 @@ register struct obj   *obj;
 		mon->msleeping = 0;
 		mon->mstrategy &= ~STRAT_WAITMASK;
 	    }
+	} else if ((otyp == ORANGE || otyp == GRAPEFRUIT) &&
+		   !guaranteed_hit && tmp >= dieroll) {
+	    /* a thrown citrus fruit that hits goes "Splork!" (hmon()) */
+	    exercise(A_DEX, TRUE);
+	    (void) hmon(mon, obj, 1, dieroll);
+
 	} else if (guaranteed_hit) {
 	    /* this assumes that guaranteed_hit is due to swallowing */
 	    wakeup(mon);
