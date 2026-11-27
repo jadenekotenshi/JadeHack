@@ -1686,7 +1686,7 @@ The two attack spellbooks are renamed (`objects.c`): **spellbook of flame** (sti
 - **Not renamed:** the *explosion* the spell makes is still a fireball and a ball of cold (`explode.c`: "caught yourself in your own fireball", "You explode a fireball on top of yourself!"), as are the monster-cast fireball effect and the old engraving graffiti; only the spells are renamed. Narya and Nenya are unchanged.
 - A wish for the old names ("spellbook of fireball") no longer finds them, and gives a random spellbook as any unknown spellbook name does.
 
-The object names change what saves hold: the book numbers do not move (same slots), so old saves still load, but a save made before this shows the old names in no place (names are not stored) and simply reads the new ones; the data files and utilities must still be rebuilt because the generated `onames.h` changes.
+The book numbers do not move (same slots), so old saves and bones still load and show the new names; the data files and utilities must be rebuilt anyway because the generated `onames.h` changes.
 
 Checked in wizard mode: a wish for "spellbook of flame" and "of ice strike" gives the right books (identified as such with ^I), a Wizard who read the flame book has "flame" in the spell menu, and the "items" stress test ran clean. I did not cast either spell (not enough power at experience level 1) and did not see the ice strike in a spell menu.
 
