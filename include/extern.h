@@ -428,6 +428,8 @@ E int FDECL(canwearobj, (struct obj *, long *, BOOLEAN_P));
 E int NDECL(dowear);
 E int NDECL(doputon);
 E void NDECL(find_ac);
+E int FDECL(dex_ac_mod, (int));
+E int NDECL(armor_dr);
 E void NDECL(glibr);
 E struct obj *FDECL(some_armor,(struct monst *));
 E void FDECL(erode_armor, (struct monst *,BOOLEAN_P));

@@ -1823,6 +1823,37 @@ doputon()
 
 #ifdef OVL0
 
+/* armor class modifier from Dexterity (the SLASH'EM chart): clumsy heroes
+   are easier to hit, nimble ones harder; lower AC is better */
+int
+dex_ac_mod(dex)
+int dex;
+{
+	if (dex <= 3) return 3;
+	if (dex <= 5) return 2;
+	if (dex <= 7) return 1;
+	if (dex <= 14) return 0;
+	if (dex <= 19) return 14 - dex;		/* 15: -1 ... 19: -5 */
+	if (dex <= 21) return -6;
+	if (dex <= 23) return -7;
+	return -8;
+}
+
+/* pieces of worn armor that each soak up one point of damage from a hit:
+   the plate mails, the crystal helmet and boots, cloak of protection */
+int
+armor_dr()
+{
+	int n = 0;
+
+	if (uarm && (uarm->otyp == PLATE_MAIL || uarm->otyp == CRYSTAL_PLATE_MAIL ||
+		     uarm->otyp == BRONZE_PLATE_MAIL)) n++;
+	if (uarmc && uarmc->otyp == CLOAK_OF_PROTECTION) n++;
+	if (uarmh && uarmh->otyp == HELM_OF_BRILLIANCE) n++;
+	if (uarmf && uarmf->otyp == BOOTS_OF_SHIELDING) n++;
+	return n;
+}
+
 void
 find_ac()
 {
@@ -1922,6 +1953,7 @@ find_ac()
 	if(uright && uright->otyp == RIN_PROTECTION) uac -= uright->spe;
 	if (HProtection & INTRINSIC) uac -= u.ublessed;
 	uac -= u.uspellprot;
+	uac += dex_ac_mod(ACURR(A_DEX));
 	if (uac < -128) uac = -128;	/* u.uac is an schar */
 	if(uac != u.uac){
 		u.uac = uac;

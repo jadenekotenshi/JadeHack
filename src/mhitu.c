@@ -1702,6 +1702,12 @@ dopois:
 		dmg -= rnd(-u.uac);
 		if (dmg < 1) dmg = 1;
 	}
+	/* plate armors, the crystal helmet and boots and a cloak of
+	   protection each take off a point, after the above, never below 1 */
+	if (dmg > 1) {
+		dmg -= armor_dr();
+		if (dmg < 1) dmg = 1;
+	}
 
 	if(dmg) {
 	    if (Half_physical_damage
