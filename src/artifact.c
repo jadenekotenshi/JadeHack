@@ -1980,13 +1980,14 @@ boolean pirate_only;
 	return FALSE;
 }
 
-/* odds are 1 in n normally, but four times better for a Pirate who
-   carries the Marauder's Map */
+/* odds are 1 in n normally, but four times better for a Pirate (who is
+   given no artifacts as sacrifice gifts but the Marauder's Map); carrying
+   the Map does not add to this */
 int
 artifact_chance(n)
 int n;
 {
-	if (carrying_marauders_map(TRUE)) n = max(1, n / 4);
+	if (Role_if(PM_PIRATE)) n = max(1, n / 4);
 	return n;
 }
 
