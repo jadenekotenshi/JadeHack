@@ -1619,3 +1619,9 @@ Checked in wizard mode: a Valkyrie at Dex 11 wearing gauntlets of dexterity -4 (
 - The **crystal shield** counts as a fifth piece (`armor_dr()` in `do_wear.c`). Dragon scale mails and dragon scales of any kind still do not. The full list is plate mail, bronze plate mail, crystal plate mail, the cloak of protection, the crystal helmet, the crystal boots and the crystal shield, for up to 5 points.
 
 Checked in wizard mode with a temporary print: a Valkyrie in plate mail, cloak of protection, crystal helmet, crystal boots and crystal shield (the starting small shield taken off first) had 5 points of reduction against a forest centaur's arrows (arrow damage 2-6 seen); with the small shield instead the count was 4. I did not read the resulting hit-point loss for each arrow. Stress tests clean. Only damage numbers change; saves and bones still load.
+
+## Batch 169: bronze plate mail hinders spellcasting less
+
+Bronze plate mail is copper, so it counted as metallic body armor with the role's full penalty, the same as ordinary plate mail, and was otherwise only a little lighter (300 against 350) with a worse base AC (6 against 7). In `percent_success()` (`spell.c`) the body-armor penalty is now **halved for bronze plate mail**; a robe still halves it again (quarter in all). Crystal plate mail, which is not metallic, is unchanged and still has no penalty. The Wizard's rule that any body armor caps the success chance applies to bronze plate mail as before, and Knights' exemption for clerical spells is untouched.
+
+Checked in wizard mode with a Wizard (cloak off) reading the force bolt failure rate: plate mail 40%, bronze plate mail 20% (the same floor as crystal plate mail, which is the Wizard's armor cap, so for a Wizard bronze shows no difference from crystal). I did not look at a Priest or other role with a smaller armor cap, or at bronze with a robe. Stress tests clean. Only the failure percentage changes; saves and bones still load.

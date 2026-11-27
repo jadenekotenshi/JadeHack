@@ -1373,9 +1373,15 @@ int spell;
 	/* Knights don't get metal armor penalty for clerical spells */
 	paladin_bonus = Role_if(PM_KNIGHT) && spell_skilltype(spellid(spell)) == P_CLERIC_SPELL;
 
-	if (uarm && is_metallic(uarm) && !paladin_bonus)
-	    splcaster += (uarmc && uarmc->otyp == ROBE) ? urole.spelarmr/2 : urole.spelarmr;
-	else if (uarmc && uarmc->otyp == ROBE)
+	if (uarm && is_metallic(uarm) && !paladin_bonus) {
+	    int armpen = urole.spelarmr;
+
+	    /* bronze plate mail is clumsier than a robe but gets in the
+	       way of spellcasting half as much as other metal armor */
+	    if (uarm->otyp == BRONZE_PLATE_MAIL) armpen /= 2;
+	    if (uarmc && uarmc->otyp == ROBE) armpen /= 2;
+	    splcaster += armpen;
+	} else if (uarmc && uarmc->otyp == ROBE)
 	    splcaster -= urole.spelarmr/2;
 	if (uarms && uarms->otyp != CRYSTAL_SHIELD && uarms->oartifact != ART_AEGIS &&
 	    uarms->oartifact != ART_MIRRORBRIGHT)
