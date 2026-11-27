@@ -1692,7 +1692,7 @@ Checked in wizard mode: a wish for "spellbook of flame" and "of ice strike" give
 
 ## Batch 178: the Bard starts with a rapier
 
-The Bard's third-in-three starting weapon, the **+1 silver dagger**, is now a **+1 rapier** (`u_init.c`; the other two thirds are still the +1 short sword and +1 messer). The rapier in this game uses the **long sword** skill, and the Bard had none, so `Skill_Bard` gains **long sword up to Skilled** (starting with the rapier it starts at Basic). That means long swords and other long-sword-skill weapons can be trained to Skilled by a Bard as well. Dagger and the rest of the Bard's skills are unchanged.
+The Bard's starting weapon is a +1 silver dagger one time in three (a +1 short sword or +1 messer otherwise); the dagger is now a **+1 rapier** (`u_init.c`). The rapier in this game uses the **long sword** skill, and the Bard had none, so `Skill_Bard` gains **long sword up to Skilled** (starting with the rapier it starts at Basic). That means long swords and other long-sword-skill weapons can be trained to Skilled by a Bard as well. Dagger and the rest of the Bard's skills are unchanged.
 
-Checked in wizard mode: starting Bards were given the rapier (a blessed +1 rapier), the short sword or the messer, and the rapier's Bard started with long sword at Basic. I did not advance it to check the Skilled cap in play. The items stress test ran clean. Only new characters are affected.
+Checked in wizard mode: starting Bards were given the rapier (a blessed +1 rapier), the short sword or the messer, and the Bard with a rapier started with long sword at Basic. I did not advance it to check the Skilled cap in play. The items stress test ran clean. Only new characters are affected.
 
