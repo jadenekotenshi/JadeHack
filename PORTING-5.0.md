@@ -1601,3 +1601,7 @@ Checked in wizard mode by starting each role as a human: Tourist HP 13, AC 8; He
 - It uses the spare "canvas" appearance that was already in the table, so **no objects were renumbered**: saves and bones still load (a charge in an old save now counts as that many hits, which is smaller).
 
 Checked in wizard mode (with a temporary print of the stored count, removed afterwards): two uncursed scrolls gave 1 then 2 ("even more"); ten blessed scrolls climbed in steps of 2-9 and stopped at 40; with two daggers and the two-weapon command, one round had both strikes "shocked"; a single hit was used up with the "stop crackling" message after it. Casting the spell at Basic gave 1-8 hits each time (4, 1, 4, 3, 5, 2, 8, 7). I did not check Skilled or Expert casting (`d(2,6)` and `d(4,4)` in one expression), the cold and flame versions with the new counter, or the cursed scroll again. Stress tests clean.
+
+## Batch 166: fewer scrolls of destroy armor
+
+Scroll probabilities (`objects.c`, out of 1000): **destroy armor 45 -> 35**, split between **enchant armor 65 -> 70** and **enchant weapon 75 -> 80**. The class still sums to 1000 (checked by `init_objects()` at startup). Nothing was renumbered, so saves and bones still load; only newly generated scrolls are affected. The game starts and the items stress test runs clean.

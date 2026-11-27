@@ -930,12 +930,12 @@ POTION("water", "clear",                0, 0,          92, 100, CLR_CYAN),
 #define SCROLL(name,text,mgc,prob,cost) OBJECT( \
 		OBJ(name,text), BITS(0,1,0,0,mgc,0,0,0,0,0,0,P_NONE,PAPER), 0, \
 		SCROLL_CLASS, prob, 0, 5, cost, 0, 0, 0, 0, 6, HI_PAPER )
-	SCROLL("enchant armor",         "ZELGO MER",            1,  65,  80),
-	SCROLL("destroy armor",         "JUYED AWK YACC",       1,  45, 100),
+	SCROLL("enchant armor",         "ZELGO MER",            1,  70,  80),
+	SCROLL("destroy armor",         "JUYED AWK YACC",       1,  35, 100),
 	SCROLL("confuse monster",       "NR 9",                 1,  53, 100),
 	SCROLL("scare monster",         "XIXAXA XOXAXA XUXAXA", 1,  35, 100),
 	SCROLL("remove curse",          "PRATYAVAYAH",          1,  70,  80),
-	SCROLL("enchant weapon",        "DAIYEN FOOELS",        1,  75,  60),
+	SCROLL("enchant weapon",        "DAIYEN FOOELS",        1,  80,  60),
 	SCROLL("create monster",        "LEP GEX VEN ZEA",      1,  45, 200),
 	SCROLL("taming",                "PRIRUTSENIE",          1,  15, 200),
 	SCROLL("genocide",              "ELBIB YLOH",           1,  15, 300),
