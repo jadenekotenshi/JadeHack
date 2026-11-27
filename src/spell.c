@@ -906,9 +906,13 @@ boolean atme;
 			 * in thinking.
 			 * b) Wizards have spent their life at magic and
 			 * understand quite well how to cast spells.
+			 * Witches get the same from Wisdom and bards from
+			 * Charisma, the stats they cast with.
 			 */
-			intell = acurr(A_INT);
-			if (!Role_if(PM_WIZARD)) intell = 10;
+			intell = 10;
+			if (Role_if(PM_WIZARD) || Role_if(PM_WITCH) ||
+			    Role_if(PM_BARD))
+			    intell = acurr(urole.spelstat);
 			switch (intell) {
 				case 25: case 24: case 23: case 22:
 				case 21: case 20: case 19: case 18:
