@@ -196,22 +196,6 @@ nh_timeout()
 			rehumanize();
 	}
 	if(u.ucreamed) u.ucreamed--;
-	if(u.ushock && !--u.ushock) {
-	    if (Blind)
-		Your("%s stop %s.", makeplural(body_part(HAND)),
-		     u.ushtype == 1 ? "feeling cold" :
-		     u.ushtype == 2 ? "feeling hot" : "tingling");
-	    else if (u.ushtype == 1)
-		Your("%s are no longer sheathed with rime.",
-		     makeplural(body_part(HAND)));
-	    else if (u.ushtype == 2)
-		Your("%s are no longer wreathed in flame.",
-		     makeplural(body_part(HAND)));
-	    else
-		Your("%s stop crackling with lightning.",
-		     makeplural(body_part(HAND)));
-	    u.ushtype = 0;
-	}
 
 	/* Dissipate spell-based protection. */
 	if (u.usptime) {

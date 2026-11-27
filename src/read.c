@@ -917,6 +917,42 @@ genericptr_t arg;
 	    newsym(x, y);
 }
 
+/* Store more hits of shocking grasp (or its confused cold/fire versions).
+ * Used by the scroll and the spell; at most 40 hits can be stored, and a
+ * different kind of charge replaces whatever was stored before. */
+void
+charge_hands(hits, newtype)
+int hits;
+unsigned newtype;
+{
+	const char *hands = makeplural(body_part(HAND));
+	boolean more = (u.ushock && u.ushtype == newtype);
+
+	if (u.ushock && !more) u.ushock = 0;
+	if (newtype == 1) {
+	    if (Blind)
+		Your("%s feel cold%s.", hands, more ? " as ice" : "");
+	    else
+		Your("%s are sheathed with rime%s.", hands,
+		     more ? " even more thickly" : "");
+	} else if (newtype == 2) {
+	    if (Blind)
+		Your("%s feel hot%s.", hands, more ? " even more" : "");
+	    else
+		Your("%s are wreathed in flame%s.", hands,
+		     more ? " even more brightly" : "");
+	} else {
+	    if (Blind)
+		Your("%s tingle%s.", hands, more ? " even more" : "");
+	    else
+		pline("Lightning crackles around your %s%s.", hands,
+		      more ? " even more" : "");
+	}
+	u.ushtype = newtype;
+	u.ushock += hits;
+	if (u.ushock > 40) u.ushock = 40;
+}
+
 int
 seffects(sobj)
 register struct obj	*sobj;
@@ -1142,34 +1178,11 @@ register struct obj	*sobj;
 			       KILLED_BY_AN);
 		    }
 		} else {
-		    int turns = sobj->blessed ? rn1(20, 20) : rn1(10, 10);
 		    /* confused: rime or flame instead of lightning */
 		    unsigned newtype = confused ? (rn2(2) ? 1 : 2) : 0;
-		    const char *hands = makeplural(body_part(HAND));
-		    boolean more = (u.ushock && u.ushtype == newtype);
 
-		    if (u.ushock && !more) u.ushock = 0;
-		    if (newtype == 1) {
-			if (Blind)
-			    Your("%s feel cold%s.", hands, more ? " as ice" : "");
-			else
-			    Your("%s are sheathed with rime%s.", hands,
-				 more ? " even more thickly" : "");
-		    } else if (newtype == 2) {
-			if (Blind)
-			    Your("%s feel hot%s.", hands, more ? " even more" : "");
-			else
-			    Your("%s are wreathed in flame%s.", hands,
-				 more ? " even more brightly" : "");
-		    } else {
-			if (Blind)
-			    Your("%s tingle%s.", hands, more ? " even more" : "");
-			else
-			    pline("Lightning crackles around your %s%s.", hands,
-				  more ? " even more" : "");
-		    }
-		    u.ushtype = newtype;
-		    u.ushock += turns;
+		    /* an uncursed scroll adds one hit, a blessed one d8+1 */
+		    charge_hands(sobj->blessed ? rnd(8) + 1 : 1, newtype);
 		}
 		break;
 	case SCR_SCARE_MONSTER:

@@ -649,7 +649,7 @@ int dieroll;
 	 */
 	boolean hittxt = FALSE, destroyed = FALSE, already_killed = FALSE;
 	boolean get_dmg_bonus = TRUE;
-	boolean shockmsg = FALSE;
+	boolean shockmsg = FALSE, shockdone = FALSE;
 	boolean ispoisoned = FALSE, needpoismsg = FALSE, poiskilled = FALSE;
 	boolean silvermsg = FALSE, silverobj = FALSE;
 	boolean valid_weapon_attack = FALSE;
@@ -1148,13 +1148,16 @@ int dieroll;
 	    }
 	}
 
-	/* shocking grasp: melee strikes do an extra d10 of electricity
-	   (or cold, or fire, if it was read while confused) */
+	/* shocking grasp: each melee strike that is not resisted uses up one
+	   stored hit and does an extra d10 of electricity (or cold, or fire,
+	   if it was read while confused).  Two-weapon combat spends one hit
+	   per strike, so both blows are charged while two or more remain. */
 	if (u.ushock && !thrown && mdat != &mons[PM_SHADE] &&
 		!(u.ushtype == 1 ? resists_cold(mon) :
 		  u.ushtype == 2 ? resists_fire(mon) : resists_elec(mon))) {
 	    tmp += rnd(10);
 	    shockmsg = TRUE;
+	    if (!--u.ushock) shockdone = TRUE;
 	}
 
 	/* a boomerang, thrown or swung, kills a keese outright */
@@ -1287,6 +1290,23 @@ int dieroll;
 		pline("%s is %s!", Monnam(mon),
 		      u.ushtype == 1 ? "chilled" :
 		      u.ushtype == 2 ? "scorched" : "shocked");
+	if (shockdone) {
+	    /* the last stored hit has been spent */
+	    if (Blind)
+		Your("%s stop %s.", makeplural(body_part(HAND)),
+		     u.ushtype == 1 ? "feeling cold" :
+		     u.ushtype == 2 ? "feeling hot" : "tingling");
+	    else if (u.ushtype == 1)
+		Your("%s are no longer sheathed with rime.",
+		     makeplural(body_part(HAND)));
+	    else if (u.ushtype == 2)
+		Your("%s are no longer wreathed in flame.",
+		     makeplural(body_part(HAND)));
+	    else
+		Your("%s stop crackling with lightning.",
+		     makeplural(body_part(HAND)));
+	    u.ushtype = 0;
+	}
 
 	if (needpoismsg)
 		pline_The("poison doesn't seem to affect %s.", mon_nam(mon));

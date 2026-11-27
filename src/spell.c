@@ -1110,6 +1110,12 @@ boolean atme;
 	case SPE_REFLECTION:
 		cast_reflection();
 		break;
+	case SPE_SHOCKING_GRASP:
+		/* hits stored depend on skill in attack spells */
+		charge_hands(role_skill >= P_EXPERT ? d(4,4) :
+			     role_skill >= P_SKILLED ? d(2,6) :
+			     role_skill >= P_BASIC ? rnd(8) : rnd(4), 0);
+		break;
 	case SPE_REPAIR_ARMOR:
 		/* removes one level of erosion (both types) for a random piece of armor */
 		otmp = some_armor(&youmonst);
