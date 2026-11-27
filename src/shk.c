@@ -497,7 +497,7 @@ struct monst *shkp;
 	eshkp->robbed += total;
 	You("stole %ld %s worth of merchandise.",
 	    total, currency(total));
-	if (!Role_if(PM_ROGUE))	/* stealing is unlawful */
+	if (!Role_if(PM_ROGUE) && !Role_if(PM_PIRATE))	/* stealing is unlawful */
 		minor_sin();
 
 	hot_pursuit(shkp);
@@ -993,7 +993,7 @@ register boolean silentkops;
 	pacify_shk(shkp);
 	eshkp->following = 0;
 	eshkp->robbed = 0L;
-	if (!Role_if(PM_ROGUE))
+	if (!Role_if(PM_ROGUE) && !Role_if(PM_PIRATE))
 		adjalign(sgn(u.ualign.type));
 	if(!inhishop(shkp)) {
 		char shk_nam[BUFSZ];

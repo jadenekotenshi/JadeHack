@@ -745,6 +745,24 @@ int dieroll;
 		    tmp = dmgval(obj, mon);
 		    /* a minimal hit doesn't exercise proficiency */
 		    valid_weapon_attack = (tmp > 1);
+		    /* pirates and ninjas: a lesser backstab with a blade
+		       against a fleeing or helpless monster */
+		    if (valid_weapon_attack && !thrown && !Upolyd &&
+			(Role_if(PM_PIRATE) || Role_if(PM_NINJA)) &&
+			(mon->mflee || mon->msleeping || !mon->mcanmove ||
+			 mon->mfrozen) &&
+			((wtype = weapon_type(obj)) == P_DAGGER ||
+			 wtype == P_KNIFE || wtype == P_SHORT_SWORD ||
+			 wtype == P_LONG_SWORD || wtype == P_CURVED_SWORD) &&
+			rn2(2)) {
+			int sl = u.ulevel;
+
+			You("sneak attack %s!", mon_nam(mon));
+			tmp += (sl >= 30) ? d(2,10) : (sl >= 21) ? d(2,8) :
+			       (sl >= 17) ? rnd(12) : (sl >= 13) ? rnd(10) :
+			       (sl >= 9) ? rnd(8) : (sl >= 5) ? rnd(6) : rnd(4);
+			hittxt = TRUE;
+		    }
 		    if (!valid_weapon_attack || mon == u.ustuck || u.twoweap) {
 			;	/* no special bonuses */
 		    } else if (mon->mflee && Role_if(PM_ROGUE) && 
