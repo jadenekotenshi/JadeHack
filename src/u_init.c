@@ -49,7 +49,7 @@ static struct trobj Barbarian[] = {
 };
 static struct trobj Bard[] = {
 #define BARD_WEAPON	0
-	{ SILVER_DAGGER, 1, WEAPON_CLASS, 1, UNDEF_BLESS },
+	{ RAPIER, 1, WEAPON_CLASS, 1, UNDEF_BLESS },
 	{ LEATHER_CLOAK, 1, ARMOR_CLASS, 1, UNDEF_BLESS },
 #define BARD_APPLES	2
 	{ APPLE, 0, FOOD_CLASS, 3, 0 },		/* quan is variable */
@@ -385,7 +385,8 @@ static const struct def_skill Skill_B[] = {
 
 static const struct def_skill Skill_Bard[] = {
     { P_DAGGER, P_SKILLED },		{ P_KNIFE,  P_BASIC },
-    { P_SHORT_SWORD, P_SKILLED },	{ P_CURVED_SWORD, P_SKILLED },
+    { P_SHORT_SWORD, P_SKILLED },	{ P_LONG_SWORD, P_SKILLED },
+    { P_CURVED_SWORD, P_SKILLED },
     { P_FLAIL, P_BASIC },
     { P_QUARTERSTAFF, P_SKILLED },	{ P_POLEARMS, P_BASIC },
     { P_SPEAR, P_SKILLED },		{ P_SLING, P_SKILLED },
@@ -854,7 +855,7 @@ u_init()
 #else
 		u.umoney0 = rn1(251, 100);
 #endif
-		/* silver dagger, short sword or messer (1/3 each) */
+		/* rapier, short sword or messer (1/3 each) */
 		switch (rn2(3)) {
 		case 1: Bard[BARD_WEAPON].trotyp = SHORT_SWORD; break;
 		case 2: Bard[BARD_WEAPON].trotyp = MESSER; break;

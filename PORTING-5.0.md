@@ -1690,3 +1690,9 @@ The book numbers do not move (same slots), so old saves and bones still load and
 
 Checked in wizard mode: a wish for "spellbook of flame" and "of ice strike" gives the right books (identified as such with ^I), a Wizard who read the flame book has "flame" in the spell menu, and the "items" stress test ran clean. I did not cast either spell (not enough power at experience level 1) and did not see the ice strike in a spell menu.
 
+## Batch 178: the Bard starts with a rapier
+
+The Bard's third-in-three starting weapon, the **+1 silver dagger**, is now a **+1 rapier** (`u_init.c`; the other two thirds are still the +1 short sword and +1 messer). The rapier in this game uses the **long sword** skill, and the Bard had none, so `Skill_Bard` gains **long sword up to Skilled** (starting with the rapier it starts at Basic). That means long swords and other long-sword-skill weapons can be trained to Skilled by a Bard as well. Dagger and the rest of the Bard's skills are unchanged.
+
+Checked in wizard mode: starting Bards were given the rapier (a blessed +1 rapier), the short sword or the messer, and the rapier's Bard started with long sword at Basic. I did not advance it to check the Skilled cap in play. The items stress test ran clean. Only new characters are affected.
+
