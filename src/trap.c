@@ -2926,7 +2926,7 @@ xchar x, y;
 	     */
 	    continue;
 	} else if (obj->oclass == SCROLL_CLASS || obj->oclass == SPBOOK_CLASS) {
-	    if (obj->otyp == SCR_FIRE || obj->otyp == SPE_FIREBALL)
+	    if (obj->otyp == SCR_FIRE || obj->otyp == SPE_FLAME)
 		continue;
 	    if (obj->otyp == SPE_BOOK_OF_THE_DEAD) {
 		if (in_sight) pline("Smoke rises from %s.", the(xname(obj)));

@@ -608,7 +608,7 @@ docast()
 	return 0;
 }
 
-/* Narya's fireball, Nenya's cone of cold and Vilya's healing spells can
+/* Narya's flame, Nenya's ice strike and Vilya's healing spells can
    always be cast by the wearer, whatever else hampers spellcasting except
    lack of energy, stun, hands that are not free, and hunger so bad that
    you are about to faint (those are checked as usual) */
@@ -618,8 +618,8 @@ int otyp;
 {
 	int art;
 
-	if (otyp == SPE_FIREBALL) art = ART_NARYA;
-	else if (otyp == SPE_CONE_OF_COLD) art = ART_NENYA;
+	if (otyp == SPE_FLAME) art = ART_NARYA;
+	else if (otyp == SPE_ICE_STRIKE) art = ART_NENYA;
 	else if (otyp == SPE_HEALING || otyp == SPE_EXTRA_HEALING ||
 		 otyp == SPE_SUPERIOR_HEALING) art = ART_VILYA;
 	else return FALSE;
@@ -634,8 +634,8 @@ struct obj *obj;
 int *bit;
 {
 	if (!obj || obj->oclass != RING_CLASS) return 0;
-	if (obj->oartifact == ART_NARYA) { *bit = 1; return SPE_FIREBALL; }
-	if (obj->oartifact == ART_NENYA) { *bit = 2; return SPE_CONE_OF_COLD; }
+	if (obj->oartifact == ART_NARYA) { *bit = 1; return SPE_FLAME; }
+	if (obj->oartifact == ART_NENYA) { *bit = 2; return SPE_ICE_STRIKE; }
 	if (obj->oartifact == ART_VILYA) { *bit = 4; return SPE_HEALING; }
 	return 0;
 }
@@ -964,8 +964,8 @@ boolean atme;
 	 * effects, e.g. more damage, further distance, and so on, without
 	 * additional cost to the spellcaster.
 	 */
-	case SPE_CONE_OF_COLD:
-	case SPE_FIREBALL:
+	case SPE_ICE_STRIKE:
+	case SPE_FLAME:
 	    if (role_skill >= P_SKILLED) {
 	        if (throwspell()) {
 		    cc.x=u.dx;cc.y=u.dy;
@@ -981,7 +981,7 @@ boolean atme;
 			    explode(u.dx, u.dy,
 				    pseudo->otyp - SPE_MAGIC_MISSILE + 10,
 				    max(1, u.ulevel/2 + 1 + spell_damage_bonus()), 0,
-					(pseudo->otyp == SPE_CONE_OF_COLD) ?
+					(pseudo->otyp == SPE_ICE_STRIKE) ?
 						EXPL_FROSTY : EXPL_FIERY);
 			}
 			u.dx = cc.x+rnd(3)-2; u.dy = cc.y+rnd(3)-2;

@@ -80,8 +80,8 @@ const char * const flash_types[] = {	/* also used in buzzmu(mcastu.c) */
 	"",
 
 	"magic missile",	/* Spell equivalents must be 10-19 */
-	"fireball",
-	"cone of cold",
+	"flame",
+	"ice strike",
 	"sleep ray",
 	"finger of death",
 	"bolt of lightning",	/* There is no spell, used for retribution */
@@ -1991,7 +1991,7 @@ boolean ordinary;
 		    }
 		    break;
 
-		case SPE_FIREBALL:
+		case SPE_FLAME:
 		    You("explode a fireball on top of yourself!");
 		    explode(u.ux, u.uy, AD_FIRE - 1, d(12,6), WAND_CLASS, EXPL_FIERY);
 		    break;
@@ -2016,7 +2016,7 @@ boolean ordinary;
 
 		case WAN_COLD:
 		    makeknown(WAN_COLD);
-		case SPE_CONE_OF_COLD:
+		case SPE_ICE_STRIKE:
 		case FROST_HORN:
 		    if (how_resistant(COLD_RES) == 100) {
 				shieldeff(u.ux, u.uy);
@@ -2624,7 +2624,7 @@ register struct	obj	*obj;
 			  * and/or cold resistant */
 			 sp_skill = (P_SKILL(spell_skilltype(SPE_MAGIC_MISSILE)) == P_EXPERT) ? 3 : 4;
 			buzz(AD_MAGM + 9, u.ulevel / sp_skill + 1, u.ux, u.uy, u.dx, u.dy);
-		 } else if (otyp >= SPE_FIREBALL && otyp <= SPE_FINGER_OF_DEATH) {
+		 } else if (otyp >= SPE_FLAME && otyp <= SPE_FINGER_OF_DEATH) {
 			buzz(otyp - SPE_MAGIC_MISSILE + 10, u.ulevel / 2 + 1, u.ux, u.uy, u.dx, u.dy);
 		 } else if (otyp == WAN_ACID) {
 			buzz(ZT_WAND(ZT_ACID), 6, u.ux, u.uy, u.dx, u.dy);
@@ -3422,7 +3422,7 @@ boolean u_caused;
 	for (obj = level.objects[x][y]; obj; obj = obj2) {
 	    obj2 = obj->nexthere;
 	    if (obj->oclass == SCROLL_CLASS || obj->oclass == SPBOOK_CLASS) {
-		if (obj->otyp == SCR_FIRE || obj->otyp == SPE_FIREBALL ||
+		if (obj->otyp == SCR_FIRE || obj->otyp == SPE_FLAME ||
 			obj_resists(obj, 2, 100))
 		    continue;
 		scrquan = obj->quan;	/* number present */
@@ -4102,7 +4102,7 @@ register int osym, dmgtyp;
 		case AD_FIRE:
 		    xresist = (how_resistant(FIRE_RES) == 100 && obj->oclass != POTION_CLASS);
 
-		    if (obj->otyp == SCR_FIRE || obj->otyp == SPE_FIREBALL)
+		    if (obj->otyp == SCR_FIRE || obj->otyp == SPE_FLAME)
 			skip++;
 		    if (obj->otyp == SPE_BOOK_OF_THE_DEAD) {
 			skip++;
@@ -4229,7 +4229,7 @@ int osym, dmgtyp;
 		    } else skip++;
 		    break;
 		case AD_FIRE:
-		    if (obj->otyp == SCR_FIRE || obj->otyp == SPE_FIREBALL)
+		    if (obj->otyp == SCR_FIRE || obj->otyp == SPE_FLAME)
 			skip++;
 		    if (obj->otyp == SPE_BOOK_OF_THE_DEAD) {
 			skip++;
