@@ -85,7 +85,7 @@ const struct Role roles[] = {
 	{"Lorist",      0},
 	{"Well-known Bard", 0},
 	{"Master Bard", 0} },
-	"_Minerva", "Apollo", "Fharlanghn", /* Greek/Roman/Greyhawk */
+	"St. Cuthbert", "Fharlanghn", "Olidammara", /* Greyhawk */
 	"Brd", "the Conservatorium", "the Island of Anthemoessa",
 	PM_BARD, NON_PM, NON_PM,
 	PM_PINDAR, PM_RHYMER, PM_AGLAOPE,

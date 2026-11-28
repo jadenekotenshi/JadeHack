@@ -1702,3 +1702,9 @@ A thrown **orange or grapefruit** that hits a monster now says **"Splork!"** (in
 
 Checked in wizard mode by throwing 20 oranges and 20 grapefruit at newts: hits said "Splork!" (including killing blows, "Splork!  You kill the newt!") and misses said "misses". The `use` and `items` stress tests ran clean.
 
+## Batch 180: the Bard's pantheon
+
+The Bard's gods (`role.c`) are now **St. Cuthbert** (lawful), **Fharlanghn** (neutral) and **Olidammara** (chaotic), all Greyhawk gods; they were Minerva, Apollo and Fharlanghn. A Bard can still only be neutral or chaotic, as before, so St. Cuthbert is listed but not worshipped by a starting hero (it appears in the god list on the ^X screen, and as the lawful god for conversion and the like). Fharlanghn moves from the chaotic slot to the neutral one. Nothing else refers to the old names (Minerva and Apollo remain in the generic lore text and the Delphi sounds). Only the binary changes.
+
+Checked in wizard mode on the ^X screen: a neutral Bard worships Fharlanghn and a chaotic Bard Olidammara, with St. Cuthbert listed as the lawful god.
+
